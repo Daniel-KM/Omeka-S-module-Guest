@@ -3,8 +3,8 @@
 namespace GuestTest\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\Mail\Transport\Factory as TransportFactory;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Mail\Transport\Factory as TransportFactory;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class MockMailerFactory implements FactoryInterface
 {

@@ -1,9 +1,9 @@
 <?php
 namespace Guest\Form;
 
+use Laminas\Form\Element;
+use Laminas\Form\Fieldset;
 use Omeka\Form\Element\CkeditorInline;
-use Zend\Form\Element;
-use Zend\Form\Fieldset;
 
 class SettingsFieldset extends Fieldset
 {

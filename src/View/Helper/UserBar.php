@@ -1,10 +1,10 @@
 <?php
 namespace Guest\View\Helper;
 
+use Laminas\View\Helper\AbstractHelper;
+use Laminas\View\Renderer\RendererInterface;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Entity\User;
-use Zend\View\Helper\AbstractHelper;
-use Zend\View\Renderer\RendererInterface;
 
 /**
  * View helper for rendering the user bar.

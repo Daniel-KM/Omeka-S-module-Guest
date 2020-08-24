@@ -1,8 +1,8 @@
 <?php
 namespace Guest\Site\Navigation\Link;
 
-use Omeka\Site\Navigation\Link\LinkInterface;
 use Omeka\Api\Representation\SiteRepresentation;
+use Omeka\Site\Navigation\Link\LinkInterface;
 use Omeka\Stdlib\ErrorStore;
 
 class Register implements LinkInterface

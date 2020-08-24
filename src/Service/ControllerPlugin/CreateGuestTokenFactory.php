@@ -3,7 +3,7 @@ namespace Guest\Service\ControllerPlugin;
 
 use Guest\Mvc\Controller\Plugin\CreateGuestToken;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class CreateGuestTokenFactory implements FactoryInterface
 {

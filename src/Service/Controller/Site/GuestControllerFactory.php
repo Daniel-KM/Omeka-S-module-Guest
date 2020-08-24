@@ -3,7 +3,7 @@ namespace Guest\Service\Controller\Site;
 
 use Guest\Controller\Site\GuestController;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class GuestControllerFactory implements FactoryInterface
 {

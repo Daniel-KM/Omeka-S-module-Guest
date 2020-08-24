@@ -2,7 +2,7 @@
 
 namespace Guest\View\Helper;
 
-use Zend\View\Helper\AbstractHtmlElement;
+use Laminas\View\Helper\AbstractHtmlElement;
 
 class GuestWidget extends AbstractHtmlElement
 {

@@ -2,8 +2,8 @@
 
 namespace GuestTest\Controller;
 
-use OmekaTestHelper\Controller\OmekaControllerTestCase;
 use GuestTest\Service\MockMailerFactory;
+use OmekaTestHelper\Controller\OmekaControllerTestCase;
 
 abstract class GuestControllerTestCase extends OmekaControllerTestCase
 {

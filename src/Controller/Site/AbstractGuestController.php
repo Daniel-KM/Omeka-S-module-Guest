@@ -3,10 +3,10 @@ namespace Guest\Controller\Site;
 
 use Doctrine\ORM\EntityManager;
 use Guest\Stdlib\PsrMessage;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Mvc\Controller\AbstractActionController;
 use Omeka\Entity\User;
 use Omeka\Form\UserForm;
-use Zend\Authentication\AuthenticationService;
-use Zend\Mvc\Controller\AbstractActionController;
 
 /**
  * Manage guests pages.
@@ -55,7 +55,7 @@ abstract class AbstractGuestController extends AbstractActionController
     /**
      * Redirect to admin or site according to the role of the user and setting.
      *
-     * @return \Zend\Http\Response
+     * @return \Laminas\Http\Response
      */
     protected function redirectToAdminOrSite()
     {
@@ -202,7 +202,7 @@ abstract class AbstractGuestController extends AbstractActionController
     }
 
     /**
-     * @return \Zend\Authentication\AuthenticationService
+     * @return \Laminas\Authentication\AuthenticationService
      */
     protected function getAuthenticationService()
     {

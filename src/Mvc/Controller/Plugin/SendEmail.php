@@ -2,9 +2,9 @@
 namespace Guest\Mvc\Controller\Plugin;
 
 use Guest\Stdlib\PsrMessage;
+use Laminas\Log\Logger;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use Omeka\Stdlib\Mailer as MailerService;
-use Zend\Log\Logger;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**
  * Send an email.

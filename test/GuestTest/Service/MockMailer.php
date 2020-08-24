@@ -2,8 +2,8 @@
 
 namespace GuestTest\Service;
 
+use Laminas\Mail\Message;
 use Omeka\Stdlib\Mailer;
-use Zend\Mail\Message;
 
 class MockMailer extends Mailer
 {

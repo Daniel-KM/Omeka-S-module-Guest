@@ -1,8 +1,8 @@
 <?php
 namespace Guest\Authentication\Adapter;
 
+use Laminas\Authentication\Result;
 use Omeka\Authentication\Adapter\PasswordAdapter as OmekaPasswordAdapter;
-use Zend\Authentication\Result;
 
 /**
  * Auth adapter for checking passwords through Doctrine

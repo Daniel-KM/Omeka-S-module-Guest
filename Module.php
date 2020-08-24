@@ -39,18 +39,18 @@ use Generic\AbstractModule;
 use Guest\Entity\GuestToken;
 use Guest\Permissions\Acl;
 use Guest\Stdlib\PsrMessage;
+use Laminas\EventManager\Event;
+use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\Form\Element;
+use Laminas\Mvc\Controller\AbstractController;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Permissions\Acl\Acl as LaminasAcl;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\UserRepresentation;
 use Omeka\Form\Element\SiteSelect;
 use Omeka\Permissions\Assertion\IsSelfAssertion;
 use Omeka\Settings\SettingsInterface;
-use Zend\EventManager\Event;
-use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Form\Element;
-use Zend\Mvc\Controller\AbstractController;
-use Zend\Mvc\MvcEvent;
-use Zend\Permissions\Acl\Acl as ZendAcl;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\View\Renderer\PhpRenderer;
 
 class Module extends AbstractModule
 {
@@ -139,10 +139,10 @@ class Module extends AbstractModule
     /**
      * Add ACL rules for sites.
      *
-     * @param ZendAcl $acl
+     * @param LaminasAcl $acl
      * @param bool $isOpenRegister
      */
-    protected function addRulesForAnonymous(ZendAcl $acl, $isOpenRegister = 'moderate')
+    protected function addRulesForAnonymous(LaminasAcl $acl, $isOpenRegister = 'moderate')
     {
         $acl
             ->allow(
@@ -176,9 +176,9 @@ class Module extends AbstractModule
     /**
      * Add ACL rules for "guest" role.
      *
-     * @param ZendAcl $acl
+     * @param LaminasAcl $acl
      */
-    protected function addRulesForGuest(ZendAcl $acl)
+    protected function addRulesForGuest(LaminasAcl $acl)
     {
         $roles = $acl->getRoles();
         $acl
@@ -372,7 +372,7 @@ class Module extends AbstractModule
                 'required' => false,
                 'filters' => [
                     [
-                        'name' => \Zend\Filter\Callback::class,
+                        'name' => \Laminas\Filter\Callback::class,
                         'options' => [
                             'callback' => [$this, 'stringToList'],
                         ],
@@ -562,7 +562,7 @@ class Module extends AbstractModule
                 'required' => false,
                 'filters' => [
                     [
-                        'name' => \Zend\Filter\Callback::class,
+                        'name' => \Laminas\Filter\Callback::class,
                         'options' => [
                             'callback' => [$this, 'sendEmailModeration'],
                         ],
@@ -587,7 +587,7 @@ class Module extends AbstractModule
                 'required' => false,
                 'filters' => [
                     [
-                        'name' => \Zend\Filter\Callback::class,
+                        'name' => \Laminas\Filter\Callback::class,
                         'options' => [
                             'callback' => [$this, 'clearToken'],
                         ],
@@ -788,7 +788,7 @@ class Module extends AbstractModule
         }
 
         $router = $services->get('Router');
-        if (!$router instanceof \Zend\Router\Http\TreeRouteStack) {
+        if (!$router instanceof \Laminas\Router\Http\TreeRouteStack) {
             return;
         }
 

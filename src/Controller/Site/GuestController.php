@@ -4,10 +4,10 @@ namespace Guest\Controller\Site;
 use Guest\Form\AcceptTermsForm;
 use Guest\Form\EmailForm;
 use Guest\Stdlib\PsrMessage;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Session\Container as SessionContainer;
+use Laminas\View\Model\ViewModel;
 use Omeka\Entity\User;
-use Zend\Mvc\MvcEvent;
-use Zend\Session\Container as SessionContainer;
-use Zend\View\Model\ViewModel;
 
 /**
  * Manage guests pages.

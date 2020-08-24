@@ -3,7 +3,7 @@ namespace Guest\Service\Controller\Site;
 
 use Guest\Controller\Site\AnonymousController;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class AnonymousControllerFactory implements FactoryInterface
 {
