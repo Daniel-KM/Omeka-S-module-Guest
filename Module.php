@@ -919,7 +919,7 @@ SQL;
 
         $message = new \Omeka\Stdlib\Message(
             'To upgrade customized templates from module GuestUser, see %sreadme%s.', // @translate
-            '<a href="https://github.com/Daniel-KM/Omeka-S-module-Guest">',
+            '<a href="https://gitlab.com/Daniel-KM/Omeka-S-module-Guest">',
             '</a>'
         );
         $message->setEscapeHtml(false);
