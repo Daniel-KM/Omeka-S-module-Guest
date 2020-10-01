@@ -52,6 +52,9 @@ return [
         'factories' => [
             'Omeka\AuthenticationService' => Service\AuthenticationServiceFactory::class,
         ],
+        'invokables' => [
+            'Guest\MvcListeners' => Mvc\MvcListeners::class,
+        ],
     ],
     'navigation_links' => [
         'invokables' => [
@@ -134,6 +137,9 @@ return [
                 'text_domain' => null,
             ],
         ],
+    ],
+    'listeners' => [
+        'Guest\MvcListeners',
     ],
     'guest' => [
         'settings' => [
