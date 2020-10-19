@@ -3,6 +3,7 @@ namespace Guest\Form;
 
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
+use Omeka\Form\Element\ArrayTextarea;
 use Omeka\Form\Element\CkeditorInline;
 
 class SettingsFieldset extends Fieldset
@@ -36,7 +37,7 @@ class SettingsFieldset extends Fieldset
 
             ->add([
                 'name' => 'guest_notify_register',
-                'type' => Element\Textarea::class,
+                'type' => ArrayTextarea::class,
                 'options' => [
                     'label' => 'Default emails to notify registrations', // @translate
                     'info' => 'The list of emails to notify when a user registers, one by row.', // @translate

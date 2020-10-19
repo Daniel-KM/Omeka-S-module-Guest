@@ -95,7 +95,8 @@ class Module extends AbstractModule
             'guest_terms_text',
         ];
         $config = $this->getConfig()['guest']['settings'];
-        $translate = $this->getServiceLocator()->get('ControllerPluginManager')->get('translate');
+        $services = $this->getServiceLocator();
+        $translate = $services->get('ControllerPluginManager')->get('translate');
         $translatables = array_filter(array_map(function ($v) use ($translate, $config) {
             return !empty($config[$v]) ? $translate($config[$v]) : null;
         }, array_combine($translatables, $translatables)));
@@ -104,7 +105,6 @@ class Module extends AbstractModule
         $this->manageSiteSettings('update', $translatables);
 
         if ($this->hasOldGuestUser) {
-            $serviceLocator = $this->getServiceLocator();
             require_once __DIR__ . '/data/scripts/upgrade_guest_user.php';
         }
     }
@@ -273,19 +273,9 @@ class Module extends AbstractModule
             [$this, 'handleMainSettings']
         );
         $sharedEventManager->attach(
-            \Omeka\Form\SettingForm::class,
-            'form.add_input_filters',
-            [$this, 'handleMainSettingsFilters']
-        );
-        $sharedEventManager->attach(
             \Omeka\Form\SiteSettingsForm::class,
             'form.add_elements',
             [$this, 'handleSiteSettings']
-        );
-        $sharedEventManager->attach(
-            \Omeka\Form\SiteSettingsForm::class,
-            'form.add_input_filters',
-            [$this, 'handleMainSettingsFilters']
         );
     }
 
@@ -322,7 +312,7 @@ class Module extends AbstractModule
         }
     }
 
-    protected function initDataToPopulate(SettingsInterface $settings, $settingsType, $id = null, array $values = [])
+    protected function initDataToPopulate(SettingsInterface $settings, string $settingsType, $id = null, iterable $values = []): bool
     {
         if ($settingsType !== 'site_settings') {
             return parent::initDataToPopulate($settings, $settingsType, $id, $values);
@@ -354,7 +344,7 @@ class Module extends AbstractModule
         return parent::initDataToPopulate($settings, $settingsType, $id, $translatables);
     }
 
-    protected function prepareDataToPopulate(SettingsInterface $settings, $settingsType)
+    protected function prepareDataToPopulate(SettingsInterface $settings, string $settingsType): ?array
     {
         $data = parent::prepareDataToPopulate($settings, $settingsType);
         if (in_array($settingsType, ['settings', 'site_settings'])) {
@@ -363,23 +353,6 @@ class Module extends AbstractModule
             }
         }
         return $data;
-    }
-
-    public function handleMainSettingsFilters(Event $event): void
-    {
-        $event->getParam('inputFilter')->get('guest')
-            ->add([
-                'name' => 'guest_notify_register',
-                'required' => false,
-                'filters' => [
-                    [
-                        'name' => \Laminas\Filter\Callback::class,
-                        'options' => [
-                            'callback' => [$this, 'stringToList'],
-                        ],
-                    ],
-                ],
-            ]);
     }
 
     public function appendLoginNav(Event $event): void
@@ -692,6 +665,7 @@ class Module extends AbstractModule
             return;
         }
 
+        /** @var \Doctrine\ORM\EntityManager $entityManager */
         $entityManager = $services->get('Omeka\EntityManager');
         /** @var \Omeka\Entity\User $user */
         $user = $entityManager->getRepository(\Omeka\Entity\User::class)->find($userId);
@@ -731,14 +705,15 @@ class Module extends AbstractModule
     {
         $request = $event->getParam('request');
 
-        $em = $this->getServiceLocator()->get('Omeka\EntityManager');
+        /** @var \Doctrine\ORM\EntityManager $entityManager */
+        $entityManager = $this->getServiceLocator()->get('Omeka\EntityManager');
         $id = $request->getId();
-        $token = $em->getRepository(GuestToken::class)->findOneBy(['user' => $id]);
+        $token = $entityManager->getRepository(GuestToken::class)->findOneBy(['user' => $id]);
         if (empty($token)) {
             return;
         }
-        $em->remove($token);
-        $em->flush();
+        $entityManager->remove($token);
+        $entityManager->flush();
     }
 
     /**
@@ -747,7 +722,7 @@ class Module extends AbstractModule
      * @param UserRepresentation $user
      * @return \Omeka\Api\Representation\SiteRepresentation|null
      */
-    protected function guestSite(UserRepresentation $user)
+    protected function guestSite(UserRepresentation $user): \Omeka\Api\Representation\SiteRepresentation
     {
         $services = $this->getServiceLocator();
         $api = $services->get('Omeka\ApiManager');
@@ -890,7 +865,7 @@ SQL;
      * @throws \Omeka\Module\Exception\ModuleCannotInstallException
      * @return bool
      */
-    protected function checkOldGuestUser()
+    protected function checkOldGuestUser(): bool
     {
         $services = $this->getServiceLocator();
         $hasGuestUser = false;

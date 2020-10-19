@@ -3,7 +3,7 @@ namespace Guest;
 
 /**
  * @var Module $this
- * @var \Laminas\ServiceManager\ServiceLocatorInterface $serviceLocator
+ * @var \Laminas\ServiceManager\ServiceLocatorInterface $services
  * @var string $newVersion
  * @var string $oldVersion
  *
@@ -11,7 +11,6 @@ namespace Guest;
  * @var \Doctrine\ORM\EntityManager $entityManager
  * @var \Omeka\Api\Manager $api
  */
-$services = $serviceLocator;
 $settings = $services->get('Omeka\Settings');
 $config = require dirname(__DIR__, 2) . '/config/module.config.php';
 $connection = $services->get('Omeka\Connection');
