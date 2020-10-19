@@ -1,15 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GuestTest\Service;
 
-use Omeka\Stdlib\Mailer;
 use Laminas\Mail\Message;
+use Omeka\Stdlib\Mailer;
 
 class MockMailer extends Mailer
 {
     protected $message;
 
-    public function send($message)
+    public function send($message): void
     {
         if ($message instanceof Message) {
             $this->message = $message;

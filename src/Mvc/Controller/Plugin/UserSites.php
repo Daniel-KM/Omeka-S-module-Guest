@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Mvc\Controller\Plugin;
 
 use Doctrine\ORM\EntityManager;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use Omeka\Entity\Site;
 use Omeka\Entity\User;
-use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 
 class UserSites extends AbstractPlugin
 {

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * Copyright BibLibre, 2016
  * Copyright Daniel Berthereau, 2017-2020
@@ -39,10 +39,6 @@ use Generic\AbstractModule;
 use Guest\Entity\GuestToken;
 use Guest\Permissions\Acl;
 use Guest\Stdlib\PsrMessage;
-use Omeka\Api\Representation\UserRepresentation;
-use Omeka\Form\Element\SiteSelect;
-use Omeka\Permissions\Assertion\IsSelfAssertion;
-use Omeka\Settings\SettingsInterface;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Form\Element;
@@ -51,6 +47,10 @@ use Laminas\Mvc\MvcEvent;
 use Laminas\Permissions\Acl\Acl as LaminasAcl;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
+use Omeka\Api\Representation\UserRepresentation;
+use Omeka\Form\Element\SiteSelect;
+use Omeka\Permissions\Assertion\IsSelfAssertion;
+use Omeka\Settings\SettingsInterface;
 
 class Module extends AbstractModule
 {
@@ -61,7 +61,7 @@ class Module extends AbstractModule
      * @see \Omeka\Module\AbstractModule::onBootstrap()
      * @todo Find the right way to load Guest before other modules in order to add role.
      */
-    public function onBootstrap(MvcEvent $event)
+    public function onBootstrap(MvcEvent $event): void
     {
         parent::onBootstrap($event);
 
@@ -69,12 +69,12 @@ class Module extends AbstractModule
         $this->checkAgreement($event);
     }
 
-    protected function preInstall()
+    protected function preInstall(): void
     {
         $this->hasOldGuestUser = $this->checkOldGuestUser();
     }
 
-    protected function postInstall()
+    protected function postInstall(): void
     {
         // Prepare all translations one time.
         $translatables = [
@@ -109,7 +109,7 @@ class Module extends AbstractModule
         }
     }
 
-    protected function preUninstall()
+    protected function preUninstall(): void
     {
         $this->deactivateGuests();
     }
@@ -117,7 +117,7 @@ class Module extends AbstractModule
     /**
      * Add ACL role and rules for this module.
      */
-    protected function addAclRoleAndRules()
+    protected function addAclRoleAndRules(): void
     {
         /** @var \Omeka\Permissions\Acl $acl */
         $services = $this->getServiceLocator();
@@ -143,7 +143,7 @@ class Module extends AbstractModule
      * @param LaminasAcl $acl
      * @param bool $isOpenRegister
      */
-    protected function addRulesForAnonymous(LaminasAcl $acl, $isOpenRegister = 'moderate')
+    protected function addRulesForAnonymous(LaminasAcl $acl, $isOpenRegister = 'moderate'): void
     {
         $acl
             ->allow(
@@ -179,7 +179,7 @@ class Module extends AbstractModule
      *
      * @param LaminasAcl $acl
      */
-    protected function addRulesForGuest(LaminasAcl $acl)
+    protected function addRulesForGuest(LaminasAcl $acl): void
     {
         $roles = $acl->getRoles();
         $acl
@@ -221,7 +221,7 @@ class Module extends AbstractModule
             );
     }
 
-    public function attachListeners(SharedEventManagerInterface $sharedEventManager)
+    public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
     {
         // TODO How to attach all public events only?
         $sharedEventManager->attach(
@@ -365,7 +365,7 @@ class Module extends AbstractModule
         return $data;
     }
 
-    public function handleMainSettingsFilters(Event $event)
+    public function handleMainSettingsFilters(Event $event): void
     {
         $event->getParam('inputFilter')->get('guest')
             ->add([
@@ -382,7 +382,7 @@ class Module extends AbstractModule
             ]);
     }
 
-    public function appendLoginNav(Event $event)
+    public function appendLoginNav(Event $event): void
     {
         $view = $event->getTarget();
         if ($view->params()->fromRoute('__ADMIN__')) {
@@ -396,21 +396,21 @@ class Module extends AbstractModule
         }
     }
 
-    public function viewUserDetails(Event $event)
+    public function viewUserDetails(Event $event): void
     {
         $view = $event->getTarget();
         $user = $view->resource;
         $this->viewUserData($view, $user, 'common/admin/guest');
     }
 
-    public function viewUserShowAfter(Event $event)
+    public function viewUserShowAfter(Event $event): void
     {
         $view = $event->getTarget();
         $user = $view->vars()->user;
         $this->viewUserData($view, $user, 'common/admin/guest-list');
     }
 
-    protected function viewUserData(PhpRenderer $view, UserRepresentation $user, $template)
+    protected function viewUserData(PhpRenderer $view, UserRepresentation $user, $template): void
     {
         $services = $this->getServiceLocator();
         $userSettings = $services->get('Omeka\Settings\User');
@@ -427,7 +427,7 @@ class Module extends AbstractModule
         );
     }
 
-    public function addUserFormElement(Event $event)
+    public function addUserFormElement(Event $event): void
     {
         /** @var \Omeka\Form\UserForm $form */
         $form = $event->getTarget();
@@ -537,7 +537,7 @@ class Module extends AbstractModule
             ]);
     }
 
-    public function addUserFormElementFilter(Event $event)
+    public function addUserFormElementFilter(Event $event): void
     {
         /** @var \Omeka\Form\UserForm $form */
         $form = $event->getTarget();
@@ -597,7 +597,7 @@ class Module extends AbstractModule
             ]);
     }
 
-    public function sendEmailModeration($value)
+    public function sendEmailModeration($value): void
     {
         static $isSent = false;
 
@@ -679,7 +679,7 @@ class Module extends AbstractModule
         }
     }
 
-    public function clearToken($value)
+    public function clearToken($value): void
     {
         if (!$value) {
             return;
@@ -706,7 +706,7 @@ class Module extends AbstractModule
         $entityManager->flush();
     }
 
-    public function addUserFormValue(Event $event)
+    public function addUserFormValue(Event $event): void
     {
         $user = $event->getTarget()->vars()->user;
         $form = $event->getParam('form');
@@ -727,7 +727,7 @@ class Module extends AbstractModule
         }
     }
 
-    public function deleteGuestToken(Event $event)
+    public function deleteGuestToken(Event $event): void
     {
         $request = $event->getParam('request');
 
@@ -770,7 +770,7 @@ class Module extends AbstractModule
      *
      * @param MvcEvent $event
      */
-    protected function checkAgreement(MvcEvent $event)
+    protected function checkAgreement(MvcEvent $event): void
     {
         $services = $this->getServiceLocator();
         $auth = $services->get('Omeka\AuthenticationService');
@@ -834,7 +834,7 @@ class Module extends AbstractModule
      *
      * @param bool $reset
      */
-    protected function resetAgreements($reset)
+    protected function resetAgreements($reset): void
     {
         $services = $this->getServiceLocator();
         $userSettings = $services->get('Omeka\Settings\User');
@@ -853,7 +853,7 @@ class Module extends AbstractModule
      * @param ServiceLocatorInterface $serviceLocator
      * @param bool $reset
      */
-    protected function resetAgreementsBySql(ServiceLocatorInterface $serviceLocator, $reset)
+    protected function resetAgreementsBySql(ServiceLocatorInterface $serviceLocator, $reset): void
     {
         $reset = $reset ? 'true' : 'false';
         $sql = <<<SQL
@@ -872,7 +872,7 @@ SQL;
         }
     }
 
-    protected function deactivateGuests()
+    protected function deactivateGuests(): void
     {
         $services = $this->getServiceLocator();
         $em = $services->get('Omeka\EntityManager');

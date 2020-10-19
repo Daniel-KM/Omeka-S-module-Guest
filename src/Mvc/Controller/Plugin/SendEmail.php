@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Mvc\Controller\Plugin;
 
 use Guest\Stdlib\PsrMessage;
-use Omeka\Stdlib\Mailer as MailerService;
 use Laminas\Log\Logger;
 use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
+use Omeka\Stdlib\Mailer as MailerService;
 
 /**
  * Send an email.

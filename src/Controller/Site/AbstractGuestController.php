@@ -1,12 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Controller\Site;
 
 use Doctrine\ORM\EntityManager;
 use Guest\Stdlib\PsrMessage;
-use Omeka\Entity\User;
-use Omeka\Form\UserForm;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Omeka\Entity\User;
+use Omeka\Form\UserForm;
 
 /**
  * Manage guests pages.

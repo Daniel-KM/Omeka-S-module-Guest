@@ -1,18 +1,18 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Service;
 
 use Guest\Authentication\Adapter\PasswordAdapter;
 use Guest\Entity\GuestToken;
 use Interop\Container\ContainerInterface;
+use Laminas\Authentication\Adapter\Callback;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Authentication\Storage\NonPersistent;
+use Laminas\Authentication\Storage\Session;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Omeka\Authentication\Adapter\KeyAdapter;
 use Omeka\Authentication\Storage\DoctrineWrapper;
 use Omeka\Entity\ApiKey;
 use Omeka\Entity\User;
-use Laminas\Authentication\AuthenticationService;
-use Laminas\Authentication\Adapter\Callback;
-use Laminas\Authentication\Storage\NonPersistent;
-use Laminas\Authentication\Storage\Session;
-use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Authentication service factory.

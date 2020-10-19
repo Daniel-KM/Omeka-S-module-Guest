@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Form;
 
-use Omeka\Form\Element\CkeditorInline;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
+use Omeka\Form\Element\CkeditorInline;
 
 class SettingsFieldset extends Fieldset
 {
@@ -12,7 +12,7 @@ class SettingsFieldset extends Fieldset
      */
     protected $label = 'Guest'; // @translate
 
-    public function init()
+    public function init(): void
     {
         // Fields default when no site setting.
 

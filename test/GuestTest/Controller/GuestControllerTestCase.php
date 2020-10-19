@@ -1,16 +1,16 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GuestTest\Controller;
 
-use OmekaTestHelper\Controller\OmekaControllerTestCase;
 use GuestTest\Service\MockMailerFactory;
+use OmekaTestHelper\Controller\OmekaControllerTestCase;
 
 abstract class GuestControllerTestCase extends OmekaControllerTestCase
 {
     protected $testSite;
     protected $testUser;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->loginAsAdmin();
 
@@ -20,14 +20,14 @@ abstract class GuestControllerTestCase extends OmekaControllerTestCase
         $this->testUser = $this->createTestUser();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->loginAsAdmin();
         $this->api()->delete('users', $this->testUser->id());
         $this->api()->delete('sites', $this->testSite->id());
     }
 
-    protected function setupMockMailer()
+    protected function setupMockMailer(): void
     {
         $serviceLocator = $this->getServiceLocator();
         $config = $serviceLocator->get('Config');
@@ -66,7 +66,7 @@ abstract class GuestControllerTestCase extends OmekaControllerTestCase
         return $user;
     }
 
-    protected function resetApplication()
+    protected function resetApplication(): void
     {
         parent::resetApplication();
 

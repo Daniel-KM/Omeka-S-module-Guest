@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Authentication\Adapter;
 
-use Omeka\Authentication\Adapter\PasswordAdapter as OmekaPasswordAdapter;
 use Laminas\Authentication\Result;
+use Omeka\Authentication\Adapter\PasswordAdapter as OmekaPasswordAdapter;
 
 /**
  * Auth adapter for checking passwords through Doctrine
@@ -45,7 +45,7 @@ class PasswordAdapter extends OmekaPasswordAdapter
         return new Result(Result::SUCCESS, $user);
     }
 
-    public function setTokenRepository($token_repository)
+    public function setTokenRepository($token_repository): void
     {
         $this->token_repository = $token_repository;
     }

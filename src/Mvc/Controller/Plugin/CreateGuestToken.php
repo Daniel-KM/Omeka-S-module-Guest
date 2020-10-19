@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Mvc\Controller\Plugin;
 
 use Doctrine\ORM\EntityManager;
 use Guest\Entity\GuestToken;
-use Omeka\Entity\User;
 use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
+use Omeka\Entity\User;
 
 class CreateGuestToken extends AbstractPlugin
 {
@@ -38,13 +38,21 @@ class CreateGuestToken extends AbstractPlugin
 
         if (PHP_VERSION_ID < 70000) {
             $tokenString = $short
-                ? function() { return sprintf('%06d', mt_rand(102030, 989796)); }
-                : function() { return sha1(mt_rand()); };
+                ? function () {
+                    return sprintf('%06d', random_int(102030, 989796));
+                }
+            : function () {
+                return sha1(mt_rand());
+            };
         } else {
             $tokenString = $short
                 // TODO Improve the quality of the token to avoid repeated number.
-                ? function() { return sprintf('%06d', random_int(102030, 989796)); }
-                : function() { return substr(str_replace(['+', '/', '-', '='], '', base64_encode(random_bytes(16))), 0, 10); };
+                ? function () {
+                    return sprintf('%06d', random_int(102030, 989796));
+                }
+            : function () {
+                return substr(str_replace(['+', '/', '-', '='], '', base64_encode(random_bytes(16))), 0, 10);
+            };
         }
 
         $token = $tokenString();

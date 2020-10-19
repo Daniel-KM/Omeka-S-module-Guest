@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Controller\Site;
 
 use Guest\Form\AcceptTermsForm;
 use Guest\Form\EmailForm;
 use Guest\Stdlib\PsrMessage;
-use Omeka\Entity\User;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container as SessionContainer;
 use Laminas\View\Model\ViewModel;
+use Omeka\Entity\User;
 
 /**
  * Manage guests pages.

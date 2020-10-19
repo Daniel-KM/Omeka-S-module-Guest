@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Controller\Site;
 
 use Guest\Entity\GuestToken;
 use Guest\Stdlib\PsrMessage;
+use Laminas\Session\Container as SessionContainer;
+use Laminas\View\Model\ViewModel;
 use Omeka\Entity\User;
 use Omeka\Form\ForgotPasswordForm;
 use Omeka\Form\LoginForm;
-use Laminas\Session\Container as SessionContainer;
-use Laminas\View\Model\ViewModel;
 
 /**
  * Manage anonymous visitor pages.
@@ -367,7 +367,7 @@ class AnonymousController extends AbstractGuestController
         return $this->redirect()->toRoute('site', [], true);
     }
 
-    public function staleTokenAction()
+    public function staleTokenAction(): void
     {
         $auth = $this->getInvokeArg('bootstrap')->getResource('Auth');
         $auth->clearIdentity();

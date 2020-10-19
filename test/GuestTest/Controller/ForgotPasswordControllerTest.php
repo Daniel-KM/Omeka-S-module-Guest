@@ -1,17 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GuestTest\Controller;
 
 class ForgotPasswordControllerTest extends GuestControllerTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->logout();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $entityManager = $this->getEntityManager();
         $passwordCreation = $entityManager
@@ -27,7 +27,7 @@ class ForgotPasswordControllerTest extends GuestControllerTestCase
     /**
      * @test
      */
-    public function forgotPasswordShouldDisplayEmailSent()
+    public function forgotPasswordShouldDisplayEmailSent(): void
     {
         $csrf = new \Laminas\Form\Element\Csrf('forgotpasswordform_csrf');
         $this->postDispatch('/s/test/guest/forgot-password', [
@@ -41,7 +41,7 @@ class ForgotPasswordControllerTest extends GuestControllerTestCase
     /**
      * @test
      */
-    public function forgotPasswordShouldSendEmail()
+    public function forgotPasswordShouldSendEmail(): void
     {
         $csrf = new \Laminas\Form\Element\Csrf('forgotpasswordform_csrf');
         $this->postDispatch('/s/test/guest/forgot-password', [
