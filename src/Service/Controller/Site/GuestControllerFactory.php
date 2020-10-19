@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Service\Controller\Site;
 
 use Guest\Controller\Site\GuestController;

@@ -74,3 +74,4 @@ theme.
 
 [GuestUser]: https://github.com/biblibre/omeka-s-module-Guest
 [modules/Guest/data/scripts/convert_guest_user_templates.sh]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/blob/master/data/scripts/convert_guest_user_templates.sh
+

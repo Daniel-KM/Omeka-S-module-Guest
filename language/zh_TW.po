@@ -251,8 +251,5 @@ msgstr "更新帳戶"
 msgid "Update email"
 msgstr "更新信箱"
 
-msgid "Login"
-msgstr "登入"
-
 msgid "Logout"
 msgstr "登出"

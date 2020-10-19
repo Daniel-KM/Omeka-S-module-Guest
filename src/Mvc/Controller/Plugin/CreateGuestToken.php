@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Mvc\Controller\Plugin;
 
 use Doctrine\ORM\EntityManager;
@@ -39,7 +39,7 @@ class CreateGuestToken extends AbstractPlugin
         if (PHP_VERSION_ID < 70000) {
             $tokenString = $short
                 ? function () {
-                    return sprintf('%06d', mt_rand(102030, 989796));
+                    return sprintf('%06d', random_int(102030, 989796));
                 }
             : function () {
                 return sha1(mt_rand());

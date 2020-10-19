@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GuestTest\Controller;
 
@@ -9,7 +9,7 @@ class UserControllerTest extends GuestControllerTestCase
 {
     protected $guest;
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->loginAsAdmin();
         $this->deleteGuest();
@@ -19,7 +19,7 @@ class UserControllerTest extends GuestControllerTestCase
     /**
      * @test
      */
-    public function registerShouldDisplayLogin()
+    public function registerShouldDisplayLogin(): void
     {
         $this->postDispatch('/s/test/guest/register', [
             'user-information' => [
@@ -41,18 +41,18 @@ class UserControllerTest extends GuestControllerTestCase
 
         $mailer = $this->getServiceLocator()->get('Omeka\Mailer');
         $body = $mailer->getMessage()->getBody();
-        $link = '<a href=\''.$siteRepresentation->siteUrl().'/guest/confirm?token='.$this->getUserToken('test3@test.fr')->getToken().'\'>';
-        $this->assertContains('You have registered for an account on '.$link.'Test</a>. Please confirm your registration by following '.$link.'this link</a>.  If you did not request to join Test please disregard this email.', $body);
+        $link = '<a href=\'' . $siteRepresentation->siteUrl() . '/guest/confirm?token=' . $this->getUserToken('test3@test.fr')->getToken() . '\'>';
+        $this->assertContains('You have registered for an account on ' . $link . 'Test</a>. Please confirm your registration by following ' . $link . 'this link</a>.  If you did not request to join Test please disregard this email.', $body);
     }
 
     /**
      * @test
      */
-    public function tokenlinkShouldValidateGuest()
+    public function tokenlinkShouldValidateGuest(): void
     {
         $user = $this->createGuest();
         $userToken = $this->getUserToken($user->email());
-        $this->dispatch('/s/test/guest/confirm?token='.$userToken->getToken());
+        $this->dispatch('/s/test/guest/confirm?token=' . $userToken->getToken());
         $this->assertTrue($userToken->isConfirmed());
         $this->assertRedirect('guest/login');
         $this->assertXPathQueryContentContains('//li[@class="success"]', 'Thanks for joining Test! You can now log using the password you chose.');
@@ -61,7 +61,7 @@ class UserControllerTest extends GuestControllerTestCase
     /**
      * @test
      */
-    public function wrongTokenlinkShouldNotValidateGuest()
+    public function wrongTokenlinkShouldNotValidateGuest(): void
     {
         $user = $this->createGuest();
         $this->dispatch('/s/test/guest/confirm?token=1234');
@@ -72,7 +72,7 @@ class UserControllerTest extends GuestControllerTestCase
     /**
      * @test
      */
-    public function updateAccountWithNoPassword()
+    public function updateAccountWithNoPassword(): void
     {
         $user = $this->createGuest();
         $em = $this->getEntityManager();
@@ -94,7 +94,7 @@ class UserControllerTest extends GuestControllerTestCase
     /**
      * @test
      */
-    public function deleteUnconfirmedUserShouldRemoveToken()
+    public function deleteUnconfirmedUserShouldRemoveToken(): void
     {
         $user = $this->createGuest();
         $userId = $user->id();
@@ -110,7 +110,7 @@ class UserControllerTest extends GuestControllerTestCase
     /**
      * @test
      */
-    public function registerNeedsValidation()
+    public function registerNeedsValidation(): void
     {
         // This avoids warning:
         // session_destroy(): Session object destruction failed
@@ -134,7 +134,7 @@ class UserControllerTest extends GuestControllerTestCase
     /**
      * @test
      */
-    public function loginShouldDisplayWrongEmailOrPassword()
+    public function loginShouldDisplayWrongEmailOrPassword(): void
     {
         // This avoids warning:
         // session_destroy(): Session object destruction failed
@@ -155,7 +155,7 @@ class UserControllerTest extends GuestControllerTestCase
     /**
      * @test
      */
-    public function logoutShouldLogoutUser()
+    public function logoutShouldLogoutUser(): void
     {
         $this->createGuest();
         $this->login('guest@test.fr', 'test');
@@ -167,7 +167,7 @@ class UserControllerTest extends GuestControllerTestCase
     /**
      * @test
      */
-    public function loginOkShouldRedirect()
+    public function loginOkShouldRedirect(): void
     {
         $this->postDispatch('/s/test/guest/login', [
             'email' => 'test@test.fr',
@@ -209,7 +209,7 @@ class UserControllerTest extends GuestControllerTestCase
         return $user;
     }
 
-    protected function deleteGuest()
+    protected function deleteGuest(): void
     {
         if (isset($this->guest)) {
             $this->api()->delete('users', $this->guest->id());

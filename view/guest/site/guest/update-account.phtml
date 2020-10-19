@@ -5,6 +5,23 @@
  */
 
 $translate = $this->plugin('translate');
+$assetUrl = $this->plugin('assetUrl');
+
+$script = <<<'JS'
+$(document).ready( function() {
+    $('.chosen-select').chosen({
+        allow_single_deselect: true,
+        disable_search_threshold: 10,
+        width: '100%',
+        include_group_label_in_selected: true,
+    });
+});
+JS;
+$this->headLink()
+    ->appendStylesheet($assetUrl('vendor/chosen-js/chosen.css', 'Omeka'));
+$this->headScript()
+    ->appendFile($assetUrl('vendor/chosen-js/chosen.jquery.js', 'Omeka'))
+    ->appendScript($script);
 
 $this->htmlElement('body')->appendAttribute('class', 'guest account');
 $form->prepare();

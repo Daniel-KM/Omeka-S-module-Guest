@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Service;
 
 use Guest\Authentication\Adapter\PasswordAdapter;

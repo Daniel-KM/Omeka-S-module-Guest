@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Controller\Site;
 
 use Guest\Entity\GuestToken;
@@ -367,7 +367,7 @@ class AnonymousController extends AbstractGuestController
         return $this->redirect()->toRoute('site', [], true);
     }
 
-    public function staleTokenAction()
+    public function staleTokenAction(): void
     {
         $auth = $this->getInvokeArg('bootstrap')->getResource('Auth');
         $auth->clearIdentity();

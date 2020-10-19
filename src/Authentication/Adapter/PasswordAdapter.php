@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\Authentication\Adapter;
 
 use Laminas\Authentication\Result;
@@ -45,7 +45,7 @@ class PasswordAdapter extends OmekaPasswordAdapter
         return new Result(Result::SUCCESS, $user);
     }
 
-    public function setTokenRepository($token_repository)
+    public function setTokenRepository($token_repository): void
     {
         $this->token_repository = $token_repository;
     }

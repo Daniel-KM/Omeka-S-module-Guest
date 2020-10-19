@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Guest\View\Helper;
 
 use Laminas\I18n\Translator\TranslatorAwareInterface;

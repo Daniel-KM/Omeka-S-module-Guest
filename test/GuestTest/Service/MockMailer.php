@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace GuestTest\Service;
 
@@ -9,7 +9,7 @@ class MockMailer extends Mailer
 {
     protected $message;
 
-    public function send($message)
+    public function send($message): void
     {
         if ($message instanceof Message) {
             $this->message = $message;
