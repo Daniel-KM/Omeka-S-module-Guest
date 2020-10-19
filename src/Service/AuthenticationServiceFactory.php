@@ -8,11 +8,11 @@ use Omeka\Authentication\Adapter\KeyAdapter;
 use Omeka\Authentication\Storage\DoctrineWrapper;
 use Omeka\Entity\ApiKey;
 use Omeka\Entity\User;
-use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Adapter\Callback;
-use Zend\Authentication\Storage\NonPersistent;
-use Zend\Authentication\Storage\Session;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Authentication\Adapter\Callback;
+use Laminas\Authentication\Storage\NonPersistent;
+use Laminas\Authentication\Storage\Session;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Authentication service factory.

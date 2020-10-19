@@ -2,7 +2,7 @@
 
 namespace GuestTest\Controller;
 
-use Zend\Form\Element\Csrf;
+use Laminas\Form\Element\Csrf;
 use Guest\Entity\GuestToken;
 
 class UserControllerTest extends GuestControllerTestCase

@@ -3,8 +3,8 @@ namespace Guest\View\Helper;
 
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Stdlib\Message;
-use Zend\I18n\Translator\TranslatorAwareInterface;
-use Zend\View\Helper\AbstractHelper;
+use Laminas\I18n\Translator\TranslatorAwareInterface;
+use Laminas\View\Helper\AbstractHelper;
 
 /**
  * View helper for proxing the messenger controller plugin.

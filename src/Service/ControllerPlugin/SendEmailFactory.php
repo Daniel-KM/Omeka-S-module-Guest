@@ -3,7 +3,7 @@ namespace Guest\Service\ControllerPlugin;
 
 use Guest\Mvc\Controller\Plugin\SendEmail;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class SendEmailFactory implements FactoryInterface
 {

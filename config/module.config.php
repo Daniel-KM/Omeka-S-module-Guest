@@ -78,7 +78,7 @@ return [
             'site' => [
                 'child_routes' => [
                     'guest' => [
-                        'type' => \Zend\Router\Http\Literal::class,
+                        'type' => \Laminas\Router\Http\Literal::class,
                         'options' => [
                             'route' => '/guest',
                             'defaults' => [
@@ -90,7 +90,7 @@ return [
                         'may_terminate' => true,
                         'child_routes' => [
                             'anonymous' => [
-                                'type' => \Zend\Router\Http\Segment::class,
+                                'type' => \Laminas\Router\Http\Segment::class,
                                 'options' => [
                                     'route' => '/:action',
                                     'constraints' => [
@@ -106,7 +106,7 @@ return [
                                 ],
                             ],
                             'guest' => [
-                                'type' => \Zend\Router\Http\Segment::class,
+                                'type' => \Laminas\Router\Http\Segment::class,
                                 'options' => [
                                     'route' => '/:action',
                                     'constraints' => [

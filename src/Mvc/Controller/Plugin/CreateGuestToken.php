@@ -4,7 +4,7 @@ namespace Guest\Mvc\Controller\Plugin;
 use Doctrine\ORM\EntityManager;
 use Guest\Entity\GuestToken;
 use Omeka\Entity\User;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 
 class CreateGuestToken extends AbstractPlugin
 {

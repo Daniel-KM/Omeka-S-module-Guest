@@ -6,8 +6,8 @@ use Guest\Stdlib\PsrMessage;
 use Omeka\Entity\User;
 use Omeka\Form\ForgotPasswordForm;
 use Omeka\Form\LoginForm;
-use Zend\Session\Container as SessionContainer;
-use Zend\View\Model\ViewModel;
+use Laminas\Session\Container as SessionContainer;
+use Laminas\View\Model\ViewModel;
 
 /**
  * Manage anonymous visitor pages.
@@ -400,7 +400,7 @@ class AnonymousController extends AbstractGuestController
         return $this->settings()->get('guest_open') === 'open';
     }
 
-    protected function checkPostAndValidForm(\Zend\Form\Form $form)
+    protected function checkPostAndValidForm(\Laminas\Form\Form $form)
     {
         if (!$this->getRequest()->isPost()) {
             return false;
