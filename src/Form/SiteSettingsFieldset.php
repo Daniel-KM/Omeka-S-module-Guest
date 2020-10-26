@@ -227,6 +227,7 @@ If you did not request to update your email on {main_title}, please disregard th
                 ],
                 'attributes' => [
                     'id' => 'guest-terms-text',
+                    'rows' => 12,
                 ],
             ])
 
