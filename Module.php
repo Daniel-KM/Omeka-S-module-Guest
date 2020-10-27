@@ -558,6 +558,9 @@ class Module extends AbstractModule
         $entityManager = $services->get('Omeka\EntityManager');
         /** @var \Omeka\Entity\User $user */
         $user = $entityManager->getRepository(\Omeka\Entity\User::class)->find($userId);
+        if (!$user) {
+            return;
+        }
 
         /** @var \Guest\Entity\GuestToken $guestToken */
         $guestToken = $entityManager->getRepository(GuestToken::class)
@@ -601,6 +604,9 @@ class Module extends AbstractModule
         $entityManager = $services->get('Omeka\EntityManager');
         /** @var \Omeka\Entity\User $user */
         $user = $entityManager->getRepository(\Omeka\Entity\User::class)->find($userId);
+        if (!$user) {
+            return;
+        }
 
         if (!$user->isActive()) {
             $message = new \Omeka\Stdlib\Message(
@@ -680,6 +686,9 @@ class Module extends AbstractModule
         $entityManager = $services->get('Omeka\EntityManager');
         /** @var \Omeka\Entity\User $user */
         $user = $entityManager->getRepository(\Omeka\Entity\User::class)->find($userId);
+        if (!$user) {
+            return;
+        }
 
         /** @var \Guest\Entity\GuestToken $guestToken */
         $token = $entityManager->getRepository(GuestToken::class)
@@ -733,17 +742,17 @@ class Module extends AbstractModule
      * @param UserRepresentation $user
      * @return \Omeka\Api\Representation\SiteRepresentation|null
      */
-    protected function guestSite(UserRepresentation $user): \Omeka\Api\Representation\SiteRepresentation
+    protected function guestSite(UserRepresentation $user): ?\Omeka\Api\Representation\SiteRepresentation
     {
         $services = $this->getServiceLocator();
         $api = $services->get('Omeka\ApiManager');
         $userSettings = $services->get('Omeka\Settings\User');
         $userSettings->setTargetId($user->id());
-        $guestSite = $userSettings->get('guest_site');
+        $guestSite = $userSettings->get('guest_site') ?: null;
 
         if ($guestSite) {
             try {
-                $guestSite = $api->read('sites', ['id' => $guestSite])->getContent();
+                $guestSite = $api->read('sites', ['id' => $guestSite], [], ['initialize' => false])->getContent();
             } catch (\Omeka\Api\Exception\NotFoundException $e) {
                 $guestSite = null;
             }
