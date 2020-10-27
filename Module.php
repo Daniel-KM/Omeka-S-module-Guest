@@ -442,10 +442,17 @@ class Module extends AbstractModule
         /** @var \Omeka\Entity\User $user */
         $user = $entityManager->getRepository(\Omeka\Entity\User::class)->find($userId);
 
-        $userSettings = $services->get('Omeka\Settings\User');
-        $userSettings->setTargetId($userId);
-        $agreedTerms = $userSettings->get('guest_agreed_terms');
-        $siteRegistration = $userSettings->get('guest_site', $services->get('Omeka\Settings')->get('default_site', 1));
+        // Manage a direct creation (no id).
+        if ($user) {
+            /** @var \Omeka\Settings\UserSettings $userSettings */
+            $userSettings = $services->get('Omeka\Settings\User');
+            $userSettings->setTargetId($userId);
+            $agreedTerms = $userSettings->get('guest_agreed_terms');
+            $siteRegistration = $userSettings->get('guest_site', $services->get('Omeka\Settings')->get('default_site', 1));
+        } else {
+            $agreedTerms = false;
+            $siteRegistration = $services->get('Omeka\Settings')->get('default_site', 1);
+        }
 
         // Admin board.
         $fieldset = $form->get('user-settings');
@@ -488,6 +495,10 @@ class Module extends AbstractModule
                     'id' => 'guest_send_email_moderated_registration',
                 ],
             ]);
+
+        if (!$user) {
+            return;
+        }
 
         /** @var \Guest\Entity\GuestToken $guestToken */
         $guestToken = $entityManager->getRepository(GuestToken::class)
