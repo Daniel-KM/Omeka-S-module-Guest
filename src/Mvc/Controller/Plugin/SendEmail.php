@@ -43,16 +43,16 @@ class SendEmail extends AbstractPlugin
     public function __invoke($recipients, $subject, $body, $name = null)
     {
         if (!is_array($recipients)) {
-            $recipients = [$recipients];
+            $recipients = [(string) $recipients];
         }
 
-        $subject = trim($subject);
+        $subject = trim((string) $subject);
         if (empty($subject)) {
             $message = new PsrMessage('Email not sent: the subject is missing.'); // @translate
             $this->logger->err($message);
             return false;
         }
-        $body = trim($body);
+        $body = trim((string) $body);
         if (empty($body)) {
             $message = new PsrMessage('Email not sent: content is missing (subject: {subject}).', ['subject' => $subject]); // @translate
             $this->logger->err($message);
