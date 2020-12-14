@@ -2,11 +2,8 @@ Guest (module for Omeka S)
 ==========================
 
 > __New versions of this module and support for Omeka S version 3.0 and above
-> are available on [GitLab], which seems to respect users and privacy better.__
-
-
-> __New versions of this module and support for Omeka S version 3.0 and above
-> are available on [GitLab], which seems to respect users and privacy better.__
+> are available on [GitLab], which seems to respect users and privacy better
+> than the previous repository.__
 
 [Guest] is a module for [Omeka S] that creates a role called `guest`, and
 provides configuration options for a login and registration screen. Guests
