@@ -893,6 +893,7 @@ SQL;
 
         /** @var \Omeka\Module\Manager $moduleManager */
         $moduleManager = $services->get('Omeka\ModuleManager');
+        /** @var \Omeka\Entity\Module $module */
         $module = $moduleManager->getModule('GuestUser');
         $hasGuestUser = (bool) $module;
         if (!$hasGuestUser) {
@@ -902,9 +903,11 @@ SQL;
         $translator = $services->get('MvcTranslator');
         $hasOldGuestUser = version_compare($module->getIni('version') ?? '', '3.3.5', '<');
         if ($hasOldGuestUser) {
-            $message = $translator
-                ->translate('This module cannot be used at the same time as module GuestUser for versions lower than 3.3.5. So it should be upgraded first, or disabled. When ready, the users and settings will be upgraded for all versions.'); // @translate
-            throw new \Omeka\Module\Exception\ModuleCannotInstallException($message);
+            if ($module->getState() === \Omeka\Module\Manager::STATE_ACTIVE) {
+                $message = $translator
+                    ->translate('This module cannot be used at the same time as module GuestUser for versions lower than 3.3.5. So it should be upgraded first, or disabled (directly or in table "module" of the database). When ready, the users and settings will be upgraded for all versions.'); // @translate
+                throw new \Omeka\Module\Exception\ModuleCannotInstallException($message);
+            }
         }
 
         $message = new \Omeka\Stdlib\Message(
