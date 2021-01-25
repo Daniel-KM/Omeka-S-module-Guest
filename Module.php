@@ -900,7 +900,7 @@ SQL;
         }
 
         $translator = $services->get('MvcTranslator');
-        $hasOldGuestUser = version_compare($module->getIni('version'), '3.3.5', '<');
+        $hasOldGuestUser = version_compare($module->getIni('version') ?? '', '3.3.5', '<');
         if ($hasOldGuestUser) {
             $message = $translator
                 ->translate('This module cannot be used at the same time as module GuestUser for versions lower than 3.3.5. So it should be upgraded first, or disabled. When ready, the users and settings will be upgraded for all versions.'); // @translate
