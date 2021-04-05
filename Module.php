@@ -792,9 +792,16 @@ class Module extends AbstractModule
         $requestUri = $request->getRequestUri();
         $requestUriBase = strtok($requestUri, '?');
 
+        /** @var \Omeka\Mvc\Status $status */
+        $services = $this->getServiceLocator();
+        $status = $services->get('Omeka\Status');
         $settings = $services->get('Omeka\Settings');
-        $siteSettings = $services->get('Omeka\Settings\Site');
-        $page = $siteSettings->get('guest_terms_page') ?: $settings->get('guest_terms_page');
+        if ($status->isSiteRequest()) {
+            $siteSettings = $services->get('Omeka\Settings\Site');
+            $page = $siteSettings->get('guest_terms_page') ?: $settings->get('guest_terms_page');
+        } else {
+            $page = $settings->get('guest_terms_page');
+        }
         $regex = $settings->get('guest_terms_request_regex');
         if ($page) {
             $regex .= ($regex ? '|' : '') . 'page/' . $page;
