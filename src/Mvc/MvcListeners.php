@@ -39,8 +39,14 @@ class MvcListeners extends AbstractListenerAggregate
 
         $routeMatch = $event->getRouteMatch();
         if ($routeMatch->getParam('__SITE__')) {
+            /** @var \Omeka\Settings\SiteSettings $siteSettings */
             $siteSettings = $services->get('Omeka\Settings\Site');
-            $page = $siteSettings->get('guest_terms_page', $page);
+            // The target id may be unavailable when the default site isn't set.
+            try {
+                $page = $siteSettings->get('guest_terms_page') ?: $page;
+            } catch (\Omeka\Service\Exception\RuntimeException $e) {
+                // Keep page.
+            }
         }
 
         $request = $event->getRequest();
