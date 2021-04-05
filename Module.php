@@ -797,8 +797,14 @@ class Module extends AbstractModule
         $status = $services->get('Omeka\Status');
         $settings = $services->get('Omeka\Settings');
         if ($status->isSiteRequest()) {
+            /** @var \Omeka\Settings\SiteSettings $siteSettings */
             $siteSettings = $services->get('Omeka\Settings\Site');
-            $page = $siteSettings->get('guest_terms_page') ?: $settings->get('guest_terms_page');
+            // The target id may be unavailable when the default site isn't set.
+            try {
+                $page = $siteSettings->get('guest_terms_page') ?: $settings->get('guest_terms_page');
+            } catch (\Omeka\Service\Exception\RuntimeException $e) {
+                $page = $settings->get('guest_terms_page');
+            }
         } else {
             $page = $settings->get('guest_terms_page');
         }
