@@ -17,6 +17,9 @@ by [BibLibre].
 Guest users can use Omeka via the api too (login, logout, register…) with the
 module [Guest Api].
 
+The module includes a way to request api without credentials but via session, so
+it's easier to use ajax in public interface or web application (see [omeka/pull/1714]).
+
 
 Installation
 ------------
@@ -120,6 +123,7 @@ Copyright
 [GitLab]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest
 [Omeka Classic]: https://omeka.org
 [Guest Api]: https://gitlab.com/Daniel-KM/Omeka-S-module-GuestApi
+[omeka/pull/1714]: https://github.com/omeka/omeka-s/pull/1714
 [ContactUs]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs
 [more information to upgrade templates]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/blob/master/Upgrade_from_GuestUser.md
 [Installing a module]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
