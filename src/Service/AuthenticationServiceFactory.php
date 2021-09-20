@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 namespace Guest\Service;
 
 use Guest\Authentication\Adapter\PasswordAdapter;
@@ -23,18 +22,15 @@ class AuthenticationServiceFactory implements FactoryInterface
     /**
      * Create the authentication service.
      *
-     * It is a copy of the Omeka service with a line to set the token repository
-     * in order to validate only confirmed guest users.
-     *
-     * Furthermore, a check for api credentials allows local authentication for
-     * api requests.
-     *
      * @return AuthenticationService
      * @see \Omeka\Service\AuthenticationServiceFactory
      */
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        /** @var \Omeka\Mvc\Status $status */
+        // Copy of the Omeka service, with a Guest password adapter and one
+        // line to set the token repository.
+
+        $entityManager = $services->get('Omeka\EntityManager');
         $status = $services->get('Omeka\Status');
 
         // Skip auth retrieval entirely if we're installing or migrating.
@@ -46,31 +42,21 @@ class AuthenticationServiceFactory implements FactoryInterface
                 return null;
             });
         } else {
-            $entityManager = $services->get('Omeka\EntityManager');
             $userRepository = $entityManager->getRepository(User::class);
-
-            $useApiKeyAuthentication = $status->isApiRequest();
-            if ($useApiKeyAuthentication) {
-                $request = $services->get('Application')->getMvcEvent()->getRequest();
-                $useApiKeyAuthentication = $request->getQuery('key_identity') !== null
-                    && $request->getQuery('key_credential') !== null;
-            }
-
-            if ($useApiKeyAuthentication) {
-                // Authenticate using key for API requests with credentials.
+            if ($status->isApiRequest()) {
+                // Authenticate using key for API requests.
                 $keyRepository = $entityManager->getRepository(ApiKey::class);
                 $storage = new DoctrineWrapper(new NonPersistent, $userRepository);
                 $adapter = new KeyAdapter($keyRepository, $entityManager);
             } else {
                 // Authenticate using user/password for all other requests.
-                // The session storage is used for api requests too when
-                // credentials are not provided.
-                $tokenRepository = $entityManager->getRepository(GuestToken::class);
                 $storage = new DoctrineWrapper(new Session, $userRepository);
-                $adapter = new PasswordAdapter($userRepository, $tokenRepository);
+                $adapter = new PasswordAdapter($userRepository);
+                $adapter->setTokenRepository($entityManager->getRepository(GuestToken::class));
             }
         }
 
-        return new AuthenticationService($storage, $adapter);
+        $authService = new AuthenticationService($storage, $adapter);
+        return $authService;
     }
 }

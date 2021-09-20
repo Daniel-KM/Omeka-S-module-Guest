@@ -1,42 +1,21 @@
 <?php declare(strict_types=1);
-
 namespace Guest\Authentication\Adapter;
 
-use Doctrine\ORM\EntityRepository;
-use Laminas\Authentication\Adapter\AbstractAdapter;
 use Laminas\Authentication\Result;
+use Omeka\Authentication\Adapter\PasswordAdapter as OmekaPasswordAdapter;
 
 /**
  * Auth adapter for checking passwords through Doctrine
  *
- * Same as omeka password adapter, except a check of the guest token in order to
- * authenticate only confirmed guest users.
- *
- * @see \Omeka\Authentication\Adapter\PasswordAdapter
+ * Same as omeka password manager, except a check of the guest token.
  */
-class PasswordAdapter extends AbstractAdapter
+class PasswordAdapter extends OmekaPasswordAdapter
 {
-    /**
-     * @var \Doctrine\ORM\EntityRepository
-     */
-    protected $userRepository;
-
-    /**
-     * @var \Doctrine\ORM\EntityRepository
-     */
-    protected $tokenRepository;
-
-    public function __construct(
-        EntityRepository $userRepository,
-        EntityRepository $tokenRepository
-    ) {
-        $this->userRepository = $userRepository;
-        $this->tokenRepository = $tokenRepository;
-    }
+    protected $token_repository;
 
     public function authenticate()
     {
-        $user = $this->userRepository->findOneBy(['email' => $this->identity]);
+        $user = $this->repository->findOneBy(['email' => $this->identity]);
 
         if (!$user || !$user->isActive()) {
             return new Result(
@@ -47,7 +26,7 @@ class PasswordAdapter extends AbstractAdapter
         }
 
         if ($user->getRole() == \Guest\Permissions\Acl::ROLE_GUEST) {
-            $guest = $this->tokenRepository->findOneBy(['email' => $this->identity]);
+            $guest = $this->token_repository->findOneBy(['email' => $this->identity]);
             // There is no token if the guest is created directly (the role is
             // set to a user).
             if ($guest && !$guest->isConfirmed()) {
@@ -64,5 +43,10 @@ class PasswordAdapter extends AbstractAdapter
         }
 
         return new Result(Result::SUCCESS, $user);
+    }
+
+    public function setTokenRepository($token_repository): void
+    {
+        $this->token_repository = $token_repository;
     }
 }
