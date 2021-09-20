@@ -28,11 +28,11 @@ if (!$hasGuestUser) {
 }
 
 // Check if the table guest_user_token exists.
-$exists = $connection->query('SHOW TABLES LIKE "guest_user_token";');
+$exists = $connection->executeQuery('SHOW TABLES LIKE "guest_user_token";');
 if ($exists) {
     $table = 'guest_user_token';
 } else {
-    $exists = $connection->query('SHOW TABLES LIKE "guest_user_tokens";');
+    $exists = $connection->executeQuery('SHOW TABLES LIKE "guest_user_tokens";');
     if ($exists) {
         $table = 'guest_user_tokens';
     } else {
