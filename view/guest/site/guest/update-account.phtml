@@ -35,7 +35,7 @@ $form->prepare();
 <?= $this->formCollection($form, false) ?>
 <?php $this->trigger('view.add.form.after'); ?>
 <div id="page-actions">
-    <button><?= $translate('Update') ?></button>
+    <button type="submit"><?= $translate('Update') ?></button>
 </div>
 <?= $this->form()->closeTag() ?>
 

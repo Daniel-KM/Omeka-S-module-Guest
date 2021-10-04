@@ -22,7 +22,7 @@ $form->prepare();
 <?= $this->formCollection($form, false) ?>
 <?php $this->trigger('view.add.form.after'); ?>
 <div id="page-actions">
-    <button><?= $translate('Register') ?></button>
+    <button type="submit"><?= $translate('Register') ?></button>
 </div>
 <?= $this->form()->closeTag() ?>
 
