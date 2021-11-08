@@ -66,7 +66,6 @@ class Module extends AbstractModule
         parent::onBootstrap($event);
 
         $this->addAclRoleAndRules();
-        $this->checkAgreement($event);
     }
 
     protected function preInstall(): void
@@ -758,83 +757,6 @@ class Module extends AbstractModule
             }
         }
         return $guestSite;
-    }
-
-    /**
-     * Check if the guest accept agreement.
-     *
-     * @param MvcEvent $event
-     */
-    protected function checkAgreement(MvcEvent $event): void
-    {
-        $services = $this->getServiceLocator();
-        $auth = $services->get('Omeka\AuthenticationService');
-        if (!$auth->hasIdentity()) {
-            return;
-        }
-
-        $user = $auth->getIdentity();
-        if ($user->getRole() !== \Guest\Permissions\Acl::ROLE_GUEST) {
-            return;
-        }
-
-        $userSettings = $services->get('Omeka\Settings\User');
-        if ($userSettings->get('guest_agreed_terms')) {
-            return;
-        }
-
-        $router = $services->get('Router');
-        if (!$router instanceof \Laminas\Router\Http\TreeRouteStack) {
-            return;
-        }
-
-        $request = $event->getRequest();
-        $requestUri = $request->getRequestUri();
-        $requestUriBase = strtok($requestUri, '?');
-
-        /** @var \Omeka\Mvc\Status $status */
-        $services = $this->getServiceLocator();
-        $status = $services->get('Omeka\Status');
-        $settings = $services->get('Omeka\Settings');
-        if ($status->isSiteRequest()) {
-            /** @var \Omeka\Settings\SiteSettings $siteSettings */
-            $siteSettings = $services->get('Omeka\Settings\Site');
-            // The target id may be unavailable when the default site isn't set.
-            try {
-                $page = $siteSettings->get('guest_terms_page') ?: $settings->get('guest_terms_page');
-            } catch (\Omeka\Service\Exception\RuntimeException $e) {
-                $page = $settings->get('guest_terms_page');
-            }
-        } else {
-            $page = $settings->get('guest_terms_page');
-        }
-        $regex = $settings->get('guest_terms_request_regex');
-        if ($page) {
-            $regex .= ($regex ? '|' : '') . 'page/' . $page;
-        }
-        $regex = '~/(|' . $regex . '|maintenance|login|logout|migrate|guest/accept-terms)$~';
-        if (preg_match($regex, $requestUriBase)) {
-            return;
-        }
-
-        // TODO Use routing to get the site slug.
-
-        // Url helper can't be used, because the site slug is not set.
-        // The current slug is used.
-        $baseUrl = $request->getBaseUrl();
-        $matches = [];
-        preg_match('~' . preg_quote($baseUrl, '~') . '/s/([^/]+).*~', $requestUriBase, $matches);
-        if (empty($matches[1])) {
-            $acceptUri = $baseUrl;
-        } else {
-            $acceptUri = $baseUrl . '/s/' . $matches[1] . '/guest/accept-terms';
-        }
-
-        $response = $event->getResponse();
-        $response->getHeaders()->addHeaderLine('Location', $acceptUri);
-        $response->setStatusCode(302);
-        $response->sendHeaders();
-        exit;
     }
 
     /**
