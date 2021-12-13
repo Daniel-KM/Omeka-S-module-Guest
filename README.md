@@ -11,14 +11,14 @@ become registered users in Omeka S, but have no other privileges to the admin
 side of your Omeka S installation. This module is thus intended to be a common
 module that other modules needing a guest user use as a dependency.
 
-This module is based on a full rewrite of the plugin [Guest User] for [Omeka Classic]
-by [BibLibre].
-
 Guest users can use Omeka via the api too (login, logout, register…) with the
 module [Guest Api].
 
 The module includes a way to request api without credentials but via session, so
 it's easier to use ajax in public interface or web application (see [omeka/pull/1714]).
+
+This module is based on a full rewrite of the plugin [Guest User] for [Omeka Classic]
+by [BibLibre].
 
 
 Installation

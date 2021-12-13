@@ -156,6 +156,7 @@ class Module extends AbstractModule
                     [\Omeka\Entity\User::class],
                     // Change role and Activate user should be set to allow external
                     // logging (ldap, saml, etc.), not only guest registration here.
+                    // Internal checks are added in the controller.
                     ['create', 'change-role', 'activate-user']
                 )
                 ->allow(
