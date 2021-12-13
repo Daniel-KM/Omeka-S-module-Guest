@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Guest\Controller\Site;
 
 use Guest\Entity\GuestToken;
@@ -26,8 +27,6 @@ class AnonymousController extends AbstractGuestController
 
         /** @var LoginForm $form */
         $form = $this->getForm(LoginForm::class);
-        $view->setVariable('form', $form);
-
         $view->setVariable('form', $form);
 
         if (!$this->checkPostAndValidForm($form)) {
@@ -119,29 +118,99 @@ class AnonymousController extends AbstractGuestController
         // TODO Avoid to set the right to change role (fix core).
         $userInfo['o:role'] = \Guest\Permissions\Acl::ROLE_GUEST;
         $userInfo['o:is_active'] = false;
-        $response = $this->api()->create('users', $userInfo);
-        if (!$response) {
+
+        // Before creation, check the email too to manage confirmation, rights
+        // and module UserNames.
+        $entityManager = $this->getEntityManager();
+        $user = $entityManager->getRepository(User::class)->findOneBy([
+            'email' => $userInfo['o:email'],
+        ]);
+        if ($user) {
             $entityManager = $this->getEntityManager();
+            $guestToken = $entityManager->getRepository(GuestToken::class)
+                ->findOneBy(['email' => $userInfo['o:email']], ['id' => 'DESC']);
+            if (empty($guestToken) || $guestToken->isConfirmed()) {
+                $this->messenger()->addError('Already registered.'); // @translate
+            } else {
+                // TODO Check if the token is expired to ask a new one.
+                $this->messenger()->addError('Check your email to confirm your registration.'); // @translate
+            }
+            return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
+        }
+
+        // Because creation of a username (module UserNames) by an anonymous
+        // visitor is not possible, a check is done for duplicates first to
+        // avoid issue later.
+        if ($this->hasModuleUserNames()) {
+            // The username is a required data and it must be valid.
+            // Get the adapter through the services.
+            $userNameAdapter = $this->api()->read('vocabularies', 1)->getContent()->getServiceLocator()
+                ->get('Omeka\ApiAdapterManager')->get('usernames');
+            $userName = new \UserNames\Entity\UserNames;
+            $userName->setUserName($userInfo['o-module-usernames:username'] ?? '');
+            $errorStore = new \Omeka\Stdlib\ErrorStore;
+            $userNameAdapter->validateEntity($userName, $errorStore);
+            // Only the user name is validated here.
+            $errors = $errorStore->getErrors();
+            if (!empty($errors['o-module-usernames:username'])) {
+                foreach ($errors['o-module-usernames:username'] as $message) {
+                    $this->messenger()->addError($message);
+                }
+                return $view;
+            }
+        }
+
+        // Check the creation of the user to manage the creation of usernames:
+        // the exception occurs in api.create.post, so user is created.
+        /** @var \Omeka\Entity\User $user */
+        try {
+            $user = $this->api()->create('users', $userInfo, [], ['responseContent' => 'resource'])->getContent();
+        } catch (\Omeka\Api\Exception\PermissionDeniedException $e) {
+            // This is the exception thrown by the module UserNames, so the user
+            // is created, but not the username.
+            // Anonymous user cannot read User, so use entity manager.
             $user = $entityManager->getRepository(User::class)->findOneBy([
                 'email' => $userInfo['o:email'],
             ]);
-            if ($user) {
-                $guestToken = $entityManager->getRepository(GuestToken::class)
-                    ->findOneBy(['email' => $userInfo['o:email']], ['id' => 'DESC']);
-                if (empty($guestToken) || $guestToken->isConfirmed()) {
-                    $this->messenger()->addError('Already registered.'); // @translate
-                } else {
-                    $this->messenger()->addError('Check your email to confirm your registration.'); // @translate
-                }
-                return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
+            // An error occurred in another module.
+            if (!$user) {
+                $this->messenger()->addError('Unknown error before creation of user.'); // @translate
+                return $view;
             }
-
-            $this->messenger()->addError('Unknown error.'); // @translate
-            return $view;
+            if ($this->hasModuleUserNames()) {
+                // Check the user for security.
+                // If existing, it will be related to a new version of module UserNames.
+                $userNames = $this->api()->search('usernames', ['user' => $user->getId()])->getContent();
+                if (!$userNames) {
+                    // Create the username via the entity manager because the
+                    // user is not logged, so no right.
+                    $userName = new \UserNames\Entity\UserNames;
+                    $userName->setUser($user);
+                    $userName->setUserName($userInfo['o-module-usernames:username']);
+                    $entityManager->persist($userName);
+                    $entityManager->flush();
+                }
+            } else {
+                // Issue in another module?
+                // Log error, but continue registering (email is checked before,
+                // so it is a new user in any case).
+                $this->logger()->err(sprintf('An error occurred after creation of the guest user: %s', $e)); // @translate
+            }
+            // TODO Check for another exception at the same time…
+        } catch (\Exception $e) {
+            $this->logger()->err($e);
+            $user = $entityManager->getRepository(User::class)->findOneBy([
+                'email' => $userInfo['o:email'],
+            ]);
+            if (!$user) {
+                $this->messenger()->addError('Unknown error during creation of user.'); // @translate
+                return $view;
+            }
+            // Issue in another module?
+            // Log error, but continue registering (email is checked before,
+            // so it is a new user in any case).
         }
 
-        /** @var \Omeka\Entity\User $user */
-        $user = $response->getContent()->getEntity();
         $user->setPassword($password);
         $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
         // The account is active, but not confirmed, so login is not possible.
@@ -409,9 +478,26 @@ class AnonymousController extends AbstractGuestController
         $postData = $this->params()->fromPost();
         $form->setData($postData);
         if (!$form->isValid()) {
-            $this->messenger()->addError('Email or password invalid'); // @translate
+            empty($this->hasModuleUserName)
+                ? $this->messenger()->addError('Email or password invalid') // @translate
+                : $this->messenger()->addError('User name, email, or password is invalid'); // @translate
             return false;
         }
         return true;
+    }
+
+    protected function hasModuleUserNames(): bool
+    {
+        static $hasModule = null;
+        if (is_null($hasModule)) {
+            // A quick way to check the module without services.
+            try {
+                $this->api()->search('usernames', ['limit' => 1])->getTotalResults();
+                $hasModule = true;
+            } catch (\Exception $e) {
+                $hasModule = false;
+            }
+        }
+        return $hasModule;
     }
 }
