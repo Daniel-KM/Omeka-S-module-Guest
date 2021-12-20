@@ -48,7 +48,6 @@ use Laminas\Permissions\Acl\Acl as LaminasAcl;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\UserRepresentation;
-use Omeka\Form\Element\SiteSelect;
 use Omeka\Permissions\Assertion\IsSelfAssertion;
 use Omeka\Settings\SettingsInterface;
 
@@ -459,7 +458,7 @@ class Module extends AbstractModule
         $fieldset
             ->add([
                 'name' => 'guest_site',
-                'type' => SiteSelect::class,
+                'type' => \Guest\Form\Element\OptionalSiteSelect::class,
                 'options' => [
                     'label' => 'Guest site', // @translate
                     'info' => 'This parameter is used to manage some site related features, in particular messages.', // @translate
@@ -538,10 +537,6 @@ class Module extends AbstractModule
 
         $inputFilter = $event->getParam('inputFilter');
         $inputFilter->get('user-settings')
-            ->add([
-                'name' => 'guest_site',
-                'required' => false,
-            ])
             ->add([
                 'name' => 'guest_send_email_moderated_registration',
                 'required' => false,

@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Guest;
 
 return [
@@ -33,6 +34,9 @@ return [
             Form\EmailForm::class => Form\EmailForm::class,
             Form\SettingsFieldset::class => Form\SettingsFieldset::class,
             Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
+        ],
+        'factories' => [
+            Form\Element\OptionalSiteSelect::class => Service\Form\Element\OptionalSiteSelectFactory::class,
         ],
     ],
     'controllers' => [
