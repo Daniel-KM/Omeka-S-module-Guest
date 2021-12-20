@@ -6,6 +6,8 @@ use Guest\Entity\GuestToken;
 use Guest\Stdlib\PsrMessage;
 use Laminas\Session\Container as SessionContainer;
 use Laminas\View\Model\ViewModel;
+use Omeka\Entity\Site;
+use Omeka\Entity\SitePermission;
 use Omeka\Entity\User;
 use Omeka\Form\ForgotPasswordForm;
 use Omeka\Form\LoginForm;
@@ -121,12 +123,12 @@ class AnonymousController extends AbstractGuestController
 
         // Before creation, check the email too to manage confirmation, rights
         // and module UserNames.
+        /** @var \Doctrine\ORM\EntityManager $entityManager */
         $entityManager = $this->getEntityManager();
         $user = $entityManager->getRepository(User::class)->findOneBy([
             'email' => $userInfo['o:email'],
         ]);
         if ($user) {
-            $entityManager = $this->getEntityManager();
             $guestToken = $entityManager->getRepository(GuestToken::class)
                 ->findOneBy(['email' => $userInfo['o:email']], ['id' => 'DESC']);
             if (empty($guestToken) || $guestToken->isConfirmed()) {
@@ -217,6 +219,26 @@ class AnonymousController extends AbstractGuestController
         // Guest has no right to set active his account.
         $isOpenRegister = $this->isOpenRegister();
         $user->setIsActive($isOpenRegister);
+
+        // Add guest user to default sites.
+        $defaultSites = $this->settings()->get('guest_default_sites', []);
+        if ($defaultSites) {
+            // A guest user has no rights to manage site users, so use the
+            // entity manager.
+            foreach ($defaultSites as $defaultSite) {
+                $site = $entityManager->find(Site::class, (int) $defaultSite);
+                if (!$site) {
+                    continue;
+                }
+                $sitePermission = new SitePermission();
+                $sitePermission->setSite($site);
+                $sitePermission->setUser($user);
+                $sitePermission->setRole(SitePermission::ROLE_VIEWER);
+                $entityManager->persist($sitePermission);
+            }
+        }
+
+        $entityManager->flush();
 
         $id = $user->getId();
         $userSettings = $this->userSettings();

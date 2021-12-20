@@ -2,6 +2,7 @@
 
 namespace Guest\Form;
 
+use Guest\Form\Element as GuestElement;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
 use Omeka\Form\Element as OmekaElement;
@@ -46,6 +47,22 @@ class SettingsFieldset extends Fieldset
                     'required' => false,
                     'placeholder' => 'contact@example.org
 info@example2.org',
+                ],
+            ])
+
+            ->add([
+                'name' => 'guest_default_sites',
+                'type' => GuestElement\OptionalSiteSelect::class,
+                'options' => [
+                    'label' => 'Add new users to sites', // @translate
+                    'empty_option' => '',
+                ],
+                'attributes' => [
+                    'id' => 'guest_default_sites',
+                    'class' => 'chosen-select',
+                    'required' => false,
+                    'multiple' => true,
+                    'data-placeholder' => 'Select sites…', // @translate
                 ],
             ])
 
