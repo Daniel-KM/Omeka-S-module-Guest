@@ -343,17 +343,6 @@ class Module extends AbstractModule
         return parent::initDataToPopulate($settings, $settingsType, $id, $translatables);
     }
 
-    protected function prepareDataToPopulate(SettingsInterface $settings, string $settingsType): ?array
-    {
-        $data = parent::prepareDataToPopulate($settings, $settingsType);
-        if (in_array($settingsType, ['settings', 'site_settings'])) {
-            if (isset($data['guest_notify_register']) && is_array($data['guest_notify_register'])) {
-                $data['guest_notify_register'] = implode("\n", $data['guest_notify_register']);
-            }
-        }
-        return $data;
-    }
-
     public function appendLoginNav(Event $event): void
     {
         $view = $event->getTarget();

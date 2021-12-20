@@ -229,7 +229,7 @@ class AnonymousController extends AbstractGuestController
         // Save the site on which the user registered.
         $userSettings->set('guest_site', $this->currentSite()->id(), $id);
 
-        $emails = $this->getOption('guest_notify_register');
+        $emails = $this->getOption('guest_notify_register', []);
         if ($emails) {
             $message = new PsrMessage(
                 'A new user is registering: {user_email} ({url}).', // @translate

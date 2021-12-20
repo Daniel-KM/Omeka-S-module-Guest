@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
+
 namespace Guest\Form;
 
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
-use Omeka\Form\Element\ArrayTextarea;
-use Omeka\Form\Element\CkeditorInline;
+use Omeka\Form\Element as OmekaElement;
 
 class SiteSettingsFieldset extends Fieldset
 {
@@ -18,7 +18,7 @@ class SiteSettingsFieldset extends Fieldset
         $this
             ->add([
                 'name' => 'guest_notify_register',
-                'type' => ArrayTextarea::class,
+                'type' => OmekaElement\ArrayTextarea::class,
                 'options' => [
                     'label' => 'Emails to notify registrations', // @translate
                     'info' => 'The list of emails to notify when a user registers, one by row.', // @translate
@@ -68,7 +68,7 @@ info@example2.org',
 
             ->add([
                 'name' => 'guest_capabilities',
-                'type' => CkeditorInline::class,
+                'type' => OmekaElement\CkeditorInline::class,
                 'options' => [
                     'label' => 'Registration Features', // @translate
                     'info' => 'Add some text to the registration screen so people will know what they get for registering. As you enable and configure plugins that make use of the guest, please give them guidance about what they can and cannot do.', // @translate
@@ -81,7 +81,7 @@ info@example2.org',
             /* // From Omeka classic, but not used.
             ->add([
                 'name' => 'guest_short_capabilities',
-                'type' => CkeditorInline::class,
+                'type' => OmekaElement\CkeditorInline::class,
                 'options' => [
                     'label' => 'Short Registration Features', // @translate
                     'info' => 'Add a shorter version to use as a dropdown from the user bar. If empty, no dropdown will appear.', // @translate
@@ -106,7 +106,7 @@ info@example2.org',
 
             ->add([
                 'name' => 'guest_message_confirm_email',
-                'type' => CkeditorInline::class,
+                'type' => OmekaElement\CkeditorInline::class,
                 'options' => [
                     'label' => 'Email sent to confirm registration', // @translate
                     'info' => 'The text of the email to confirm the registration and to send the token.', // @translate
@@ -134,7 +134,7 @@ If you did not request to join {main_title} please disregard this email.', // @t
 
             ->add([
                 'name' => 'guest_message_confirm_registration_email',
-                'type' => CkeditorInline::class,
+                'type' => OmekaElement\CkeditorInline::class,
                 'options' => [
                     'label' => 'Email sent to confirm registration after moderation', // @translate
                     'info' => 'When the moderation is set, the user may be informed automatically when the admin activates account (check box in second user tab).', // @translate
@@ -161,7 +161,7 @@ You can now login and discover the site.', // @translate
 
             ->add([
                 'name' => 'guest_message_update_email',
-                'type' => CkeditorInline::class,
+                'type' => OmekaElement\CkeditorInline::class,
                 'options' => [
                     'label' => 'Email sent to update email', // @translate
                     'info' => 'The text of the email sent when the user wants to update it.', // @translate
@@ -220,7 +220,7 @@ If you did not request to update your email on {main_title}, please disregard th
 
             ->add([
                 'name' => 'guest_terms_text',
-                'type' => CkeditorInline::class,
+                'type' => OmekaElement\CkeditorInline::class,
                 'options' => [
                     'label' => 'Text for terms and conditions', // @translate
                     'info' => 'The text to display to accept condtions.', // @translate
