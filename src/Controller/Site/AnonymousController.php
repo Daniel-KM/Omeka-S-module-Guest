@@ -28,7 +28,11 @@ class AnonymousController extends AbstractGuestController
         $view = new ViewModel;
 
         /** @var LoginForm $form */
-        $form = $this->getForm(LoginForm::class);
+        $form = $this->getForm(
+            $this->hasModuleUserNames()
+                ? \UserNames\Form\LoginForm::class
+                : LoginForm::class
+        );
         $view->setVariable('form', $form);
 
         if (!$this->checkPostAndValidForm($form)) {
