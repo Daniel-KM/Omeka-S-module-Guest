@@ -830,6 +830,16 @@ SQL;
             }
         }
 
+        if (in_array($module->getState(), [
+            \Omeka\Module\Manager::STATE_INVALID_INI,
+            \Omeka\Module\Manager::STATE_INVALID_MODULE,
+            \Omeka\Module\Manager::STATE_INVALID_OMEKA_VERSION,
+            \Omeka\Module\Manager::STATE_NOT_FOUND,
+            \Omeka\Module\Manager::STATE_NOT_INSTALLED,
+        ])) {
+            return false;
+        }
+
         $message = new \Omeka\Stdlib\Message(
             'The module GuestUser is installed. Users and settings from this module are upgraded.' // @translate
         );
