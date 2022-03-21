@@ -25,7 +25,11 @@ class AnonymousController extends AbstractGuestController
 
         $auth = $this->getAuthenticationService();
 
-        $view = new ViewModel;
+        $site = $this->currentSite();
+
+        $view = new ViewModel([
+            'site' => $site,
+        ]);
 
         /** @var LoginForm $form */
         $form = $this->getForm(
@@ -93,9 +97,12 @@ class AnonymousController extends AbstractGuestController
         $user = new User();
         $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
 
+        $site = $this->currentSite();
+
         $form = $this->getUserForm($user);
 
         $view = new ViewModel([
+            'site' => $site,
             'form' => $form,
         ]);
 
@@ -418,9 +425,12 @@ class AnonymousController extends AbstractGuestController
             return $this->redirectToAdminOrSite();
         }
 
+        $site = $this->currentSite();
+
         $form = $this->getForm(ForgotPasswordForm::class);
 
         $view = new ViewModel([
+            'site' => $site,
             'form' => $form,
         ]);
 
@@ -472,7 +482,9 @@ class AnonymousController extends AbstractGuestController
 
     public function authErrorAction()
     {
-        return new ViewModel;
+        return new ViewModel([
+            'site' => $this->currentSite(),
+        ]);
     }
 
     /**

@@ -39,6 +39,9 @@ class GuestController extends AbstractGuestController
 
     public function meAction()
     {
+        $site = $this->currentSite();
+        $user = $this->identity();
+
         $eventManager = $this->getEventManager();
         $partial = $this->viewHelpers()->get('partial');
 
@@ -52,12 +55,16 @@ class GuestController extends AbstractGuestController
         $eventManager->triggerEvent(new MvcEvent('guest.widgets', $this, $args));
 
         return new ViewModel([
+            'site' => $site,
+            'user' => $user,
             'widgets' => $args['widgets'],
         ]);
     }
 
     public function updateAccountAction()
     {
+        $site = $this->currentSite();
+
         /** @var \Omeka\Entity\User $user */
         $user = $this->getAuthenticationService()->getIdentity();
         $id = $user->getId();
@@ -78,6 +85,7 @@ class GuestController extends AbstractGuestController
         $emailField->setAttribute('required', false);
 
         $view = new ViewModel([
+            'site' => $site,
             'user' => $user,
             'form' => $form,
             'label' => $label,
@@ -151,6 +159,8 @@ class GuestController extends AbstractGuestController
 
     public function updateEmailAction()
     {
+        $site = $this->currentSite();
+
         /** @var \Omeka\Entity\User $user */
         $user = $this->getAuthenticationService()->getIdentity();
 
@@ -158,6 +168,7 @@ class GuestController extends AbstractGuestController
         $form->populateValues(['o:email' => $user->getEmail()]);
 
         $view = new ViewModel([
+            'site' => $site,
             'user' => $user,
             'form' => $form,
         ]);
@@ -221,6 +232,8 @@ class GuestController extends AbstractGuestController
             return $this->redirect()->toRoute('site/guest', ['action' => 'me'], [], true);
         }
 
+        $site = $this->currentSite();
+
         $forced = $this->settings()->get('guest_terms_force_agree');
 
         /** @var \Guest\Form\AcceptTermsForm $form */
@@ -229,10 +242,13 @@ class GuestController extends AbstractGuestController
         $form->setOption('forced', $forced);
         $form->init();
 
+        $user = $this->identity();
         $text = $this->getOption('guest_terms_text');
         $page = $this->getOption('guest_terms_page');
 
         $view = new ViewModel([
+            'site' => $site,
+            'user' => $user,
             'form' => $form,
             'text' => $text,
             'page' => $page,
