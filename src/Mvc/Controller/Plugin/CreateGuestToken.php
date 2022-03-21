@@ -36,35 +36,23 @@ class CreateGuestToken extends AbstractPlugin
         $entityManager = $this->getEntityManager();
         $repository = $entityManager->getRepository(GuestToken::class);
 
-        if (PHP_VERSION_ID < 70000) {
-            $tokenString = $short
-                ? function () {
-                    return sprintf('%06d', random_int(102030, 989796));
-                }
+        $tokenString = $short
+            // TODO Improve the quality of the token to avoid repeated number.
+            ? function () {
+                return sprintf('%06d', random_int(102030, 989796));
+            }
             : function () {
-                return sha1(mt_rand());
+                return substr(str_replace(['+', '/', '='], ['', '', ''], base64_encode(random_bytes(128))), 0, 10);
             };
-        } else {
-            $tokenString = $short
-                // TODO Improve the quality of the token to avoid repeated number.
-                ? function () {
-                    return sprintf('%06d', random_int(102030, 989796));
-                }
-            : function () {
-                return substr(str_replace(['+', '/', '-', '='], '', base64_encode(random_bytes(16))), 0, 10);
-            };
-        }
-
-        $token = $tokenString();
 
         // Check if the token is unique (needed only for short code).
-        while ($short) {
+        do {
+            $token = $tokenString();
             $result = $repository->findOneBy(['token' => $token]);
             if (!$result) {
                 break;
             }
-            $token = $tokenString();
-        }
+        } while (true);
 
         $identifier = $identifier ?: $user->getEmail();
 
