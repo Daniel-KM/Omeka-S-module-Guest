@@ -95,8 +95,9 @@ class AnonymousController extends AbstractGuestController
 
         $form = $this->getUserForm($user);
 
-        $view = new ViewModel;
-        $view->setVariable('form', $form);
+        $view = new ViewModel([
+            'form' => $form,
+        ]);
 
         if (!$this->checkPostAndValidForm($form)) {
             return $view;
@@ -419,8 +420,9 @@ class AnonymousController extends AbstractGuestController
 
         $form = $this->getForm(ForgotPasswordForm::class);
 
-        $view = new ViewModel;
-        $view->setVariable('form', $form);
+        $view = new ViewModel([
+            'form' => $form,
+        ]);
 
         if (!$this->getRequest()->isPost()) {
             return $view;

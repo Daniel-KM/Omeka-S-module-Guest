@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Guest\Controller\Site;
 
 use Guest\Form\AcceptTermsForm;
@@ -50,9 +51,9 @@ class GuestController extends AbstractGuestController
 
         $eventManager->triggerEvent(new MvcEvent('guest.widgets', $this, $args));
 
-        $view = new ViewModel;
-        $view->setVariable('widgets', $args['widgets']);
-        return $view;
+        return new ViewModel([
+            'widgets' => $args['widgets'],
+        ]);
     }
 
     public function updateAccountAction()
@@ -76,10 +77,11 @@ class GuestController extends AbstractGuestController
         $emailField->setAttribute('disabled', true);
         $emailField->setAttribute('required', false);
 
-        $view = new ViewModel;
-        $view->setVariable('user', $user);
-        $view->setVariable('form', $form);
-        $view->setVariable('label', $label);
+        $view = new ViewModel([
+            'user' => $user,
+            'form' => $form,
+            'label' => $label,
+        ]);
 
         if (!$this->getRequest()->isPost()) {
             return $view;
@@ -155,9 +157,10 @@ class GuestController extends AbstractGuestController
         $form = $this->getForm(EmailForm::class, []);
         $form->populateValues(['o:email' => $user->getEmail()]);
 
-        $view = new ViewModel;
-        $view->setVariable('user', $user);
-        $view->setVariable('form', $form);
+        $view = new ViewModel([
+            'user' => $user,
+            'form' => $form,
+        ]);
 
         if (!$this->getRequest()->isPost()) {
             return $view;
@@ -229,10 +232,11 @@ class GuestController extends AbstractGuestController
         $text = $this->getOption('guest_terms_text');
         $page = $this->getOption('guest_terms_page');
 
-        $view = new ViewModel;
-        $view->setVariable('form', $form);
-        $view->setVariable('text', $text);
-        $view->setVariable('page', $page);
+        $view = new ViewModel([
+            'form' => $form,
+            'text' => $text,
+            'page' => $page,
+        ]);
 
         if (!$this->getRequest()->isPost()) {
             return $view;
