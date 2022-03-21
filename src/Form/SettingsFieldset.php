@@ -79,6 +79,17 @@ info@example2.org',
             ])
 
             ->add([
+                'name' => 'guest_terms_skip',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'label' => 'Skip terms agreement', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest-terms-skip',
+                ],
+            ])
+
+            ->add([
                 'name' => 'guest_terms_request_regex',
                 'type' => Element\Text::class,
                 'options' => [

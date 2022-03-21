@@ -396,8 +396,11 @@ class Module extends AbstractModule
 
         $auth = $services->get('Omeka\AuthenticationService');
 
+        $settings = $services->get('Omeka\Settings');
+        $skip = $settings->get('guest_terms_skip');
+
         // Public form.
-        if ($form->getOption('is_public')) {
+        if ($form->getOption('is_public') && !$skip) {
             // Don't add the agreement checkbox in public when registered.
             if ($auth->hasIdentity()) {
                 return;
@@ -436,10 +439,10 @@ class Module extends AbstractModule
             $userSettings = $services->get('Omeka\Settings\User');
             $userSettings->setTargetId($userId);
             $agreedTerms = $userSettings->get('guest_agreed_terms');
-            $siteRegistration = $userSettings->get('guest_site', $services->get('Omeka\Settings')->get('default_site', 1));
+            $siteRegistration = $userSettings->get('guest_site', $settings->get('default_site', 1));
         } else {
             $agreedTerms = false;
-            $siteRegistration = $services->get('Omeka\Settings')->get('default_site', 1);
+            $siteRegistration = $settings->get('default_site', 1);
         }
 
         // Admin board.
@@ -686,18 +689,24 @@ class Module extends AbstractModule
 
     public function addUserFormValue(Event $event): void
     {
+        // Set the default value for a user setting.
         $user = $event->getTarget()->vars()->user;
         $form = $event->getParam('form');
         $services = $this->getServiceLocator();
         $userSettings = $services->get('Omeka\Settings\User');
         $userSettings->setTargetId($user->id());
+        $settings = $services->get('Omeka\Settings');
+        $skip = $settings->get('guest_terms_skip');
         $guestSettings = [
             'guest_agreed_terms',
         ];
-        $space = strtolower(__NAMESPACE__);
-        $config = $services->get('Config')[$space]['user_settings'];
+        $config = $services->get('Config')['guest']['user_settings'];
         $fieldset = $form->get('user-settings');
         foreach ($guestSettings as $name) {
+            if ($name === 'guest_agreed_terms' && $skip) {
+                $fieldset->get($name)->setAttribute('value', 1);
+                continue;
+            }
             $fieldset->get($name)->setAttribute(
                 'value',
                 $userSettings->get($name, $config[$name])

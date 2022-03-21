@@ -29,12 +29,16 @@ class MvcListeners extends AbstractListenerAggregate
             return;
         }
 
+        $settings = $services->get('Omeka\Settings');
+        if ($settings->get('guest_terms_skip')) {
+            return;
+        }
+
         $userSettings = $services->get('Omeka\Settings\User');
         if ($userSettings->get('guest_agreed_terms')) {
             return;
         }
 
-        $settings = $services->get('Omeka\Settings');
         $page = $settings->get('guest_terms_page');
 
         $routeMatch = $event->getRouteMatch();
@@ -72,15 +76,21 @@ class MvcListeners extends AbstractListenerAggregate
             $api = $services->get('Omeka\ApiManager');
             if ($defaultSiteId) {
                 try {
-                    $siteSlug = $api->read('sites', ['id' => $defaultSiteId], ['initialize' => false, 'returnScalar' => 'slug'])->getContent();
+                    $siteSlug = $api->read('sites', ['id' => $defaultSiteId])->getContent()->slug();
                 } catch (\Omeka\Api\Exception\NotFoundException $e) {
                     // Nothing.
                 }
             }
             if (empty($siteSlug)) {
-                $siteSlug = $api->search('sites', ['sort_by' => 'id'], ['initialize' => false, 'returnScalar' => 'slug'])->getContent();
+                // No search one, this is the api manager.
+                $siteSlug = $api->search('sites', ['sort_by' => 'id', 'limit' => 1])->getContent();
+                if ($siteSlug) {
+                    $siteSlug = reset($siteSlug);
+                    $siteSlug = $siteSlug->slug();
+                }
             }
         }
+
         $acceptUri = $baseUrl . '/s/' . $siteSlug . '/guest/accept-terms';
 
         $response = $event->getResponse();

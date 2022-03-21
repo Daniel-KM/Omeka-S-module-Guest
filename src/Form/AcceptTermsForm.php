@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Guest\Form;
 
 use Laminas\Form\Element;
@@ -16,6 +17,7 @@ class AcceptTermsForm extends Form
                     'label' => 'I agree with terms and conditions.', // @translate
                 ],
                 'attributes' => [
+                    'id' => 'guest_agreed_terms',
                     'required' => !empty($this->getOption('forced')),
                 ],
             ])

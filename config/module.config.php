@@ -151,6 +151,7 @@ return [
             'guest_notify_register' => [],
             'guest_default_sites' => [],
             'guest_recaptcha' => false,
+            'guest_terms_skip' => false,
             'guest_terms_request_regex' => '',
             'guest_terms_force_agree' => true,
             // Fields default when no site setting.

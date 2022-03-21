@@ -224,6 +224,12 @@ class GuestController extends AbstractGuestController
 
     public function acceptTermsAction()
     {
+        $skip = (bool) $this->settings()->get('guest_terms_skip');
+        if ($skip) {
+            // $this->userSettings()->set('guest_agreed_terms', true);
+            return $this->redirect()->toRoute('site/guest', ['action' => 'me'], [], true);
+        }
+
         $userSettings = $this->userSettings();
         $agreed = $userSettings->get('guest_agreed_terms');
         if ($agreed) {
