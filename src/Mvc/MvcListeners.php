@@ -63,12 +63,25 @@ class MvcListeners extends AbstractListenerAggregate
         }
 
         $baseUrl = $request->getBaseUrl() ?? '';
+
         if ($routeMatch->getParam('__SITE__')) {
             $siteSlug = $routeMatch->getParam('site-slug');
-            $acceptUri = $baseUrl . '/s/' . $siteSlug . '/guest/accept-terms';
         } else {
-            $acceptUri = $baseUrl;
+            // Get first site when no site is set, for example on main login page.
+            $defaultSiteId = $services->get('Omeka\Settings')->get('default_site');
+            $api = $services->get('Omeka\ApiManager');
+            if ($defaultSiteId) {
+                try {
+                    $siteSlug = $api->read('sites', ['id' => $defaultSiteId], ['initialize' => false, 'returnScalar' => 'slug'])->getContent();
+                } catch (\Omeka\Api\Exception\NotFoundException $e) {
+                    // Nothing.
+                }
+            }
+            if (empty($siteSlug)) {
+                $siteSlug = $api->search('sites', ['sort_by' => 'id'], ['initialize' => false, 'returnScalar' => 'slug'])->getContent();
+            }
         }
+        $acceptUri = $baseUrl . '/s/' . $siteSlug . '/guest/accept-terms';
 
         $response = $event->getResponse();
         $response->getHeaders()->addHeaderLine('Location', $acceptUri);
