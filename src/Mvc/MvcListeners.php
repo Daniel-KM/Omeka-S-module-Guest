@@ -25,7 +25,9 @@ class MvcListeners extends AbstractListenerAggregate
         }
 
         $user = $auth->getIdentity();
-        if ($user->getRole() !== \Guest\Permissions\Acl::ROLE_GUEST) {
+        // Manage sub guest roles, for example "guest_ext".
+        // TODO Manage rights with multi-roles or permissions.
+        if (substr($user->getRole(), 0, 5) !== \Guest\Permissions\Acl::ROLE_GUEST) {
             return;
         }
 
