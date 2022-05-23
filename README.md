@@ -66,11 +66,15 @@ A check box allows to force guests to accept terms agreement.
 A button in the config forms allows to set or unset all guests acceptation,
 in order to allow update of terms.
 
+### Option redirect after login
+
+When the module [Shibboleth] is used, this option is bypassed.
+
 
 TODO
 ----
 
-- Move pages to a standard page, in particular register page (see module [ContactUs]).
+- [ ] Move pages to a standard page, in particular register page (see module [ContactUs]).
 
 
 Warning
@@ -128,6 +132,7 @@ Copyright
 [UserNames]: https://github.com/ManOnDaMoon/omeka-s-module-UserNames
 [omeka/pull/1714]: https://github.com/omeka/omeka-s/pull/1714
 [ContactUs]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs
+[Shibboleth]: https://gitlab.com/Daniel-KM/Omeka-S-module-Shibboleth
 [more information to upgrade templates]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/blob/master/Upgrade_from_GuestUser.md
 [Installing a module]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
 [modules/Guest/data/scripts/convert_guest_user_templates.sh]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/blob/master/data/scripts/convert_guest_user_templates.sh
