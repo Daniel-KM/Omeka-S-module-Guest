@@ -14,12 +14,12 @@ use Omeka\Form\UserForm;
 abstract class AbstractGuestController extends AbstractActionController
 {
     protected $defaultRoles = [
-        \Omeka\Permissions\Acl::ROLE_RESEARCHER,
-        \Omeka\Permissions\Acl::ROLE_AUTHOR,
-        \Omeka\Permissions\Acl::ROLE_REVIEWER,
-        \Omeka\Permissions\Acl::ROLE_EDITOR,
-        \Omeka\Permissions\Acl::ROLE_SITE_ADMIN,
         \Omeka\Permissions\Acl::ROLE_GLOBAL_ADMIN,
+        \Omeka\Permissions\Acl::ROLE_SITE_ADMIN,
+        \Omeka\Permissions\Acl::ROLE_EDITOR,
+        \Omeka\Permissions\Acl::ROLE_REVIEWER,
+        \Omeka\Permissions\Acl::ROLE_AUTHOR,
+        \Omeka\Permissions\Acl::ROLE_RESEARCHER,
     ];
 
     /**
