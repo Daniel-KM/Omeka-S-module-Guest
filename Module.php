@@ -431,7 +431,7 @@ class Module extends AbstractModule
 
         $entityManager = $services->get('Omeka\EntityManager');
         /** @var \Omeka\Entity\User $user */
-        $user = $entityManager->getRepository(\Omeka\Entity\User::class)->find($userId);
+        $user = $entityManager->find(\Omeka\Entity\User::class, $userId);
 
         // Manage a direct creation (no id).
         if ($user) {
@@ -544,7 +544,7 @@ class Module extends AbstractModule
 
         $entityManager = $services->get('Omeka\EntityManager');
         /** @var \Omeka\Entity\User $user */
-        $user = $entityManager->getRepository(\Omeka\Entity\User::class)->find($userId);
+        $user = $entityManager->find(\Omeka\Entity\User::class, $userId);
         if (!$user) {
             return;
         }
@@ -590,7 +590,7 @@ class Module extends AbstractModule
 
         $entityManager = $services->get('Omeka\EntityManager');
         /** @var \Omeka\Entity\User $user */
-        $user = $entityManager->getRepository(\Omeka\Entity\User::class)->find($userId);
+        $user = $entityManager->find(\Omeka\Entity\User::class, $userId);
         if (!$user) {
             return;
         }
@@ -672,7 +672,7 @@ class Module extends AbstractModule
         /** @var \Doctrine\ORM\EntityManager $entityManager */
         $entityManager = $services->get('Omeka\EntityManager');
         /** @var \Omeka\Entity\User $user */
-        $user = $entityManager->getRepository(\Omeka\Entity\User::class)->find($userId);
+        $user = $entityManager->find(\Omeka\Entity\User::class, $userId);
         if (!$user) {
             return;
         }
