@@ -16,6 +16,7 @@ class SiteSettingsFieldset extends Fieldset
     public function init(): void
     {
         $this
+            ->setAttribute('id', 'guest')
             ->add([
                 'name' => 'guest_notify_register',
                 'type' => OmekaElement\ArrayTextarea::class,

@@ -19,6 +19,7 @@ class SettingsFieldset extends Fieldset
         // Fields default when no site setting.
 
         $this
+            ->setAttribute('id', 'guest')
             ->add([
                 'name' => 'guest_open',
                 'type' => Element\Radio::class,
