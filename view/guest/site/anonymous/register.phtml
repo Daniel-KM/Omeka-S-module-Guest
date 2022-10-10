@@ -6,25 +6,33 @@
  */
 
 $plugins = $this->getHelperPluginManager();
-$translate = $plugins->get('translate');
+$trigger = $plugins->get('trigger');
 $setting = $plugins->get('setting');
+$translate = $plugins->get('translate');
+$pageTitle = $plugins->get('pageTitle');
 $siteSetting = $plugins->get('siteSetting');
+$htmlElement = $plugins->get('htmlElement');
 
-$this->htmlElement('body')->appendAttribute('class', 'guest register');
+$htmlElement('body')->appendAttribute('class', 'guest register');
 $form->prepare();
 ?>
 
-<?= $this->messages() ?>
+<?= $pageTitle($siteSetting('guest_register_text') ?: ($setting('guest_register_text') ?: $translate('Register'))) ?>
 
-<?= $this->pageTitle($siteSetting('guest_register_text') ?: ($setting('guest_register_text') ?: $translate('Register'))) ?>
-<div><?= $siteSetting('guest_capabilities') ?: ($setting('guest_capabilities')) ?></div>
+<div class="guest-anonymous guest-register">
 
-<?= $this->form()->openTag($form) ?>
-<?= $this->formCollection($form, false) ?>
-<?php $this->trigger('view.add.form.after'); ?>
-<div id="page-actions">
-    <button type="submit"><?= $translate('Register') ?></button>
+    <?= $this->messages() ?>
+
+    <div><?= $siteSetting('guest_capabilities') ?: ($setting('guest_capabilities')) ?></div>
+
+    <?= $this->form()->openTag($form) ?>
+        <?= $this->formCollection($form, false) ?>
+        <?php $trigger('view.add.form.after'); ?>
+        <div id="page-actions">
+            <button type="submit"><?= $translate('Register') ?></button>
+        </div>
+    <?= $this->form()->closeTag() ?>
+
+    <?php $trigger('view.add.after'); ?>
+
 </div>
-<?= $this->form()->closeTag() ?>
-
-<?php $this->trigger('view.add.after'); ?>

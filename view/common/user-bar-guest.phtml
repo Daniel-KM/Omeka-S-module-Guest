@@ -6,9 +6,10 @@
  * @var array $links
  */
 
-$translate = $this->plugin('translate');
-$hyperlink = $this->plugin('hyperlink');
-$urlHelper = $this->plugin('url');
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
+$urlHelper = $plugins->get('url');
 $this->headLink()
     ->prependStylesheet($this->assetUrl('css/user-bar.css', 'Omeka'))
     ->prependStylesheet('//fonts.googleapis.com/css?family=Source+Code+Pro|Lato:400,400italic,700,700italic');

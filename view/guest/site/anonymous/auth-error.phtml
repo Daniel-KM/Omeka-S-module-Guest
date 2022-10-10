@@ -4,14 +4,22 @@
  * @var \Omeka\Api\Representation\SiteRepresentation $site
  */
 
-$translate = $this->plugin('translate');
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$pageTitle = $plugins->get('pageTitle');
 ?>
 
-<h1><?= $translate('Authentication error') ?></h1>
+<?= $pageTitle($translate('Authentication error')) ?>
 
-<p>
-    <?= $translate('An error occurred during the authentication via a third party authenticator.') ?>
-</p>
-<p>
-    <?= $translate('Contact your administrator for more information.') ?>
-</p>
+<div class="guest-anonymous guest-auth-error">
+
+    <?= $this->messages() ?>
+
+    <p>
+        <?= $translate('An error occurred during the authentication via a third party authenticator.') ?>
+    </p>
+    <p>
+        <?= $translate('Contact your administrator for more information.') ?>
+    </p>
+
+</div>
