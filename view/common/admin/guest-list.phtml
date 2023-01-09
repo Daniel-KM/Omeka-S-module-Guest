@@ -9,16 +9,18 @@
 $translate = $this->plugin('translate');
 ?>
 
-<div class="property guest-profile">
-    <h4><?= $translate('Guest account') ?></h4>
-    <div class="value guest-account">
-        <ul class="guest-account">
-            <li>
-                <?= sprintf($translate('Site: %s'), $guestSite ? $guestSite->link($guestSite->title()) : $this->translate('none')) ?>
-            </li>
-            <li>
-                <?= sprintf($translate('Agreed terms: %s'), $userSettings->get('guest_agreed_terms') ? $translate('Yes') : $translate('No')) ?>
-            </li>
-        </ul>
+<dl>
+    <div class="property guest-profile">
+        <dt><?= $translate('Guest account') ?></dt>
+        <dd class="value guest-account">
+            <ul class="guest-account">
+                <li>
+                    <?= sprintf($translate('Site: %s'), $guestSite ? $guestSite->link($guestSite->title()) : $translate('none')) ?>
+                </li>
+                <li>
+                    <?= sprintf($translate('Agreed terms: %s'), $userSettings->get('guest_agreed_terms') ? $translate('Yes') : $translate('No')) ?>
+                </li>
+            </ul>
+        </dd>
     </div>
-</div>
+</dl>
