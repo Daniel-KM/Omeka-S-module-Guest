@@ -235,7 +235,7 @@ class Module extends AbstractModule
             [$this, 'deleteGuestToken']
         );
 
-        // Add the guest main infos  to the user show admin pages.
+        // Add the guest main infos to the user show admin pages.
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\User',
             'view.details',
@@ -253,7 +253,7 @@ class Module extends AbstractModule
             'form.add_elements',
             [$this, 'addUserFormElement']
         );
-        // Add the guest element form to the user form.
+        // Add the guest element filters to the user form.
         $sharedEventManager->attach(
             \Omeka\Form\UserForm::class,
             'form.add_input_filters',
@@ -586,7 +586,7 @@ class Module extends AbstractModule
             return;
         }
 
-        $messenger = new \Omeka\Mvc\Controller\Plugin\Messenger();
+        $messenger = $services->get('ControllerPluginManager')->get('messenger');
 
         $entityManager = $services->get('Omeka\EntityManager');
         /** @var \Omeka\Entity\User $user */
@@ -774,10 +774,10 @@ class Module extends AbstractModule
     /**
      * Reset all guest agreements via sql (quicker for big base).
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface $services
      * @param bool $reset
      */
-    protected function resetAgreementsBySql(ServiceLocatorInterface $serviceLocator, $reset): void
+    protected function resetAgreementsBySql(ServiceLocatorInterface $services, $reset): void
     {
         $reset = $reset ? 'true' : 'false';
         $sql = <<<SQL
@@ -789,23 +789,23 @@ SELECT "guest_agreed_terms", user.id, "$reset"
 FROM user
 WHERE role="guest";
 SQL;
-        $connection = $serviceLocator->get('Omeka\Connection');
+        $connection = $services->get('Omeka\Connection');
         $sqls = array_filter(array_map('trim', explode(';', $sql)));
         foreach ($sqls as $sql) {
-            $connection->exec($sql);
+            $connection->executeStatement($sql);
         }
     }
 
     protected function deactivateGuests(): void
     {
         $services = $this->getServiceLocator();
-        $em = $services->get('Omeka\EntityManager');
-        $guests = $em->getRepository(\Omeka\Entity\User::class)->findBy(['role' => 'guest']);
+        $entityManager = $services->get('Omeka\EntityManager');
+        $guests = $entityManager->getRepository(\Omeka\Entity\User::class)->findBy(['role' => 'guest']);
         foreach ($guests as $user) {
             $user->setIsActive(false);
-            $em->persist($user);
+            $entityManager->persist($user);
         }
-        $em->flush();
+        $entityManager->flush();
     }
 
     /**
@@ -849,10 +849,11 @@ SQL;
             return false;
         }
 
+        $messenger = $services->get('ControllerPluginManager')->get('messenger');
+
         $message = new \Omeka\Stdlib\Message(
             'The module GuestUser is installed. Users and settings from this module are upgraded.' // @translate
         );
-        $messenger = new \Omeka\Mvc\Controller\Plugin\Messenger();
         $messenger->addSuccess($message);
 
         $message = new \Omeka\Stdlib\Message(
@@ -862,6 +863,7 @@ SQL;
         );
         $message->setEscapeHtml(false);
         $messenger->addWarning($message);
+
         return true;
     }
 }

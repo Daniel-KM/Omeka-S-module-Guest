@@ -134,7 +134,7 @@ Copyright
 [ContactUs]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs
 [Shibboleth]: https://gitlab.com/Daniel-KM/Omeka-S-module-Shibboleth
 [more information to upgrade templates]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/blob/master/Upgrade_from_GuestUser.md
-[Installing a module]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
+[Installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
 [modules/Guest/data/scripts/convert_guest_user_templates.sh]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/blob/master/data/scripts/convert_guest_user_templates.sh
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html

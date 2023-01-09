@@ -10,11 +10,10 @@ class OptionalSiteSelect extends \Omeka\Form\Element\SiteSelect
      * {@inheritDoc}
      * @see \Laminas\Form\Element\Select::getInputSpecification()
      */
-    public function getInputSpecification()
+    public function getInputSpecification(): array
     {
         $inputSpecification = parent::getInputSpecification();
-        $inputSpecification['required'] = isset($this->attributes['required'])
-            && $this->attributes['required'];
+        $inputSpecification['required'] = !empty($this->attributes['required']);
         return $inputSpecification;
     }
 }

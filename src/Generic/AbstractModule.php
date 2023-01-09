@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 /*
- * Copyright Daniel Berthereau, 2018-2022
+ * Copyright Daniel Berthereau, 2018-2023
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -362,7 +362,7 @@ abstract class AbstractModule extends \Omeka\Module\AbstractModule
                 $translator->translate('The module removed tables "%s" from a previous broken install.'), // @translate
                 implode('", "', $dropTables)
             );
-            $messenger = new \Omeka\Mvc\Controller\Plugin\Messenger();
+            $messenger = $services->get('ControllerPluginManager')->get('messenger');
             $messenger->addWarning($message);
         }
 
@@ -866,7 +866,7 @@ abstract class AbstractModule extends \Omeka\Module\AbstractModule
             $translator->translate('The module "%s" was automatically deactivated because the dependencies are unavailable.'), // @translate
             $module
         );
-        $messenger = new \Omeka\Mvc\Controller\Plugin\Messenger();
+        $messenger = $services->get('ControllerPluginManager')->get('messenger');
         $messenger->addWarning($message);
 
         $logger = $services->get('Omeka\Logger');
