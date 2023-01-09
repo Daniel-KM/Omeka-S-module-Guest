@@ -399,6 +399,16 @@ class Module extends AbstractModule
         $settings = $services->get('Omeka\Settings');
         $skip = $settings->get('guest_terms_skip');
 
+        $isV4 = version_compare(\Omeka\Module::VERSION, '4', '>=');
+
+        if ($isV4) {
+            $elementGroups = [
+                'guest' => 'Guest', // @translate
+            ];
+            $userSettingsFieldset = $form->get('user-settings');
+            $userSettingsFieldset->setOption('element_groups', array_merge($userSettingsFieldset->getOption('element_groups') ?: [], $elementGroups));
+        }
+
         // Public form.
         if ($form->getOption('is_public') && !$skip) {
             // Don't add the agreement checkbox in public when registered.
@@ -412,6 +422,7 @@ class Module extends AbstractModule
                     'name' => 'guest_agreed_terms',
                     'type' => Element\Checkbox::class,
                     'options' => [
+                        'element_group' => 'guest',
                         'label' => 'Agreed terms', // @translate
                     ],
                     'attributes' => [
@@ -452,6 +463,7 @@ class Module extends AbstractModule
                 'name' => 'guest_site',
                 'type' => \Guest\Form\Element\OptionalSiteSelect::class,
                 'options' => [
+                    'element_group' => 'guest',
                     'label' => 'Guest site', // @translate
                     'info' => 'This parameter is used to manage some site related features, in particular messages.', // @translate
                     'empty_option' => '',
@@ -469,6 +481,7 @@ class Module extends AbstractModule
                 'name' => 'guest_agreed_terms',
                 'type' => Element\Checkbox::class,
                 'options' => [
+                    'element_group' => 'guest',
                     'label' => 'Agreed terms', // @translate
                 ],
                 'attributes' => [
@@ -480,6 +493,7 @@ class Module extends AbstractModule
                 'name' => 'guest_send_email_moderated_registration',
                 'type' => Element\Checkbox::class,
                 'options' => [
+                    'element_group' => 'guest',
                     'label' => 'Send an email to confirm registration after moderation (user should be activated first)', // @translate
                 ],
                 'attributes' => [
@@ -503,6 +517,7 @@ class Module extends AbstractModule
                 'name' => 'guest_clear_token',
                 'type' => Element\Checkbox::class,
                 'options' => [
+                    'element_group' => 'guest',
                     'label' => 'Clear registration token', // @translate
                 ],
                 'attributes' => [
