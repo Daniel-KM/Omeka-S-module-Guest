@@ -153,8 +153,8 @@ class PsrMessage implements \JsonSerializable, PsrInterpolateInterface, Translat
             : $this->interpolate($this->getMessage(), $this->getContext());
     }
 
-    public function jsonSerialize(): array
+    public function jsonSerialize(): string
     {
-        return (string) $this;
+        return $this->__toString();
     }
 }
