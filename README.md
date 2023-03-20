@@ -119,7 +119,7 @@ Copyright
 ---------
 
 * Copyright Biblibre, 2016-2017
-* Copyright Daniel Berthereau, 2017-2020 (see [Daniel-KM] on GitLab)
+* Copyright Daniel Berthereau, 2017-2023 (see [Daniel-KM] on GitLab)
 
 
 [Guest]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest
