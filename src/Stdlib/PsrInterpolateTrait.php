@@ -18,13 +18,14 @@ trait PsrInterpolateTrait
      * @param array $context Associative array with placeholders and strings.
      * @return string
      */
-    public function interpolate($message, array $context = null)
+    public function interpolate($message, array $context = null): string
     {
+        $message = (string) $message;
+
         if (empty($context)) {
             return $message;
         }
 
-        $message = (string) $message;
         if (strpos($message, '{') === false) {
             return $message;
         }
@@ -34,17 +35,17 @@ trait PsrInterpolateTrait
             if (is_null($val)
                 || is_scalar($val)
                 || (is_object($val) && method_exists($val, '__toString'))
-            ) {
-                $replacements['{' . $key . '}'] = $val;
-            } elseif (is_array($val)) {
-                $replacements['{' . $key . '}'] = 'array' . @json_encode($val);
-            } elseif (is_object($val)) {
-                $replacements['{' . $key . '}'] = '[object ' . get_class($val) . ']';
-            } elseif (is_resource($val)) {
-                $replacements['{' . $key . '}'] = '[resource ' . get_resource_type($val) . ']';
-            } else {
-                $replacements['{' . $key . '}'] = '[' . gettype($val) . ']';
-            }
+                ) {
+                    $replacements['{' . $key . '}'] = $val;
+                } elseif (is_array($val)) {
+                    $replacements['{' . $key . '}'] = 'array' . @json_encode($val);
+                } elseif (is_object($val)) {
+                    $replacements['{' . $key . '}'] = '[object ' . get_class($val) . ']';
+                } elseif (is_resource($val)) {
+                    $replacements['{' . $key . '}'] = '[resource ' . get_resource_type($val) . ']';
+                } else {
+                    $replacements['{' . $key . '}'] = '[' . gettype($val) . ']';
+                }
         }
 
         return strtr($message, $replacements);

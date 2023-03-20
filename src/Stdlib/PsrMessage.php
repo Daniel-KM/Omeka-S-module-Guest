@@ -6,11 +6,11 @@ use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 
 /**
- * Manage a message with a context
+ * Manage a message with a context list of placeholders formatted as psr-3.
  *
  * Copy of Omeka Message, except the constructor, that requires an array, and
  * the possibility to translate automatically when the translator is enabled.
- * Generally, the translator is not set, as it is generally managed internally.
+ * Generally, the translator is not set, as it is usually managed internally.
  *
  * ```
  * // To get a translator in a controller:
@@ -50,7 +50,7 @@ class PsrMessage implements \JsonSerializable, PsrInterpolateInterface, Translat
     /**
      * @var array
      */
-    protected $context;
+    protected $context = [];
 
     /**
      * @var bool
@@ -59,40 +59,33 @@ class PsrMessage implements \JsonSerializable, PsrInterpolateInterface, Translat
 
     /**
      * Set the message string and its context. The plural is not managed.
-     *
-     * @param string $message
-     * @param array $context
      */
     public function __construct($message, array $context = [])
     {
         $this->message = $message;
-        $this->context = $context ?: [];
+        $this->context = $context;
     }
 
     /**
      * Get the message string.
-     *
-     * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
-        return $this->message;
+        return (string) $this->message;
     }
 
     /**
      * Get the message context.
      */
-    public function getContext()
+    public function getContext(): array
     {
         return $this->context;
     }
 
     /**
      * Does this message have context?
-     *
-     * @return bool
      */
-    public function hasContext()
+    public function hasContext(): bool
     {
         return (bool) $this->context;
     }
@@ -105,7 +98,7 @@ class PsrMessage implements \JsonSerializable, PsrInterpolateInterface, Translat
      */
     public function getArgs()
     {
-        return $this->getContext();
+        return array_values($this->getContext());
     }
 
     /**
@@ -119,13 +112,13 @@ class PsrMessage implements \JsonSerializable, PsrInterpolateInterface, Translat
         return $this->hasContext();
     }
 
-    public function setEscapeHtml($escapeHtml)
+    public function setEscapeHtml($escapeHtml): self
     {
         $this->escapeHtml = (bool) $escapeHtml;
         return $this;
     }
 
-    public function escapeHtml()
+    public function escapeHtml(): bool
     {
         return $this->escapeHtml;
     }
@@ -141,12 +134,8 @@ class PsrMessage implements \JsonSerializable, PsrInterpolateInterface, Translat
      * Translate the message with the context.
      *
      * Same as TranslatorInterface::translate(), but the message is the current one.
-     *
-     * @param string $textDomain
-     * @param string $locale
-     * @return string
      */
-    public function translate($textDomain = 'default', $locale = null)
+    public function translate($textDomain = 'default', $locale = null): string
     {
         return $this->hasTranslator()
             ? $this->interpolate($this->translator->translate($this->getMessage(), $textDomain, $locale), $this->getContext())
