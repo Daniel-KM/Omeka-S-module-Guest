@@ -247,6 +247,13 @@ class Module extends AbstractModule
             [$this, 'viewUserShowAfter']
         );
 
+        // Add links to login form.
+        $sharedEventManager->attach(
+            '*',
+            'view.login.after',
+            [$this, 'addLoginLinks']
+        );
+
         // Add the guest element form to the user form.
         $sharedEventManager->attach(
             \Omeka\Form\UserForm::class,
@@ -386,6 +393,21 @@ class Module extends AbstractModule
                 'guestSite' => $guestSite,
             ]
         );
+    }
+
+    public function addLoginLinks(Event $event): void
+    {
+        $view = $event->getTarget();
+        $plugins = $view->getHelperPluginManager();
+        if ($plugins->has('casLoginUrl')) {
+            $translate = $plugins->get('translate');
+            $hyperlink = $plugins->get('hyperlink');
+            $casLoginUrl = $plugins->get('casLoginUrl');
+            echo $hyperlink(
+                $translate('CAS Login'), // @translate
+                $casLoginUrl
+            );
+        }
     }
 
     public function addUserFormElement(Event $event): void
