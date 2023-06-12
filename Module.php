@@ -399,14 +399,37 @@ class Module extends AbstractModule
     {
         $view = $event->getTarget();
         $plugins = $view->getHelperPluginManager();
+
+        $links = [];
+
         if ($plugins->has('casLoginUrl')) {
             $translate = $plugins->get('translate');
-            $hyperlink = $plugins->get('hyperlink');
             $casLoginUrl = $plugins->get('casLoginUrl');
-            echo $hyperlink(
-                $translate('CAS Login'), // @translate
-                $casLoginUrl
-            );
+            $links[] = [
+                'url' => $casLoginUrl(),
+                'label' => $translate('CAS Login'), // @translate
+                'class' => 'login-cas',
+            ];
+        }
+
+        if ($plugins->has('ssoLoginLinks')) {
+            $url = $plugins->get('url');
+            $idps = $view->setting('singlesignon_idps') ?: [];
+            foreach($idps as $idpSlug => $idp) {
+                $links[] = [
+                    'url' => $url('sso', ['action' => 'login', 'idp' => $idpSlug], true),
+                    'label' => $idp['idp_entity_name'] ?: $idp['idp_entity_id'],
+                    'class' => str_replace('.', '-', $idpSlug),
+                ];
+            }
+        }
+
+        // TODO Ldap is integrated inside default form.
+
+        if ($links) {
+            echo $view->partial('common/guest-login-links', [
+                'links' => $links,
+            ]);
         }
     }
 

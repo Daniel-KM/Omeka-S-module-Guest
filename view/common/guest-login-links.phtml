@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var array $links
+ */
+
+if (empty($links)) return;
+
+$plugins = $this->getHelperPluginManager();
+$hyperlink = $plugins->get('hyperlink');
+
+?>
+
+<div class="guest-login-links">
+    <ul class="guest-links">
+        <?php foreach($links as $link): ?>
+        <li>
+            <?= $hyperlink($link['label'], $link['url'], ['class' => trim('guest-link ' . $link['class'])]) ?>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
