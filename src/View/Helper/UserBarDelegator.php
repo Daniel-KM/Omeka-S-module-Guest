@@ -2,18 +2,30 @@
 
 namespace Guest\View\Helper;
 
+use Omeka\View\Helper\UserBar;
+
 /**
  * View helper for rendering the user bar.
  *
  * Same of the Omeka user bar, except for guest users, who cannot go admin, and
  * a default different link for the account.
  */
-class UserBar extends \Omeka\View\Helper\UserBar
+class UserBarDelegator extends UserBar
 {
     /**
      * The default partial view script when the user has no right to go admin.
      */
     const PARTIAL_NAME_GUEST = 'common/user-bar-guest';
+
+    /**
+     * @var UserBar
+     */
+    protected $userBar;
+
+    public function __construct(UserBar $userBar)
+    {
+        $this->userBar = $userBar;
+    }
 
     public function __invoke($partialName = null)
     {

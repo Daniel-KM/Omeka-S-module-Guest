@@ -22,9 +22,13 @@ return [
     'view_helpers' => [
         'invokables' => [
             'guestWidget' => View\Helper\GuestWidget::class,
-            'userBar' => View\Helper\UserBar::class,
             // Required to manage PsrMessage.
             'messages' => View\Helper\Messages::class,
+        ],
+        'delegators' => [
+            \Omeka\View\Helper\UserBar::class => [
+                Service\ViewHelper\UserBarDelegatorFactory::class,
+            ],
         ],
     ],
     'form_elements' => [
