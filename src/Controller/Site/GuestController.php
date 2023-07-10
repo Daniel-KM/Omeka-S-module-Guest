@@ -76,13 +76,19 @@ class GuestController extends AbstractGuestController
         $data = $userRepr->jsonSerialize();
 
         $form = $this->getUserForm($user);
-        $form->get('user-information')->populateValues($data);
-        $form->get('change-password')->populateValues($data);
+        if ($form->has('user-information')) {
+            $form->get('user-information')->populateValues($data);
+        }
+        if ($form->has('change-password')) {
+            $form->get('change-password')->populateValues($data);
+        }
 
         // The email is updated separately for security.
-        $emailField = $form->get('user-information')->get('o:email');
-        $emailField->setAttribute('disabled', true);
-        $emailField->setAttribute('required', false);
+        if ($form->has('user-information')) {
+            $emailField = $form->get('user-information')->get('o:email');
+            $emailField->setAttribute('disabled', true);
+            $emailField->setAttribute('required', false);
+        }
 
         $view = new ViewModel([
             'site' => $site,

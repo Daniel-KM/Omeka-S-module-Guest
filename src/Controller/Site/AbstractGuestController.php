@@ -105,11 +105,9 @@ abstract class AbstractGuestController extends AbstractActionController
     /**
      * Prepare the user form for public view.
      *
-     * @param User $user
-     * @param array $options
-     * @return UserForm
+     * @todo Remove options, as it is not really used.
      */
-    protected function getUserForm(User $user = null, array $options = [])
+    protected function getUserForm(User $user = null, array $options = []): UserForm
     {
         $defaultOptions = [
             'is_public' => true,
@@ -125,6 +123,14 @@ abstract class AbstractGuestController extends AbstractActionController
         ];
         $options += $defaultOptions;
 
+        // If the user is authenticated by Cas, Shibboleth, Ldap or Saml, email
+        // and password should be removed.
+        $isExternalUser = $this->isExternalUser($user);
+        if ($isExternalUser) {
+            $options['current_password'] = false;
+            $options['include_password'] = false;
+        }
+
         /** @var \Guest\Form\UserForm $form */
         /** @var \Omeka\Form\UserForm $form */
         $form = $this->getForm(UserForm::class, $options);
@@ -139,12 +145,37 @@ abstract class AbstractGuestController extends AbstractActionController
             'filesideload_user_dir' => 'user-settings',
             'locale' => 'user-settings',
         ];
+        if ($isExternalUser) {
+            $elements['o:email'] = 'user-information';
+            $elements['o:name'] = 'user-information';
+            $elements['o:role'] = 'user-information';
+            $elements['o:is_active'] = 'user-information';
+        }
         foreach ($elements as $element => $fieldset) {
             $fieldset && $form->has($fieldset)
                 ? $form->get($fieldset)->remove($element)
                 : $form->remove($element);
         }
         return $form;
+    }
+
+    /**
+     * Check if a user is authenticated via a third party (cas, ldap, saml, shibboleth).
+     *
+     * @todo Integrate Ldap and Saml. Empty password is not sure.
+     */
+    protected function isExternalUser(?User $user): bool
+    {
+        if (!$user) {
+            return false;
+        }
+        if ($this->plugins->has('isCasUser')) {
+            $result = $this->plugins->get('isCasUser')($user);
+            if ($result) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
