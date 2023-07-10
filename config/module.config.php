@@ -41,6 +41,9 @@ return [
         ],
         'factories' => [
             Form\Element\OptionalSiteSelect::class => Service\Form\Element\OptionalSiteSelectFactory::class,
+            // Override Omeka form in order to remove admin settings in public side.
+            // Complex with delegator and not possible with alias.
+            \Omeka\Form\UserForm::class => Service\Form\UserFormFactory::class,
         ],
     ],
     'controllers' => [

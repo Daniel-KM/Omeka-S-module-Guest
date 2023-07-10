@@ -114,28 +114,35 @@ abstract class AbstractGuestController extends AbstractActionController
         $defaultOptions = [
             'is_public' => true,
             'user_id' => $user ? $user->getId() : 0,
-            'include_password' => true,
             'include_role' => false,
+            'include_admin_roles' => false,
+            'include_is_active' => false,
+            'current_password' => true,
+            'include_password' => true,
             'include_key' => false,
             'include_site_role_remove' => false,
             'include_site_role_add' => false,
         ];
         $options += $defaultOptions;
 
+        /** @var \Guest\Form\UserForm $form */
+        /** @var \Omeka\Form\UserForm $form */
         $form = $this->getForm(UserForm::class, $options);
 
         // Remove elements from the admin user form, that shouldn’t be available
         // in public guest form.
+        // Most of admin elements are now removed directly since the form is
+        // overridden. Nevertheless, some modules add elements.
+        // For user profile: append options "exclude_public_show" and "exclude_public_edit"
+        // to elements.
         $elements = [
-            'default_resource_template' => 'user-settings',
+            'filesideload_user_dir' => 'user-settings',
+            'locale' => 'user-settings',
         ];
         foreach ($elements as $element => $fieldset) {
-            if ($fieldset) {
-                $fieldset = $form->get($fieldset);
-                $fieldset ? $fieldset->remove($element) : null;
-            } else {
-                $form->remove($element);
-            }
+            $fieldset && $form->has($fieldset)
+                ? $form->get($fieldset)->remove($element)
+                : $form->remove($element);
         }
         return $form;
     }
