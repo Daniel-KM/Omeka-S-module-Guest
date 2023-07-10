@@ -127,6 +127,9 @@ class Module extends AbstractModule
         if (!$acl->hasRole(Acl::ROLE_GUEST)) {
             $acl->addRole(Acl::ROLE_GUEST);
         }
+        if (!$acl->hasRole('guest_private')) {
+            $acl->addRole('guest_private');
+        }
         $acl->addRoleLabel(Acl::ROLE_GUEST, 'Guest'); // @translate
 
         $settings = $services->get('Omeka\Settings');
@@ -187,18 +190,18 @@ class Module extends AbstractModule
                 [\Guest\Controller\Site\GuestController::class]
             )
             ->allow(
-                [Acl::ROLE_GUEST],
+                [Acl::ROLE_GUEST, 'guest_private'],
                 [\Omeka\Entity\User::class],
                 ['read', 'update', 'change-password'],
                 new IsSelfAssertion
             )
             ->allow(
-                [Acl::ROLE_GUEST],
+                [Acl::ROLE_GUEST, 'guest_private'],
                 [\Omeka\Api\Adapter\UserAdapter::class],
                 ['read', 'update']
             )
             ->deny(
-                [Acl::ROLE_GUEST],
+                [Acl::ROLE_GUEST, 'guest_private'],
                 [
                     'Omeka\Controller\Admin\Asset',
                     'Omeka\Controller\Admin\Index',
