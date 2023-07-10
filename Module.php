@@ -257,6 +257,13 @@ class Module extends AbstractModule
             [$this, 'addLoginLinks']
         );
 
+        // Manage redirect to admin or site after login.
+        $sharedEventManager->attach(
+            '*',
+            'user.login',
+            [$this, 'handleUserLogin']
+        );
+
         // Add the guest element form to the user form.
         $sharedEventManager->attach(
             \Omeka\Form\UserForm::class,
@@ -434,6 +441,20 @@ class Module extends AbstractModule
                 'links' => $links,
             ]);
         }
+    }
+
+    /**
+     * @see https://github.com/omeka/omeka-s/pull/1961
+     * @uses \Guest\Mvc\Controller\Plugin\UserRedirectUrl
+     *
+     * Copy :
+     * @see \Guest\Module::handleUserLogin()
+     * @see \GuestPrivateRole\Module::handleUserLogin()
+     */
+    public function handleUserLogin(Event $event): void
+    {
+        $userRedirectUrl = $this->getServiceLocator()->get('ControllerPluginManager')->get('userRedirectUrl');
+        $userRedirectUrl();
     }
 
     public function addUserFormElement(Event $event): void
