@@ -31,7 +31,6 @@
 namespace Guest\Entity;
 
 use DateTime;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Omeka\Entity\AbstractEntity;
 use Omeka\Entity\User;
 
@@ -40,16 +39,16 @@ use Omeka\Entity\User;
  * @Table(
  *     indexes={
  *         @Index(
- *             name="guest_token_idx",
  *             columns={"token"}
  *         )
  *     }
  * )
- * @HasLifecycleCallbacks
  */
 class GuestToken extends AbstractEntity
 {
     /**
+     * @var int
+     *
      * @Id
      * @Column(type="integer")
      * @GeneratedValue
@@ -57,19 +56,8 @@ class GuestToken extends AbstractEntity
     protected $id;
 
     /**
-     * @var string
-     * @Column(type="string", length=255)
-     */
-    protected $token;
-
-    /**
-     * @var string
-     * @Column(type="string", length=255)
-     */
-    protected $email;
-
-    /**
      * @var User
+     *
      * @ManyToOne(
      *     targetEntity="\Omeka\Entity\User"
      * )
@@ -81,102 +69,104 @@ class GuestToken extends AbstractEntity
     protected $user;
 
     /**
-     * @var \DateTime
-     * @Column(type="datetime")
+     * @var string
+     *
+     * @Column(
+     *     type="string",
+     *     length=255
+     * )
      */
-    protected $created;
+    protected $email;
+
+    /**
+     * @var string
+     *
+     * @Column(
+     *     type="string",
+     *     length=255
+     * )
+     */
+    protected $token;
 
     /**
      * @var bool
-     * @Column(type="boolean")
+     *
+     * @Column(
+     *     type="boolean"
+     * )
      */
     protected $confirmed = false;
+
+    /**
+     * @var DateTime
+     *
+     * @Column(
+     *     type="datetime",
+     *     nullable=false,
+     *     options={
+     *         "default": "CURRENT_TIMESTAMP"
+     *     }
+     * )
+     */
+    protected $created;
 
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param string $email
-     * @return self
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param User $user
-     * @return self
-     */
-    public function setUser(User $user)
+    public function setUser(User $user): self
     {
         $this->user = $user;
         return $this;
     }
 
-    /**
-     * @return \Omeka\Entity\User
-     */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    /**
-     * @param string $token
-     * @return self
-     */
-    public function setToken($token)
+    public function setToken($token): self
     {
         $this->token = $token;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getToken()
+    public function getToken(): string
     {
         return $this->token;
     }
 
-    /**
-     * @param bool $confirmed
-     * @return self
-     */
-    public function setConfirmed($confirmed)
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setConfirmed($confirmed): self
     {
         $this->confirmed = (bool) $confirmed;
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isConfirmed()
+    public function isConfirmed(): bool
     {
         return $this->confirmed;
     }
 
-    /**
-     * @PrePersist
-     * @param LifecycleEventArgs $eventArgs
-     * @return self
-     */
-    public function prePersist(LifecycleEventArgs $eventArgs)
+    public function setCreated(DateTime $created): self
     {
-        $this->created = new DateTime('now');
+        $this->created = $created;
         return $this;
+    }
+
+    public function getCreated(): DateTime
+    {
+        return $this->created;
     }
 }

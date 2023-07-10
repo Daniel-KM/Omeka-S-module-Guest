@@ -57,9 +57,10 @@ class CreateGuestToken extends AbstractPlugin
         $identifier = $identifier ?: $user->getEmail();
 
         $guestToken = new GuestToken;
-        $guestToken->setEmail($identifier);
         $guestToken->setUser($user);
+        $guestToken->setEmail($identifier);
         $guestToken->setToken($token);
+        $guestToken->setCreated(new \DateTime('now'));
 
         if (!$user->getId()) {
             $entityManager->persist($user);
