@@ -6,8 +6,9 @@
  * @var \Omeka\Form\UserForm $form
  */
 
-$translate = $this->plugin('translate');
-$assetUrl = $this->plugin('assetUrl');
+$plugins = $this->getHelperPluginManager();
+$assetUrl = $plugins->get('assetUrl');
+$translate = $plugins->get('translate');
 
 $script = <<<'JS'
 $(document).ready( function() {

@@ -3,22 +3,23 @@
  * @var \Laminas\View\Renderer\PhpRenderer $this
  */
 
-$translate = $this->plugin('translate');
-$hyperlink = $this->plugin('hyperlink');
-$urlHelper = $this->plugin('url');
+$plugins = $this->getHelperPluginManager();
+$url = $plugins->get('url');
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
 ?>
 
 <ul>
     <li>
-        <?php $url = $urlHelper('site/guest/guest', ['action' => 'update-account'], [], true); ?>
-        <?= $hyperlink($translate('Update account info and password'), $url) ?>
+        <?php $href = $url('site/guest/guest', ['action' => 'update-account'], [], true); ?>
+        <?= $hyperlink($translate('Update account info and password'), $href) ?>
     </li>
     <li>
-        <?php $url = $urlHelper('site/guest/guest', ['action' => 'update-email'], [], true); ?>
-        <?= $hyperlink($translate('Update email'), $url) ?>
+        <?php $href = $url('site/guest/guest', ['action' => 'update-email'], [], true); ?>
+        <?= $hyperlink($translate('Update email'), $href) ?>
     </li>
     <li>
-        <?php $url = $urlHelper('site/guest/guest', ['action' => 'logout'], [], true); ?>
-        <?= $hyperlink($translate('Logout'), $url) ?>
+        <?php $href = $url('site/guest/guest', ['action' => 'logout'], [], true); ?>
+        <?= $hyperlink($translate('Logout'), $href) ?>
     </li>
 </ul>
