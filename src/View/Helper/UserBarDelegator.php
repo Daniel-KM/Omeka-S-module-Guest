@@ -16,8 +16,9 @@ use Omeka\View\Helper\UserBar;
  * @todo Update core to fill links simpler.
  *
  * Copy:
- * @see \AdvancedSearch\\View\Helper\UserBarDelegator
+ * @see \AdvancedSearch\View\Helper\UserBarDelegator
  * @see \Guest\View\Helper\UserBarDelegator
+ * @see \GuestPrivateRole\View\Helper\UserBarDelegator
  */
 class UserBarDelegator extends UserBar
 {
