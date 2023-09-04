@@ -1,0 +1,20 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Site\Navigation\Link\LinkInterface $link
+ * @var array $data
+ */
+
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
+
+$data = is_array($data) ? $data : [];
+$data = array_map('trim', $data) + [
+    'label-login' => '',
+    'label-logout' => '',
+];
+?>
+
+<label><?= $translate('Type') ?> <input type="text" value="<?= $escape($translate($link->getName())) ?>" disabled="disabled"></label>
+<label><?= $translate('Label log in') ?> <input type="text" data-name="label-login" value="<?= $escape($data['label-login']) ?>"></label>
+<label><?= $translate('Label log out') ?> <input type="text" data-name="label-logout" value="<?= $escape($data['label-logout']) ?>"></label>

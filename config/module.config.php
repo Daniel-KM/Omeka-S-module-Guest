@@ -74,6 +74,7 @@ return [
         'invokables' => [
             'login' => Site\Navigation\Link\Login::class,
             'loginBoard' => Site\Navigation\Link\LoginBoard::class,
+            'loginLogout' => Site\Navigation\Link\LoginLogout::class,
             'logout' => Site\Navigation\Link\Logout::class,
             'register' => Site\Navigation\Link\Register::class,
         ],
