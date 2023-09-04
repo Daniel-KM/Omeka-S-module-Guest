@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Guest\Site\Navigation\Link;
 
 use Omeka\Api\Representation\SiteRepresentation;
@@ -9,7 +10,7 @@ class Logout implements LinkInterface
 {
     public function getName()
     {
-        return 'Guest Logout'; // @translate
+        return 'Guest log out'; // @translate
     }
 
     public function getFormTemplate()
@@ -30,7 +31,7 @@ class Logout implements LinkInterface
     {
         return isset($data['label']) && trim($data['label']) !== ''
             ? $data['label']
-            : 'Logout'; // @translate
+            : 'Log out'; // @translate
     }
 
     public function toZend(array $data, SiteRepresentation $site)

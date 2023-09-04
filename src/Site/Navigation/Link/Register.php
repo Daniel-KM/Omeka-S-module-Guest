@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Guest\Site\Navigation\Link;
 
 use Omeka\Api\Representation\SiteRepresentation;
@@ -9,7 +10,7 @@ class Register implements LinkInterface
 {
     public function getName()
     {
-        return 'Guest Register'; // @translate
+        return 'Guest register'; // @translate
     }
 
     public function getFormTemplate()

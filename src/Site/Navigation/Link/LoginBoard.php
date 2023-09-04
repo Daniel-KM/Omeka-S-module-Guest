@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Guest\Site\Navigation\Link;
 
 use Omeka\Api\Representation\SiteRepresentation;
@@ -9,7 +10,7 @@ class LoginBoard implements LinkInterface
 {
     public function getName()
     {
-        return 'Guest Login / My board'; // @translate
+        return 'Guest log in / My board'; // @translate
     }
 
     public function getFormTemplate()
@@ -20,11 +21,11 @@ class LoginBoard implements LinkInterface
     public function isValid(array $data, ErrorStore $errorStore)
     {
         if (!isset($data['label-login'])) {
-            $errorStore->addError('o:navigation', 'Invalid navigation: login link missing label'); // @translate
+            $errorStore->addError('o:navigation', 'Invalid navigation: log in link missing label'); // @translate
             return false;
         }
         if (!isset($data['label-board'])) {
-            $errorStore->addError('o:navigation', 'Invalid navigation: login link missing label'); // @translate
+            $errorStore->addError('o:navigation', 'Invalid navigation: user board missing label'); // @translate
             return false;
         }
         return true;
@@ -45,7 +46,7 @@ class LoginBoard implements LinkInterface
 
         return isset($data['label-login']) && trim($data['label-login']) !== ''
             ? $data['label-login']
-            : 'Login'; // @translate
+            : 'Log in'; // @translate
     }
 
     public function toZend(array $data, SiteRepresentation $site)
