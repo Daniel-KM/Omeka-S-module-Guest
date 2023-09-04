@@ -41,6 +41,9 @@ class GuestController extends AbstractGuestController
     {
         $site = $this->currentSite();
         $user = $this->identity();
+        if (!$user) {
+            return $this->redirect()->toRoute('site/guest/anonymous', ['site-slug' => $this->params('site-slug')]);
+        }
 
         $eventManager = $this->getEventManager();
         $partial = $this->viewHelpers()->get('partial');

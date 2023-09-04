@@ -150,7 +150,14 @@ class Module extends AbstractModule
             ->allow(
                 null,
                 [\Guest\Controller\Site\AnonymousController::class]
-            );
+            )
+            ->allow(
+                null,
+                [\Guest\Controller\Site\GuestController::class],
+                // Redirected to login in controller.
+                ['me']
+            )
+        ;
         if ($isOpenRegister !== 'closed') {
             $acl
                 ->allow(
