@@ -435,7 +435,7 @@ class Module extends AbstractModule
             foreach($idps as $idpSlug => $idp) {
                 $links[] = [
                     'url' => $url('sso', ['action' => 'login', 'idp' => $idpSlug], true),
-                    'label' => $idp['idp_entity_name'] ?: $idp['idp_entity_id'],
+                    'label' => !empty($idp['idp_entity_name']) ? $idp['idp_entity_name'] : ($idp['idp_entity_id'] ?? '[Unknown idp]'),
                     'class' => str_replace('.', '-', $idpSlug),
                 ];
             }
