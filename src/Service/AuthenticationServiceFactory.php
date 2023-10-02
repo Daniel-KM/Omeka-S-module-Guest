@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Guest\Service;
 
 use Guest\Authentication\Adapter\PasswordAdapter;
@@ -30,6 +31,10 @@ class AuthenticationServiceFactory implements FactoryInterface
         // Copy of the Omeka service, with a Guest password adapter and one
         // line to set the token repository.
 
+        /**
+         * @var \Doctrine\ORM\EntityManager $entityManager
+         * @var \Omeka\Mvc\Status $status
+         */
         $entityManager = $services->get('Omeka\EntityManager');
         $status = $services->get('Omeka\Status');
 
