@@ -53,12 +53,10 @@ return [
         ],
     ],
     'controller_plugins' => [
-        'invokables' => [
-            'userRedirectUrl' => Mvc\Controller\Plugin\UserRedirectUrl::class,
-        ],
         'factories' => [
             'createGuestToken' => Service\ControllerPlugin\CreateGuestTokenFactory::class,
             'sendEmail' => Service\ControllerPlugin\SendEmailFactory::class,
+            'userRedirectUrl' => Service\ControllerPlugin\UserRedirectUrlFactory::class,
             'userSites' => Service\ControllerPlugin\UserSitesFactory::class,
         ],
     ],

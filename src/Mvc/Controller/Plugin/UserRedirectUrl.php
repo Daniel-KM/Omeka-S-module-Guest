@@ -3,9 +3,66 @@
 namespace Guest\Mvc\Controller\Plugin;
 
 use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\Mvc\Controller\Plugin\Url;
+use Omeka\Api\Manager as ApiManager;
+use Omeka\Entity\User;
+use Omeka\Settings\Settings;
+use Omeka\Settings\UserSettings;
+use Omeka\Mvc\Controller\Plugin\UserIsAllowed;
 
+/**
+ * Copy:
+ * @see \Guest\Mvc\Controller\Plugin\UserRedirectUrl
+ * @see \GuestPrivateRole\Mvc\Controller\Plugin\UserRedirectUrl
+ */
 class UserRedirectUrl extends AbstractPlugin
 {
+    /**
+     * @var \Omeka\Api\Manager
+     */
+    protected $api;
+
+    /**
+     * @var \Omeka\Settings\Settings
+     */
+    protected $settings;
+
+    /**
+     * @var \Laminas\Mvc\Controller\Plugin\Url
+     */
+    protected $url;
+
+    /**
+     * @var \Omeka\Mvc\Controller\Plugin\UserIsAllowed
+     */
+    protected $userIsAllowed;
+
+    /**
+     * @var \Omeka\Settings\UserSettings
+     */
+    protected $userSettings;
+
+    /**
+     * @var \Omeka\Entity\User|null
+     */
+    protected $user;
+
+    public function __construct(
+        ApiManager $api,
+        Settings $settings,
+        Url $url,
+        UserIsAllowed $userIsAllowed,
+        UserSettings $userSettings,
+        ?User $user
+    ) {
+        $this->api = $api;
+        $this->settings = $settings;
+        $this->url = $url;
+        $this->userIsAllowed = $userIsAllowed;
+        $this->userSettings = $userSettings;
+        $this->user = $user;
+    }
+
     /**
      * Get the redirect url after login according to user settings.
      *
@@ -23,38 +80,24 @@ class UserRedirectUrl extends AbstractPlugin
      */
     public function __invoke(): string
     {
-        $plugins = $this->getController()->getPluginManager();
-
-        /**
-         * @var \Omeka\Api\Manager $api
-         * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
-         * @var \Omeka\Mvc\Controller\Plugin\Settings $userSettings
-         * @var \Laminas\Mvc\Controller\Plugin\Url $url
-         * @var \Omeka\Entity\User $user
-         * @var \Omeka\Api\Representation\SiteRepresentation $site
-         */
-        $url = $plugins->get('url');
-        $userIsAllowed= $plugins->get('userIsAllowed');
-
-        if ($userIsAllowed('Omeka\Controller\Admin\Index', 'browse')) {
-            $redirectUrl = $url->fromRoute('admin');
-        } else {
-            $user = $plugins->get('identity')();
-            $settings = $plugins->get('settings')();
-            $userSettings = $plugins->get('userSettings')();
-            $userSettings->setTargetId($user->getId());
-            $defaultSite = (int) $userSettings->get('guest_site', $settings->get('default_site', 1));
+        if ($this->userIsAllowed->__invoke('Omeka\Controller\Admin\Index', 'browse')) {
+            $redirectUrl = $this->url->fromRoute('admin');
+        } elseif ($this->user) {
+            $this->userSettings->setTargetId($this->user->getId());
+            $defaultSite = (int) $this->userSettings->get('guest_site', $this->settings->get('default_site', 1));
             if ($defaultSite) {
-                $api = $plugins->get('api');
                 try {
-                    $site = $api->read('sites', ['id' => $defaultSite])->getContent();
+                    /** @var \Omeka\Api\Representation\SiteRepresentation $site */
+                    $site = $this->api->read('sites', ['id' => $defaultSite])->getContent();
                     $redirectUrl = $site->siteUrl();
                 } catch (\Exception $e) {
-                    $redirectUrl = $url->fromRoute('top');
+                    $redirectUrl = $this->url->fromRoute('top');
                 }
             } else {
-                $redirectUrl = $url->fromRoute('top');
+                $redirectUrl = $this->url->fromRoute('top');
             }
+        } else {
+            $redirectUrl = $this->url->fromRoute('top');
         }
 
         $session = \Laminas\Session\Container::getDefaultManager()->getStorage();
