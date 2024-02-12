@@ -2,8 +2,8 @@
 
 namespace Guest\Controller\Site;
 
+use Common\Stdlib\PsrMessage;
 use Guest\Entity\GuestToken;
-use Guest\Stdlib\PsrMessage;
 use Laminas\Session\Container as SessionContainer;
 use Laminas\View\Model\ViewModel;
 use Omeka\Entity\Site;
@@ -208,7 +208,10 @@ class AnonymousController extends AbstractGuestController
                 // Issue in another module?
                 // Log error, but continue registering (email is checked before,
                 // so it is a new user in any case).
-                $this->logger()->err(sprintf('An error occurred after creation of the guest user: %s', $e)); // @translate
+                $this->logger()->err(
+                    'An error occurred after creation of the guest user: {exception}', // @translate
+                    ['exception' => $e]
+                );
             }
             // TODO Check for another exception at the same time…
         } catch (\Exception $e) {
@@ -276,7 +279,7 @@ class AnonymousController extends AbstractGuestController
             if (!$result) {
                 $message = new PsrMessage('An error occurred when the notification email was sent.'); // @translate
                 $this->messenger()->addError($message);
-                $this->logger()->err('[Guest] ' . $message);
+                $this->logger()->err('[Guest] An error occurred when the notification email was sent.'); // @translate
                 return $view;
             }
         }
@@ -291,7 +294,7 @@ class AnonymousController extends AbstractGuestController
         if (!$result) {
             $message = new PsrMessage('An error occurred when the email was sent.'); // @translate
             $this->messenger()->addError($message);
-            $this->logger()->err('[Guest] ' . $message);
+            $this->logger()->err('[Guest] An error occurred when the email was sent.'); // @translate
             return $view;
         }
 

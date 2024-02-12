@@ -71,12 +71,11 @@ class UserRedirectUrl extends AbstractPlugin
      * @see https://github.com/omeka/omeka-s/pull/1961
      *
      * Useful for:
-     * @see \CAS
-     * @see \Guest
-     * @see \GuestApi
-     * @see \Ldap
-     * @see \SingleSignOn
-     * @see \UserNames
+     * @see \CAS\Module
+     * @see \Guest\Module
+     * @see \Ldap\Module
+     * @see \SingleSignOn\Module
+     * @see \UserNames\Module
      */
     public function __invoke(): string
     {

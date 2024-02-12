@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Guest\Authentication\Adapter;
 
 use Laminas\Authentication\Result;

@@ -2,7 +2,7 @@
 
 namespace Guest\Form;
 
-use Guest\Form\Element as GuestElement;
+use Common\Form\Element as CommonElement;
 use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
 use Omeka\Form\Element as OmekaElement;
@@ -60,7 +60,7 @@ info@example2.org',
 
             ->add([
                 'name' => 'guest_default_sites',
-                'type' => GuestElement\OptionalSiteSelect::class,
+                'type' => CommonElement\OptionalSiteSelect::class,
                 'options' => [
                     'element_group' => 'guest',
                     'label' => 'Add new users to sites', // @translate

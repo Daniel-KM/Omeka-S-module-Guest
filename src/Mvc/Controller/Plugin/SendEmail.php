@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
+
 namespace Guest\Mvc\Controller\Plugin;
 
-use Guest\Stdlib\PsrMessage;
+use Common\Stdlib\PsrMessage;
 use Laminas\Log\Logger;
 use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use Omeka\Stdlib\Mailer as MailerService;
@@ -48,20 +49,23 @@ class SendEmail extends AbstractPlugin
 
         $subject = trim((string) $subject);
         if (empty($subject)) {
-            $message = new PsrMessage('Email not sent: the subject is missing.'); // @translate
-            $this->logger->err($message);
+            $this->logger->err('Email not sent: the subject is missing.'); // @translate
             return false;
         }
         $body = trim((string) $body);
         if (empty($body)) {
-            $message = new PsrMessage('Email not sent: content is missing (subject: {subject}).', ['subject' => $subject]); // @translate
-            $this->logger->err($message);
+            $this->logger->err(
+                'Email not sent: content is missing (subject: {subject}).', // @translate
+                ['subject' => $subject]
+            );
             return false;
         }
         $recipients = array_filter(array_unique(array_map('trim', $recipients)));
         if (empty($recipients)) {
-            $message = new PsrMessage('Email not sent: no recipient (subject: {subject}).', ['subject' => $subject]); // @translate
-            $this->logger->err($message);
+            $this->logger->err(
+                'Email not sent: no recipient (subject: {subject}).', // @translate
+                ['subject' => $subject]
+            );
             return false;
         }
 
@@ -115,11 +119,10 @@ BODY;
             return false;
         }
 
-        $msg = new PsrMessage(
-            'A mail was sent to {user_email} with subject: {subject}', // @translate
-            ['user_email' => implode(', ', $recipients), 'subject' => $subject]
+        $this->logger->info(
+            'A mail was sent to {user_emails} with subject: {subject}', // @translate
+            ['user_emails' => implode(', ', $recipients), 'subject' => $subject]
         );
-        $this->logger->info($msg->getMessage(), $msg->getContext());
         return true;
     }
 }

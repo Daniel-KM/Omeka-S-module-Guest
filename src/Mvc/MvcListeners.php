@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Guest\Mvc;
 
 use Laminas\EventManager\EventManagerInterface;
@@ -95,6 +96,7 @@ class MvcListeners extends AbstractListenerAggregate
 
         $acceptUri = $baseUrl . '/s/' . $siteSlug . '/guest/accept-terms';
 
+        /** @var \Laminas\Http\Response $response */
         $response = $event->getResponse();
         $response->getHeaders()->addHeaderLine('Location', $acceptUri);
         $response->setStatusCode(302);

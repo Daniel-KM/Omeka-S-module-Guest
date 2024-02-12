@@ -22,8 +22,6 @@ return [
     'view_helpers' => [
         'invokables' => [
             'guestWidget' => View\Helper\GuestWidget::class,
-            // Required to manage PsrMessage.
-            'messages' => View\Helper\Messages::class,
         ],
         'delegators' => [
             \Omeka\View\Helper\UserBar::class => [
@@ -40,7 +38,6 @@ return [
             Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
         ],
         'factories' => [
-            Form\Element\OptionalSiteSelect::class => Service\Form\Element\OptionalSiteSelectFactory::class,
             // Override Omeka form in order to remove admin settings in public side.
             // Complex with delegator and not possible with alias.
             \Omeka\Form\UserForm::class => Service\Form\UserFormFactory::class,

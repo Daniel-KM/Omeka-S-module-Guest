@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 /*
  * Copyright BibLibre, 2016
- * Copyright Daniel Berthereau, 2017-2023
+ * Copyright Daniel Berthereau, 2017-2024
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -29,16 +29,14 @@
 
 namespace Guest;
 
-if (!class_exists(\Generic\AbstractModule::class)) {
-    require file_exists(dirname(__DIR__) . '/Generic/AbstractModule.php')
-        ? dirname(__DIR__) . '/Generic/AbstractModule.php'
-        : __DIR__ . '/src/Generic/AbstractModule.php';
+if (!class_exists(\Common\TraitModule::class)) {
+    require_once dirname(__DIR__) . '/Common/TraitModule.php';
 }
 
-use Generic\AbstractModule;
+use Common\Stdlib\PsrMessage;
+use Common\TraitModule;
 use Guest\Entity\GuestToken;
 use Guest\Permissions\Acl;
-use Guest\Stdlib\PsrMessage;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Form\Element;
@@ -48,12 +46,25 @@ use Laminas\Permissions\Acl\Acl as LaminasAcl;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\UserRepresentation;
+use Omeka\Module\AbstractModule;
 use Omeka\Permissions\Assertion\IsSelfAssertion;
-use Omeka\Settings\SettingsInterface;
 
+/**
+ * Guest
+ *
+ * @copyright BibLibre, 2016
+ * @copyright Daniel Berthereau, 2017-2024
+ * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
+ */
 class Module extends AbstractModule
 {
+    use TraitModule;
+
     const NAMESPACE = __NAMESPACE__;
+
+    protected $dependencies = [
+        'Common',
+    ];
 
     /**
      * {@inheritDoc}
@@ -69,41 +80,15 @@ class Module extends AbstractModule
 
     protected function preInstall(): void
     {
-        $this->hasOldGuestUser = $this->checkOldGuestUser();
-    }
-
-    protected function postInstall(): void
-    {
-        // Prepare all translations one time.
-        $translatables = [
-            'guest_login_text',
-            'guest_register_text',
-            'guest_dashboard_label',
-            'guest_capabilities',
-            'guest_short_capabilities',
-            'guest_message_confirm_email_subject',
-            'guest_message_confirm_email',
-            'guest_message_confirm_registration_email_subject',
-            'guest_message_confirm_registration_email',
-            'guest_message_update_email_subject',
-            'guest_message_update_email',
-            'guest_message_confirm_email_site',
-            'guest_message_confirm_register_site',
-            'guest_message_confirm_register_moderate_site',
-            'guest_terms_text',
-        ];
-        $config = $this->getConfig()['guest']['settings'];
         $services = $this->getServiceLocator();
         $translate = $services->get('ControllerPluginManager')->get('translate');
-        $translatables = array_filter(array_map(function ($v) use ($translate, $config) {
-            return !empty($config[$v]) ? $translate($config[$v]) : null;
-        }, array_combine($translatables, $translatables)));
 
-        $this->manageMainSettings('update', $translatables);
-        $this->manageSiteSettings('update', $translatables);
-
-        if ($this->hasOldGuestUser) {
-            require_once __DIR__ . '/data/scripts/upgrade_guest_user.php';
+        if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.52')) {
+            $message = new \Omeka\Stdlib\Message(
+                $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
+                'Common', '3.4.52'
+            );
+            throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
         }
     }
 
@@ -312,7 +297,7 @@ class Module extends AbstractModule
 
     public function handleConfigForm(AbstractController $controller)
     {
-        $result = parent::handleConfigForm($controller);
+        $result = $this->handleConfigFormAuto($controller);
         if ($result === false) {
             return false;
         }
@@ -333,14 +318,12 @@ class Module extends AbstractModule
             default:
                 break;
         }
+
+        return true;
     }
 
-    protected function initDataToPopulate(SettingsInterface $settings, string $settingsType, $id = null, iterable $values = []): bool
+    protected function isSettingTranslatable(string $settingsType, string $name): bool
     {
-        if ($settingsType !== 'site_settings') {
-            return parent::initDataToPopulate($settings, $settingsType, $id, $values);
-        }
-
         $translatables = [
             'guest_login_text',
             'guest_register_text',
@@ -358,13 +341,14 @@ class Module extends AbstractModule
             'guest_message_confirm_register_moderate_site',
             'guest_terms_text',
         ];
-        $config = $this->getConfig()['guest']['site_settings'];
-        $translate = $this->getServiceLocator()->get('ControllerPluginManager')->get('translate');
-        $translatables = array_filter(array_map(function ($v) use ($translate, $config) {
-            return !empty($config[$v]) ? $translate($config[$v]) : null;
-        }, array_combine($translatables, $translatables)));
 
-        return parent::initDataToPopulate($settings, $settingsType, $id, $translatables);
+        if ($settingsType !== 'settings'
+            && $settingsType !== 'site_settings'
+        ) {
+            return false;
+        }
+
+        return in_array($name, $translatables);
     }
 
     public function appendLoginNav(Event $event): void
@@ -432,7 +416,7 @@ class Module extends AbstractModule
         if ($plugins->has('ssoLoginLinks')) {
             $url = $plugins->get('url');
             $idps = $view->setting('singlesignon_idps') ?: [];
-            foreach($idps as $idpSlug => $idp) {
+            foreach ($idps as $idpSlug => $idp) {
                 $links[] = [
                     'url' => $url('sso', ['action' => 'login', 'idp' => $idpSlug], true),
                     'label' => !empty($idp['idp_entity_name']) ? $idp['idp_entity_name'] : ($idp['idp_entity_id'] ?? '[Unknown idp]'),
@@ -537,7 +521,7 @@ class Module extends AbstractModule
         $fieldset
             ->add([
                 'name' => 'guest_site',
-                'type' => \Guest\Form\Element\OptionalSiteSelect::class,
+                'type' => \Common\Form\Element\OptionalSiteSelect::class,
                 'options' => [
                     'element_group' => 'guest',
                     'label' => 'Guest site', // @translate

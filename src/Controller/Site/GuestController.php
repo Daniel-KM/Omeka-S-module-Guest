@@ -2,9 +2,9 @@
 
 namespace Guest\Controller\Site;
 
+use Common\Stdlib\PsrMessage;
 use Guest\Form\AcceptTermsForm;
 use Guest\Form\EmailForm;
-use Guest\Stdlib\PsrMessage;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container as SessionContainer;
 use Laminas\View\Model\ViewModel;
@@ -199,7 +199,9 @@ class GuestController extends AbstractGuestController
         $email = $values['o:email'];
 
         if ($email === $user->getEmail()) {
-            $this->messenger()->addWarning(new PsrMessage('The new email is the same than the current one.')); // @translate
+            $this->messenger()->addWarning(new PsrMessage(
+                'The new email is the same than the current one.' // @translate
+            ));
             return $view;
         }
 
@@ -208,7 +210,10 @@ class GuestController extends AbstractGuestController
         if ($existUser) {
             // Avoid a hack of the database.
             sleep(2);
-            $this->messenger()->addError(new PsrMessage('The email "{user_email}" is not yours.', ['user_email' => $email])); // @translate
+            $this->messenger()->addError(new PsrMessage(
+                'The email "{user_email}" is not yours.', // @translate
+                ['user_email' => $email]
+            ));
             return $view;
         }
 
@@ -222,11 +227,14 @@ class GuestController extends AbstractGuestController
         if (!$result) {
             $message = new PsrMessage('An error occurred when the email was sent.'); // @translate
             $this->messenger()->addError($message);
-            $this->logger()->err('[Guest] ' . $message);
+            $this->logger()->err('[Guest] An error occurred when the email was sent.'); // @translate
             return $view;
         }
 
-        $message = new PsrMessage('Check your email "{user_email}" to confirm the change.', ['user_email' => $email]); // @translate
+        $message = new PsrMessage(
+            'Check your email "{user_email}" to confirm the change.', // @translate
+            ['user_email' => $email]
+        );
         $this->messenger()->addSuccess($message);
         return $this->redirect()->toRoute('site/guest', ['action' => 'me'], [], true);
     }

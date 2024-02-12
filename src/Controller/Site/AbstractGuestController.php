@@ -2,8 +2,8 @@
 
 namespace Guest\Controller\Site;
 
+use Common\Stdlib\PsrMessage;
 use Doctrine\ORM\EntityManager;
-use Guest\Stdlib\PsrMessage;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Omeka\Entity\User;
