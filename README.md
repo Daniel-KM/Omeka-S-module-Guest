@@ -11,30 +11,42 @@ become registered users in Omeka S, but have no other privileges to the admin
 side of your Omeka S installation. This module is thus intended to be a common
 module that other modules needing a guest user use as a dependency.
 
-Guest users can use Omeka via the api too (login, logout, register…) with the
-module [Guest Api].
-
 The module is compatible with module [UserNames].
 
 The module includes a way to request api without credentials but via session, so
 it's easier to use ajax in public interface or web application (see [omeka/pull/1714]).
-
-This module is based on a full rewrite of the plugin [Guest User] for [Omeka Classic]
-by [BibLibre].
+The feature is included in Omeka S version 4.1.
 
 
 Installation
 ------------
 
-If the module [GuestUser] is installed, it is recommended to upgrade it first to
-version 3.3.5.1 or higher, or to disable it. See [more information to upgrade templates]
-from module [GuestUser].
+### Installation
 
-Uncompress files in the module directory and rename module folder `Guest`.
+See general end user documentation for [installing a module].
 
-Then install it like any other Omeka module and follow the config instructions.
+The module [Common] must be installed first.
 
-See general end user documentation for [Installing a module].
+The module uses external libraries, so use the release zip to install it, or
+use and init the source.
+
+* From the zip
+
+Download the last release [Guest.zip] from the list of releases (the master does
+not contain the dependency), and uncompress it in the `modules` directory.
+
+* From the source and for development
+
+If the module was installed from the source, rename the name of the folder of
+the module to `Guest`.
+
+### Upgrade from module Guest User
+
+The automatic upgrade from module [GuestUser], for data, settings and theme
+templates, was removed in version 3.4.21. To upgrade from it when it is
+installed, it is recommended to upgrade it first to version 3.3.5.1 or higher,
+or to disable it. See [more information to upgrade templates] and code in other
+files of [version 3.4.20].
 
 
 Usage
@@ -56,7 +68,6 @@ if ($this->identity()):
 else:
     echo $this->hyperlink($this->translate('Login'), $this->url()->fromRoute('site/guest/anonymous', ['site-slug' => $site->slug(), 'action' => 'login']), ['class' => 'login']);
 endif;
-?>
 ```
 
 ### Terms agreement
@@ -121,19 +132,20 @@ Copyright
 * Copyright Biblibre, 2016-2017
 * Copyright Daniel Berthereau, 2017-2023 (see [Daniel-KM] on GitLab)
 
+This module is based on a full rewrite of the plugin [Guest User] for [Omeka Classic]
+by [BibLibre].
+
 
 [Guest]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest
 [Guest User]: https://gitlab.com/omeka/plugin-GuestUser
-[GuestUser]: https://github.com/biblibre/omeka-s-module-GuestUser
 [Omeka S]: https://www.omeka.org/s
 [GitLab]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest
-[Omeka Classic]: https://omeka.org
-[Guest Api]: https://gitlab.com/Daniel-KM/Omeka-S-module-GuestApi
 [UserNames]: https://github.com/ManOnDaMoon/omeka-s-module-UserNames
 [omeka/pull/1714]: https://github.com/omeka/omeka-s/pull/1714
 [ContactUs]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs
 [Shibboleth]: https://gitlab.com/Daniel-KM/Omeka-S-module-Shibboleth
-[more information to upgrade templates]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/blob/master/Upgrade_from_GuestUser.md
+[more information to upgrade templates]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/blob/9964d30a65505975c4dd1af42eccbc001a02a4b9/Upgrade_from_GuestUser.md
+[version 3.4.20]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/tree/3.4.20
 [Installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
 [modules/Guest/data/scripts/convert_guest_user_templates.sh]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/blob/master/data/scripts/convert_guest_user_templates.sh
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/issues
@@ -141,6 +153,8 @@ Copyright
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
 [OSI]: http://opensource.org
+[GuestUser]: https://github.com/biblibre/omeka-s-module-GuestUser
+[Omeka Classic]: https://omeka.org
 [BibLibre]: https://github.com/biblibre
 [GitLab]: https://gitlab.com/Daniel-KM
 [Daniel-KM]: https://gitlab.com/Daniel-KM "Daniel Berthereau"
