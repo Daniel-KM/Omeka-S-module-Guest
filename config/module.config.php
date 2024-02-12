@@ -140,6 +140,61 @@ return [
                     ],
                 ],
             ],
+            'api' => [
+                'child_routes' => [
+                    'guest' => [
+                        'type' => \Laminas\Router\Http\Literal::class,
+                        'options' => [
+                            'route' => '/users/me',
+                            'defaults' => [
+                                'controller' => Controller\ApiController::class,
+                                'resource' => 'users',
+                                'id' => 'me',
+                            ],
+                        ],
+                    ],
+                    'guest-login' => [
+                        'type' => \Laminas\Router\Http\Literal::class,
+                        'options' => [
+                            'route' => '/login',
+                            'defaults' => [
+                                'controller' => Controller\ApiController::class,
+                                'action' => 'login',
+                            ],
+                        ],
+                    ],
+                    'guest-logout' => [
+                        'type' => \Laminas\Router\Http\Literal::class,
+                        'options' => [
+                            'route' => '/logout',
+                            'defaults' => [
+                                'controller' => Controller\ApiController::class,
+                                'action' => 'logout',
+                            ],
+                        ],
+                    ],
+                    'guest-session-token' => [
+                        'type' => \Laminas\Router\Http\Literal::class,
+                        'options' => [
+                            'route' => '/session-token',
+                            'defaults' => [
+                                'controller' => Controller\ApiController::class,
+                                'action' => 'session-token',
+                            ],
+                        ],
+                    ],
+                    'guest-register' => [
+                        'type' => \Laminas\Router\Http\Literal::class,
+                        'options' => [
+                            'route' => '/register',
+                            'defaults' => [
+                                'controller' => Controller\ApiController::class,
+                                'action' => 'register',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ],
     ],
     'translator' => [
@@ -189,6 +244,17 @@ return [
             'guest_terms_text' => 'I agree the terms and conditions.', // @translate
             'guest_terms_page' => 'terms-and-conditions',
             'guest_redirect' => 'site',
+            // Specific to the api.
+            'guest_register_site' => false,
+            'guest_register_email_is_valid' => false,
+            // By default, for security, only non-backend users can log via api.
+            'guest_login_roles' => [
+                'annotator',
+                'contributor',
+                'guest',
+            ],
+            'guest_login_session' => false,
+            'guest_cors' => [],
         ],
         'site_settings' => [
             'guest_notify_register' => [],

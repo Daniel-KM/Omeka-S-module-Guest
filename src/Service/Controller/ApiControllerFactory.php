@@ -20,14 +20,15 @@ class ApiControllerFactory implements FactoryInterface
         $userRepository = $entityManager->getRepository('Omeka\Entity\User');
         $storage = new DoctrineWrapper(new Session, $userRepository);
         $adapter = new PasswordAdapter($userRepository);
-        $passwordAuthService = new AuthenticationService($storage, $adapter);
+        $authServiceSession = new AuthenticationService($storage, $adapter);
         return new ApiController(
             $services->get('Omeka\Paginator'),
             $services->get('Omeka\ApiManager'),
             $services->get('Omeka\AuthenticationService'),
-            $passwordAuthService,
-            $services->get('Omeka\ApiAdapterManager')->get('users'),
+            $authServiceSession,
             $services->get('Omeka\EntityManager'),
+            $services->get('MvcTranslator'),
+            $services->get('Omeka\ApiAdapterManager')->get('users'),
             $services->get('Config')
         );
     }

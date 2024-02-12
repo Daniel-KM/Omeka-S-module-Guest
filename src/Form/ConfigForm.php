@@ -10,6 +10,7 @@ class ConfigForm extends Form
     public function init(): void
     {
         $this
+            // TODO Move this action into settings or EasyAdmin.
             ->add([
                 'name' => 'guest_reset_agreement_terms',
                 'type' => Element\Radio::class,

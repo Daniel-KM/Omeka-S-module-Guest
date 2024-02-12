@@ -369,6 +369,77 @@ If you did not request to update your email on {main_title}, please disregard th
                     'required' => false,
                 ],
             ])
+
+            // Specific to api.
+
+            ->add([
+                'name' => 'guest_register_site',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Requires a site to register via api', // @translate
+                    'info' => 'If checked, a site id or slug will be required when registering via api. Note: when this setting is set, all previous users must be added to a site.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_register_site',
+                ],
+            ])
+            ->add([
+                'name' => 'guest_register_email_is_valid',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Validate email set by api', // @translate
+                    'info' => 'If checked, the user won’t have to validate his email, so he will be able to login directly.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_register_email_is_valid',
+                ],
+            ])
+            ->add([
+                'name' => 'guest_login_roles',
+                'type' => CommonElement\OptionalRoleSelect::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Roles that can login via api', // @translate
+                    'info' => 'To allow full access via api increases risks of intrusion.', // @translate
+                    'empty_option' => '',
+                    'use_hidden_element' => true,
+                ],
+                'attributes' => [
+                    'id' => 'guest_login_roles',
+                    'multiple' => true,
+                    'required' => false,
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Select roles…', // @translate
+                ],
+            ])
+            ->add([
+                'name' => 'guest_login_session',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Create a local session cookie for api', // @translate
+                    'info' => 'If checked, a session cookie will be created, so the user will be able to login in Omeka from an other web app.', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_login_session',
+                ],
+            ])
+            ->add([
+                'name' => 'guest_cors',
+                'type' => OmekaElement\ArrayTextarea::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Limit access to api to these domains (cors)', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_cors',
+                    'rows' => 5,
+                    'placeholder' => 'http://example.org
+https://example.org',
+                ],
+            ])
         ;
     }
 }

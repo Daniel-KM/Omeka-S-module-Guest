@@ -7,13 +7,13 @@ use Doctrine\ORM\EntityManager;
 use Guest\Entity\GuestToken;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Http\Response;
+use Laminas\I18n\Translator\TranslatorInterface;
 use Laminas\Session\Container as SessionContainer;
 use Omeka\Api\Adapter\UserAdapter;
 use Omeka\Api\Manager as ApiManager;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Entity\SitePermission;
 use Omeka\Entity\User;
-use Omeka\Stdlib\Message;
 use Omeka\Stdlib\Paginator;
 use Omeka\View\Model\ApiJsonModel;
 
@@ -27,6 +27,11 @@ class ApiController extends \Omeka\Controller\ApiController
     const STATUS_ERROR = 'error';
 
     /**
+     * @var \Omeka\Api\Manager
+     */
+    protected $api;
+
+    /**
      * @var AuthenticationService
      */
     protected $authenticationService;
@@ -34,17 +39,27 @@ class ApiController extends \Omeka\Controller\ApiController
     /**
      * @var AuthenticationService
      */
-    protected $passwordAuthenticationService;
-
-    /**
-     * @var UserAdapter
-     */
-    protected $userAdapter;
+    protected $authenticationServiceSession;
 
     /**
      * @var EntityManager
      */
     protected $entityManager;
+
+    /**
+     * @var \Omeka\Stdlib\Paginator
+     */
+    protected $paginator;
+
+    /**
+     * @var \Laminas\I18n\Translator\TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * @var UserAdapter
+     */
+    protected $userAdapter;
 
     /**
      * @var array
@@ -55,26 +70,28 @@ class ApiController extends \Omeka\Controller\ApiController
      * @param Paginator $paginator
      * @param ApiManager $api
      * @param AuthenticationService $authenticationService
-     * @param AuthenticationService $passwordAuthenticationService
-     * @param UserAdapter $userAdapter
+     * @param AuthenticationService $authenticationServiceSession
      * @param EntityManager $entityManager
+     * @param UserAdapter $userAdapter
      * @param array $config
      */
     public function __construct(
         Paginator $paginator,
         ApiManager $api,
         AuthenticationService $authenticationService,
-        AuthenticationService $passwordAuthenticationService,
-        UserAdapter $userAdapter,
+        AuthenticationService $authenticationServiceSession,
         EntityManager $entityManager,
+        TranslatorInterface $translator,
+        UserAdapter $userAdapter,
         array $config
     ) {
         $this->paginator = $paginator;
         $this->api = $api;
         $this->authenticationService = $authenticationService;
-        $this->passwordAuthenticationService = $passwordAuthenticationService;
-        $this->userAdapter = $userAdapter;
+        $this->authenticationServiceSession = $authenticationServiceSession;
         $this->entityManager = $entityManager;
+        $this->translator = $translator;
+        $this->userAdapter = $userAdapter;
         $this->config = $config;
     }
 
@@ -261,7 +278,7 @@ class ApiController extends \Omeka\Controller\ApiController
         }
 
         $role = $user->getRole();
-        $loginRoles = $this->settings()->get('guestapi_login_roles', []);
+        $loginRoles = $this->settings()->get('guest_login_roles', []);
         if (!in_array($role, $loginRoles)) {
             return $this->returnError(
                 sprintf($this->translate('Role "%s" is not allowed to login via api.'), $role) // @translate
@@ -269,12 +286,12 @@ class ApiController extends \Omeka\Controller\ApiController
         }
 
         // TODO Use chain storage.
-        if ($this->settings()->get('guestapi_login_session')) {
+        if ($this->settings()->get('guest_login_session')) {
             // Check password.
-            $this->passwordAuthenticationService->getAdapter()
+            $this->authenticationServiceSession->getAdapter()
                 ->setIdentity($data['email'])
                 ->setCredential($data['password']);
-            $result = $this->passwordAuthenticationService
+            $result = $this->authenticationServiceSession
                 ->authenticate();
             if (!$result->isValid()) {
                 // Check if the user is under moderation in order to add a message.
@@ -304,7 +321,7 @@ class ApiController extends \Omeka\Controller\ApiController
                 );
             }
         } else {
-            $this->passwordAuthenticationService->clearIdentity();
+            $this->authenticationServiceSession->clearIdentity();
         }
 
         $eventManager = $this->getEventManager();
@@ -329,7 +346,7 @@ class ApiController extends \Omeka\Controller\ApiController
         /** @var \Omeka\Entity\User $user */
         $user = $this->authenticationService->getIdentity();
         if (!$user) {
-            $user = $this->passwordAuthenticationService->getIdentity();
+            $user = $this->authenticationServiceSession->getIdentity();
             if (!$user) {
                 return $this->returnError(
                     $this->translate('User not logged.') // @translate
@@ -342,7 +359,7 @@ class ApiController extends \Omeka\Controller\ApiController
         // TODO Use authentication chain.
         // In all cases, the logout is done on all authentication services.
         $this->authenticationService->clearIdentity();
-        $this->passwordAuthenticationService->clearIdentity();
+        $this->authenticationServiceSession->clearIdentity();
 
         $sessionManager = SessionContainer::getDefaultManager();
 
@@ -391,7 +408,7 @@ class ApiController extends \Omeka\Controller\ApiController
         }
 
         $settings = $this->settings();
-        $apiOpenRegistration = $settings->get('guestapi_open');
+        $apiOpenRegistration = $settings->get('guest_open');
         if ($apiOpenRegistration === 'closed') {
             return $this->returnError(
                 $this->translate('Access forbidden.'), // @translate
@@ -421,7 +438,7 @@ class ApiController extends \Omeka\Controller\ApiController
 
         $site = null;
         $settings = $this->settings();
-        if ($settings->get('guestapi_register_site')) {
+        if ($settings->get('guest_register_site')) {
             if (empty($data['site'])) {
                 return $this->returnError(
                     $this->translate('A site is required to register.') // @translate
@@ -461,7 +478,7 @@ class ApiController extends \Omeka\Controller\ApiController
             $data['password'] = null;
         }
 
-        $emailIsAlwaysValid = $settings->get('guestapi_register_email_is_valid');
+        $emailIsAlwaysValid = $settings->get('guest_register_email_is_valid');
 
         $userInfo = [];
         $userInfo['o:email'] = $data['email'];
@@ -659,13 +676,13 @@ class ApiController extends \Omeka\Controller\ApiController
         }
 
         if ($emailIsAlwaysValid) {
-            $message = $this->settings()->get('guestapi_message_confirm_register')
+            $message = $this->settings()->get('guest_message_confirm_register_site')
                 ?: $this->translate('Thank you for registering. You can now log in and use the library.'); // @translate
         } elseif ($this->isOpenRegister()) {
-            $message = $this->settings()->get('guestapi_message_confirm_register')
+            $message = $this->settings()->get('guest_message_confirm_register_site')
                 ?: $this->translate('Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in.'); // @translate
         } else {
-            $message = $this->settings()->get('guestapi_message_confirm_register')
+            $message = $this->settings()->get('guest_message_confirm_register_site')
                 ?: $this->translate('Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, a moderator will confirm registration.'); // @translate
         }
 
@@ -689,7 +706,7 @@ class ApiController extends \Omeka\Controller\ApiController
     protected function checkCors()
     {
         // Check cors if any.
-        $cors = $this->settings()->get('guestapi_cors') ?: ['*'];
+        $cors = $this->settings()->get('guest_cors') ?: ['*'];
         if (in_array('*', $cors)) {
             $origin = '*';
         } else {
@@ -741,7 +758,7 @@ class ApiController extends \Omeka\Controller\ApiController
      */
     protected function isOpenRegister()
     {
-        return $this->settings()->get('guestapi_open') === 'open';
+        return $this->settings()->get('guest_open') === 'open';
     }
 
     /**
@@ -754,15 +771,15 @@ class ApiController extends \Omeka\Controller\ApiController
     protected function loggedUser()
     {
         $user = $this->authenticationService->getIdentity();
-        if ($user && $this->settings()->get('guestapi_login_session')) {
-            $userPass = $this->passwordAuthenticationService->getIdentity();
+        if ($user && $this->settings()->get('guest_login_session')) {
+            $userPass = $this->authenticationServiceSession->getIdentity();
             if ($user !== $userPass) {
-                $storage = $this->passwordAuthenticationService->getStorage();
+                $storage = $this->authenticationServiceSession->getStorage();
                 $storage->clear();
                 $storage->write($user);
             }
         } else {
-            $this->passwordAuthenticationService->clearIdentity();
+            $this->authenticationServiceSession->clearIdentity();
         }
         return $user;
     }
@@ -800,7 +817,7 @@ class ApiController extends \Omeka\Controller\ApiController
 
         if (isset($data['o:email'])) {
             $settings = $this->settings();
-            if ($settings->get('guestapi_register_site')) {
+            if ($settings->get('guest_register_site')) {
                 $site = $this->userSites($user, true);
                 if (empty($site)) {
                     return $this->returnError(
@@ -921,14 +938,19 @@ class ApiController extends \Omeka\Controller\ApiController
         $email = $data['o:email'];
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return $this->returnError(
-                new Message($this->translate('"%1$s" is not an email.'), $email), // @translate
+                (new PsrMessage(
+                    '"{email}" is not an email.', // @translate
+                    ['email' => $email]
+                ))->setTranslator($this->translator),
                 Response::STATUS_CODE_400
             );
         }
 
         if ($email === $user->getEmail()) {
             return $this->returnError(
-                new Message($this->translate('The new email is the same than the current one.')), // @translate
+                (new PsrMessage(
+                    'The new email is the same than the current one.', // @translate
+                ))->setTranslator($this->translator),
                 Response::STATUS_CODE_400
             );
         }
@@ -942,7 +964,10 @@ class ApiController extends \Omeka\Controller\ApiController
             // Avoid a hack of the database.
             sleep(1);
             return $this->returnError(
-                new Message($this->translate('The email "%s" is not yours.'), $email), // @translate
+                (new PsrMessage(
+                    'The email "{email}" is not yours.', // @translate
+                    ['email' => $email]
+                ))->setTranslator($this->translator),
                 Response::STATUS_CODE_400
             );
         }
@@ -957,15 +982,18 @@ class ApiController extends \Omeka\Controller\ApiController
         ], $site);
         $result = $this->sendEmail($email, $message['subject'], $message['body'], $user->getName());
         if (!$result) {
-            $message = new Message($this->translate('An error occurred when the email was sent.')); // @translate
-            $this->logger()->err('[GuestApi] ' . $message);
+            $this->logger()->err('[GuestApi] An error occurred when the email was sent.'); // @translate
+            $message = new PsrMessage('An error occurred when the email was sent.'); // @translate
             return $this->returnError(
                 $message,
                 Response::STATUS_CODE_500
             );
         }
 
-        $message = new Message($this->translate('Check your email "%s" to confirm the change.'), $email); // @translate
+        $message = new PsrMessage(
+            $this->translate('Check your email "{email}" to confirm the change.'), // @translate
+            ['email' => $email]
+        );
         $result = [
             'status' => self::STATUS_SUCCESS,
             'data' => [
@@ -983,7 +1011,7 @@ class ApiController extends \Omeka\Controller\ApiController
         // Create a new session token.
         $key = new \Omeka\Entity\ApiKey;
         $key->setId();
-        $key->setLabel('guestapi_session');
+        $key->setLabel('guest_session');
         $key->setOwner($user);
         $keyId = $key->getId();
         $keyCredential = $key->setCredential();
@@ -1006,7 +1034,7 @@ class ApiController extends \Omeka\Controller\ApiController
         // Remove all existing session tokens.
         $keys = $user->getKeys();
         foreach ($keys as $keyId => $key) {
-            if ($key->getLabel() === 'guestapi_session') {
+            if ($key->getLabel() === 'guest_session') {
                 $keys->remove($keyId);
             }
         }
@@ -1072,7 +1100,7 @@ class ApiController extends \Omeka\Controller\ApiController
     {
         $settings = $this->settings();
         $site = $site ?: $this->currentSite();
-        if ((isset($data['token']) || $settings->get('guestapi_register_site')) && empty($site)) {
+        if ((isset($data['token']) || $settings->get('guest_register_site')) && empty($site)) {
             throw new \Exception('Missing site.'); // @translate
         }
         $default = [
@@ -1106,27 +1134,29 @@ class ApiController extends \Omeka\Controller\ApiController
             case 'confirm-email':
                 $subject = 'Your request to join {main_title} / {site_title}'; // @translate
                 $body = $settings->get('guest_message_confirm_email',
-                    $this->getConfig()['guest']['config']['guest_message_confirm_email']);
+                    $this->config['guest']['settings']['guest_message_confirm_email']);
                 break;
 
             case 'update-email':
                 $subject = 'Update email on {main_title} / {site_title}'; // @translate
                 $body = $settings->get('guest_message_update_email',
-                    $this->getConfig()['guest']['config']['guest_message_update_email']);
+                    $this->config['guest']['settings']['guest_message_update_email']);
                 break;
 
             case 'register-email-api':
-                $subject = $settings->get('guestapi_message_confirm_registration_subject',
-                    $this->getConfig()['guestapi']['config']['guestapi_message_confirm_registration_subject']);
-                $body = $settings->get('guestapi_message_confirm_registration',
-                    $this->getConfig()['guestapi']['config']['guestapi_message_confirm_registration']);
+                $subject = $settings->get('guest_message_confirm_registration_email_subject',
+                    $this->config['guest']['settings']['guest_message_confirm_registration_email_subject']);
+                $body = $settings->get('guest_message_confirm_registration_email',
+                    $this->config['guest']['settings']['guest_message_confirm_registration_email']);
                 break;
 
             case 'register-email-api-text':
-                $subject = $settings->get('guestapi_message_confirm_registration_subject',
-                    $this->getConfig()['guestapi']['config']['guestapi_message_confirm_registration_subject']);
-                $body = $settings->get('guestapi_message_confirm_registration_text',
-                    $this->getConfig()['guestapi']['config']['guestapi_message_confirm_registration_text']);
+                $subject = $settings->get('guest_message_confirm_registration_email_subject',
+                    $this->config['guest']['settings']['guest_message_confirm_registration_email_subject']);
+                $subject = strip_tags($subject);
+                $body = $settings->get('guest_message_confirm_registration_email',
+                    $this->config['guest']['settings']['guest_message_confirm_registration_email']);
+                $body = strip_tags($body);
                 break;
 
                 // Allows to manage derivative modules.
@@ -1163,14 +1193,6 @@ class ApiController extends \Omeka\Controller\ApiController
             }
         }
         return $this->api()->searchOne('sites', ['sort_by' => 'id'])->getContent();
-    }
-
-    /**
-     * @return array
-     */
-    protected function getConfig()
-    {
-        return $this->config;
     }
 
     protected function hasModuleUserNames(): bool

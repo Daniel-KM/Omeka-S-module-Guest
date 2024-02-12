@@ -121,6 +121,7 @@ class Module extends AbstractModule
         $isOpenRegister = $settings->get('guest_open', 'moderate');
         $this->addRulesForAnonymous($acl, $isOpenRegister);
         $this->addRulesForGuest($acl);
+        $this->addRulesForApi($acl, $isOpenRegister);
     }
 
     /**
@@ -213,6 +214,47 @@ class Module extends AbstractModule
                     'Omeka\Controller\SiteAdmin\Page',
                 ]
             );
+    }
+
+    /**
+     * Add ACL role and rules for this module.
+     */
+    protected function addRulesForApi(LaminasAcl $acl, $isOpenRegister = 'moderate'): void
+    {
+        if ($isOpenRegister !== 'closed') {
+            $acl
+                ->allow(
+                    null,
+                    [\Guest\Controller\ApiController::class],
+                    ['login', 'session-token', 'logout', 'register']
+                )
+                ->allow(
+                    null,
+                    [\Omeka\Entity\User::class],
+                    // Change role and Activate user should be set to allow external
+                    // logging (ldap, saml, etc.), not only guest registration here.
+                    ['create', 'change-role', 'activate-user']
+                )
+                ->allow(
+                    null,
+                    [\Omeka\Api\Adapter\UserAdapter::class],
+                    'create'
+                );
+        } else {
+            $acl
+                ->allow(
+                    null,
+                    [\Guest\Controller\ApiController::class],
+                    ['login', 'session-token', 'logout']
+                );
+        }
+
+        // This is an api, so all rest api actions are allowed when available.
+        $acl
+            ->allow(
+                null,
+                [\Guest\Controller\ApiController::class]
+        );
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
