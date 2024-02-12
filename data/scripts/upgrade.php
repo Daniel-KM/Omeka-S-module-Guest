@@ -19,6 +19,8 @@ use Omeka\Stdlib\Message;
 $plugins = $services->get('ControllerPluginManager');
 $api = $plugins->get('api');
 $settings = $services->get('Omeka\Settings');
+$translate = $plugins->get('translate');
+$urlPlugin = $plugins->get('url');
 $connection = $services->get('Omeka\Connection');
 $messenger = $plugins->get('messenger');
 $entityManager = $services->get('Omeka\EntityManager');
@@ -59,5 +61,37 @@ SQL;
             $connection->executeStatement($sql);
         } catch (\Exception $e) {
         }
+    }
+}
+
+if (version_compare($oldVersion, '3.4.21', '<')) {
+    if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.52')) {
+        $message = new Message(
+            $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
+            'Common', '3.4.52'
+        );
+        throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
+    }
+
+    // Integration of module Guest Api.
+    // The module should be uninstalled manually.
+    // TODO Add a warning about presence of module Guest Api with a message in settings.
+    $settings->set('guest_register_site', (bool) $settings->get('guestapi_register_site', false));
+    $settings->set('guest_register_email_is_valid', (bool) $settings->get('guestapi_register_email_is_valid', false));
+    $settings->set('guest_login_roles', $settings->get('guestapi_login_roles', ['annotator', 'contributor', 'guest']));
+    $settings->set('guest_login_session', (bool) $settings->get('guestapi_login_session', false));
+    $settings->set('guest_cors', $settings->get('guestapi_cors', []));
+
+    if ($this->isModuleActive('GuestApi')) {
+        $this->disableModule('GuestApi');
+        $message = new \Common\Stdlib\PsrMessage(
+            'This module integrates the features from module GuestApi, that is no longer needed. The config were merged (texts of messages) so you should check them in {link_url}main settings{link_end}. The module was disabled, but you should uninstall the module once params are checked.', // @translate
+            [
+                'link_url' => sprintf('<a href="%s">', $urlPlugin->fromRoute('admin') . '/setting#guest'),
+                'link_end' => '</a>',
+            ]
+        );
+        $message->setEscapeHtml(false);
+        $messenger->addWarning($message);
     }
 }
