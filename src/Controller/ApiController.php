@@ -1177,22 +1177,25 @@ class ApiController extends \Omeka\Controller\ApiController
         ];
     }
 
-    /**
-     * cf. module Next (DefaultSiteSlug).
-     *
-     * @return \Omeka\Api\Representation\SiteRepresentation
-     */
-    protected function defaultSite()
+    protected function defaultSite(): ?SiteRepresentation
     {
-        $defaultSiteId = $this->settings()->get('default_site');
-        if ($defaultSiteId) {
-            try {
-                $response = $this->api->read('sites', ['id' => $defaultSiteId], ['responseContent' => 'resource']);
-                return $response->getContent();
-            } catch (\Omeka\Api\Exception\NotFoundException $e) {
+        static $defaultSite = false;
+
+        if ($defaultSite === false) {
+            $defaultSiteId = $this->settings()->get('default_site');
+            if ($defaultSiteId) {
+                try {
+                    $defaultSite = $this->api->read('sites', ['id' => $defaultSiteId])->getContent();
+                } catch (\Omeka\Api\Exception\NotFoundException $e) {
+                    $defaultSite = null;
+                }
+            } else {
+                $sites = $this->api->search('sites', ['limit' => 1, 'sort_by' => 'id'])->getContent();
+                $defaultSite = $sites ? reset($sites) : null;
             }
         }
-        return $this->api()->searchOne('sites', ['sort_by' => 'id'])->getContent();
+
+        return $defaultSite;
     }
 
     protected function hasModuleUserNames(): bool
