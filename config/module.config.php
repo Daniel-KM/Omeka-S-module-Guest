@@ -45,6 +45,7 @@ return [
     ],
     'controllers' => [
         'factories' => [
+            Controller\ApiController::class => Service\Controller\ApiControllerFactory::class,
             Controller\Site\AnonymousController::class => Service\Controller\Site\AnonymousControllerFactory::class,
             Controller\Site\GuestController::class => Service\Controller\Site\GuestControllerFactory::class,
         ],
@@ -64,6 +65,9 @@ return [
         'invokables' => [
             'Guest\MvcListeners' => Mvc\MvcListeners::class,
         ],
+    ],
+    'listeners' => [
+        'Guest\MvcListeners',
     ],
     'navigation_links' => [
         'invokables' => [
@@ -147,9 +151,6 @@ return [
                 'text_domain' => null,
             ],
         ],
-    ],
-    'listeners' => [
-        'Guest\MvcListeners',
     ],
     'guest' => [
         'settings' => [
