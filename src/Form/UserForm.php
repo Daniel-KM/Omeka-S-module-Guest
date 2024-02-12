@@ -3,11 +3,14 @@
 namespace Guest\Form;
 
 use Laminas\EventManager\Event;
+use Omeka\Settings\UserSettings;
 
 class UserForm extends \Omeka\Form\UserForm
 {
     public function init(): void
     {
+        // This form is used on public side only, not via api or admin.
+
         if (empty($this->options['is_public'])) {
             parent::init();
             return;

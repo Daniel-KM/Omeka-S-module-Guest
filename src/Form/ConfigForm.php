@@ -29,6 +29,17 @@ class ConfigForm extends Form
                     'required' => false,
                 ],
             ])
+            ->add([
+                'name' => 'process',
+                'type' => Element\Submit::class,
+                'options' => [
+                    'label' => 'Process task above', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'process',
+                    'value' => 'Process', // @translate
+                ],
+            ])
         ;
     }
 }

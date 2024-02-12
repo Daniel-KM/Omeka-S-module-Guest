@@ -344,6 +344,11 @@ class Module extends AbstractModule
             return false;
         }
 
+        $params = $controller->getRequest()->getPost();
+        if (empty($params['process'])) {
+            return true;
+        }
+
         $services = $this->getServiceLocator();
         $params = $controller->getRequest()->getPost();
         switch ($params['guest_reset_agreement_terms']) {
