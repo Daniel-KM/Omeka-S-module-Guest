@@ -972,6 +972,31 @@ pf();
         if ($existUser) {
             // Avoid a hack of the database.
             sleep(1);
+            $this->logger()->warn(new PsrMessage(
+                'User #{user_id} wants to change email from "{email}" to "{email_2}", used by user #{user_id_2}.', // @translate
+                ['user_id' => $user->getId(), 'email' => $user->getEmail(), 'email_2' => $email, 'user_id_2' => $existUser->id()]
+            ));
+            return $this->returnError(
+                (new PsrMessage(
+                    'The email "{email}" is not yours.', // @translate
+                    ['email' => $email]
+                ))->setTranslator($this->translator),
+                Response::STATUS_CODE_400
+            );
+        }
+
+        // Add a second check for the email.
+        /** @var \Omeka\Entity\User $user */
+        $users = $this->entityManager->getRepository(User::class)->findBy([
+            'email' => $email,
+        ]);
+        if (count($users)) {
+            // Avoid a hack of the database.
+            sleep(1);
+            $this->logger()->warn(new PsrMessage(
+                'User #{user_id} wants to change email from "{email}" to "{email_2}", used by user #{user_id_2} (second check).', // @translate
+                ['user_id' => $user->getId(), 'email' => $user->getEmail(), 'email_2' => $email, 'user_id_2' => (reset($users))->getId()]
+            ));
             return $this->returnError(
                 (new PsrMessage(
                     'The email "{email}" is not yours.', // @translate
