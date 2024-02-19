@@ -605,9 +605,16 @@ class ApiController extends \Omeka\Controller\ApiController
         $user->setIsActive($isOpenRegister);
 
         $id = $user->getId();
-        if (!empty($data['user-settings'])) {
+        // For compatibility with old version.
+        if (!empty($data['user-settings']) && is_array($data['user-settings'])) {
+            $data['o:settings'] = isset($data['o:settings']) && is_array($data['o:settings'])
+                ? array_merge($data['o:settings'], $data['user-settings'])
+                : $data['user-settings'];
+            $this->logger()->warn('Guest Api: an app uses "user-settings" instead of "o:settings" when registering a user.'); // @translate
+        }
+        if (!empty($data['o:settings']) && is_array($data['o:settings'])) {
             $userSettings = $this->userSettings();
-            foreach ($data['user-settings'] as $settingId => $settingValue) {
+            foreach ($data['o:settings'] as $settingId => $settingValue) {
                 $userSettings->set($settingId, $settingValue, $id);
             }
         }
