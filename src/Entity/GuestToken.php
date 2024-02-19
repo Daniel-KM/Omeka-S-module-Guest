@@ -73,7 +73,7 @@ class GuestToken extends AbstractEntity
      *
      * @Column(
      *     type="string",
-     *     length=255
+     *     length=190
      * )
      */
     protected $email;
@@ -83,7 +83,7 @@ class GuestToken extends AbstractEntity
      *
      * @Column(
      *     type="string",
-     *     length=255
+     *     length=190
      * )
      */
     protected $token;
