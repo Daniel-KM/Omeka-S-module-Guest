@@ -23,7 +23,18 @@ $translate = $plugins->get('translate');
 $urlPlugin = $plugins->get('url');
 $connection = $services->get('Omeka\Connection');
 $messenger = $plugins->get('messenger');
+$siteSettings = $services->get('Omeka\Settings\Site');
 $entityManager = $services->get('Omeka\EntityManager');
+
+$localConfig = require dirname(__DIR__, 2) . '/config/module.config.php';
+
+if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.53')) {
+    $message = new Message(
+        $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
+        'Common', '3.4.53'
+    );
+    throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
+}
 
 if (version_compare($oldVersion, '3.4.1', '<')) {
     $settings->set('guest_open', $settings->get('guest_open') ? 'open' : 'closed');
@@ -65,14 +76,6 @@ SQL;
 }
 
 if (version_compare($oldVersion, '3.4.21', '<')) {
-    if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.53')) {
-        $message = new Message(
-            $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
-            'Common', '3.4.53'
-        );
-        throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
-    }
-
     // Integration of module Guest Api.
     // The module should be uninstalled manually.
     // TODO Add a warning about presence of module Guest Api with a message in settings.
@@ -93,5 +96,37 @@ if (version_compare($oldVersion, '3.4.21', '<')) {
         );
         $message->setEscapeHtml(false);
         $messenger->addWarning($message);
+    }
+}
+
+if (version_compare($oldVersion, '3.4.22', '<')) {
+    // Update existing tables.
+    $sqls = <<<'SQL'
+ALTER TABLE `guest_token`
+CHANGE `email` `email` varchar(190) COLLATE 'utf8mb4_unicode_ci' NOT NULL AFTER `user_id`,
+CHANGE `token` `token` varchar(190) COLLATE 'utf8mb4_unicode_ci' NOT NULL AFTER `email`;
+SQL;
+    foreach (explode(";\n", $sqls) as $sql) {
+        try {
+            $connection->executeStatement($sql);
+        } catch (\Exception $e) {
+        }
+    }
+
+    $message = $settings->get('guest_message_confirm_registration_email');
+    $old = '<p>Hi {user_name},</p>
+<p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+<p>You can now login and discover the site.</p>';
+    if ($message === $old) {
+        $settings->set('guest_message_confirm_registration_email', $localConfig['settings']['guest_message_confirm_registration_email']);
+    }
+
+    $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
+    foreach ($siteIds as $siteId) {
+        $siteSettings->setTargetId($siteId);
+        $message = $siteSettings->get('guest_message_confirm_registration_email');
+        if ($message === $old) {
+            $siteSettings->set('guest_message_confirm_registration_email', $localConfig['site_settings']['guest_message_confirm_registration_email']);
+        }
     }
 }
