@@ -224,20 +224,25 @@ return [
             // From Omeka classic, but not used.
             // TODO Remove option "guest_short_capabilities" or implement it.
             'guest_short_capabilities' => '',
+
             'guest_message_confirm_email_subject' => '[{site_title}] Confirm email', // @translate
             'guest_message_confirm_email' => '<p>Hi {user_name},</p>
 <p>You have registered for an account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
 <p>Please confirm your registration by following this link: <a href="{token_url}"> {token_url}</a></p>
 <p>If you did not request to join {main_title} / {site_title}, please disregard this email.</p>', // @translate
+
             'guest_message_confirm_registration_email_subject' => '[{site_title}] Account open', // @translate
             'guest_message_confirm_registration_email' => '<p>Hi {user_name},</p>
 <p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+<p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
 <p>You can now login and discover the site.</p>', // @translate
+
             'guest_message_update_email_subject' => '[{site_title}] Confirm email', // @translate
             'guest_message_update_email' => '<p>Hi {user_name},</p>
 <p>You have requested to update email on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
 <p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
 <p>If you did not request to update your email on {main_title}, please disregard this email.</p>', // @translate
+
             'guest_message_confirm_email_site' => 'Your email "{user_email}" is confirmed for {site_title}.', // @translate
             'guest_message_confirm_register_site' => 'Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in.', // @translate
             'guest_message_confirm_register_moderate_site' => 'Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request and we have confirmed it, you will be able to log in.', // @translate
@@ -265,20 +270,25 @@ return [
             // From Omeka classic, but not used.
             // TODO Remove option "guest_short_capabilities" or implement it.
             'guest_short_capabilities' => '',
+
             'guest_message_confirm_email_subject' => '[{site_title}] Confirm email', // @translate
             'guest_message_confirm_email' => '<p>Hi {user_name},</p>
 <p>You have registered for an account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
 <p>Please confirm your registration by following this link: <a href="{token_url}"> {token_url}</a></p>
 <p>If you did not request to join {main_title} / {site_title}, please disregard this email.</p>', // @translate
+
             'guest_message_confirm_registration_email_subject' => '[{site_title}] Account open', // @translate
             'guest_message_confirm_registration_email' => '<p>Hi {user_name},</p>
 <p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+<p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
 <p>You can now login and discover the site.</p>', // @translate
+
             'guest_message_update_email_subject' => '[{site_title}] Confirm email', // @translate
             'guest_message_update_email' => '<p>Hi {user_name},</p>
 <p>You have requested to update email on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
 <p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
 <p>If you did not request to update your email on {main_title}, please disregard this email.</p>', // @translate
+
             'guest_message_confirm_email_site' => 'Your email "{user_email}" is confirmed for {site_title}.', // @translate
             'guest_message_confirm_register_site' => 'Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in.', // @translate
             'guest_message_confirm_register_moderate_site' => 'Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request and we have confirmed it, you will be able to log in.', // @translate

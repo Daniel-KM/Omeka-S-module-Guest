@@ -597,6 +597,7 @@ class ApiController extends \Omeka\Controller\ApiController
         }
 
         $user->setPassword($data['password']);
+        // To create a use with another role, don't use register, but /api/users.
         $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
         // The account is active, but not confirmed, so login is not possible.
         // Guest user has no right to set active his account.
@@ -631,7 +632,7 @@ class ApiController extends \Omeka\Controller\ApiController
             $siteEntity->getSitePermissions()->add($sitePermission);
             $this->entityManager->persist($siteEntity);
             $this->entityManager->flush();
-        // $this->api->update('sites', $site->id(), [
+            // $this->api->update('sites', $site->id(), [
             //     'o:site_permission' => [
             //         'o:user' => ['o:id' => $user->getId()],
             //         'o:role' => 'viewer',
@@ -652,13 +653,14 @@ class ApiController extends \Omeka\Controller\ApiController
         } else {
             $guestToken = $this->createGuestToken($user);
         }
-        $message = $this->prepareMessage('register-email-api', [
+pf();
+        $message = $this->prepareMessage('confirm-email', [
             'user_name' => $user->getName(),
             'user_email' => $user->getEmail(),
             'token' => $guestToken,
             'site' => $site,
         ]);
-        $messageText = $this->prepareMessage('register-email-api-text', [
+        $messageText = $this->prepareMessage('confirm-email-text', [
             'user_name' => $user->getName(),
             'user_email' => $user->getEmail(),
             'token' => $guestToken,
@@ -1103,13 +1105,15 @@ class ApiController extends \Omeka\Controller\ApiController
      * @return array Filled subject and body as PsrMessage, from templates
      * formatted with moustache style.
      */
-    protected function prepareMessage($template, array $data, SiteRepresentation $site = null)
+    protected function prepareMessage($template, array $data, ?SiteRepresentation $site = null)
     {
         $settings = $this->settings();
+
         $site = $site ?: $this->currentSite();
-        if ((isset($data['token']) || $settings->get('guest_register_site')) && empty($site)) {
+        if (empty($site) && $settings->get('guest_register_site')) {
             throw new \Exception('Missing site.'); // @translate
         }
+
         $default = [
             'main_title' => $settings->get('installation_title', 'Omeka S'),
             'site_title' => $site->title(),
@@ -1117,17 +1121,20 @@ class ApiController extends \Omeka\Controller\ApiController
             'user_name' => '',
             'user_email' => '',
             'token' => null,
+            'token_url' => null,
         ];
 
         $data += $default;
 
         if (isset($data['token'])) {
+            /** @var \Guest\Entity\GuestToken $token */
+            $token = $data['token'];
+            $data['token'] = $token->getToken();
             $actions = [
                 'register-email-api' => 'confirm-email',
                 'register-email-api-text' => 'confirm-email',
             ];
             $action = $actions[$template] ?? $template;
-            $data['token'] = $data['token']->getToken();
             $urlOptions = ['force_canonical' => true];
             $urlOptions['query']['token'] = $data['token'];
             $data['token_url'] = $this->url()->fromRoute(
@@ -1137,15 +1144,22 @@ class ApiController extends \Omeka\Controller\ApiController
             );
         }
 
+        $isText = substr($template, -5) === '-text';
+        if ($isText) {
+            $template = substr($template, 0, -5);
+        }
+
         switch ($template) {
             case 'confirm-email':
-                $subject = 'Your request to join {main_title} / {site_title}'; // @translate
+                $subject = $settings->get('guest_message_confirm_email_subject',
+                    $this->config['guest']['settings']['guest_message_confirm_email_subject']);
                 $body = $settings->get('guest_message_confirm_email',
                     $this->config['guest']['settings']['guest_message_confirm_email']);
                 break;
 
             case 'update-email':
-                $subject = 'Update email on {main_title} / {site_title}'; // @translate
+                $subject = $settings->get('guest_message_update_email_subject',
+                    $this->config['guest']['settings']['guest_message_update_email_subject']);
                 $body = $settings->get('guest_message_update_email',
                     $this->config['guest']['settings']['guest_message_update_email']);
                 break;
@@ -1157,20 +1171,20 @@ class ApiController extends \Omeka\Controller\ApiController
                     $this->config['guest']['settings']['guest_message_confirm_registration_email']);
                 break;
 
-            case 'register-email-api-text':
-                $subject = $settings->get('guest_message_confirm_registration_email_subject',
-                    $this->config['guest']['settings']['guest_message_confirm_registration_email_subject']);
-                $subject = strip_tags($subject);
-                $body = $settings->get('guest_message_confirm_registration_email',
-                    $this->config['guest']['settings']['guest_message_confirm_registration_email']);
-                $body = strip_tags($body);
-                break;
-
                 // Allows to manage derivative modules.
             default:
                 $subject = !empty($data['subject']) ? $data['subject'] : '[No subject]'; // @translate
                 $body = !empty($data['body']) ? $data['body'] : '[No message]'; // @translate
                 break;
+        }
+
+        // The url may be protected by html-purifier.
+        $subject = str_replace('%7Btoken_url%7D', '{token_url}', $subject);
+        $body = str_replace('%7Btoken_url%7D', '{token_url}', $body);
+
+        if ($isText) {
+            $subject = strip_tags($subject);
+            $body = strip_tags($body);
         }
 
         unset($data['subject']);
