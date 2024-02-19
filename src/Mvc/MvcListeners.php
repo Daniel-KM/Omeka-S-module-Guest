@@ -2,13 +2,13 @@
 
 namespace Guest\Mvc;
 
-use Laminas\EventManager\EventManagerInterface;
 use Laminas\EventManager\AbstractListenerAggregate;
+use Laminas\EventManager\EventManagerInterface;
 use Laminas\Mvc\MvcEvent;
 
 class MvcListeners extends AbstractListenerAggregate
 {
-    public function attach(EventManagerInterface $events, $priority = 1)
+    public function attach(EventManagerInterface $events, $priority = 1): void
     {
         $this->listeners[] = $events->attach(
             MvcEvent::EVENT_ROUTE,

@@ -2,7 +2,6 @@
 
 namespace Guest\Mvc\Controller\Plugin;
 
-use Common\Stdlib\PsrMessage;
 use Laminas\Log\Logger;
 use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use Omeka\Stdlib\Mailer as MailerService;

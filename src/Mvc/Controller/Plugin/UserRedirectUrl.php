@@ -6,9 +6,9 @@ use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use Laminas\Mvc\Controller\Plugin\Url;
 use Omeka\Api\Manager as ApiManager;
 use Omeka\Entity\User;
+use Omeka\Mvc\Controller\Plugin\UserIsAllowed;
 use Omeka\Settings\Settings;
 use Omeka\Settings\UserSettings;
-use Omeka\Mvc\Controller\Plugin\UserIsAllowed;
 
 /**
  * Copy:

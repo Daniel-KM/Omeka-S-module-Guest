@@ -3,7 +3,6 @@
 namespace Guest\Form;
 
 use Laminas\EventManager\Event;
-use Omeka\Settings\UserSettings;
 
 class UserForm extends \Omeka\Form\UserForm
 {

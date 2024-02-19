@@ -213,7 +213,8 @@ class Module extends AbstractModule
                     'Omeka\Controller\SiteAdmin\Index',
                     'Omeka\Controller\SiteAdmin\Page',
                 ]
-            );
+            )
+        ;
     }
 
     /**
