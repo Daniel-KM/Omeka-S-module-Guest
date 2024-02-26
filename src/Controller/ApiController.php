@@ -280,9 +280,11 @@ class ApiController extends \Omeka\Controller\ApiController
         $role = $user->getRole();
         $loginRoles = $this->settings()->get('guest_login_roles', []);
         if (!in_array($role, $loginRoles)) {
-            return $this->returnError(
-                sprintf($this->translate('Role "%s" is not allowed to login via api.'), $role) // @translate
+            $message = new PsrMessage(
+                'Role "{role]" is not allowed to login via api.', // @translate
+                ['role' => $role]
             );
+            return $this->returnError($message->setTranslator($this->translator()));
         }
 
         // TODO Use chain storage.
@@ -577,7 +579,10 @@ class ApiController extends \Omeka\Controller\ApiController
                 // Issue in another module?
                 // Log error, but continue registering (email is checked before,
                 // so it is a new user in any case).
-                $this->logger()->err(sprintf('An error occurred after creation of the guest user: %s', $e)); // @translate
+                $this->logger()->err(
+                    'An error occurred after creation of the guest user: {exception}', // @translate
+                    ['exception' => $e]
+                );
             }
             // TODO Check for another exception at the same time…
         } catch (\Exception $e) {
@@ -972,10 +977,10 @@ pf();
         if ($existUser) {
             // Avoid a hack of the database.
             sleep(1);
-            $this->logger()->warn(new PsrMessage(
+            $this->logger()->warn(
                 'User #{user_id} wants to change email from "{email}" to "{email_2}", used by user #{user_id_2}.', // @translate
                 ['user_id' => $user->getId(), 'email' => $user->getEmail(), 'email_2' => $email, 'user_id_2' => $existUser->id()]
-            ));
+            );
             return $this->returnError(
                 (new PsrMessage(
                     'The email "{email}" is not yours.', // @translate
@@ -985,7 +990,7 @@ pf();
             );
         }
 
-        // Add a second check for the email.
+        // Add a second check for the email (needed for an unknown reason: cache?).
         /** @var \Omeka\Entity\User $user */
         $users = $this->entityManager->getRepository(User::class)->findBy([
             'email' => $email,
@@ -993,10 +998,10 @@ pf();
         if (count($users)) {
             // Avoid a hack of the database.
             sleep(1);
-            $this->logger()->warn(new PsrMessage(
+            $this->logger()->warn(
                 'User #{user_id} wants to change email from "{email}" to "{email_2}", used by user #{user_id_2} (second check).', // @translate
                 ['user_id' => $user->getId(), 'email' => $user->getEmail(), 'email_2' => $email, 'user_id_2' => (reset($users))->getId()]
-            ));
+            );
             return $this->returnError(
                 (new PsrMessage(
                     'The email "{email}" is not yours.', // @translate
