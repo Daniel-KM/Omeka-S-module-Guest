@@ -8,6 +8,7 @@ use Guest\Entity\GuestToken;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Http\Response;
 use Laminas\I18n\Translator\TranslatorInterface;
+use Laminas\Math\Rand;
 use Laminas\Session\Container as SessionContainer;
 use Omeka\Api\Adapter\UserAdapter;
 use Omeka\Api\Manager as ApiManager;
@@ -706,6 +707,186 @@ pf();
                 'user' => $this->userAdapter->getRepresentation($user),
             ],
             'message' => $message,
+        ];
+        return new ApiJsonModel($result, $this->getViewOptions());
+    }
+
+    /**
+     * @see \Omeka\Controller\ApiController::forgotPasswordAction()
+     */
+    public function forgotPasswordAction()
+    {
+        $user = $this->loggedUser();
+        if ($user) {
+            $message = $this->translate('A logged user cannot change the password.'); // @translate
+            return $this->returnError($message);
+        }
+
+        // Post may be empty because it is not the standard controller, so get
+        // the request directly.
+        /** @var \Laminas\Http\PhpEnvironment\Request $request */
+        $request = $this->getRequest();
+        $data = json_decode($request->getContent(), true) ?: [];
+        // Post is required, but query is allowed for compatibility purpose.
+        // And in some cases, a part is in query…
+        $data += ($this->params()->fromPost() ?: []) + ($this->params()->fromQuery() ?: []);
+
+        if (!isset($data['email'])) {
+            $message = $this->translate('Email is required.'); // @translate
+            return $this->returnError($message);
+        }
+
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $message = $this->translate('Invalid email.'); // @translate
+            return $this->returnError($message);
+        }
+
+        // Use entity manager, because anonymous user cannot read users.
+        /** @var \Omeka\Entity\User $user */
+        $user = $this->entityManager->getRepository(User::class)
+            ->findOneBy([
+                'email' => $data['email'],
+            ]);
+        if (!$user) {
+            $message = $this->translate('Invalid email.'); // @translate
+            return $this->returnError($message);
+        }
+
+        if (!$user->isActive()) {
+            $message = $this->translate('User is not active and cannot update password.'); // @translate
+            return $this->returnError($message);
+        }
+
+        $token = $data['token'] ?? null;
+
+        // Send a token with a simple id.
+        if (!$token) {
+            // Adapted from \Omeka\Stdlib\Mailer::sendUserActivation()
+
+            // Remove existing token before creating new one, there can be only one.
+            $passwordCreation = $this->entityManager
+                ->getRepository(\Omeka\Entity\PasswordCreation::class)
+                ->findOneBy(['user' => $user]);
+            if ($passwordCreation) {
+                $this->entityManager->remove($passwordCreation);
+                $this->entityManager->flush();
+            }
+            /** @var \Omeka\Stdlib\Mailer $mailer */
+            $mailer = $this->mailer();
+            $passwordCreation = $mailer->getPasswordCreation($user, false);
+            // The id is created automatically and cannot be changed via setId().
+            // So create a unique random token automatically.
+            while (true) {
+                $newId = Rand::getString(8, '1234567890');
+                $check = $this->entityManager->find(
+                    \Omeka\Entity\PasswordCreation::class,
+                    $newId
+                );
+                if (!$check) {
+                    break;
+                }
+            }
+            $sql = <<<'SQL'
+UPDATE `password_creation`
+SET `id` = :new_id
+WHERE `id` = :old_id;
+SQL;
+            $this->entityManager->getConnection()->executeStatement($sql, [
+                'old_id' => $passwordCreation->getId(),
+                'new_id' => $newId,
+            ]);
+
+            // Send the token.
+            $installationTitle = $mailer->getInstallationTitle();
+            $subject = new PsrMessage(
+                'User token for {site_title}', // @translate
+                ['site_title' => $installationTitle]
+            );
+            $body = new PsrMessage('Greetings!
+
+To reset your password on {site_title}, fill this token in the app: {token}.
+
+Your activation link will expire on {date}.', // @translate
+                [
+                    'site_title' => $installationTitle,
+                    'token' => $newId,
+                    // The default expiration time is too much long (two weeks), so
+                    // limit it to one hour.
+                    // $this->viewHelpers()->get('i18n')->dateFormat($passwordCreation->getExpiration(), 'medium', 'medium')
+                    'date' => $this->viewHelpers()->get('i18n')->dateFormat(
+                        $passwordCreation->getCreated()->add(new \DateInterval('PT1H')),
+                        'medium',
+                        'medium'
+                    ),
+                ]
+            );
+
+            $message = $mailer->createMessage();
+            $message->addTo($user->getEmail(), $user->getName())
+                ->setSubject($subject->setTranslator($this->translator())->translate())
+                ->setBody($body->setTranslator($this->translator())->translate());
+            $mailer->send($message);
+
+            $result = [
+                'status' => self::STATUS_SUCCESS,
+                'data' => [
+                    // Of course, don't send anything else here.
+                    'email' => $data['email'],
+                ],
+            ];
+            return new ApiJsonModel($result, $this->getViewOptions());
+        }
+
+        // Check token.
+        // See \Omeka\Controller\ApiController::createPasswordAction()
+        /** @var \Omeka\Entity\PasswordCreation $passwordCreation */
+        $passwordCreation = $this->entityManager->find(
+            \Omeka\Entity\PasswordCreation::class,
+            $token
+        );
+
+        if (!$passwordCreation) {
+            $message = $this->translate('Invalid token.'); // @translate
+            return $this->returnError($message);
+        }
+
+        $userToken = $passwordCreation->getUser();
+        if ($userToken->getId() !== $user->getId()) {
+            $message = $this->translate('This token is invalid. Check your email.'); // @translate
+            return $this->returnError($message);
+        }
+
+        // The default expiration (deux weeks) is too much long for a
+        // forgot-password process, so use 1 hour.
+        if (new \DateTime > $passwordCreation->getCreated()->add(new \DateInterval('PT1H'))) {
+            $this->entityManager->remove($passwordCreation);
+            $this->entityManager->flush();
+            $message = $this->translate('Password token expired.'); // @translate
+            return $this->returnError($message);
+        }
+
+        if (!isset($data['password'])) {
+            $message = $this->translate('Password is required.'); // @translate
+            return $this->returnError($message);
+        }
+
+        if (strlen($data['password']) < 6) {
+            $message = $this->translate('New password should have 6 characters or more.'); // @translate
+            return $this->returnError($message);
+        }
+
+        $user->setPassword($data['password']);
+        if ($passwordCreation->activate()) {
+            $user->setIsActive(true);
+        }
+        $this->entityManager->remove($passwordCreation);
+        $this->entityManager->flush();
+
+        $result = [
+            'status' => self::STATUS_SUCCESS,
+            'data' => [
+                'user' => $this->userAdapter->getRepresentation($user),
+            ],
         ];
         return new ApiJsonModel($result, $this->getViewOptions());
     }

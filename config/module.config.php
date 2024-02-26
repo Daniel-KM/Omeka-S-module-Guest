@@ -193,6 +193,16 @@ return [
                             ],
                         ],
                     ],
+                    'guest-forgot-password' => [
+                        'type' => \Laminas\Router\Http\Literal::class,
+                        'options' => [
+                            'route' => '/forgot-password',
+                            'defaults' => [
+                                'controller' => Controller\ApiController::class,
+                                'action' => 'forgot-password',
+                            ],
+                        ],
+                    ],
                 ],
             ],
         ],
