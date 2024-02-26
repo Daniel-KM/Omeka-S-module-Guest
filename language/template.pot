@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-19 00:00+0000"
+"POT-Creation-Date: 2024-02-26 00:00+0000"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,154 +22,171 @@ msgstr ""
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr ""
 
-#: Module.php:458
+#: Module.php:459
 msgid "CAS Login"
 msgstr ""
 
-#: src/Controller/ApiController.php:103 src/Controller/ApiController.php:135
-#: src/Controller/ApiController.php:155 src/Controller/ApiController.php:390
-#: src/Controller/ApiController.php:414 src/Controller/ApiController.php:732
+#: src/Controller/ApiController.php:104 src/Controller/ApiController.php:136
+#: src/Controller/ApiController.php:156 src/Controller/ApiController.php:393
+#: src/Controller/ApiController.php:417 src/Controller/ApiController.php:918
 msgid "Access forbidden."
 msgstr ""
 
-#: src/Controller/ApiController.php:117 src/Controller/ApiController.php:125
-#: src/Controller/ApiController.php:145 src/Controller/ApiController.php:165
-#: src/Controller/ApiController.php:173 src/Controller/ApiController.php:181
-#: src/Controller/ApiController.php:189 src/Controller/ApiController.php:197
+#: src/Controller/ApiController.php:118 src/Controller/ApiController.php:126
+#: src/Controller/ApiController.php:146 src/Controller/ApiController.php:166
+#: src/Controller/ApiController.php:174 src/Controller/ApiController.php:182
+#: src/Controller/ApiController.php:190 src/Controller/ApiController.php:198
 msgid "Method Not Allowed"
 msgstr ""
 
-#: src/Controller/ApiController.php:228
+#: src/Controller/ApiController.php:229
 msgid "User cannot login: already logged."
 msgstr ""
 
-#: src/Controller/ApiController.php:244 src/Controller/ApiController.php:463
+#: src/Controller/ApiController.php:245 src/Controller/ApiController.php:466
+#: src/Controller/ApiController.php:735
 msgid "Email is required."
 msgstr ""
 
-#: src/Controller/ApiController.php:250 src/Controller/ApiController.php:469
+#: src/Controller/ApiController.php:251 src/Controller/ApiController.php:472
+#: src/Controller/ApiController.php:740 src/Controller/ApiController.php:751
 msgid "Invalid email."
 msgstr ""
 
-#: src/Controller/ApiController.php:256
+#: src/Controller/ApiController.php:257 src/Controller/ApiController.php:869
 msgid "Password is required."
 msgstr ""
 
-#: src/Controller/ApiController.php:269 src/Controller/ApiController.php:276
+#: src/Controller/ApiController.php:270 src/Controller/ApiController.php:277
 msgid "Wrong email or password."
 msgstr ""
 
-#: src/Controller/ApiController.php:284
-#, php-format
-msgid "Role \"%s\" is not allowed to login via api."
-msgstr ""
-
-#: src/Controller/ApiController.php:309
+#: src/Controller/ApiController.php:312
 msgid "Your account is under moderation for opening."
 msgstr ""
 
-#: src/Controller/ApiController.php:314 src/Controller/ApiController.php:517
+#: src/Controller/ApiController.php:317 src/Controller/ApiController.php:520
 msgid "Check your email to confirm your registration."
 msgstr ""
 
-#: src/Controller/ApiController.php:352
+#: src/Controller/ApiController.php:355
 msgid "User not logged."
 msgstr ""
 
-#: src/Controller/ApiController.php:371
+#: src/Controller/ApiController.php:374
 msgid "Successfully logout."
 msgstr ""
 
-#: src/Controller/ApiController.php:421
+#: src/Controller/ApiController.php:424
 msgid "User cannot register: already logged."
 msgstr ""
 
-#: src/Controller/ApiController.php:444
+#: src/Controller/ApiController.php:447
 msgid "A site is required to register."
 msgstr ""
 
-#: src/Controller/ApiController.php:456
+#: src/Controller/ApiController.php:459
 msgid "The site doesn’t exist."
 msgstr ""
 
-#: src/Controller/ApiController.php:500 src/Controller/ApiController.php:511
+#: src/Controller/ApiController.php:503 src/Controller/ApiController.php:514
 msgid "Already registered."
 msgstr ""
 
-#: src/Controller/ApiController.php:559
+#: src/Controller/ApiController.php:562
 msgid "Unknown error before creation of user."
 msgstr ""
 
-#: src/Controller/ApiController.php:590
+#: src/Controller/ApiController.php:596
 msgid "Unknown error during creation of user."
 msgstr ""
 
-#: src/Controller/ApiController.php:682
+#: src/Controller/ApiController.php:688
 msgid "An error occurred when the email was sent."
 msgstr ""
 
-#: src/Controller/ApiController.php:689
+#: src/Controller/ApiController.php:695
 msgid "Thank you for registering. You can now log in and use the library."
 msgstr ""
 
-#: src/Controller/ApiController.php:692
+#: src/Controller/ApiController.php:698
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request, you will be able to log in."
 msgstr ""
 
-#: src/Controller/ApiController.php:695
+#: src/Controller/ApiController.php:701
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request, a moderator will confirm "
 "registration."
 msgstr ""
 
-#: src/Controller/ApiController.php:808
-msgid "Request is empty."
+#: src/Controller/ApiController.php:721
+msgid "A logged user cannot change the password."
 msgstr ""
 
-#: src/Controller/ApiController.php:833
-msgid "Email cannot be updated: the user is not related to a site."
+#: src/Controller/ApiController.php:756
+msgid "User is not active and cannot update password."
+msgstr ""
+
+#: src/Controller/ApiController.php:849
+msgid "Invalid token."
 msgstr ""
 
 #: src/Controller/ApiController.php:855
-msgid "Your request contains metadata that cannot be updated."
+msgid "This token is invalid. Check your email."
 msgstr ""
 
-#: src/Controller/ApiController.php:862
-msgid "The new name is empty."
+#: src/Controller/ApiController.php:864
+msgid "Password token expired."
 msgstr ""
 
-#: src/Controller/ApiController.php:877
-msgid "You cannot update password and another data in the same time."
-msgstr ""
-
-#: src/Controller/ApiController.php:883
-msgid "Existing password empty."
-msgstr ""
-
-#: src/Controller/ApiController.php:889
-msgid "New password empty."
-msgstr ""
-
-#: src/Controller/ApiController.php:895
+#: src/Controller/ApiController.php:874 src/Controller/ApiController.php:1081
 msgid "New password should have 6 characters or more."
 msgstr ""
 
-#: src/Controller/ApiController.php:903
+#: src/Controller/ApiController.php:994
+msgid "Request is empty."
+msgstr ""
+
+#: src/Controller/ApiController.php:1019
+msgid "Email cannot be updated: the user is not related to a site."
+msgstr ""
+
+#: src/Controller/ApiController.php:1041
+msgid "Your request contains metadata that cannot be updated."
+msgstr ""
+
+#: src/Controller/ApiController.php:1048
+msgid "The new name is empty."
+msgstr ""
+
+#: src/Controller/ApiController.php:1063
+msgid "You cannot update password and another data in the same time."
+msgstr ""
+
+#: src/Controller/ApiController.php:1069
+msgid "Existing password empty."
+msgstr ""
+
+#: src/Controller/ApiController.php:1075
+msgid "New password empty."
+msgstr ""
+
+#: src/Controller/ApiController.php:1089
 msgid "Wrong password."
 msgstr ""
 
-#: src/Controller/ApiController.php:937
+#: src/Controller/ApiController.php:1123
 msgid "You cannot update email and another data in the same time."
 msgstr ""
 
-#: src/Controller/ApiController.php:943
+#: src/Controller/ApiController.php:1129
 msgid "New email empty."
 msgstr ""
 
-#: src/Controller/ApiController.php:1028
+#: src/Controller/ApiController.php:1214
 msgid "Check your email \"{email}\" to confirm the change."
 msgstr ""
 
@@ -313,71 +330,71 @@ msgid ""
 "should uninstall the module once params are checked."
 msgstr ""
 
-#: Module.php:118 Module.php:513 src/Form/SiteSettingsFieldset.php:14
+#: Module.php:118 Module.php:514 src/Form/SiteSettingsFieldset.php:14
 #: src/Form/SiteSettingsFieldset.php:17 src/Form/SettingsFieldset.php:15
 #: src/Form/SettingsFieldset.php:18
 msgid "Guest"
 msgstr ""
 
-#: Module.php:357
+#: Module.php:358
 msgid "All guests must agreed the terms one more time."
 msgstr ""
 
-#: Module.php:362
+#: Module.php:363
 msgid "All guests agreed the terms."
 msgstr ""
 
-#: Module.php:533 Module.php:592
+#: Module.php:534 Module.php:593
 msgid "Agreed terms"
 msgstr ""
 
-#: Module.php:574
+#: Module.php:575
 msgid "Guest site"
 msgstr ""
 
-#: Module.php:575
+#: Module.php:576
 msgid ""
 "This parameter is used to manage some site related features, in particular "
 "messages."
 msgstr ""
 
-#: Module.php:604
+#: Module.php:605
 msgid ""
 "Send an email to confirm registration after moderation (user should be "
 "activated first)"
 msgstr ""
 
-#: Module.php:628
+#: Module.php:629
 msgid "Clear registration token"
 msgstr ""
 
-#: Module.php:722
+#: Module.php:723
 msgid "You cannot send a message to confirm registration: user is not active."
 msgstr ""
 
-#: Module.php:739
+#: Module.php:740
 msgid ""
 "A default site should be set or the user should have a site in order to "
 "confirm registration."
 msgstr ""
 
-#: Module.php:771
+#: Module.php:772
 msgid "The message of confirmation of the registration has been sent."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/SendEmail.php:52
+#: src/Mvc/Controller/Plugin/SendEmail.php:51
 msgid "Email not sent: the subject is missing."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/SendEmail.php:58
+#: src/Mvc/Controller/Plugin/SendEmail.php:57
 msgid "Email not sent: content is missing (subject: {subject})."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/SendEmail.php:66
+#: src/Mvc/Controller/Plugin/SendEmail.php:65
 msgid "Email not sent: no recipient (subject: {subject})."
 msgstr ""
 
-#: src/Mvc/Controller/Plugin/SendEmail.php:123
+#: src/Mvc/Controller/Plugin/SendEmail.php:122
 msgid "A mail was sent to {user_emails} with subject: {subject}"
 msgstr ""
 
@@ -446,8 +463,8 @@ msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:116 src/Form/SiteSettingsFieldset.php:175
 #: src/Form/SettingsFieldset.php:207 src/Form/SettingsFieldset.php:266
-#: config/module.config.php:228 config/module.config.php:240
-#: config/module.config.php:274 config/module.config.php:286
+#: config/module.config.php:238 config/module.config.php:250
+#: config/module.config.php:284 config/module.config.php:296
 msgid "[{site_title}] Confirm email"
 msgstr ""
 
@@ -474,7 +491,7 @@ msgid "Subject of the email sent to confirm registration after moderation"
 msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:146 src/Form/SettingsFieldset.php:237
-#: config/module.config.php:234 config/module.config.php:280
+#: config/module.config.php:244 config/module.config.php:290
 msgid "[{site_title}] Account open"
 msgstr ""
 
@@ -527,7 +544,7 @@ msgid "The message to  display after confirmation of a mail."
 msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:207 src/Form/SettingsFieldset.php:298
-#: config/module.config.php:246 config/module.config.php:292
+#: config/module.config.php:256 config/module.config.php:302
 msgid "Your email \"{user_email}\" is confirmed for {site_title}."
 msgstr ""
 
@@ -540,7 +557,7 @@ msgid "Message to confirm registration and moderation on the page"
 msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:237 src/Form/SettingsFieldset.php:328
-#: config/module.config.php:248 config/module.config.php:294
+#: config/module.config.php:258 config/module.config.php:304
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request and we have confirmed it, you "
@@ -774,56 +791,74 @@ msgstr ""
 msgid "I agree with terms and conditions."
 msgstr ""
 
-#: src/Controller/ApiController.php:580
-#, php-format
-msgid "An error occurred after creation of the guest user: %s"
+#: src/Controller/ApiController.php:285
+msgid "Role \"{role]\" is not allowed to login via api."
 msgstr ""
 
-#: src/Controller/ApiController.php:614
+#: src/Controller/ApiController.php:584
+#: src/Controller/Site/AnonymousController.php:212
+msgid "An error occurred after creation of the guest user: {exception}"
+msgstr ""
+
+#: src/Controller/ApiController.php:620
 msgid ""
 "Guest Api: an app uses \"user-settings\" instead of \"o:settings\" when "
 "registering a user."
 msgstr ""
 
-#: src/Controller/ApiController.php:951
+#: src/Controller/ApiController.php:802
+msgid "User token for {site_title}"
+msgstr ""
+
+#: src/Controller/ApiController.php:805
+msgid ""
+"Greetings!\n"
+"\n"
+"To reset your password on {site_title}, fill this token in the app: "
+"{token}.\n"
+"\n"
+"Your activation link will expire on {date}."
+msgstr ""
+
+#: src/Controller/ApiController.php:1137
 msgid "\"{email}\" is not an email."
 msgstr ""
 
-#: src/Controller/ApiController.php:961
+#: src/Controller/ApiController.php:1147
 #: src/Controller/Site/GuestController.php:210
 msgid "The new email is the same than the current one."
 msgstr ""
 
-#: src/Controller/ApiController.php:976
+#: src/Controller/ApiController.php:1162
 msgid ""
 "User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", "
 "used by user #{user_id_2}."
 msgstr ""
 
-#: src/Controller/ApiController.php:981 src/Controller/ApiController.php:1002
+#: src/Controller/ApiController.php:1167 src/Controller/ApiController.php:1188
 msgid "The email \"{email}\" is not yours."
 msgstr ""
 
-#: src/Controller/ApiController.php:997
+#: src/Controller/ApiController.php:1183
 msgid ""
 "User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", "
 "used by user #{user_id_2} (second check)."
 msgstr ""
 
-#: src/Controller/ApiController.php:1019
+#: src/Controller/ApiController.php:1205
 msgid "[GuestApi] An error occurred when the email was sent."
 msgstr ""
 
-#: src/Controller/ApiController.php:1139
+#: src/Controller/ApiController.php:1325
 msgid "Missing site."
 msgstr ""
 
-#: src/Controller/ApiController.php:1201
+#: src/Controller/ApiController.php:1387
 #: src/Controller/Site/AbstractGuestController.php:231
 msgid "[No subject]"
 msgstr ""
 
-#: src/Controller/ApiController.php:1202
+#: src/Controller/ApiController.php:1388
 #: src/Controller/Site/AbstractGuestController.php:232
 msgid "[No message]"
 msgstr ""
@@ -831,10 +866,6 @@ msgstr ""
 #: src/Controller/Site/AnonymousController.php:119
 #: src/Controller/Site/AnonymousController.php:125
 msgid "A password must be set."
-msgstr ""
-
-#: src/Controller/Site/AnonymousController.php:212
-msgid "An error occurred after creation of the guest user: {exception}"
 msgstr ""
 
 #: src/Controller/Site/AnonymousController.php:272
@@ -978,11 +1009,11 @@ msgstr ""
 msgid "Guest register"
 msgstr ""
 
-#: config/module.config.php:222 config/module.config.php:268
+#: config/module.config.php:232 config/module.config.php:278
 msgid "My dashboard"
 msgstr ""
 
-#: config/module.config.php:229 config/module.config.php:275
+#: config/module.config.php:239 config/module.config.php:285
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>You have registered for an account on <a href=\"{site_url}\">{site_title}"
@@ -993,7 +1024,7 @@ msgid ""
 "disregard this email.</p>"
 msgstr ""
 
-#: config/module.config.php:235 config/module.config.php:281
+#: config/module.config.php:245 config/module.config.php:291
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>We are happy to open your account on <a href=\"{site_url}\">{site_title}</"
@@ -1003,7 +1034,7 @@ msgid ""
 "<p>You can now login and discover the site.</p>"
 msgstr ""
 
-#: config/module.config.php:241 config/module.config.php:287
+#: config/module.config.php:251 config/module.config.php:297
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>You have requested to update email on <a href=\"{site_url}\">{site_title}"
@@ -1014,6 +1045,6 @@ msgid ""
 "disregard this email.</p>"
 msgstr ""
 
-#: config/module.config.php:249 config/module.config.php:295
+#: config/module.config.php:259 config/module.config.php:305
 msgid "I agree the terms and conditions."
 msgstr ""
