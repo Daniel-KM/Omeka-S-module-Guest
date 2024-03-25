@@ -473,7 +473,7 @@ class Module extends AbstractModule
             foreach ($idps as $idpSlug => $idp) {
                 $links[] = [
                     'url' => $url('sso', ['action' => 'login', 'idp' => $idpSlug], true),
-                    'label' => !empty($idp['idp_entity_name']) ? $idp['idp_entity_name'] : ($idp['idp_entity_id'] ?? '[Unknown idp]'),
+                    'label' => !empty($idp['idp_entity_name']) ? $idp['idp_entity_name'] : ($idp['idp_entity_id'] ?? $view->translate('[Unknown idp]')), // @translate
                     'class' => str_replace('.', '-', $idpSlug),
                 ];
             }

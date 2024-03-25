@@ -2,8 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-26 00:00+0000"
-"MI+ZONE\n"
+"POT-Creation-Date: 2024-03-25 00:00+0000"
 "PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/omeka/language/"
@@ -20,9 +19,13 @@ msgstr ""
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr "Le module %1$s doit être mis à niveau à la version %2$s ou supérieure."
 
-#: Module.php:459
+#: Module.php:465
 msgid "CAS Login"
 msgstr "Connexion CAS"
+
+#: Module.php:476
+msgid "[Unknown idp]"
+msgstr "[IdP inconnu]"
 
 #: src/Controller/ApiController.php:104 src/Controller/ApiController.php:136
 #: src/Controller/ApiController.php:156 src/Controller/ApiController.php:393
@@ -350,7 +353,14 @@ msgstr ""
 "module a été désactivé, mais vous devez le désinstaller une fois les "
 "paramètres vérifiés."
 
-#: Module.php:118 Module.php:514 src/Form/SiteSettingsFieldset.php:14
+#: data/scripts/upgrade.php:138
+msgid ""
+"A new option allows to display the list of external accounts on login page."
+msgstr ""
+"Une nouvelle option permet d’afficher la liste des comptes externes sur la "
+"page de connexion."
+
+#: Module.php:118 Module.php:520 src/Form/SiteSettingsFieldset.php:14
 #: src/Form/SiteSettingsFieldset.php:17 src/Form/SettingsFieldset.php:15
 #: src/Form/SettingsFieldset.php:18
 msgid "Guest"
@@ -364,15 +374,15 @@ msgstr "Tous les invités doivent accepter les termes une nouvelle fois."
 msgid "All guests agreed the terms."
 msgstr "Tous les invités ont accepté les termes."
 
-#: Module.php:534 Module.php:593
+#: Module.php:540 Module.php:599
 msgid "Agreed terms"
 msgstr "A accepté les termes"
 
-#: Module.php:575
+#: Module.php:581
 msgid "Guest site"
 msgstr "Site utilisateur"
 
-#: Module.php:576
+#: Module.php:582
 msgid ""
 "This parameter is used to manage some site related features, in particular "
 "messages."
@@ -380,7 +390,7 @@ msgstr ""
 "Ce paramètre est utilisé pour gérer certaines fonctionnalités liées à "
 "certains sites, en particulier les messages."
 
-#: Module.php:605
+#: Module.php:611
 msgid ""
 "Send an email to confirm registration after moderation (user should be "
 "activated first)"
@@ -388,17 +398,17 @@ msgstr ""
 "Envoyer un mail pour confirmer l’inscription après la modération "
 "(l’utilisateur doit être d’abord activé)"
 
-#: Module.php:629
+#: Module.php:635
 msgid "Clear registration token"
 msgstr "Supprimer le jeton d’enregistrement"
 
-#: Module.php:723
+#: Module.php:729
 msgid "You cannot send a message to confirm registration: user is not active."
 msgstr ""
 "Vous ne pouvez pas envoyer un message de confirmation de l’inscription : "
 "l’utilisateur n’est pas actif."
 
-#: Module.php:740
+#: Module.php:746
 msgid ""
 "A default site should be set or the user should have a site in order to "
 "confirm registration."
@@ -406,7 +416,7 @@ msgstr ""
 "Un site par défaut doit être défini pour que l’utilisateur puisse confirmer "
 "son inscription."
 
-#: Module.php:772
+#: Module.php:778
 msgid "The message of confirmation of the registration has been sent."
 msgstr "Le message de confirmation de l’inscription a été envoyé."
 
@@ -490,8 +500,8 @@ msgstr ""
 "d’indiquer ce que les utilisateurs peuvent faire et ne pas faire."
 
 #: src/Form/SiteSettingsFieldset.php:88 src/Form/SettingsFieldset.php:179
-msgid "guest-capabilities"
-msgstr "guest-capabilities"
+msgid "guest_capabilities"
+msgstr "guest_capabilities"
 
 #: src/Form/SiteSettingsFieldset.php:112
 msgid "Subject of the email sent to confirm email"
@@ -780,11 +790,15 @@ msgstr "Chemin par défaut de la page des termes et conditions"
 msgid "Default redirect page after login"
 msgstr "Page de redirection par défaut après connexion"
 
-#: src/Form/SettingsFieldset.php:380
+#: src/Form/SettingsFieldset.php:378
+msgid "Append cas/sso login links to login page"
+msgstr "Ajouter les liens cas/sso sur la page de connexion"
+
+#: src/Form/SettingsFieldset.php:392
 msgid "Requires a site to register via api"
 msgstr "Nécessite un site pour s’inscrire via l’api"
 
-#: src/Form/SettingsFieldset.php:381
+#: src/Form/SettingsFieldset.php:393
 msgid ""
 "If checked, a site id or slug will be required when registering via api. "
 "Note: when this setting is set, all previous users must be added to a site."
@@ -793,11 +807,11 @@ msgstr ""
 "l’api. Note : quand ce paramètre est actif, tous les utilisateurs existants "
 "doivent être ajouté à un site."
 
-#: src/Form/SettingsFieldset.php:392
+#: src/Form/SettingsFieldset.php:404
 msgid "Validate email set by api"
 msgstr "Valider le mail indiqué par l’api"
 
-#: src/Form/SettingsFieldset.php:393
+#: src/Form/SettingsFieldset.php:405
 msgid ""
 "If checked, the user won’t have to validate his email, so he will be able to "
 "login directly."
@@ -805,23 +819,23 @@ msgstr ""
 "Si coché, l’utilisateur ne devra pas valider son mail et pourra donc se "
 "connecter directement."
 
-#: src/Form/SettingsFieldset.php:404
+#: src/Form/SettingsFieldset.php:416
 msgid "Roles that can login via api"
 msgstr "Rôles qui peuvent se connecter via l’api"
 
-#: src/Form/SettingsFieldset.php:405
+#: src/Form/SettingsFieldset.php:417
 msgid "To allow full access via api increases risks of intrusion."
 msgstr "Autoriser les accès à tous via l’api augmente les risques d’intrusion."
 
-#: src/Form/SettingsFieldset.php:414
+#: src/Form/SettingsFieldset.php:426
 msgid "Select roles…"
 msgstr "Choisir des rôles…"
 
-#: src/Form/SettingsFieldset.php:422
+#: src/Form/SettingsFieldset.php:434
 msgid "Create a local session cookie for api"
 msgstr "Créer un cookie de session local pour l’api"
 
-#: src/Form/SettingsFieldset.php:423
+#: src/Form/SettingsFieldset.php:435
 msgid ""
 "If checked, a session cookie will be created, so the user will be able to "
 "login in Omeka from an other web app."
@@ -829,7 +843,7 @@ msgstr ""
 "Si coché, un cookie de session sera créé et l’utilisateur pourra donc se "
 "connecter à Omeka à partir d’une autre application web."
 
-#: src/Form/SettingsFieldset.php:434
+#: src/Form/SettingsFieldset.php:446
 msgid "Limit access to api to these domains (cors)"
 msgstr "Limiter l’accès à l’api pour ces domaines (cors)"
 
