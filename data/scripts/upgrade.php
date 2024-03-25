@@ -130,3 +130,12 @@ SQL;
         }
     }
 }
+
+if (version_compare($oldVersion, '3.4.24', '<')) {
+    // On update, this option is set to true to update themes if they take it in account.
+    $settings->set('guest_append_links_to_login_view', true);
+    $message = new \Common\Stdlib\PsrMessage(
+        'A new option allows to display the list of external accounts on login page.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
