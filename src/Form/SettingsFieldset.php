@@ -370,6 +370,18 @@ If you did not request to update your email on {main_title}, please disregard th
                 ],
             ])
 
+            ->add([
+                'name' => 'guest_append_links_to_login_view',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Append cas/sso login links to login page', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_append_links_to_login_view',
+                ],
+            ])
+
             // Specific to api.
 
             ->add([

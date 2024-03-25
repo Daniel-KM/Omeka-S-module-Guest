@@ -446,7 +446,13 @@ class Module extends AbstractModule
 
     public function addLoginLinks(Event $event): void
     {
+        $settings = $this->getServiceLocator()->get('Omeka\Settings');
+        if (!$settings->get('guest_append_links_to_login_view')) {
+            return;
+        }
+
         $view = $event->getTarget();
+
         $plugins = $view->getHelperPluginManager();
 
         $links = [];
