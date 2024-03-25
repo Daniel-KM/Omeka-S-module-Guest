@@ -146,7 +146,7 @@ by [BibLibre].
 [Shibboleth]: https://gitlab.com/Daniel-KM/Omeka-S-module-Shibboleth
 [more information to upgrade templates]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/blob/9964d30a65505975c4dd1af42eccbc001a02a4b9/Upgrade_from_GuestUser.md
 [version 3.4.20]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/tree/3.4.20
-[Installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
+[installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
 [modules/Guest/data/scripts/convert_guest_user_templates.sh]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/blob/master/data/scripts/convert_guest_user_templates.sh
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
