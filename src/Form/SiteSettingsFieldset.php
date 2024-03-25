@@ -46,7 +46,7 @@ info@example2.org',
                     'info' => 'The text to use for the "Login" link in the user bar', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'guest-login-text',
+                    'id' => 'guest_login_text',
                 ],
             ])
 
@@ -59,7 +59,7 @@ info@example2.org',
                     'info' => 'The text to use for the "Register" link in the user bar', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'guest-register-text',
+                    'id' => 'guest_register_text',
                 ],
             ])
 
@@ -72,7 +72,7 @@ info@example2.org',
                     'info' => 'The text to use for the label on the user’s dashboard', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'guest-dashboard-label',
+                    'id' => 'guest_dashboard_label',
                 ],
             ])
 
@@ -85,7 +85,7 @@ info@example2.org',
                     'info' => 'Add some text to the registration screen so people will know what they get for registering. As you enable and configure plugins that make use of the guest, please give them guidance about what they can and cannot do.', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'guest-capabilities',
+                    'id' => 'guest_capabilities',
                 ],
             ])
 
@@ -99,7 +99,7 @@ info@example2.org',
                     'info' => 'Add a shorter version to use as a dropdown from the user bar. If empty, no dropdown will appear.', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'guest-short-capabilities',
+                    'id' => 'guest_short_capabilities',
                 ],
             ])
             */
@@ -248,7 +248,7 @@ If you did not request to update your email on {main_title}, please disregard th
                     'info' => 'The text to display to accept condtions.', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'guest-terms-text',
+                    'id' => 'guest_terms_text',
                     'rows' => 12,
                 ],
             ])
@@ -262,7 +262,7 @@ If you did not request to update your email on {main_title}, please disregard th
                     'info' => 'If the text is on a specific page, or for other usage.', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'guest-terms-page',
+                    'id' => 'guest_terms_page',
                 ],
             ])
 
@@ -275,7 +275,7 @@ If you did not request to update your email on {main_title}, please disregard th
                     'info' => 'Set "home" for main home page (admin or public), "site" for the current site home, "me" for guest account, or any path starting with "/", including "/" itself for main home page.',
                 ],
                 'attributes' => [
-                    'id' => 'guest-redirect',
+                    'id' => 'guest_redirect',
                     'required' => false,
                 ],
             ])
