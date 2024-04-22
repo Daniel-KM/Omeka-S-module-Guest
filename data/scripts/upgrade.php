@@ -2,7 +2,7 @@
 
 namespace Guest;
 
-use Omeka\Stdlib\Message;
+use Common\Stdlib\PsrMessage;
 
 /**
  * @var Module $this
@@ -28,10 +28,10 @@ $entityManager = $services->get('Omeka\EntityManager');
 
 $localConfig = require dirname(__DIR__, 2) . '/config/module.config.php';
 
-if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.54')) {
-    $message = new Message(
+if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.57')) {
+    $message = new \Omeka\Stdlib\Message(
         $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
-        'Common', '3.4.54'
+        'Common', '3.4.57'
     );
     throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
 }
@@ -87,7 +87,7 @@ if (version_compare($oldVersion, '3.4.21', '<')) {
 
     if ($this->isModuleActive('GuestApi')) {
         $this->disableModule('GuestApi');
-        $message = new \Common\Stdlib\PsrMessage(
+        $message = new PsrMessage(
             'This module integrates the features from module GuestApi, that is no longer needed. The config were merged (texts of messages) so you should check them in {link_url}main settings{link_end}. The module was disabled, but you should uninstall the module once params are checked.', // @translate
             [
                 'link_url' => sprintf('<a href="%s">', $urlPlugin->fromRoute('admin') . '/setting#guest'),
@@ -134,7 +134,7 @@ SQL;
 if (version_compare($oldVersion, '3.4.24', '<')) {
     // On update, this option is set to true to update themes if they take it in account.
     $settings->set('guest_append_links_to_login_view', true);
-    $message = new \Common\Stdlib\PsrMessage(
+    $message = new PsrMessage(
         'A new option allows to display the list of external accounts on login page.' // @translate
     );
     $messenger->addSuccess($message);
