@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-25 00:00+0000"
+"POT-Creation-Date: 2024-04-29 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,11 +22,11 @@ msgstr ""
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr ""
 
-#: Module.php:465
+#: Module.php:437
 msgid "CAS Login"
 msgstr ""
 
-#: Module.php:476
+#: Module.php:448
 msgid "[Unknown idp]"
 msgstr ""
 
@@ -339,56 +339,85 @@ msgid ""
 "A new option allows to display the list of external accounts on login page."
 msgstr ""
 
-#: Module.php:118 Module.php:520 src/Form/SiteSettingsFieldset.php:14
+#: data/scripts/upgrade.php:147
+msgid ""
+"The form to reset agreement status was moved to a task of module {link}Easy "
+"Admin{link_end}."
+msgstr ""
+
+#: Module.php:118 Module.php:492 src/Form/SiteSettingsFieldset.php:14
 #: src/Form/SiteSettingsFieldset.php:17 src/Form/SettingsFieldset.php:15
 #: src/Form/SettingsFieldset.php:18
 msgid "Guest"
 msgstr ""
 
-#: Module.php:358
-msgid "All guests must agreed the terms one more time."
-msgstr ""
-
-#: Module.php:363
-msgid "All guests agreed the terms."
-msgstr ""
-
-#: Module.php:540 Module.php:599
+#: Module.php:512 Module.php:571
 msgid "Agreed terms"
 msgstr ""
 
-#: Module.php:581
+#: Module.php:553
 msgid "Guest site"
 msgstr ""
 
-#: Module.php:582
+#: Module.php:554
 msgid ""
 "This parameter is used to manage some site related features, in particular "
 "messages."
 msgstr ""
 
-#: Module.php:611
+#: Module.php:583
 msgid ""
 "Send an email to confirm registration after moderation (user should be "
 "activated first)"
 msgstr ""
 
-#: Module.php:635
+#: Module.php:607
 msgid "Clear registration token"
 msgstr ""
 
-#: Module.php:729
+#: Module.php:701
 msgid "You cannot send a message to confirm registration: user is not active."
 msgstr ""
 
-#: Module.php:746
+#: Module.php:718
 msgid ""
 "A default site should be set or the user should have a site in order to "
 "confirm registration."
 msgstr ""
 
-#: Module.php:778
+#: Module.php:750
 msgid "The message of confirmation of the registration has been sent."
+msgstr ""
+
+#: Module.php:843
+msgid "Guest: Reset terms agreement for all guests"
+msgstr ""
+
+#: Module.php:850
+msgid "Options to reset agreement terms"
+msgstr ""
+
+#: Module.php:861
+msgid "Reset terms agreement for all guests"
+msgstr ""
+
+#: Module.php:862
+msgid ""
+"When terms and conditions are updated, you may want guests agree them one "
+"more time. Warning: to set false will impact all guests. So warn them some "
+"time before."
+msgstr ""
+
+#: Module.php:864
+msgid "No change"
+msgstr ""
+
+#: Module.php:865
+msgid "Set false"
+msgstr ""
+
+#: Module.php:866
+msgid "Set true"
 msgstr ""
 
 #: src/Mvc/Controller/Plugin/SendEmail.php:51
@@ -405,6 +434,18 @@ msgstr ""
 
 #: src/Mvc/Controller/Plugin/SendEmail.php:122
 msgid "A mail was sent to {user_emails} with subject: {subject}"
+msgstr ""
+
+#: src/Job/GuestAgreement.php:23
+msgid "All guests must agreed the terms one more time."
+msgstr ""
+
+#: src/Job/GuestAgreement.php:29
+msgid "All guests agreed the terms."
+msgstr ""
+
+#: src/Job/GuestAgreement.php:34
+msgid "No process can be done without settings."
 msgstr ""
 
 #: src/Authentication/Adapter/PasswordAdapter.php:25
@@ -472,7 +513,7 @@ msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:116 src/Form/SiteSettingsFieldset.php:175
 #: src/Form/SettingsFieldset.php:207 src/Form/SettingsFieldset.php:266
-#: config/module.config.php:238 config/module.config.php:250
+#: config/module.config.php:237 config/module.config.php:249
 #: config/module.config.php:284 config/module.config.php:296
 msgid "[{site_title}] Confirm email"
 msgstr ""
@@ -500,7 +541,7 @@ msgid "Subject of the email sent to confirm registration after moderation"
 msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:146 src/Form/SettingsFieldset.php:237
-#: config/module.config.php:244 config/module.config.php:290
+#: config/module.config.php:243 config/module.config.php:290
 msgid "[{site_title}] Account open"
 msgstr ""
 
@@ -553,7 +594,7 @@ msgid "The message to  display after confirmation of a mail."
 msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:207 src/Form/SettingsFieldset.php:298
-#: config/module.config.php:256 config/module.config.php:302
+#: config/module.config.php:255 config/module.config.php:302
 msgid "Your email \"{user_email}\" is confirmed for {site_title}."
 msgstr ""
 
@@ -566,7 +607,7 @@ msgid "Message to confirm registration and moderation on the page"
 msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:237 src/Form/SettingsFieldset.php:328
-#: config/module.config.php:258 config/module.config.php:304
+#: config/module.config.php:257 config/module.config.php:304
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request and we have confirmed it, you "
@@ -767,37 +808,6 @@ msgstr ""
 
 #: src/Form/SettingsFieldset.php:446
 msgid "Limit access to api to these domains (cors)"
-msgstr ""
-
-#: src/Form/ConfigForm.php:18
-msgid "Reset terms agreement for all guests"
-msgstr ""
-
-#: src/Form/ConfigForm.php:19
-msgid ""
-"When terms and conditions are updated, you may want guests agree them one "
-"more time. Warning: to set false will impact all guests. So warn them some "
-"time before."
-msgstr ""
-
-#: src/Form/ConfigForm.php:21
-msgid "No change"
-msgstr ""
-
-#: src/Form/ConfigForm.php:22
-msgid "Set false"
-msgstr ""
-
-#: src/Form/ConfigForm.php:23
-msgid "Set true"
-msgstr ""
-
-#: src/Form/ConfigForm.php:36
-msgid "Process task above"
-msgstr ""
-
-#: src/Form/ConfigForm.php:40
-msgid "Process"
 msgstr ""
 
 #: src/Form/AcceptTermsForm.php:17
@@ -1022,11 +1032,11 @@ msgstr ""
 msgid "Guest register"
 msgstr ""
 
-#: config/module.config.php:232 config/module.config.php:278
+#: config/module.config.php:231 config/module.config.php:278
 msgid "My dashboard"
 msgstr ""
 
-#: config/module.config.php:239 config/module.config.php:285
+#: config/module.config.php:238 config/module.config.php:285
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>You have registered for an account on <a href=\"{site_url}\">{site_title}"
@@ -1037,7 +1047,7 @@ msgid ""
 "disregard this email.</p>"
 msgstr ""
 
-#: config/module.config.php:245 config/module.config.php:291
+#: config/module.config.php:244 config/module.config.php:291
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>We are happy to open your account on <a href=\"{site_url}\">{site_title}</"
@@ -1047,7 +1057,7 @@ msgid ""
 "<p>You can now login and discover the site.</p>"
 msgstr ""
 
-#: config/module.config.php:251 config/module.config.php:297
+#: config/module.config.php:250 config/module.config.php:297
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>You have requested to update email on <a href=\"{site_url}\">{site_title}"
@@ -1058,6 +1068,6 @@ msgid ""
 "disregard this email.</p>"
 msgstr ""
 
-#: config/module.config.php:259 config/module.config.php:305
+#: config/module.config.php:258 config/module.config.php:305
 msgid "I agree the terms and conditions."
 msgstr ""

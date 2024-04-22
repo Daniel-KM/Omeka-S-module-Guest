@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-25 00:00+0000"
+"POT-Creation-Date: 2024-04-29 00:00+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/omeka/language/"
@@ -19,11 +19,11 @@ msgstr ""
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr "Le module %1$s doit être mis à niveau à la version %2$s ou supérieure."
 
-#: Module.php:465
+#: Module.php:437
 msgid "CAS Login"
 msgstr "Connexion CAS"
 
-#: Module.php:476
+#: Module.php:448
 msgid "[Unknown idp]"
 msgstr "[IdP inconnu]"
 
@@ -360,29 +360,29 @@ msgstr ""
 "Une nouvelle option permet d’afficher la liste des comptes externes sur la "
 "page de connexion."
 
-#: Module.php:118 Module.php:520 src/Form/SiteSettingsFieldset.php:14
+#: data/scripts/upgrade.php:147
+msgid ""
+"The form to reset agreement status was moved to a task of module {link}Easy "
+"Admin{link_end}."
+msgstr ""
+"Le formulaire pour réinitialiser l’acceptation des conditions a été déplacé "
+"dans une tâche du module {link}Easy Admin{link_end}."
+
+#: Module.php:118 Module.php:492 src/Form/SiteSettingsFieldset.php:14
 #: src/Form/SiteSettingsFieldset.php:17 src/Form/SettingsFieldset.php:15
 #: src/Form/SettingsFieldset.php:18
 msgid "Guest"
 msgstr "Invité"
 
-#: Module.php:358
-msgid "All guests must agreed the terms one more time."
-msgstr "Tous les invités doivent accepter les termes une nouvelle fois."
-
-#: Module.php:363
-msgid "All guests agreed the terms."
-msgstr "Tous les invités ont accepté les termes."
-
-#: Module.php:540 Module.php:599
+#: Module.php:512 Module.php:571
 msgid "Agreed terms"
 msgstr "A accepté les termes"
 
-#: Module.php:581
+#: Module.php:553
 msgid "Guest site"
 msgstr "Site utilisateur"
 
-#: Module.php:582
+#: Module.php:554
 msgid ""
 "This parameter is used to manage some site related features, in particular "
 "messages."
@@ -390,7 +390,7 @@ msgstr ""
 "Ce paramètre est utilisé pour gérer certaines fonctionnalités liées à "
 "certains sites, en particulier les messages."
 
-#: Module.php:611
+#: Module.php:583
 msgid ""
 "Send an email to confirm registration after moderation (user should be "
 "activated first)"
@@ -398,17 +398,17 @@ msgstr ""
 "Envoyer un mail pour confirmer l’inscription après la modération "
 "(l’utilisateur doit être d’abord activé)"
 
-#: Module.php:635
+#: Module.php:607
 msgid "Clear registration token"
 msgstr "Supprimer le jeton d’enregistrement"
 
-#: Module.php:729
+#: Module.php:701
 msgid "You cannot send a message to confirm registration: user is not active."
 msgstr ""
 "Vous ne pouvez pas envoyer un message de confirmation de l’inscription : "
 "l’utilisateur n’est pas actif."
 
-#: Module.php:746
+#: Module.php:718
 msgid ""
 "A default site should be set or the user should have a site in order to "
 "confirm registration."
@@ -416,9 +416,45 @@ msgstr ""
 "Un site par défaut doit être défini pour que l’utilisateur puisse confirmer "
 "son inscription."
 
-#: Module.php:778
+#: Module.php:750
 msgid "The message of confirmation of the registration has been sent."
 msgstr "Le message de confirmation de l’inscription a été envoyé."
+
+#: Module.php:843
+msgid "Guest: Reset terms agreement for all guests"
+msgstr ""
+"Guest : Réinitialisation de l’acceptation des conditions pour tous les "
+"invités"
+
+#: Module.php:850
+msgid "Options to reset agreement terms"
+msgstr "Options pour réinitialiser l’acceptation des conditions"
+
+#: Module.php:861
+msgid "Reset terms agreement for all guests"
+msgstr "Réinitialisation de l’acceptation des termes pour tous les invités"
+
+#: Module.php:862
+msgid ""
+"When terms and conditions are updated, you may want guests agree them one "
+"more time. Warning: to set false will impact all guests. So warn them some "
+"time before."
+msgstr ""
+"Quand les termes et les conditions sont mis à jour, vous pouvez souhaiter "
+"que les utilisateurs invités les acceptent à nouveau. Attention : cocher la "
+"case impactera tous les invités. Il est conseillé de les prévenir auparavant."
+
+#: Module.php:864
+msgid "No change"
+msgstr "Pas de changement"
+
+#: Module.php:865
+msgid "Set false"
+msgstr "Indiquer faux"
+
+#: Module.php:866
+msgid "Set true"
+msgstr "Indiquer vrai"
 
 #: src/Mvc/Controller/Plugin/SendEmail.php:51
 msgid "Email not sent: the subject is missing."
@@ -435,6 +471,18 @@ msgstr "Mail non envoyé : pas de destinataire (sujet {subject})."
 #: src/Mvc/Controller/Plugin/SendEmail.php:122
 msgid "A mail was sent to {user_emails} with subject: {subject}"
 msgstr "Un mail a été envoyé à {user_emails} avec le sujet : {subject}"
+
+#: src/Job/GuestAgreement.php:23
+msgid "All guests must agreed the terms one more time."
+msgstr "Tous les invités doivent accepter les termes une nouvelle fois."
+
+#: src/Job/GuestAgreement.php:29
+msgid "All guests agreed the terms."
+msgstr "Tous les invités ont accepté les termes."
+
+#: src/Job/GuestAgreement.php:34
+msgid "No process can be done without settings."
+msgstr "Aucun traitement ne peut être fait sans paramètres."
 
 #: src/Authentication/Adapter/PasswordAdapter.php:25
 msgid "User not found."
@@ -509,7 +557,7 @@ msgstr "Sujet du mail envoyé pour confirmer le mail"
 
 #: src/Form/SiteSettingsFieldset.php:116 src/Form/SiteSettingsFieldset.php:175
 #: src/Form/SettingsFieldset.php:207 src/Form/SettingsFieldset.php:266
-#: config/module.config.php:238 config/module.config.php:250
+#: config/module.config.php:237 config/module.config.php:249
 #: config/module.config.php:284 config/module.config.php:296
 msgid "[{site_title}] Confirm email"
 msgstr "[{site_title}] Confirmer l’adresse mail"
@@ -544,7 +592,7 @@ msgid "Subject of the email sent to confirm registration after moderation"
 msgstr "Sujet du mail envoyer pour confirmer l’inscription après modération"
 
 #: src/Form/SiteSettingsFieldset.php:146 src/Form/SettingsFieldset.php:237
-#: config/module.config.php:244 config/module.config.php:290
+#: config/module.config.php:243 config/module.config.php:290
 msgid "[{site_title}] Account open"
 msgstr "[{site_title}] Compte ouvert"
 
@@ -612,7 +660,7 @@ msgid "The message to  display after confirmation of a mail."
 msgstr "Le message à afficher après confirmation du mail."
 
 #: src/Form/SiteSettingsFieldset.php:207 src/Form/SettingsFieldset.php:298
-#: config/module.config.php:256 config/module.config.php:302
+#: config/module.config.php:255 config/module.config.php:302
 msgid "Your email \"{user_email}\" is confirmed for {site_title}."
 msgstr "Votre mail \"{user_email}\" a été confirmé pour {site_title}."
 
@@ -625,7 +673,7 @@ msgid "Message to confirm registration and moderation on the page"
 msgstr "Message sur la page pour confirmer l’inscription et la modération"
 
 #: src/Form/SiteSettingsFieldset.php:237 src/Form/SettingsFieldset.php:328
-#: config/module.config.php:258 config/module.config.php:304
+#: config/module.config.php:257 config/module.config.php:304
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request and we have confirmed it, you "
@@ -846,40 +894,6 @@ msgstr ""
 #: src/Form/SettingsFieldset.php:446
 msgid "Limit access to api to these domains (cors)"
 msgstr "Limiter l’accès à l’api pour ces domaines (cors)"
-
-#: src/Form/ConfigForm.php:18
-msgid "Reset terms agreement for all guests"
-msgstr "Réinitialisation de l’acceptation des termes pour tous les invités"
-
-#: src/Form/ConfigForm.php:19
-msgid ""
-"When terms and conditions are updated, you may want guests agree them one "
-"more time. Warning: to set false will impact all guests. So warn them some "
-"time before."
-msgstr ""
-"Quand les termes et les conditions sont mis à jour, vous pouvez souhaiter "
-"que les utilisateurs invités les acceptent à nouveau. Attention : cocher la "
-"case impactera tous les invités. Il est conseillé de les prévenir auparavant."
-
-#: src/Form/ConfigForm.php:21
-msgid "No change"
-msgstr "Pas de changement"
-
-#: src/Form/ConfigForm.php:22
-msgid "Set false"
-msgstr "Indiquer vrai"
-
-#: src/Form/ConfigForm.php:23
-msgid "Set true"
-msgstr "Indiquer faux"
-
-#: src/Form/ConfigForm.php:36
-msgid "Process task above"
-msgstr "Lancer la tâche ci-dessus"
-
-#: src/Form/ConfigForm.php:40
-msgid "Process"
-msgstr "Traitement"
 
 #: src/Form/AcceptTermsForm.php:17
 msgid "I agree with terms and conditions."
@@ -1124,11 +1138,11 @@ msgstr "Mon tableau de bord"
 msgid "Guest register"
 msgstr "Inscription Invité"
 
-#: config/module.config.php:232 config/module.config.php:278
+#: config/module.config.php:231 config/module.config.php:278
 msgid "My dashboard"
 msgstr "Mon tableau de bord"
 
-#: config/module.config.php:239 config/module.config.php:285
+#: config/module.config.php:238 config/module.config.php:285
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>You have registered for an account on <a href=\"{site_url}\">{site_title}"
@@ -1146,7 +1160,7 @@ msgstr ""
 "<p>Si vous n’avez pas demandé de rejoindre {main_title} / {site_title}, "
 "merci d’ignorer ce message.</p>"
 
-#: config/module.config.php:245 config/module.config.php:291
+#: config/module.config.php:244 config/module.config.php:291
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>We are happy to open your account on <a href=\"{site_url}\">{site_title}</"
@@ -1162,7 +1176,7 @@ msgstr ""
 "href=\"{token_url}\">{token_url}</a>.</p>\n"
 "<p>Vous pouvez désormais vous connecter et explorer le site.</p>"
 
-#: config/module.config.php:251 config/module.config.php:297
+#: config/module.config.php:250 config/module.config.php:297
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>You have requested to update email on <a href=\"{site_url}\">{site_title}"
@@ -1180,9 +1194,15 @@ msgstr ""
 "<p>Si vous n’avez pas demandé à mettre à jour votre mail sur {main_title}, "
 "merci d’ignorer ce message.</p>"
 
-#: config/module.config.php:259 config/module.config.php:305
+#: config/module.config.php:258 config/module.config.php:305
 msgid "I agree the terms and conditions."
 msgstr "J’accepte les termes et conditions."
+
+#~ msgid "Process task above"
+#~ msgstr "Lancer la tâche ci-dessus"
+
+#~ msgid "Process"
+#~ msgstr "Traitement"
 
 #, php-format
 #~ msgid "An error occurred after creation of the guest user: %s"
