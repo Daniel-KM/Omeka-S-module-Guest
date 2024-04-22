@@ -328,46 +328,18 @@ class Module extends AbstractModule
             'form.add_elements',
             [$this, 'handleSiteSettings']
         );
-    }
 
-    public function getConfigForm(PhpRenderer $renderer)
-    {
-        $services = $this->getServiceLocator();
-        $form = $services->get('FormElementManager')->get(\Guest\Form\ConfigForm::class);
-        $form->init();
-        return $renderer->formCollection($form);
-    }
-
-    public function handleConfigForm(AbstractController $controller)
-    {
-        $result = $this->handleConfigFormAuto($controller);
-        if ($result === false) {
-            return false;
-        }
-
-        $params = $controller->getRequest()->getPost();
-        if (empty($params['process'])) {
-            return true;
-        }
-
-        $services = $this->getServiceLocator();
-        $params = $controller->getRequest()->getPost();
-        switch ($params['guest_reset_agreement_terms']) {
-            case 'unset':
-                $this->resetAgreementsBySql($services, false);
-                $message = new PsrMessage('All guests must agreed the terms one more time.'); // @translate
-                $controller->messenger()->addSuccess($message);
-                break;
-            case 'set':
-                $this->resetAgreementsBySql($services, true);
-                $message = new PsrMessage('All guests agreed the terms.'); // @translate
-                $controller->messenger()->addSuccess($message);
-                break;
-            default:
-                break;
-        }
-
-        return true;
+        // Add a job for module Easy Admin.
+        $sharedEventManager->attach(
+            \EasyAdmin\Form\CheckAndFixForm::class,
+            'form.add_elements',
+            [$this, 'handleEasyAdminJobsForm']
+        );
+        $sharedEventManager->attach(
+            \EasyAdmin\Controller\CheckAndFixController::class,
+            'easyadmin.job',
+            [$this, 'handleEasyAdminJobs']
+        );
     }
 
     protected function isSettingTranslatable(string $settingsType, string $name): bool
@@ -858,6 +830,60 @@ class Module extends AbstractModule
         $entityManager->flush();
     }
 
+    public function handleEasyAdminJobsForm(Event $event): void
+    {
+        /**
+         * @var \EasyAdmin\Form\CheckAndFixForm $form
+         * @var \Laminas\Form\Element\Radio $process
+         */
+        $form = $event->getTarget();
+        $fieldset = $form->get('module_tasks');
+        $process = $fieldset->get('process');
+        $valueOptions = $process->getValueOptions();
+        $valueOptions['guest_reset_agreement_terms'] = 'Guest: Reset terms agreement for all guests'; // @translate
+        $process->setValueOptions($valueOptions);
+        $fieldset
+            ->add([
+                'type' => \Laminas\Form\Fieldset::class,
+                'name' => 'guest_reset_agreement_terms',
+                'options' => [
+                    'label' => 'Options to reset agreement terms', // @translate
+                ],
+                'attributes' => [
+                    'class' => 'guest_reset_agreement_terms',
+                ],
+            ]);
+        $fieldset->get('guest_reset_agreement_terms')
+            ->add([
+                'name' => 'agreement',
+                'type' => \Common\Form\Element\OptionalRadio::class,
+                'options' => [
+                    'label' => 'Reset terms agreement for all guests', // @translate
+                    'info' => 'When terms and conditions are updated, you may want guests agree them one more time. Warning: to set false will impact all guests. So warn them some time before.', // @translate
+                    'value_options' => [
+                        'keep' => 'No change', // @translate
+                        'unset' => 'Set false', // @translate
+                        'set' => 'Set true', // @translate
+                    ],
+                ],
+                'attributes' => [
+                    'id' => 'guest_reset_agreement_terms-agreement',
+                    'value' => 'keep',
+                    'required' => false,
+                ],
+            ]);
+    }
+
+    public function handleEasyAdminJobs(Event $event): void
+    {
+        $process = $event->getParam('process');
+        if ($process === 'guest_reset_agreement_terms') {
+            $params = $event->getParam('params');
+            $event->setParam('job', \Guest\Job\GuestAgreement::class);
+            $event->setParam('args', $params['module_tasks']['guest_reset_agreement_terms'] ?? []);
+        }
+    }
+
     /**
      * Get the site of a user (option "guest_site").
      *
@@ -880,49 +906,6 @@ class Module extends AbstractModule
             }
         }
         return $guestSite;
-    }
-
-    /**
-     * Reset all guest agreements.
-     *
-     * @param bool $reset
-     */
-    protected function resetAgreements($reset): void
-    {
-        $services = $this->getServiceLocator();
-        $userSettings = $services->get('Omeka\Settings\User');
-        $entityManager = $services->get('Omeka\EntityManager');
-        $guests = $entityManager->getRepository(\Omeka\Entity\User::class)
-            ->findBy(['role' => Acl::ROLE_GUEST]);
-        foreach ($guests as $user) {
-            $userSettings->setTargetId($user->getId());
-            $userSettings->set('guest_agreed_terms', $reset);
-        }
-    }
-
-    /**
-     * Reset all guest agreements via sql (quicker for big base).
-     *
-     * @param ServiceLocatorInterface $services
-     * @param bool $reset
-     */
-    protected function resetAgreementsBySql(ServiceLocatorInterface $services, $reset): void
-    {
-        $reset = $reset ? 'true' : 'false';
-        $sql = <<<SQL
-DELETE FROM user_setting
-WHERE id="guest_agreed_terms";
-
-INSERT INTO user_setting (id, user_id, value)
-SELECT "guest_agreed_terms", user.id, "$reset"
-FROM user
-WHERE role="guest";
-SQL;
-        $connection = $services->get('Omeka\Connection');
-        $sqls = array_filter(array_map('trim', explode(';', $sql)));
-        foreach ($sqls as $sql) {
-            $connection->executeStatement($sql);
-        }
     }
 
     protected function deactivateGuests(): void
