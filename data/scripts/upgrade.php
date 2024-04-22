@@ -139,3 +139,14 @@ if (version_compare($oldVersion, '3.4.24', '<')) {
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare($oldVersion, '3.4.25', '<')) {
+    $connection->executeStatement('DELETE FROM module WHERE id = "GuestApi";');
+
+    $message = new PsrMessage(
+        'The form to reset agreement status was moved to a task of module {link}Easy Admin{link_end}.', // @translate
+        ['link' => '<a href="https://gitlab.com/Daniel-KM/Omeka-S-module-EasyAdmin" target="_blank" rel="noopener">', 'link_end' => '</a>']
+    );
+    $message->setEscapeHtml(false);
+    $messenger->addSuccess($message);
+}
