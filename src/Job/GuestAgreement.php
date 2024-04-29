@@ -2,6 +2,7 @@
 
 namespace Guest\Job;
 
+use Guest\Permissions\Acl;
 use Omeka\Job\AbstractJob;
 
 class GuestAgreement extends AbstractJob
