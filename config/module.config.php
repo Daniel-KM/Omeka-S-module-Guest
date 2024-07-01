@@ -25,7 +25,7 @@ return [
         ],
         'delegators' => [
             \Omeka\View\Helper\UserBar::class => [
-                __NAMESPACE__ => Service\ViewHelper\UserBarDelegatorFactory::class,
+                Service\ViewHelper\UserBarDelegatorFactory::class,
             ],
         ],
     ],
