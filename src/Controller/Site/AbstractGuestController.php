@@ -107,7 +107,7 @@ abstract class AbstractGuestController extends AbstractActionController
      *
      * @todo Remove options, as it is not really used.
      */
-    protected function getUserForm(User $user = null, array $options = []): UserForm
+    protected function getUserForm(?User $user = null, array $options = []): UserForm
     {
         $defaultOptions = [
             'is_public' => true,
@@ -115,7 +115,7 @@ abstract class AbstractGuestController extends AbstractActionController
             'include_role' => false,
             'include_admin_roles' => false,
             'include_is_active' => false,
-            'current_password' => true,
+            'current_password' => isset($user),
             'include_password' => true,
             'include_key' => false,
             'include_site_role_remove' => false,
