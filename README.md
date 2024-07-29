@@ -56,7 +56,18 @@ Usage
 
 A guest login form is provided in `/s/my_site/guest/login`.
 
-### Main login form
+### Terms agreement
+
+A check box allows to force guests to accept terms agreement.
+
+A button in the config forms allows to set or unset all guests acceptation,
+in order to allow update of terms.
+
+### Option redirect after login
+
+When the module [Shibboleth] is used, this option is bypassed.
+
+### Custom theme: Main login form
 
 In some cases, you may want to use the same login form for all users, so you may
 have to adapt it. You may use the navigation link too (in admin > sites > my-site > navigation).
@@ -69,17 +80,6 @@ else:
     echo $this->hyperlink($this->translate('Login'), $this->url()->fromRoute('site/guest/anonymous', ['site-slug' => $site->slug(), 'action' => 'login']), ['class' => 'login']);
 endif;
 ```
-
-### Terms agreement
-
-A check box allows to force guests to accept terms agreement.
-
-A button in the config forms allows to set or unset all guests acceptation,
-in order to allow update of terms.
-
-### Option redirect after login
-
-When the module [Shibboleth] is used, this option is bypassed.
 
 
 TODO
@@ -130,7 +130,7 @@ Copyright
 ---------
 
 * Copyright Biblibre, 2016-2017
-* Copyright Daniel Berthereau, 2017-2023 (see [Daniel-KM] on GitLab)
+* Copyright Daniel Berthereau, 2017-2024 (see [Daniel-KM] on GitLab)
 
 This module is based on a full rewrite of the plugin [Guest User] for [Omeka Classic]
 by [BibLibre].
