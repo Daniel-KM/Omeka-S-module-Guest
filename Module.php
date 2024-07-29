@@ -40,10 +40,8 @@ use Guest\Permissions\Acl;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Form\Element;
-use Laminas\Mvc\Controller\AbstractController;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Permissions\Acl\Acl as LaminasAcl;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\UserRepresentation;
 use Omeka\Module\AbstractModule;
@@ -441,12 +439,19 @@ class Module extends AbstractModule
 
         if ($plugins->has('ssoLoginLinks')) {
             $url = $plugins->get('url');
-            $idps = $view->setting('singlesignon_idps') ?: [];
-            foreach ($idps as $idpSlug => $idp) {
+            $idps = $settings->get('singlesignon_idps') ?: [];
+            $loginView = $settings->get('singlesignon_append_links_to_login_view');
+            $selectors = ['link', 'button', 'select'];
+            if ($settings->get('singlesignon_federation')) {
+                $selector = in_array($loginView, $selectors) ? $loginView : 'select';
+            } else {
+                $selector = in_array($loginView, $selectors) ? $loginView : 'link';
+            }
+            foreach ($idps as $idpName => $idp) {
                 $links[] = [
-                    'url' => $url('sso', ['action' => 'login', 'idp' => $idpSlug], true),
+                    'url' => $url('sso', ['action' => 'login', 'idp' => $idpName], true),
                     'label' => !empty($idp['idp_entity_name']) ? $idp['idp_entity_name'] : ($idp['idp_entity_id'] ?? $view->translate('[Unknown idp]')), // @translate
-                    'class' => str_replace('.', '-', $idpSlug),
+                    'class' => str_replace(['.', ':'], '-', $idpName),
                 ];
             }
         }
@@ -456,6 +461,7 @@ class Module extends AbstractModule
         if ($links) {
             echo $view->partial('common/guest-login-links', [
                 'links' => $links,
+                'selector' => $selector,
             ]);
         }
     }
