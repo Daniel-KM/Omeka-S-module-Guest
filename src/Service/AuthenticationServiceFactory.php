@@ -48,8 +48,8 @@ class AuthenticationServiceFactory implements FactoryInterface
             });
         } else {
             $userRepository = $entityManager->getRepository(User::class);
-            if ($status->isApiRequest()) {
-                // Authenticate using key for API requests.
+            if ($status->isKeyauthRequest()) {
+                // Authenticate using key for requests that require key authentication.
                 $keyRepository = $entityManager->getRepository(ApiKey::class);
                 $storage = new DoctrineWrapper(new NonPersistent, $userRepository);
                 $adapter = new KeyAdapter($keyRepository, $entityManager);
