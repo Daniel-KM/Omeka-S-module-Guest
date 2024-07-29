@@ -150,3 +150,14 @@ if (version_compare($oldVersion, '3.4.25', '<')) {
     $message->setEscapeHtml(false);
     $messenger->addSuccess($message);
 }
+
+if (version_compare($oldVersion, '3.4.27', '<')) {
+    $loginView = $settings->get('guest_append_links_to_login_view', true);
+    if (is_numeric($loginView)) {
+        $settings->set('guest_append_links_to_login_view', $loginView ? 'link' : 'no');
+    }
+    $message = new PsrMessage(
+        'An option allows to define the type of display for the list of external connection (cas/sso) as a list of links or a select.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
