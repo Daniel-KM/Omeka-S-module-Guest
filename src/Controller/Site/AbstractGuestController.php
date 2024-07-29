@@ -109,13 +109,15 @@ abstract class AbstractGuestController extends AbstractActionController
      */
     protected function getUserForm(?User $user = null, array $options = []): UserForm
     {
+        $hasUser = $user && $user->getId();
+
         $defaultOptions = [
             'is_public' => true,
             'user_id' => $user ? $user->getId() : 0,
             'include_role' => false,
             'include_admin_roles' => false,
             'include_is_active' => false,
-            'current_password' => isset($user),
+            'current_password' => $hasUser,
             'include_password' => true,
             'include_key' => false,
             'include_site_role_remove' => false,
