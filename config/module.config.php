@@ -258,7 +258,7 @@ return [
             'guest_terms_text' => 'I agree the terms and conditions.', // @translate
             'guest_terms_page' => 'terms-and-conditions',
             'guest_redirect' => 'site',
-            'guest_append_links_to_login_view' => false,
+            'guest_append_links_to_login_view' => '',
             // Specific to the api.
             'guest_register_site' => false,
             'guest_register_email_is_valid' => false,

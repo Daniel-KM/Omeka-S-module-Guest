@@ -372,10 +372,17 @@ If you did not request to update your email on {main_title}, please disregard th
 
             ->add([
                 'name' => 'guest_append_links_to_login_view',
-                'type' => Element\Checkbox::class,
+                'type' => Element\Radio::class,
                 'options' => [
                     'element_group' => 'guest',
                     'label' => 'Append cas/sso login links to login page', // @translate
+                    'value_options' => [
+                        '' => 'No', // @translate
+                        'link' => 'Links', // @translate
+                        'button' => 'Buttons', // @translate
+                        // A space is appended to simplify translation.
+                        'select' => 'Select ', // @translate
+                    ],
                 ],
                 'attributes' => [
                     'id' => 'guest_append_links_to_login_view',
