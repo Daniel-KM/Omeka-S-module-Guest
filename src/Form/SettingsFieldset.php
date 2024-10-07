@@ -372,7 +372,7 @@ If you did not request to update your email on {main_title}, please disregard th
 
             ->add([
                 'name' => 'guest_append_links_to_login_view',
-                'type' => Element\Radio::class,
+                'type' => CommonElement\OptionalRadio::class,
                 'options' => [
                     'element_group' => 'guest',
                     'label' => 'Append cas/sso login links to login page', // @translate
