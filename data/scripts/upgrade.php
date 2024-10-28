@@ -118,7 +118,7 @@ SQL;
 <p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
 <p>You can now login and discover the site.</p>';
     if ($message === $old) {
-        $settings->set('guest_message_confirm_registration_email', $localConfig['settings']['guest_message_confirm_registration_email']);
+        $settings->set('guest_message_confirm_registration_email', $localConfig['guest']['settings']['guest_message_confirm_registration_email']);
     }
 
     $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
@@ -126,7 +126,7 @@ SQL;
         $siteSettings->setTargetId($siteId);
         $message = $siteSettings->get('guest_message_confirm_registration_email');
         if ($message === $old) {
-            $siteSettings->set('guest_message_confirm_registration_email', $localConfig['site_settings']['guest_message_confirm_registration_email']);
+            $siteSettings->set('guest_message_confirm_registration_email', $localConfig['guest']['site_settings']['guest_message_confirm_registration_email']);
         }
     }
 }
