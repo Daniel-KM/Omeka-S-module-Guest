@@ -3,6 +3,7 @@
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var \Omeka\Api\Representation\SiteRepresentation $site
  * @var \Omeka\Form\LoginForm $form
+ * @var \Omeka\Form\UserForm|null $formRegister
  */
 
 $plugins = $this->getHelperPluginManager();
@@ -16,6 +17,9 @@ $siteSetting = $plugins->get('siteSetting');
 $htmlElement = $plugins->get('htmlElement');
 
 $htmlElement('body')->appendAttribute('class', 'guest login');
+
+$form->prepare();
+if ($formRegister) $formRegister->prepare();
 ?>
 
 <?= $pageTitle($siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?: $translate('Login'))) ?>
@@ -39,3 +43,25 @@ $htmlElement('body')->appendAttribute('class', 'guest login');
     <?php $trigger('view.login.after'); ?>
 
 </div>
+
+<?php if ($formRegister): ?>
+<div class="guest-anonymous guest-register">
+
+    <?= $this->messages() ?>
+
+    <div>
+        <?= $siteSetting('guest_capabilities') ?: $setting('guest_capabilities') ?>
+    </div>
+
+    <?= $this->form()->openTag($formRegister) ?>
+        <?= $this->formCollection($formRegister, false) ?>
+        <?php $trigger('view.add.form.after'); ?>
+        <div id="page-actions">
+            <button type="submit"><?= $translate('Register') ?></button>
+        </div>
+    <?= $this->form()->closeTag() ?>
+
+    <?php $trigger('view.add.after'); ?>
+
+</div>
+<?php endif; ?>

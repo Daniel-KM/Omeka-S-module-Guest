@@ -64,6 +64,18 @@ info@example2.org',
             ])
 
             ->add([
+                'name' => 'guest_login_with_register',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Display register form on login page', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_login_with_register',
+                ],
+            ])
+
+            ->add([
                 'name' => 'guest_dashboard_label',
                 'type' => Element\Text::class,
                 'options' => [

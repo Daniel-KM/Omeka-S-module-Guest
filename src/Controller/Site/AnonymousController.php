@@ -24,17 +24,32 @@ class AnonymousController extends AbstractGuestController
 
         $site = $this->currentSite();
 
-        $view = new ViewModel([
-            'site' => $site,
-        ]);
-
         /** @var LoginForm $form */
         $form = $this->getForm(
             $this->hasModuleUserNames()
                 ? \UserNames\Form\LoginForm::class
                 : LoginForm::class
         );
-        $view->setVariable('form', $form);
+
+        if ($this->siteSettings()->get('guest_login_with_register')
+            && $this->settings()->get('guest_open', 'moderate') !== 'closed'
+        ) {
+            $user = new User();
+            $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
+            $formRegister = $this->getUserForm($user);
+            $urlRegister = $this->url()->fromRoute('site/guest/anonymous', [
+                'site-slug' => $this->currentSite()->slug(),
+                'controller' => \Guest\Controller\Site\AnonymousController::class,
+                'action' => 'register',
+            ]);
+            $formRegister->setAttribute('action', $urlRegister);
+        }
+
+        $view = new ViewModel([
+            'site' => $site,
+            'form' => $form,
+            'formRegister' => $formRegister ?? null,
+        ]);
 
         $result = $this->validateLogin($form);
         if ($result === false) {
@@ -53,11 +68,10 @@ class AnonymousController extends AbstractGuestController
             return $this->redirectToAdminOrSite();
         }
 
-        $user = new User();
-        $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
-
         $site = $this->currentSite();
 
+        $user = new User();
+        $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
         $form = $this->getUserForm($user);
 
         $view = new ViewModel([
