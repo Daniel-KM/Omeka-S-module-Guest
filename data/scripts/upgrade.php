@@ -161,3 +161,10 @@ if (version_compare($oldVersion, '3.4.27', '<')) {
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare($oldVersion, '3.4.29', '<')) {
+    $message = new PsrMessage(
+        'It is now possible to show the register form beside the login form. Page blocks Login and Register are available too.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
