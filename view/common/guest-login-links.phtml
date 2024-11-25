@@ -3,32 +3,41 @@
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var array $links
  * @var string $selector
+ *
+ * A similar template is available as common/sso-login-links.phtml in module Single Sign-On.
  */
 
 if (empty($links)) return;
 
 $plugins = $this->getHelperPluginManager();
 $escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $escapeAttr = $plugins->get('escapeHtmlAttr');
 
 if ($selector === 'select') {
+    $assetUrl = $plugins->get('assetUrl');
+    $this->headLink()
+        ->prependStylesheet($assetUrl('vendor/chosen-js/chosen.css', 'Omeka'));
     $script = <<<'JS'
-    $(document).ready(function() {
-        $('#single-sign-on-select').on('change', function() {
-            window.location.assign($(this).val());
+        $(document).ready(function() {
+            $('#single-sign-on-select').on('change', function() {
+                window.location.assign($(this).val());
+            });
         });
-    });
-    JS;
-    $this->headScript()->appendScript($script);
+        JS;
+    $this->headScript()
+        ->prependFile($assetUrl('js/chosen-options.js', 'Omeka'))
+        ->prependFile($assetUrl('vendor/chosen-js/chosen.jquery.js', 'Omeka'))
+        ->appendScript($script);
 }
 ?>
 
-<div class="guest-login-links">
+<div class="guest-login-links single-sign-on-login">
 
     <?php if ($selector === 'select'): ?>
 
-    <select id="single-sign-on-select" class="single-sign-on-select guest-links" name="idp">
+    <select id="single-sign-on-select" class="single-sign-on-select chosen-select guest-links" name="idp" data-placeholder="<?= $escapeAttr($translate('Select your identity provider…')) ?>">
         <option class="single-sign-on-idp" value=""></option>
         <?php foreach($links as $link): ?>
         <option class="single-sign-on-idp <?= $escapeAttr($link['class']) ?>"  value="<?= $escapeAttr($link['url']) ?>"><?= $escape($link['label']) ?></option>
@@ -40,12 +49,12 @@ if ($selector === 'select') {
     <ul id="single-sign-on-buttons" class="single-sign-on-buttons guest-links">
         <?php foreach($links as $link): ?>
         <li class="single-sign-on-button">
-            <?= $hyperlink($link['label'], $link['url'], ['class' => trim('single-sign-on-idp guest-link ' . $link['class'])]) ?>
+            <?= $hyperlink($link['label'], $link['url'], ['class' => trim('single-sign-on-idp button guest-link ' . $link['class'])]) ?>
         </li>
         <?php endforeach; ?>
     </ul>
 
-    <?php else: ?>
+    <?php else: // Simple list of links. ?>
 
     <ul id="single-sign-on-links" class="single-sign-on-links guest-links">
         <?php foreach($links as $link): ?>
