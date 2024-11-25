@@ -283,6 +283,7 @@ return [
             'guest_notify_register' => [],
             'guest_login_text' => 'Login', // @translate
             'guest_register_text' => 'Register', // @translate
+            'guest_login_without_form' => false,
             'guest_login_with_register' => false,
             'guest_dashboard_label' => 'My dashboard', // @translate
             'guest_capabilities' => '',

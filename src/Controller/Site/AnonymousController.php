@@ -24,12 +24,12 @@ class AnonymousController extends AbstractGuestController
 
         $site = $this->currentSite();
 
+        $loginWithoutForm = $this->siteSettings()->get('guest_login_without_form');
+
         /** @var LoginForm $form */
-        $form = $this->getForm(
-            $this->hasModuleUserNames()
-                ? \UserNames\Form\LoginForm::class
-                : LoginForm::class
-        );
+        $form = $loginWithoutForm
+            ? null
+            : $this->getForm($this->hasModuleUserNames() ? \UserNames\Form\LoginForm::class : LoginForm::class);
 
         if ($this->siteSettings()->get('guest_login_with_register')
             && $this->settings()->get('guest_open', 'moderate') !== 'closed'
@@ -51,11 +51,16 @@ class AnonymousController extends AbstractGuestController
             'formRegister' => $formRegister ?? null,
         ]);
 
-        $result = $this->validateLogin($form);
-        if ($result === false) {
-            return $view;
-        } elseif (is_string($result)) {
-            $this->messenger()->addError($result);
+        if ($form) {
+            $result = $this->validateLogin($form);
+            if ($result === false) {
+                return $view;
+            } elseif (is_string($result)) {
+                $this->messenger()->addError($result);
+                return $view;
+            }
+        } elseif (!$this->request->isPost()) {
+            // Manage login without form.
             return $view;
         }
 

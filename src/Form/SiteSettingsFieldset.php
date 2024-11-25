@@ -64,6 +64,19 @@ info@example2.org',
             ])
 
             ->add([
+                'name' => 'guest_login_without_form',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Hide the login form (for sso)', // @translate
+                    'info' => 'This option allows to display only the links for the other modules, like Single Sign-On.' // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_login_without_form',
+                ],
+            ])
+
+            ->add([
                 'name' => 'guest_login_with_register',
                 'type' => Element\Checkbox::class,
                 'options' => [

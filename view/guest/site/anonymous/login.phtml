@@ -2,7 +2,7 @@
 /**
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var \Omeka\Api\Representation\SiteRepresentation $site
- * @var \Omeka\Form\LoginForm $form
+ * @var \Omeka\Form\LoginForm|null $form
  * @var \Omeka\Form\UserForm|null $formRegister
  */
 
@@ -18,7 +18,7 @@ $htmlElement = $plugins->get('htmlElement');
 
 $htmlElement('body')->appendAttribute('class', 'guest login');
 
-$form->prepare();
+if ($form) $form->prepare();
 if ($formRegister) $formRegister->prepare();
 ?>
 
@@ -28,17 +28,12 @@ if ($formRegister) $formRegister->prepare();
 
     <?= $this->messages() ?>
 
-    <?php if (empty($form)): ?>
-    <p>
-        <?= $translate('Your account seems to have an error. Contact your administrator to login.') ?>
-    </p>
-    <?php else: ?>
+    <?php if ($form): ?>
     <?= $this->form($form) ?>
-    <?php endif; ?>
-
     <p class="forgot-password">
         <?= $hyperlink($translate('Forgot password?'), $url('site/guest/anonymous', ['action' => 'forgot-password'], true)) ?>
     </p>
+    <?php endif; ?>
 
     <?php $trigger('view.login.after'); ?>
 

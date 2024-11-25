@@ -93,13 +93,13 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         /** @var \Omeka\View\Helper\Params $params */
         $params = $view->params();
         $post = $params->fromPost();
+        $loginWithoutForm = $view->siteSetting('guest_login_without_form');
 
-        $form = $this->formElementManager->get(
-            $this->hasModuleUserNames
-                ? \UserNames\Form\LoginForm::class
-                : \Omeka\Form\LoginForm::class
-        );
-        if ($post) {
+        $form = $loginWithoutForm
+            ? null
+            : $this->formElementManager->get($this->hasModuleUserNames ? \UserNames\Form\LoginForm::class : \Omeka\Form\LoginForm::class);
+
+        if ($post && $form) {
             $result = $this->validateLogin->__invoke($form);
             if ($result === true) {
                 $this->redirectToAdminOrSite($view);
@@ -107,6 +107,9 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
             } elseif (is_string($result)) {
                 $this->messenger->addError($result);
             }
+        } elseif ($post) {
+            // Manage login without form.
+            $this->redirectToAdminOrSite($view);
         }
 
         $vars = [
