@@ -32,6 +32,7 @@ return [
     'block_layouts' => [
         'factories' => [
             'login' => Service\BlockLayout\LoginFactory::class,
+            'register' => Service\BlockLayout\RegisterFactory::class,
         ],
     ],
     'form_elements' => [
@@ -314,6 +315,7 @@ return [
         ],
         'block_settings' => [
             'login' => [],
+            'register' => [],
         ],
         'user_settings' => [
             'guest_site' => null,

@@ -23,7 +23,9 @@ $form->prepare();
 
     <?= $this->messages() ?>
 
-    <div><?= $siteSetting('guest_capabilities') ?: ($setting('guest_capabilities')) ?></div>
+    <div>
+        <?= $siteSetting('guest_capabilities') ?: $setting('guest_capabilities') ?>
+    </div>
 
     <?= $this->form()->openTag($form) ?>
         <?= $this->formCollection($form, false) ?>

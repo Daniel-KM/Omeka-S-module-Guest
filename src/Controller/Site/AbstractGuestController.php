@@ -109,13 +109,15 @@ abstract class AbstractGuestController extends AbstractActionController
     /**
      * Prepare the user form for public view.
      *
-     * @todo Remove options, as it is not really used.
+     * Adapted:
+     * @see \Guest\Controller\Site\AbstractGuestController::getUserForm()
+     * @see \Guest\Site\BlockLayout\Register::getUserForm()
      */
-    protected function getUserForm(?User $user = null, array $options = []): UserForm
+    protected function getUserForm(?User $user = null): UserForm
     {
         $hasUser = $user && $user->getId();
 
-        $defaultOptions = [
+        $options = [
             'is_public' => true,
             'user_id' => $user ? $user->getId() : 0,
             'include_role' => false,
@@ -127,7 +129,6 @@ abstract class AbstractGuestController extends AbstractActionController
             'include_site_role_remove' => false,
             'include_site_role_add' => false,
         ];
-        $options += $defaultOptions;
 
         // If the user is authenticated by Cas, Shibboleth, Ldap or Saml, email
         // and password should be removed.
