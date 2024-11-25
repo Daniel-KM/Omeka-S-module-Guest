@@ -31,6 +31,7 @@ return [
     ],
     'block_layouts' => [
         'factories' => [
+            'forgotPassword' => Service\BlockLayout\ForgotPasswordFactory::class,
             'login' => Service\BlockLayout\LoginFactory::class,
             'register' => Service\BlockLayout\RegisterFactory::class,
         ],

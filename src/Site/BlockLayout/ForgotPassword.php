@@ -2,26 +2,23 @@
 
 namespace Guest\Site\BlockLayout;
 
-use Guest\Mvc\Controller\Plugin\ValidateLogin;
 use Laminas\Form\FormElementManager;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SiteRepresentation;
-use Omeka\Entity\SitePageBlock;
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Site\BlockLayout\TemplateableBlockLayoutInterface;
-use Omeka\Stdlib\ErrorStore;
 
-class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterface
+class ForgotPassword extends AbstractBlockLayout implements TemplateableBlockLayoutInterface
 {
     use TraitGuest;
 
     /**
      * The default partial view script.
      */
-    const PARTIAL_NAME = 'common/block-layout/guest-login';
+    const PARTIAL_NAME = 'common/block-layout/guest-forgot-password';
 
     /**
      * @var FormElementManager
@@ -33,41 +30,17 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
      */
     protected $messenger;
 
-    /**
-     * @var ValidateLogin
-     */
-    protected $validateLogin;
-
-    /**
-     * @var bool
-     */
-    protected $hasModuleUserNames;
-
     public function __construct(
         FormElementManager $formElementManager,
-        Messenger $messenger,
-        ValidateLogin $validateLogin,
-        bool $hasModuleUserNames
+        Messenger $messenger
     ) {
         $this->formElementManager = $formElementManager;
         $this->messenger = $messenger;
-        $this->validateLogin = $validateLogin;
-        $this->hasModuleUserNames = $hasModuleUserNames;
     }
 
     public function getLabel()
     {
-        return 'Guest: Login'; // @translate
-    }
-
-    public function onHydrate(SitePageBlock $block, ErrorStore $errorStore): void
-    {
-        $data = $block->getData();
-
-        $dataClean = [];
-        $dataClean['display_form'] = ($data['display_form'] ?? 'login') === 'register' ? 'register' : 'login';
-
-        $block->setData($dataClean);
+        return 'Guest: Forgot password'; // @translate
     }
 
     public function form(
@@ -77,7 +50,7 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         SitePageBlockRepresentation $block = null
     ) {
         return '<p>'
-            . $view->translate('Display the login form.') // @translate
+            . $view->translate('Display the form to recover the password.') // @translate
             . '</p>';
     }
 
@@ -86,6 +59,17 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         // Redirect to admin or guest account when user is authenticated.
         $user = $view->identity();
         if ($user) {
+            $redirectUrl = $view->userIsAllowed('Omeka\Controller\Admin\Index')
+                ? $view->url('admin/id', ['controller' => 'user', 'action' => 'edit', 'id' => $user->getId()], ['fragment' => 'change-password'], true)
+                : $view->url('site/guest/guest', ['action' => 'update-account'], [], true);
+            header('Location: ' . $redirectUrl, true, 302);
+            die();
+        }
+
+        // No form means no rights to change password.
+        $loginWithoutForm = $view->siteSetting('guest_login_without_form');
+        if ($loginWithoutForm) {
+            $this->messenger->addError('You cannot change your password here.'); // @translate
             $this->redirectToAdminOrSite($view);
             return '';
         }
@@ -93,21 +77,13 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         /** @var \Omeka\View\Helper\Params $params */
         $params = $view->params();
         $post = $params->fromPost();
-
-        $form = $this->formElementManager->get(
-            $this->hasModuleUserNames
-                ? \UserNames\Form\LoginForm::class
-                : \Omeka\Form\LoginForm::class
-        );
         if ($post) {
-            $result = $this->validateLogin->__invoke($form);
-            if ($result === true) {
-                $this->redirectToAdminOrSite($view);
-                return '';
-            } elseif (is_string($result)) {
-                $this->messenger->addError($result);
-            }
+            $redirectUrl = $view->url('site/guest/anonymous', ['action' => 'login'], [], true);
+            header('Location: ' . $redirectUrl, true, 302);
+            die();
         }
+
+        $form = $this->formElementManager->get(\Omeka\Form\ForgotPasswordForm::class);
 
         $vars = [
             'site' => $block->page()->site(),

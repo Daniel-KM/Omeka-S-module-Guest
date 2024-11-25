@@ -60,7 +60,7 @@ abstract class AbstractGuestController extends AbstractActionController
      *
      * Adapted:
      * @see \Guest\Controller\Site\AbstractGuestController::redirectToAdminOrSite()
-     * @see \Guest\Site\BlockLayout\Login::redirectToAdminOrSite()
+     * @see \Guest\Site\BlockLayout\TraitGuest::redirectToAdminOrSite()
      */
     protected function redirectToAdminOrSite()
     {
