@@ -29,6 +29,11 @@ return [
             ],
         ],
     ],
+    'block_layouts' => [
+        'factories' => [
+            'login' => Service\BlockLayout\LoginFactory::class,
+        ],
+    ],
     'form_elements' => [
         'invokables' => [
             Form\AcceptTermsForm::class => Form\AcceptTermsForm::class,
@@ -306,6 +311,9 @@ return [
             'guest_terms_text' => 'I agree the terms and conditions.', // @translate
             'guest_terms_page' => 'terms-and-conditions',
             'guest_redirect' => 'site',
+        ],
+        'block_settings' => [
+            'login' => [],
         ],
         'user_settings' => [
             'guest_site' => null,

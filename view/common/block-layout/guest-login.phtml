@@ -1,0 +1,32 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
+ * @var \Omeka\Api\Representation\SitePageBlockRepresentation $block
+ * @var \Omeka\Form\LoginForm|null $form
+ */
+
+$plugins = $this->getHelperPluginManager();
+$url = $plugins->get('url');
+$trigger = $plugins->get('trigger');
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
+
+if ($form) $form->prepare();
+?>
+
+<div class="block block-login">
+
+    <?= $this->messages() ?>
+
+    <?php if ($form): ?>
+    <div  class="guest-anonymous guest-login">
+        <?= $this->form($form) ?>
+    </div>
+    <p class="forgot-password">
+        <?= $hyperlink($translate('Forgot password?'), $url('site/guest/anonymous', ['action' => 'forgot-password'], true)) ?>
+    </p>
+    <?php $trigger('view.login.after'); // Needed as long as other auth modules have no block. ?>
+    <?php endif; ?>
+
+</div>

@@ -57,10 +57,14 @@ abstract class AbstractGuestController extends AbstractActionController
      * Redirect to admin or site according to the role of the user and setting.
      *
      * @return \Laminas\Http\Response
+     *
+     * Adapted:
+     * @see \Guest\Controller\Site\AbstractGuestController::redirectToAdminOrSite()
+     * @see \Guest\Site\BlockLayout\Login::redirectToAdminOrSite()
      */
     protected function redirectToAdminOrSite()
     {
-        // Bypass settings.
+        // Bypass settings if set in url query.
         $redirectUrl = $this->params()->fromQuery('redirect');
         if ($redirectUrl) {
             return $this->redirect()->toUrl($redirectUrl);
