@@ -55,6 +55,7 @@ return [
             'sendEmail' => Service\ControllerPlugin\SendEmailFactory::class,
             'userRedirectUrl' => Service\ControllerPlugin\UserRedirectUrlFactory::class,
             'userSites' => Service\ControllerPlugin\UserSitesFactory::class,
+            'validateLogin' => Service\ControllerPlugin\ValidateLoginFactory::class,
         ],
     ],
     'service_manager' => [

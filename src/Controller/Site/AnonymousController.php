@@ -4,7 +4,6 @@ namespace Guest\Controller\Site;
 
 use Common\Stdlib\PsrMessage;
 use Guest\Entity\GuestToken;
-use Laminas\Session\Container as SessionContainer;
 use Laminas\View\Model\ViewModel;
 use Omeka\Entity\Site;
 use Omeka\Entity\SitePermission;
@@ -23,8 +22,6 @@ class AnonymousController extends AbstractGuestController
             return $this->redirectToAdminOrSite();
         }
 
-        $auth = $this->getAuthenticationService();
-
         $site = $this->currentSite();
 
         $view = new ViewModel([
@@ -39,51 +36,13 @@ class AnonymousController extends AbstractGuestController
         );
         $view->setVariable('form', $form);
 
-        if (!$this->checkPostAndValidForm($form)) {
-            $email = $this->params()->fromPost('email') ?: $this->params()->fromQuery('email');
-            if ($email) {
-                $form->get('email')->setValue($email);
-            }
+        $result = $this->validateLogin($form);
+        if ($result === false) {
+            return $view;
+        } elseif (is_string($result)) {
+            $this->messenger()->addError($result);
             return $view;
         }
-
-        $validatedData = $form->getData();
-        $sessionManager = SessionContainer::getDefaultManager();
-        $sessionManager->regenerateId();
-
-        $adapter = $auth->getAdapter();
-        $adapter->setIdentity($validatedData['email']);
-        $adapter->setCredential($validatedData['password']);
-        $result = $auth->authenticate();
-        if (!$result->isValid()) {
-            // Check if the user is under moderation in order to add a message.
-            if (!$this->isOpenRegister()) {
-                $entityManager = $this->getEntityManager();
-                /** @var \Omeka\Entity\User $user */
-                $user = $entityManager->getRepository(User::class)->findOneBy([
-                    'email' => $validatedData['email'],
-                ]);
-                if ($user) {
-                    $guestToken = $entityManager->getRepository(GuestToken::class)
-                        ->findOneBy(['email' => $validatedData['email']], ['id' => 'DESC']);
-                    if (empty($guestToken) || $guestToken->isConfirmed()) {
-                        if (!$user->isActive()) {
-                            $this->messenger()->addError('Your account is under moderation for opening.'); // @translate
-                            return $view;
-                        }
-                    } else {
-                        $this->messenger()->addError('Check your email to confirm your registration.'); // @translate
-                        return $view;
-                    }
-                }
-            }
-            $this->messenger()->addError(implode(';', $result->getMessages()));
-            return $view;
-        }
-
-        $this->messenger()->addSuccess('Successfully logged in'); // @translate
-        $eventManager = $this->getEventManager();
-        $eventManager->trigger('user.login', $auth->getIdentity());
 
         return $this->redirectToAdminOrSite();
     }
