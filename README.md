@@ -56,6 +56,14 @@ Usage
 
 A guest login form is provided in `/s/my_site/guest/login`.
 
+### Guest register form
+
+A guest login form is provided in `/s/my_site/guest/register`.
+
+### Guest blocks for login and register
+
+Site page blocks "Login" and "Register" are available too and can be added on any page.
+
 ### Terms agreement
 
 A check box allows to force guests to accept terms agreement.
@@ -85,7 +93,7 @@ endif;
 TODO
 ----
 
-- [ ] Move pages to a standard page, in particular register page (see module [ContactUs]).
+- [x] Move pages to a standard page, in particular register page (see module [ContactUs]).
 
 
 Warning
