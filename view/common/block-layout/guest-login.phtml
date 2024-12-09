@@ -4,15 +4,27 @@
  * @var \Omeka\Api\Representation\SiteRepresentation $site
  * @var \Omeka\Api\Representation\SitePageBlockRepresentation $block
  * @var \Omeka\Form\LoginForm|null $form
+ * @var \TwoFactorAuth\Form\TokenForm|null $formToken
  */
 
 $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
 $trigger = $plugins->get('trigger');
+$assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
+$headLink = $plugins->get('headLink');
+$headScript = $plugins->get('headScript');
 
 if ($form) $form->prepare();
+
+if (!empty($formToken)) {
+    $headLink
+        ->appendStylesheet($assetUrl('css/two-factor-auth.css', 'TwoFactorAuth'));
+    $headScript
+        ->appendFile($assetUrl('js/two-factor-auth.js', 'TwoFactorAuth'), 'text/javascript', ['defer' => 'defer']);
+}
+
 ?>
 
 <div class="block block-login">
@@ -26,7 +38,9 @@ if ($form) $form->prepare();
     <p class="forgot-password">
         <?= $hyperlink($translate('Forgot password?'), $url('site/guest/anonymous', ['action' => 'forgot-password'], true)) ?>
     </p>
-    <?php $trigger('view.login.after'); // Needed as long as other auth modules have no block. ?>
+    <?= isset($formToken) ? $this->partial('omeka/login/token-dialog') : '' ?>
     <?php endif; ?>
+
+    <?php $trigger('view.login.after'); // Needed as long as other auth modules have no block. ?>
 
 </div>

@@ -14,6 +14,7 @@ use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Site\BlockLayout\TemplateableBlockLayoutInterface;
 use Omeka\Stdlib\ErrorStore;
+use TwoFactorAuth\Form\TokenForm;
 use TwoFactorAuth\Mvc\Controller\Plugin\TwoFactorLogin;
 
 class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterface
@@ -106,6 +107,10 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
             return '';
         }
 
+        // The process is slightly different from module TwoFactorAuth, because
+        // there is no route for login-token.
+        // Further, the ajax for 2fa-login is managed by module TwoFactorAuth.
+
         /** @var \Omeka\View\Helper\Params $params */
         $params = $view->params();
         $post = $params->fromPost();
@@ -147,9 +152,19 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
             'site' => $block->page()->site(),
             'block' => $block,
         ];
-        isset($formToken)
-            ? $vars['formToken'] = $formToken
-            : $vars['form'] = $form;
+
+        if ($view->setting('twofactorauth_use_dialog')) {
+            // For ajax, use standard action.
+            $form->setAttribute('action', $view->url('login'));
+            $formToken = $this->formElementManager->get(TokenForm::class)->setAttribute('action', $view->url('login'));
+            $vars['form'] = $form;
+            $vars['formToken'] = $formToken;
+        } else {
+            isset($formToken)
+                ? $vars['formToken'] = $formToken
+                : $vars['form'] = $form;
+        }
+
         return $view->partial($templateViewScript, $vars);
     }
 

@@ -4,22 +4,33 @@
  * @var \Omeka\Api\Representation\SiteRepresentation $site
  * @var \Omeka\Form\LoginForm|null $form
  * @var \Omeka\Form\UserForm|null $formRegister
+ * @var \TwoFactorAuth\Form\TokenForm $formToken
  */
 
 $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
 $trigger = $plugins->get('trigger');
 $setting = $plugins->get('setting');
+$assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $pageTitle = $plugins->get('pageTitle');
+$headLink = $plugins->get('headLink');
 $siteSetting = $plugins->get('siteSetting');
+$headScript = $plugins->get('headScript');
 $htmlElement = $plugins->get('htmlElement');
 
-$htmlElement('body')->appendAttribute('class', 'guest login');
+$htmlElement('body')->appendAttribute('class', 'guest login' . ($formToken ? ' two-factor-auth-login' : ''));
 
 if ($form) $form->prepare();
 if ($formRegister) $formRegister->prepare();
+
+if ($formToken) {
+    $headLink
+        ->appendStylesheet($assetUrl('css/two-factor-auth.css', 'TwoFactorAuth'));
+    $headScript
+        ->appendFile($assetUrl('js/two-factor-auth.js', 'TwoFactorAuth'), 'text/javascript', ['defer' => 'defer']);
+}
 ?>
 
 <?= $pageTitle($siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?: $translate('Login'))) ?>
@@ -33,6 +44,7 @@ if ($formRegister) $formRegister->prepare();
     <p class="forgot-password">
         <?= $hyperlink($translate('Forgot password?'), $url('site/guest/anonymous', ['action' => 'forgot-password'], true)) ?>
     </p>
+    <?= isset($formToken) ? $this->partial('omeka/login/token-dialog') : '' ?>
     <?php endif; ?>
 
     <?php $trigger('view.login.after'); ?>

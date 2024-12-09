@@ -31,14 +31,18 @@ class AnonymousController extends AbstractGuestController
 
         // The process is slightly different from module TwoFactorAuth, because
         // there is no route for login-token.
+        // Further, the ajax for 2fa-login is managed by module TwoFactorAuth.
+
+        $loginWithoutForm = $this->siteSettings()->get('guest_login_without_form');
 
         // The TokenForm returns to the login action, so check it when needed.
         $request = $this->getRequest();
-        if ($request->isPost() && ($request->getPost('token_email') || $request->getPost('submit_token'))) {
+        if (!$loginWithoutForm
+            && $request->isPost()
+            && ($request->getPost('token_email') || $request->getPost('submit_token'))
+        ) {
             return $this->loginToken();
         }
-
-        $loginWithoutForm = $this->siteSettings()->get('guest_login_without_form');
 
         /** @var LoginForm $form */
         $form = $loginWithoutForm
@@ -65,6 +69,13 @@ class AnonymousController extends AbstractGuestController
             'formRegister' => $formRegister ?? null,
         ]);
 
+        if (!$loginWithoutForm && $this->settings()->get('twofactorauth_use_dialog')) {
+            // For ajax, use standard action.
+            $form->setAttribute('action', $this->url()->fromRoute('login'));
+            $view
+                ->setVariable('formToken', $this->getForm(TokenForm::class)->setAttribute('action', $this->url()->fromRoute('login')));
+        }
+
         if ($form) {
             $result = $this->validateLogin($form);
             if ($result === null) {
@@ -75,9 +86,10 @@ class AnonymousController extends AbstractGuestController
                 return $view;
             } elseif ($result === 1) {
                 // Success login in first step, so go second step.
+                // Here, there is no ajax.
                 return $view
                     ->setVariable('formToken', $this->getForm(TokenForm::class))
-                    ->setTemplate('omeka/login/login-token');
+                    ->setTemplate('guest/site/anonymous/login-token');
             } elseif (is_string($result)) {
                 // Email or password error, or something else.
                 $this->messenger()->addError($result);
@@ -130,7 +142,7 @@ class AnonymousController extends AbstractGuestController
             'formRegister' => null,
         ]);
         return $view
-            ->setTemplate('omeka/login/login-token');
+            ->setTemplate('guest/site/anonymous/login-token');
     }
 
     public function registerAction()
