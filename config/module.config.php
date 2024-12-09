@@ -33,6 +33,9 @@ return [
         'invokables' => [
             'guestWidget' => View\Helper\GuestWidget::class,
         ],
+        'factories' => [
+            'guestNavigation' => Service\ViewHelper\GuestNavigationFactory::class,
+        ],
         'delegators' => [
             \Omeka\View\Helper\UserBar::class => [
                 Service\ViewHelper\UserBarDelegatorFactory::class,
@@ -70,6 +73,7 @@ return [
     'controller_plugins' => [
         'factories' => [
             'createGuestToken' => Service\ControllerPlugin\CreateGuestTokenFactory::class,
+            'guestNavigationTranslator' => Service\ControllerPlugin\GuestNavigationTranslatorFactory::class,
             'sendEmail' => Service\ControllerPlugin\SendEmailFactory::class,
             'userRedirectUrl' => Service\ControllerPlugin\UserRedirectUrlFactory::class,
             'userSites' => Service\ControllerPlugin\UserSitesFactory::class,

@@ -9,6 +9,9 @@
 $plugins = $this->getHelperPluginManager();
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
+$guestNavigation = $plugins->get('guestNavigation')();
+
+$hasGuestNav = (bool) $guestNavigation->getContainer()->count();
 
 $script = <<<'JS'
 $(document).ready( function() {
@@ -31,6 +34,12 @@ $form->prepare();
 ?>
 
 <?= $this->messages() ?>
+
+<?php if ($hasGuestNav): ?>
+<nav class="navigation-guest">
+    <?= $guestNavigation->menu()->renderMenu() ?>
+</nav>
+<?php endif; ?>
 
 <?= $this->pageTitle($this->label) ?>
 

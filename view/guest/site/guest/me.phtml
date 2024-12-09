@@ -6,18 +6,27 @@
  * @var array $widgets
  */
 
+// TODO Restructure workflow for guest widgets.
+
 $plugins = $this->getHelperPluginManager();
 $pageTitle = $plugins->get('pageTitle');
-
-// TODO Restructure workflow for guest widgets.
 $guestWidget = $plugins->get('guestWidget');
+$guestNavigation = $plugins->get('guestNavigation')();
+
+$hasGuestNav = (bool) $guestNavigation->getContainer()->count();
 
 $this->htmlElement('body')->appendAttribute('class', 'guest account');
 ?>
 
-<?= $pageTitle($this->siteSetting('guest_dashboard_label') ?: $this->setting('guest_dashboard_label')) ?>
-
 <?= $this->messages() ?>
+
+<?php if ($hasGuestNav): ?>
+<nav class="navigation-guest">
+    <?= $guestNavigation->menu()->renderMenu() ?>
+</nav>
+<?php endif; ?>
+
+<?= $pageTitle($this->siteSetting('guest_dashboard_label') ?: $this->setting('guest_dashboard_label')) ?>
 
 <?php foreach ($widgets as $widget): ?>
 <div class="guest-widget">

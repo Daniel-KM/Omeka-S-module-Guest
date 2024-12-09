@@ -8,13 +8,23 @@
  * @var string $page
  */
 
-$translate = $this->plugin('translate');
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$guestNavigation = $plugins->get('guestNavigation')();
+
+$hasGuestNav = (bool) $guestNavigation->getContainer()->count();
 
 $this->htmlElement('body')->appendAttribute('class', 'guest accept-terms');
 $form->prepare();
 ?>
 
 <?= $this->messages() ?>
+
+<?php if ($hasGuestNav): ?>
+<nav class="navigation-guest">
+    <?= $guestNavigation->menu()->renderMenu() ?>
+</nav>
+<?php endif; ?>
 
 <?= $this->pageTitle($translate('Accept terms and conditions')) ?>
 

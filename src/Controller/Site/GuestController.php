@@ -6,10 +6,8 @@ use Common\Stdlib\PsrMessage;
 use Guest\Form\AcceptTermsForm;
 use Guest\Form\EmailForm;
 use Laminas\Mvc\MvcEvent;
-use Laminas\Navigation\Service\ConstructedNavigationFactory;
 use Laminas\Session\Container as SessionContainer;
 use Laminas\View\Model\ViewModel;
-use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Entity\User;
 
 /**
@@ -65,11 +63,6 @@ class GuestController extends AbstractGuestController
             ]);
         }
 
-        $nav = $home === 'board'
-            // If navigation is empty, use empty array: null means default nav.
-            ? $this->guestNav($site, $this->siteSettings()->get('guest_navigation') ?: [], ['activeUrl' => null])
-            : null;
-
         $eventManager = $this->getEventManager();
         $partial = $this->viewHelpers()->get('partial');
 
@@ -85,7 +78,6 @@ class GuestController extends AbstractGuestController
         $view = new ViewModel([
             'site' => $site,
             'user' => $user,
-            'nav' => $nav,
             'widgets' => $args['widgets'],
         ]);
         return $home === 'board'
@@ -342,38 +334,5 @@ class GuestController extends AbstractGuestController
         $message = new PsrMessage('Thanks for accepting the terms and condtions.'); // @translate
         $this->messenger()->addSuccess($message);
         return $this->redirectToAdminOrSite();
-    }
-
-    /**
-     * Get the navigation helper for public-side nav for this site
-     *
-     * Adapted from SiteRepresentation::publicNav().
-     * @see \Omeka\Api\Representation\SiteRepresentation::publicNav()
-     * @see \Menu\View\Helper\NavMenu::publicNav()
-     * @see \Guest\Controller\Site\GuestController::guestNav()
-     *
-     * @todo Check if the translator should be skipped here, in particular to display title of resources.
-     */
-    protected function guestNav(SiteRepresentation $site, ?array $menu = null, array $options = []): \Laminas\View\Helper\Navigation
-    {
-        $helper = $this->viewHelpers()->build('Navigation');
-        $helper->getPluginManager()->addInitializer(function ($container, $plugin): void {
-            $plugin->setTranslatorEnabled(false);
-        });
-        return $helper($this->getGuestNavContainer($site, $menu, $options));
-    }
-
-    /**
-     * Get the navigation container for this site's public nav
-     *
-     * Adapted from SiteRepresentation::getPublicNavContainer().
-     * @see \Omeka\Api\Representation\SiteRepresentation::getPublicNavContainer()
-     * @see \Menu\View\Helper\NavMenu::getPublicNavContainer()
-     * @see \Guest\Controller\Site\GuestController::getGuestNavContainer()
-     */
-    protected function getGuestNavContainer(SiteRepresentation $site, ?array $menu = null, array $options = []): \Laminas\Navigation\Navigation
-    {
-        $factory = new ConstructedNavigationFactory($this->navigationTranslator()->toLaminas($site, $menu, $options));
-        return $factory($site->getServiceLocator(), '');
     }
 }
