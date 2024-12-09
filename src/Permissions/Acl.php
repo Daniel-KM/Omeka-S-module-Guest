@@ -2,7 +2,7 @@
 
 namespace Guest\Permissions;
 
-class Acl extends \Omeka\Permissions\Acl
+class Acl
 {
     const ROLE_GUEST = 'guest';
 }

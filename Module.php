@@ -88,11 +88,20 @@ class Module extends AbstractModule
             );
             throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
         }
+
+        // Required during install because the role is set in config.
+        require_once __DIR__ . '/src/Permissions/Acl.php';
     }
 
     protected function preUninstall(): void
     {
         $this->deactivateGuests();
+    }
+
+    protected function preUpgrade(): void
+    {
+        // Required during upgrade because the role is set in config.
+        require_once __DIR__ . '/src/Permissions/Acl.php';
     }
 
     /**
@@ -103,6 +112,9 @@ class Module extends AbstractModule
         /** @var \Omeka\Permissions\Acl $acl */
         $services = $this->getServiceLocator();
         $acl = $services->get('Omeka\Acl');
+
+        // TODO To be removed when roles will be integrated in core.
+        /** @see https://github.com/omeka/omeka-s/pull/2241 */
 
         // This check allows to add the role "guest" by dependencies without
         // complex process. It avoids issues when the module is disabled too.

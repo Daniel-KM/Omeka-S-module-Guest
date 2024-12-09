@@ -2,7 +2,17 @@
 
 namespace Guest;
 
+use \Guest\Permissions\Acl as GuestAcl;
+
 return [
+    'acl' => [
+        'roles' => [
+            GuestAcl::ROLE_GUEST=> [],
+        ],
+        'labels' => [
+            GuestAcl::ROLE_GUEST => 'Guest', // @translate
+        ],
+    ],
     'entity_manager' => [
         'mapping_classes_paths' => [
             dirname(__DIR__) . '/src/Entity',
