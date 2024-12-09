@@ -12,6 +12,7 @@ use Laminas\Http\Request;
 use Laminas\Session\Container as SessionContainer;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Entity\User;
+use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Settings\Settings;
 use TwoFactorAuth\Mvc\Controller\Plugin\TwoFactorLogin;
 
@@ -31,6 +32,11 @@ class ValidateLogin extends AbstractPlugin
      * @var EventManager
      */
     protected $eventManager;
+
+    /**
+     * @var Messenger
+     */
+    protected $messenger;
 
     /**
      * @var Request
@@ -66,6 +72,7 @@ class ValidateLogin extends AbstractPlugin
         AuthenticationService $authenticationService,
         EntityManager $entityManager,
         EventManager $eventManager,
+        Messenger $messenger,
         Request $request,
         Settings $settings,
         ?TwoFactorLogin $twoFactorLogin,
@@ -76,6 +83,7 @@ class ValidateLogin extends AbstractPlugin
         $this->authenticationService = $authenticationService;
         $this->entityManager = $entityManager;
         $this->eventManager = $eventManager;
+        $this->messenger = $messenger;
         $this->request = $request;
         $this->settings = $settings;
         $this->twoFactorLogin = $twoFactorLogin;
@@ -165,6 +173,8 @@ class ValidateLogin extends AbstractPlugin
             }
             return implode(';', $result->getMessages());
         }
+
+        $this->messenger->clear();
 
         $this->eventManager
             ->trigger('user.login', $this->authenticationService->getIdentity());

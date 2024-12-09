@@ -109,6 +109,7 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
 
         // The process is slightly different from module TwoFactorAuth, because
         // there is no route for login-token.
+
         // Further, the ajax for 2fa-login is managed by module TwoFactorAuth.
 
         /** @var \Omeka\View\Helper\Params $params */
@@ -116,6 +117,10 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         $post = $params->fromPost();
         if (!empty($post['token_email']) || !empty($post['submit_token'])) {
             return $this->loginToken($view, $block, $templateViewScript);
+        }
+
+        if (!$post && $params->fromQuery('resend_token')) {
+            return $this->resendToken($view, $block, $templateViewScript);
         }
 
         $loginWithoutForm = $view->siteSetting('guest_login_without_form');
@@ -170,12 +175,15 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
 
     /**
      * @see \Guest\Controller\Site\AnonymousController::loginToken()
+     * @see \Guest\Site\BlockLayout\Login::loginToken()
      * @see \TwoFactorAuth\Controller\LoginController::loginTokenAction()
      */
     protected function loginToken(PhpRenderer $view, SitePageBlockRepresentation $block, $templateViewScript = self::PARTIAL_NAME)
     {
         // Check if the first step was just processed.
         $isFirst = (bool) $this->request->getMetadata('first');
+
+        // Ajax is managed by module TwoFactorAuth.
 
         if (!$isFirst && $this->request->isPost()) {
             $data = $this->request->getPost();
@@ -199,6 +207,38 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
                 $this->messenger->addFormErrors($form);
             }
         }
+
+        $form = $this->formElementManager->get(\TwoFactorAuth\Form\TokenForm::class);
+        $templateViewScript = 'common/block-template/guest-login-token';
+
+        $vars = [
+            'site' => $block->page()->site(),
+            'block' => $block,
+            'formToken' => $form,
+        ];
+        return $view->partial($templateViewScript, $vars);
+    }
+
+    /**
+     * Adapted:
+     * @see \Guest\Controller\Site\AnonymousController::resendToken();
+     * @see \Guest\Site\BlockLayout\Login::resendToken()
+     * @see \TwoFactorAuth\Controller\LoginController::resendTokenAction();
+     */
+    protected function resendToken(PhpRenderer $view, SitePageBlockRepresentation $block, $templateViewScript = self::PARTIAL_NAME)
+    {
+        $codeKey = $this->request->getQuery('resend_token');
+        if ($codeKey) {
+            $result = $this->twoFactorLogin->resendToken();
+        } else {
+            $result = false;
+        }
+
+        // Ajax is managed by module TwoFactorAuth.
+
+        $result
+            ? $this->messenger->addSuccess('A new code was resent.')
+            :  $this->messenger->addError('Unable to send email.');
 
         $form = $this->formElementManager->get(\TwoFactorAuth\Form\TokenForm::class);
         $templateViewScript = 'common/block-template/guest-login-token';

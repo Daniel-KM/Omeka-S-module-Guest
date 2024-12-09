@@ -31,17 +31,23 @@ class AnonymousController extends AbstractGuestController
 
         // The process is slightly different from module TwoFactorAuth, because
         // there is no route for login-token.
+
         // Further, the ajax for 2fa-login is managed by module TwoFactorAuth.
 
         $loginWithoutForm = $this->siteSettings()->get('guest_login_without_form');
 
         // The TokenForm returns to the login action, so check it when needed.
         $request = $this->getRequest();
+        $isPost = $request->isPost();
         if (!$loginWithoutForm
-            && $request->isPost()
+            && $isPost
             && ($request->getPost('token_email') || $request->getPost('submit_token'))
         ) {
             return $this->loginToken();
+        }
+
+        if (!$isPost && $request->getQuery('resend_token')) {
+            return $this->resendToken();
         }
 
         /** @var LoginForm $form */
@@ -67,6 +73,7 @@ class AnonymousController extends AbstractGuestController
             'site' => $site,
             'form' => $form,
             'formRegister' => $formRegister ?? null,
+            'formToken' => null,
         ]);
 
         if (!$loginWithoutForm && $this->settings()->get('twofactorauth_use_dialog')) {
@@ -106,12 +113,15 @@ class AnonymousController extends AbstractGuestController
 
     /**
      * @see \Guest\Controller\Site\AnonymousController::loginToken()
+     * @see \Guest\Site\BlockLayout\Login::loginToken()
      * @see \TwoFactorAuth\Controller\LoginController::loginTokenAction()
      */
     protected function loginToken()
     {
         // Check if the first step was just processed.
         $isFirst = (bool) $this->getRequest()->getMetadata('first');
+
+        // Ajax is managed by module TwoFactorAuth.
 
         if (!$isFirst && $this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
@@ -135,6 +145,38 @@ class AnonymousController extends AbstractGuestController
                 $this->messenger()->addFormErrors($form);
             }
         }
+
+        $view = new ViewModel([
+            'site' => $this->currentSite(),
+            'formToken' => $this->getForm(TokenForm::class),
+            'formRegister' => null,
+        ]);
+        return $view
+            ->setTemplate('guest/site/anonymous/login-token');
+    }
+
+    /**
+     * Adapted:
+     * @see \Guest\Controller\Site\AnonymousController::resendToken();
+     * @see \Guest\Site\BlockLayout\Login::resendToken()
+     * @see \TwoFactorAuth\Controller\LoginController::resendTokenAction();
+     */
+    protected function resendToken()
+    {
+        $request = $this->getRequest();
+        $codeKey = $request->getQuery('resend_token');
+        if ($codeKey) {
+            $twoFactorLogin = $this->twoFactorLogin();
+            $result = $twoFactorLogin->resendToken();
+        } else {
+            $result = false;
+        }
+
+        // Ajax is managed by module TwoFactorAuth.
+
+        $result
+            ? $this->messenger()->addSuccess('A new code was resent.')
+            :  $this->messenger()->addError('Unable to send email.');
 
         $view = new ViewModel([
             'site' => $this->currentSite(),

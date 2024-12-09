@@ -23,6 +23,7 @@ class ValidateLoginFactory implements FactoryInterface
             $services->get('Omeka\AuthenticationService'),
             $services->get('Omeka\EntityManager'),
             $services->get('EventManager'),
+            $plugins->get('messenger'),
             $services->get('Request'),
             $services->get('Omeka\Settings'),
             $plugins->has('twoFactorLogin') ? $plugins->get('twoFactorLogin') : null,

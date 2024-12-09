@@ -6,6 +6,9 @@
  * @var \TwoFactorAuth\Form\TokenForm $formToken
  */
 
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
 ?>
 
 <div class="block block-login">
@@ -14,6 +17,10 @@
 
     <div  class="guest-anonymous guest-login guest-login-token two-factor-auth-login">
         <?= $this->form($formToken) ?>
+
+        <p class="resend-token">
+            <?= $hyperlink($translate('Resend a code'), $block->page()->siteUrl() . '?resend_token=1', ['class' => 'resend-code']) ?>
+        </p>
     </div>
 
 </div>
