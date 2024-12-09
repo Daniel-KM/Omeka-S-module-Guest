@@ -1,0 +1,26 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
+ * @var \Omeka\Entity\User $user
+ * @var \Laminas\View\Helper\Navigation $nav
+ * @var array $widgets
+ */
+
+$plugins = $this->getHelperPluginManager();
+$url = $plugins->get('url');
+$translate = $plugins->get('translate');
+$pageTitle = $plugins->get('pageTitle');
+
+$this->htmlElement('body')->appendAttribute('class', 'guest account');
+?>
+
+<?= $this->messages() ?>
+
+<?= $nav->menu()->renderMenu() ?>
+
+<?= $pageTitle($this->siteSetting('guest_dashboard_label') ?: $this->setting('guest_dashboard_label')) ?>
+
+<h3><?= $user->getName() ?></h3>
+
+<a class="button" href="<?= $url('site/guest/guest', ['action' => 'logout'], true) ?>"><?= $translate('Log out') ?></a>

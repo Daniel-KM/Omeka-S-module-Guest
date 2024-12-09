@@ -47,6 +47,7 @@ class IndexController extends AbstractActionController
                     'empty_option' => '',
                     'prepend_value_options' => [
                         'me' => 'Classical board (pages of modules)', // @translate
+                        'board' => 'Guest board (this menu)', // @translate
                     ],
                 ],
                 'attributes' => [
