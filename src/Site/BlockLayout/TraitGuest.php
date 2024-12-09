@@ -2,6 +2,7 @@
 
 namespace Guest\Site\BlockLayout;
 
+use Laminas\Session\Container as SessionContainer;
 use Laminas\View\Renderer\PhpRenderer;
 
 trait TraitGuest
@@ -22,7 +23,8 @@ trait TraitGuest
         // Bypass settings if set in url query.
         $redirectUrl = $params->fromQuery('redirect_url')
             // Deprecated: replace query argument "redirect" by "redirect_url".
-            ?: $params->fromQuery('redirect');
+            ?: $params->fromQuery('redirect')
+            ?: SessionContainer::getDefaultManager()->getStorage()->offsetGet('redirect_url');
 
         if (!$redirectUrl) {
             $redirect = $view->siteSetting('guest_redirect')

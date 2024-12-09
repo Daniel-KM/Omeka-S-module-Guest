@@ -4,6 +4,7 @@ namespace Guest\Site\BlockLayout;
 
 use Guest\Mvc\Controller\Plugin\ValidateLogin;
 use Laminas\Form\FormElementManager;
+use Laminas\Http\Request;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
@@ -13,6 +14,7 @@ use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Site\BlockLayout\TemplateableBlockLayoutInterface;
 use Omeka\Stdlib\ErrorStore;
+use TwoFactorAuth\Mvc\Controller\Plugin\TwoFactorLogin;
 
 class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterface
 {
@@ -34,6 +36,16 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
     protected $messenger;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var TwoFactorLogin
+     */
+    protected $twoFactorLogin;
+
+    /**
      * @var ValidateLogin
      */
     protected $validateLogin;
@@ -46,11 +58,15 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
     public function __construct(
         FormElementManager $formElementManager,
         Messenger $messenger,
+        Request $request,
+        TwoFactorLogin $twoFactorLogin,
         ValidateLogin $validateLogin,
         bool $hasModuleUserNames
     ) {
         $this->formElementManager = $formElementManager;
         $this->messenger = $messenger;
+        $this->request = $request;
+        $this->twoFactorLogin = $twoFactorLogin;
         $this->validateLogin = $validateLogin;
         $this->hasModuleUserNames = $hasModuleUserNames;
     }
@@ -93,6 +109,10 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         /** @var \Omeka\View\Helper\Params $params */
         $params = $view->params();
         $post = $params->fromPost();
+        if (!empty($post['token_email']) || !empty($post['submit_token'])) {
+            return $this->loginToken($view, $block, $templateViewScript);
+        }
+
         $loginWithoutForm = $view->siteSetting('guest_login_without_form');
 
         $form = $loginWithoutForm
@@ -101,21 +121,77 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
 
         if ($post && $form) {
             $result = $this->validateLogin->__invoke($form);
-            if ($result === true) {
+            if ($result === null) {
+                // Internal error (no mail sent).
+                return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
+            } elseif ($result === false || $result === 0) {
+                // Email or password error, so retry below.
+            } elseif ($result === 1) {
+                // Success login in first step, so go second step.
+                $formToken = $this->formElementManager->get(\TwoFactorAuth\Form\TokenForm::class);
+                $templateViewScript = 'common/block-template/guest-login-token';
+            } elseif (is_string($result)) {
+                // Email or password error, or something else.
+                $this->messenger->addError($result);
+            } else {
+                // Here, The user is authenticated.
                 $this->redirectToAdminOrSite($view);
                 return '';
-            } elseif (is_string($result)) {
-                $this->messenger->addError($result);
             }
         } elseif ($post) {
-            // Manage login without form.
+            // Manage login without form (cas, ldap, sso).
             $this->redirectToAdminOrSite($view);
         }
 
         $vars = [
             'site' => $block->page()->site(),
             'block' => $block,
-            'form' => $form,
+        ];
+        isset($formToken)
+            ? $vars['formToken'] = $formToken
+            : $vars['form'] = $form;
+        return $view->partial($templateViewScript, $vars);
+    }
+
+    /**
+     * @see \Guest\Controller\Site\AnonymousController::loginToken()
+     * @see \TwoFactorAuth\Controller\LoginController::loginTokenAction()
+     */
+    protected function loginToken(PhpRenderer $view, SitePageBlockRepresentation $block, $templateViewScript = self::PARTIAL_NAME)
+    {
+        // Check if the first step was just processed.
+        $isFirst = (bool) $this->request->getMetadata('first');
+
+        if (!$isFirst && $this->request->isPost()) {
+            $data = $this->request->getPost();
+            $form = $this->formElementManager->get(\TwoFactorAuth\Form\TokenForm::class);
+            $form->setData($data);
+            if ($form->isValid()) {
+                /**
+                 * @var \Laminas\Http\PhpEnvironment\Request $request
+                 * @var \TwoFactorAuth\Mvc\Controller\Plugin\TwoFactorLogin $twoFactorLogin
+                 */
+                $validatedData = $form->getData();
+                $result = $this->twoFactorLogin->validateLoginStep2($validatedData['token_email']);
+                if ($result === null) {
+                    // Internal error (no mail sent).
+                    header('Location: ' . $block->page()->siteUrl(null, true), true, 302);
+                    die();
+                } elseif ($result) {
+                    return $this->redirectToAdminOrSite($view);
+                }
+            } else {
+                $this->messenger->addFormErrors($form);
+            }
+        }
+
+        $form = $this->formElementManager->get(\TwoFactorAuth\Form\TokenForm::class);
+        $templateViewScript = 'common/block-template/guest-login-token';
+
+        $vars = [
+            'site' => $block->page()->site(),
+            'block' => $block,
+            'formToken' => $form,
         ];
         return $view->partial($templateViewScript, $vars);
     }

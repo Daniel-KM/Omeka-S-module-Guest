@@ -1,0 +1,19 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
+ * @var \Omeka\Api\Representation\SitePageBlockRepresentation $block
+ * @var \TwoFactorAuth\Form\TokenForm $formToken
+ */
+
+?>
+
+<div class="block block-login">
+
+    <?= $this->messages() ?>
+
+    <div  class="guest-anonymous guest-login guest-login-token two-factor-auth-login">
+        <?= $this->form($formToken) ?>
+    </div>
+
+</div>

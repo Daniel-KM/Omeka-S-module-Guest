@@ -28,6 +28,8 @@ class LoginFactory implements FactoryInterface
         return new Login(
             $services->get('FormElementManager'),
             $plugins->get('messenger'),
+            $services->get('Request'),
+            $plugins->get('twoFactorLogin'),
             $plugins->get('validateLogin'),
             $hasModuleUserNames
         );

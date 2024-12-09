@@ -91,8 +91,13 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
         $params = $view->params();
         $post = $params->fromPost();
 
-        // For now, post is not possible: it is redirected to standard register page.
-        if ($post) {
+        // TODO Clarifiy process when blocks login and register are on the same page.
+        // Manage the case where blocks login and register are on the same page.
+        if ($post
+            && empty($post['loginform_csrf'])
+            && empty($post['submit_token'])
+        ) {
+            // For now, post is not possible: it is redirected to standard register page.
             header('Location: ' . $urlRegister, true, 302);
             die();
         }

@@ -29,9 +29,12 @@ class AnonymousController extends AbstractGuestController
 
         $site = $this->currentSite();
 
+        // The process is slightly different from module TwoFactorAuth, because
+        // there is no route for login-token.
+
         // The TokenForm returns to the login action, so check it when needed.
         $request = $this->getRequest();
-        if ($request->isPost() && $request->getPost('submit_token')) {
+        if ($request->isPost() && ($request->getPost('token_email') || $request->getPost('submit_token'))) {
             return $this->loginToken();
         }
 
