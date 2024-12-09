@@ -29,7 +29,8 @@ class GuestController extends AbstractGuestController
 
         $this->messenger()->addSuccess('Successfully logged out'); // @translate
 
-        $redirectUrl = $this->params()->fromQuery('redirect');
+        $redirectUrl = $this->params()->fromQuery('redirect_url')
+            ?: $this->params()->fromQuery('redirect');
         if ($redirectUrl) {
             return $this->redirect()->toUrl($redirectUrl);
         }

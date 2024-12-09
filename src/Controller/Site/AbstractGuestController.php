@@ -61,11 +61,13 @@ abstract class AbstractGuestController extends AbstractActionController
      * Adapted:
      * @see \Guest\Controller\Site\AbstractGuestController::redirectToAdminOrSite()
      * @see \Guest\Site\BlockLayout\TraitGuest::redirectToAdminOrSite()
+     * @see \SingleSignOn\Controller\SsoController::redirectToAdminOrSite()
      */
     protected function redirectToAdminOrSite()
     {
         // Bypass settings if set in url query.
-        $redirectUrl = $this->params()->fromQuery('redirect');
+        $redirectUrl = $this->params()->fromQuery('redirect_url')
+            ?: $this->params()->fromQuery('redirect');
         if ($redirectUrl) {
             return $this->redirect()->toUrl($redirectUrl);
         }
