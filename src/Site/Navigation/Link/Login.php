@@ -10,7 +10,7 @@ class Login implements LinkInterface
 {
     public function getName()
     {
-        return 'Guest log in'; // @translate
+        return 'Guest: Log in'; // @translate
     }
 
     public function getFormTemplate()

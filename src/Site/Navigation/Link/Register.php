@@ -10,7 +10,7 @@ class Register implements LinkInterface
 {
     public function getName()
     {
-        return 'Guest register'; // @translate
+        return 'Guest: Register'; // @translate
     }
 
     public function getFormTemplate()

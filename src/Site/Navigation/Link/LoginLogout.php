@@ -10,7 +10,7 @@ class LoginLogout implements LinkInterface
 {
     public function getName()
     {
-        return 'Guest log in/out'; // @translate
+        return 'Guest: Log in / Log out'; // @translate
     }
 
     public function getFormTemplate()

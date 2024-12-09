@@ -10,7 +10,7 @@ class LoginBoard implements LinkInterface
 {
     public function getName()
     {
-        return 'Guest log in / My board'; // @translate
+        return 'Guest: Log in / My board'; // @translate
     }
 
     public function getFormTemplate()
