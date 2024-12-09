@@ -14,7 +14,7 @@ $escape = $plugins->get('escapeHtml');
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 
-$this->htmlElement('body')->appendAttribute('class', 'sites edit');
+$this->htmlElement('body')->appendAttribute('class', 'sites guest edit');
 
 $this->headLink()
     ->appendStylesheet($assetUrl('css/jstree.css', 'Omeka'))
@@ -50,6 +50,10 @@ $form->prepare();
 
     <div id="nav-selector" class="always-open sidebar">
         <a href="#" class="mobile-only sidebar-close o-icon-close"><span class="screen-reader-text"><?= $translate('Close') ?></span></a>
+        <div class="field">
+            <?= $this->formLabel($form->get('guest_navigation_home')) ?>
+            <?= $this->formElement($form->get('guest_navigation_home')) ?>
+        </div>
         <div class="field">
             <label for="nav-custom-links"><?= $translate('Add a custom link') ?></label>
             <div id="nav-custom-links">

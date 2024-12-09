@@ -35,17 +35,39 @@ class IndexController extends AbstractActionController
     {
         $site = $this->currentSite();
         $siteSettings = $this->siteSettings();
+        $defaultPage = $siteSettings->get('guest_navigation_home') ?: 'me';
 
-        $form = $this->getForm(Form::class)->setAttribute('id', 'site-form');
+        $form = $this->getForm(Form::class)
+            ->setAttribute('id', 'site-form')
+            ->add([
+                'name' => 'guest_navigation_home',
+                'type' => \Common\Form\Element\OptionalSitePageSelect::class,
+                'options' => [
+                    'label' => 'Default page for account', // @translate
+                    'empty_option' => '',
+                    'prepend_value_options' => [
+                        'me' => 'Classical board (pages of modules)', // @translate
+                    ],
+                ],
+                'attributes' => [
+                    'id' => 'guest_navigation_home',
+                    'value' => $defaultPage,
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Classical board (pages of modules)', // @translate
+                ],
+            ]);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->params()->fromPost();
+            // TODO The menu tree is currently not checked by the form.
             $jstree = json_decode($formData['jstree'], true);
             $menuTree = $this->navTranslator->fromJstree($jstree);
-            $formData['o:navigation'] = $menuTree;
+            $formData['guest_navigation'] = $menuTree;
             $form->setData($formData);
             if ($form->isValid()) {
+                $data = $form->getData();
                 $siteSettings->set('guest_navigation', $menuTree);
+                $siteSettings->set('guest_navigation_home', $data['guest_navigation_home'] ?? null);
                 $this->messenger()->addSuccess('Navigation successfully updated'); // @translate
                 return $this->redirect()->refresh();
             }

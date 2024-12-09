@@ -6,8 +6,10 @@ use Common\Stdlib\PsrMessage;
 use Guest\Form\AcceptTermsForm;
 use Guest\Form\EmailForm;
 use Laminas\Mvc\MvcEvent;
+use Laminas\Navigation\Service\ConstructedNavigationFactory;
 use Laminas\Session\Container as SessionContainer;
 use Laminas\View\Model\ViewModel;
+use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Entity\User;
 
 /**
@@ -43,6 +45,24 @@ class GuestController extends AbstractGuestController
         $user = $this->identity();
         if (!$user) {
             return $this->redirect()->toRoute('site/guest/anonymous', ['site-slug' => $this->params('site-slug')]);
+        }
+
+        $home = $this->siteSettings()->get('guest_navigation_home') ?: 'me';
+        if ($home !== 'me') {
+            try {
+                $page = $this->api()->read('site_pages', $home)->getContent();
+            } catch (\Exception $e) {
+                return $this->notFoundAction();
+            }
+            return $this->forward()->dispatch('Omeka\Controller\Site\Page', [
+                '__NAMESPACE__' => 'Omeka\Controller\Site',
+                '__SITE__' => true,
+                'controller' => 'Omeka\Controller\Site\Page',
+                'action' => 'show',
+                'site-slug' => $site->slug(),
+                'page-slug' => $page->slug(),
+                '__CONTROLLER__' => 'Page',
+            ]);
         }
 
         $eventManager = $this->getEventManager();

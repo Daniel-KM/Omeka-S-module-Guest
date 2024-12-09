@@ -362,6 +362,7 @@ return [
             'guest_redirect' => 'site',
             // Not managed in settings, but in navigation.
             'guest_navigation' => [],
+            'guest_navigation_home' => null,
         ],
         'block_settings' => [
             'login' => [],
