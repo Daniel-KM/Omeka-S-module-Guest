@@ -64,6 +64,7 @@ return [
             Controller\ApiController::class => Service\Controller\ApiControllerFactory::class,
             Controller\Site\AnonymousController::class => Service\Controller\Site\AnonymousControllerFactory::class,
             Controller\Site\GuestController::class => Service\Controller\Site\GuestControllerFactory::class,
+            Controller\SiteAdmin\IndexController::class => Service\Controller\SiteAdmin\IndexControllerFactory::class,
         ],
     ],
     'controller_plugins' => [
@@ -97,6 +98,14 @@ return [
     ],
     'navigation' => [
         'site' => [
+            [
+                'label' => 'Navigation Guest', // @translate
+                'route' => 'admin/site/slug/guest-navigation',
+                'action' => 'navigation',
+                'privilege' => 'update',
+                'useRouteMatch' => true,
+                'class' => 'navigation',
+            ],
             [
                 'label' => 'User information', // @translate
                 'route' => 'site/guest',
@@ -150,6 +159,32 @@ return [
                                         '__NAMESPACE__' => 'Guest\Controller\Site',
                                         'controller' => Controller\Site\GuestController::class,
                                         'action' => 'me',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'admin' => [
+                'child_routes' => [
+                    'site' => [
+                        'child_routes' => [
+                            'slug' => [
+                                'child_routes' => [
+                                    'guest-navigation' => [
+                                        'type' => \Laminas\Router\Http\Literal::class,
+                                        'options' => [
+                                            'route' => '/guest-navigation',
+                                            'defaults' => [
+                                                '__NAMESPACE__' => 'Guest\Controller\SiteAdmin',
+                                                '__SITEADMIN__' => true,
+                                                // Here the controller should be full because it is
+                                                // declared full in the list of controllers above.
+                                                'controller' => 'IndexController',
+                                                'action' => 'guest-navigation',
+                                            ],
+                                        ],
                                     ],
                                 ],
                             ],
@@ -325,6 +360,8 @@ return [
             'guest_terms_text' => 'I agree the terms and conditions.', // @translate
             'guest_terms_page' => 'terms-and-conditions',
             'guest_redirect' => 'site',
+            // Not managed in settings, but in navigation.
+            'guest_navigation' => [],
         ],
         'block_settings' => [
             'login' => [],

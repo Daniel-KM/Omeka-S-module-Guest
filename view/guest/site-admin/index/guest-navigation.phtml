@@ -1,0 +1,91 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
+ * @var \Laminas\Form\Form $form
+ * @var array $navTree
+ *
+ * Adapted from Omeka application/view/site-admin/index/navigation.phtml.
+ */
+
+$plugins = $this->getHelperPluginManager();
+$url = $plugins->get('url');
+$escape = $plugins->get('escapeHtml');
+$assetUrl = $plugins->get('assetUrl');
+$translate = $plugins->get('translate');
+
+$this->htmlElement('body')->appendAttribute('class', 'sites edit');
+
+$this->headLink()
+    ->appendStylesheet($assetUrl('css/jstree.css', 'Omeka'))
+    ->prependStylesheet($assetUrl('css/advanced-search.css', 'Omeka'));
+
+$this->headScript()
+    ->appendFile($assetUrl('vendor/jstree/jstree.min.js', 'Omeka'))
+    ->appendFile($assetUrl('js/site-navigation.js', 'Omeka'))
+    ->appendFile($assetUrl('js/jstree-plugins.js', 'Omeka'))
+    ->appendFile($assetUrl('js/advanced-search.js', 'Omeka'))
+    ->appendFile($assetUrl('js/query-form.js', 'Omeka'));
+
+$form->prepare();
+?>
+
+<?= $this->pageTitle($translate('Guest navigation'), 1, $translate('Sites')) ?>
+
+<?= $this->form()->openTag($form) ?>
+
+    <?= $this->formRow($form->get('form_csrf')) ?>
+
+    <div id="page-actions">
+        <?= $this->cancelButton() ?>
+        <button><?= $translate('Save') ?></button>
+    </div>
+
+    <div id="nav-tree"
+        data-link-form-url="<?= $escape($url('admin/site/slug/action', ['action' => 'navigation-link-form'], true)) ?>"
+        data-jstree-data="<?= $escape(json_encode($navTree)) ?>">
+    </div>
+
+    <button id="nav-selector-button" class="mobile-only"><?= $translate('Add a link to a site page') ?></button>
+
+    <div id="nav-selector" class="always-open sidebar">
+        <a href="#" class="mobile-only sidebar-close o-icon-close"><span class="screen-reader-text"><?= $translate('Close') ?></span></a>
+        <div class="field">
+            <label for="nav-custom-links"><?= $translate('Add a custom link') ?></label>
+            <div id="nav-custom-links">
+                <?php foreach ($this->navigationLink()->getCustomTypes() as $type): ?>
+                <?php $name = $this->navigationLink()->getName($type); ?>
+                <button
+                    type="button"
+                    data-type="<?= $escape($type) ?>"
+                    data-value="<?= $escape($type) ?>" class="option"><?= $escape($translate($name)) ?></button>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="field">
+            <label><?= $translate('Add a link to a site page') ?></label>
+            <?php if ($pages = $site->notLinkedPages()): ?>
+            <input type="text" class="page-selector-filter" placeholder="<?= $translate('Filter pages') ?>" aria-label="<?= $translate('Filter pages') ?>">
+            <div id="nav-page-links">
+            <?php foreach ($pages as $page): ?>
+                <button class="nav-page-link option active"
+                    type="button"
+                    data-type="page"
+                    data-label="<?= $escape($page->title()) ?>"
+                    data-id="<?= $escape($page->id()) ?>"
+                    data-slug="<?= $escape($page->slug()) ?>"
+                    data-is_public="<?= $page->isPublic() ? '1' : '0' ?>">
+                    <?= sprintf('%s (%s)', $escape($page->title()), $escape($page->slug())) ?>
+                    <?php if ($page->isPublic() == 0): ?>
+                    <span class="o-icon-private" aria-label="<?= $translate('Private') ?>" title="<?= $translate('Private') ?>" role="presentation"></span>
+                    <?php endif; ?>
+                </button>
+            <?php endforeach; ?>
+            </div>
+            <?php else: ?>
+            <p><?= $translate('There are no available pages.') ?></p>
+            <?php endif; ?>
+        </div>
+    </div>
+
+<?= $this->form()->closeTag() ?>
