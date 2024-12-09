@@ -1,0 +1,27 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
+ * @var \TwoFactorAuth\Form\TokenForm $formToken
+ * @var null $formRegister
+ */
+
+$plugins = $this->getHelperPluginManager();
+$setting = $plugins->get('setting');
+$translate = $plugins->get('translate');
+$pageTitle = $plugins->get('pageTitle');
+$siteSetting = $plugins->get('siteSetting');
+$htmlElement = $plugins->get('htmlElement');
+
+$htmlElement('body')->appendAttribute('class', 'guest login login-token');
+?>
+
+<?= $pageTitle($siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?: $translate('Login'))) ?>
+
+<div class="guest-anonymous guest-login guest-login-token two-factor-auth-login">
+
+    <?= $this->messages() ?>
+
+    <?= $this->form($formToken) ?>
+
+</div>

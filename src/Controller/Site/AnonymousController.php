@@ -10,6 +10,7 @@ use Omeka\Entity\SitePermission;
 use Omeka\Entity\User;
 use Omeka\Form\ForgotPasswordForm;
 use Omeka\Form\LoginForm;
+use TwoFactorAuth\Form\TokenForm;
 
 /**
  * Manage anonymous visitor pages.
@@ -22,7 +23,17 @@ class AnonymousController extends AbstractGuestController
             return $this->redirectToAdminOrSite();
         }
 
+        /**
+         * @var \Laminas\Http\PhpEnvironment\Request $request
+         */
+
         $site = $this->currentSite();
+
+        // The TokenForm returns to the login action, so check it when needed.
+        $request = $this->getRequest();
+        if ($request->isPost() && $request->getPost('submit_token')) {
+            return $this->loginToken();
+        }
 
         $loginWithoutForm = $this->siteSettings()->get('guest_login_without_form');
 
@@ -53,18 +64,70 @@ class AnonymousController extends AbstractGuestController
 
         if ($form) {
             $result = $this->validateLogin($form);
-            if ($result === false) {
+            if ($result === null) {
+                // Internal error (no mail sent).
+                return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
+            } elseif ($result === false || $result === 0) {
+                // Email or password error, so retry.
                 return $view;
+            } elseif ($result === 1) {
+                // Success login in first step, so go second step.
+                return $view
+                    ->setVariable('formToken', $this->getForm(TokenForm::class))
+                    ->setTemplate('omeka/login/login-token');
             } elseif (is_string($result)) {
+                // Email or password error, or something else.
                 $this->messenger()->addError($result);
                 return $view;
             }
+            // Here, The user is authenticated.
         } elseif (!$this->request->isPost()) {
             // Manage login without form.
             return $view;
         }
 
         return $this->redirectToAdminOrSite();
+    }
+
+    /**
+     * @see \Guest\Controller\Site\AnonymousController::loginToken()
+     * @see \TwoFactorAuth\Controller\LoginController::loginTokenAction()
+     */
+    protected function loginToken()
+    {
+        // Check if the first step was just processed.
+        $isFirst = (bool) $this->getRequest()->getMetadata('first');
+
+        if (!$isFirst && $this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost();
+            $form = $this->getForm(TokenForm::class);
+            $form->setData($data);
+            if ($form->isValid()) {
+                /**
+                 * @var \Laminas\Http\PhpEnvironment\Request $request
+                 * @var \TwoFactorAuth\Mvc\Controller\Plugin\TwoFactorLogin $twoFactorLogin
+                 */
+                $validatedData = $form->getData();
+                $twoFactorLogin = $this->twoFactorLogin();
+                $result = $twoFactorLogin->validateLoginStep2($validatedData['token_email']);
+                if ($result === null) {
+                    // Internal error (no mail sent).
+                    return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
+                } elseif ($result) {
+                    return $this->redirectToAdminOrSite();
+                }
+            } else {
+                $this->messenger()->addFormErrors($form);
+            }
+        }
+
+        $view = new ViewModel([
+            'site' => $this->currentSite(),
+            'formToken' => $this->getForm(TokenForm::class),
+            'formRegister' => null,
+        ]);
+        return $view
+            ->setTemplate('omeka/login/login-token');
     }
 
     public function registerAction()

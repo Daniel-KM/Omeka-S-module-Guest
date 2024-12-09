@@ -6,6 +6,7 @@ use Common\Stdlib\PsrMessage;
 use Doctrine\ORM\EntityManager;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Session\Container as SessionContainer;
 use Omeka\Entity\User;
 use Omeka\Form\UserForm;
 
@@ -67,7 +68,8 @@ abstract class AbstractGuestController extends AbstractActionController
     {
         // Bypass settings if set in url query.
         $redirectUrl = $this->params()->fromQuery('redirect_url')
-            ?: $this->params()->fromQuery('redirect');
+            ?: $this->params()->fromQuery('redirect')
+            ?: SessionContainer::getDefaultManager()->getStorage()->offsetGet('redirect_url');
         if ($redirectUrl) {
             return $this->redirect()->toUrl($redirectUrl);
         }
