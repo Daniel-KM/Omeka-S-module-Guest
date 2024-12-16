@@ -168,3 +168,15 @@ if (version_compare($oldVersion, '3.4.29', '<')) {
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare($oldVersion, '3.4.30', '<')) {
+    $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
+    foreach ($siteIds as $siteId) {
+        $siteSettings->set('guest_navigation_home', 'me', $siteId);
+    }
+
+    $message = new PsrMessage(
+        'It is now possible to configure a specific navigation and a specific home page for guest via the site sub-menu "Navigation for guest" and in site settings.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
