@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-28 00:00+0000\n"
+"POT-Creation-Date: 2024-12-09 00:00+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/omeka/language/"
@@ -19,17 +19,17 @@ msgstr ""
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr "Le module %1$s doit être mis à niveau à la version %2$s ou supérieure."
 
-#: Module.php:435
+#: Module.php:447
 msgid "CAS Login"
 msgstr "Connexion CAS"
 
-#: Module.php:446
+#: Module.php:458
 msgid "[Unknown idp]"
 msgstr "[IdP inconnu]"
 
 #: src/Controller/ApiController.php:104 src/Controller/ApiController.php:136
 #: src/Controller/ApiController.php:156 src/Controller/ApiController.php:393
-#: src/Controller/ApiController.php:417 src/Controller/ApiController.php:918
+#: src/Controller/ApiController.php:417 src/Controller/ApiController.php:917
 msgid "Access forbidden."
 msgstr "Accès interdit."
 
@@ -45,16 +45,16 @@ msgid "User cannot login: already logged."
 msgstr "L’utilisateur ne peut pas se connecter : il est déjà connecté."
 
 #: src/Controller/ApiController.php:245 src/Controller/ApiController.php:466
-#: src/Controller/ApiController.php:735
+#: src/Controller/ApiController.php:734
 msgid "Email is required."
 msgstr "Un courriel est requis."
 
 #: src/Controller/ApiController.php:251 src/Controller/ApiController.php:472
-#: src/Controller/ApiController.php:740 src/Controller/ApiController.php:751
+#: src/Controller/ApiController.php:739 src/Controller/ApiController.php:750
 msgid "Invalid email."
 msgstr "Mail incorrect."
 
-#: src/Controller/ApiController.php:257 src/Controller/ApiController.php:869
+#: src/Controller/ApiController.php:257 src/Controller/ApiController.php:868
 msgid "Password is required."
 msgstr "Le mot de passe est nécessaire."
 
@@ -102,17 +102,17 @@ msgstr "Erreur inconnue avant la création de l’utilisateur."
 msgid "Unknown error during creation of user."
 msgstr "Erreur inconnue lors de la création de l’utilisateur."
 
-#: src/Controller/ApiController.php:688
+#: src/Controller/ApiController.php:687
 msgid "An error occurred when the email was sent."
 msgstr "Une erreur est survenue lorsque le mail a été envoyé."
 
-#: src/Controller/ApiController.php:695
+#: src/Controller/ApiController.php:694
 msgid "Thank you for registering. You can now log in and use the library."
 msgstr ""
 "Merci pour votre inscription. Vous pouvez maintenant vous connecter et "
 "utiliser la bibliothèque."
 
-#: src/Controller/ApiController.php:698
+#: src/Controller/ApiController.php:697
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request, you will be able to log in."
@@ -121,7 +121,7 @@ msgstr ""
 "pour le message de confirmation. Une fois la confirmation faite, vous "
 "pourrez vous connecter."
 
-#: src/Controller/ApiController.php:701
+#: src/Controller/ApiController.php:700
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request, a moderator will confirm "
@@ -130,102 +130,106 @@ msgstr ""
 "Merci de votre inscription. Merci de vérifier votre mail pour le message de "
 "confirmation. Une fois l’inscription confirmée, un modérateur la validera."
 
-#: src/Controller/ApiController.php:721
+#: src/Controller/ApiController.php:720
 msgid "A logged user cannot change the password."
 msgstr "Un utilisateur connecté ne peut pas changer de mot de passe."
 
-#: src/Controller/ApiController.php:756
+#: src/Controller/ApiController.php:755
 msgid "User is not active and cannot update password."
 msgstr ""
 "L’utilisateur n’est pas actif et ne peut pas mettre à jour son mot de passe."
 
-#: src/Controller/ApiController.php:849
+#: src/Controller/ApiController.php:848
 msgid "Invalid token."
 msgstr "Jeton invalide."
 
-#: src/Controller/ApiController.php:855
+#: src/Controller/ApiController.php:854
 msgid "This token is invalid. Check your email."
 msgstr "Le jeton est incorrect. Vérifiez votre mail."
 
-#: src/Controller/ApiController.php:864
+#: src/Controller/ApiController.php:863
 msgid "Password token expired."
 msgstr "Le jeton pour changer le mot de passe a expiré."
 
-#: src/Controller/ApiController.php:874 src/Controller/ApiController.php:1081
+#: src/Controller/ApiController.php:873 src/Controller/ApiController.php:1080
 msgid "New password should have 6 characters or more."
 msgstr "Le nouveau mot de passe doit avoir au moins six caractères."
 
-#: src/Controller/ApiController.php:994
+#: src/Controller/ApiController.php:993
 msgid "Request is empty."
 msgstr "La requête est vide."
 
-#: src/Controller/ApiController.php:1019
+#: src/Controller/ApiController.php:1018
 msgid "Email cannot be updated: the user is not related to a site."
 msgstr ""
 "Le mail ne peut pas être mis à jour : l’utilisateur n’est pas lié à un site."
 
-#: src/Controller/ApiController.php:1041
+#: src/Controller/ApiController.php:1040
 msgid "Your request contains metadata that cannot be updated."
 msgstr ""
 "Votre requête contient des métadonnées qui ne peuvent pas être mis à jour."
 
-#: src/Controller/ApiController.php:1048
+#: src/Controller/ApiController.php:1047
 msgid "The new name is empty."
 msgstr "Le nouveau nom est vide."
 
-#: src/Controller/ApiController.php:1063
+#: src/Controller/ApiController.php:1062
 msgid "You cannot update password and another data in the same time."
 msgstr ""
 "Vous ne pouvez pas mettre à jour le mot de passe et d’autres données en même "
 "temps."
 
-#: src/Controller/ApiController.php:1069
+#: src/Controller/ApiController.php:1068
 msgid "Existing password empty."
 msgstr "Le mot de passe existant est vide."
 
-#: src/Controller/ApiController.php:1075
+#: src/Controller/ApiController.php:1074
 msgid "New password empty."
 msgstr "Nouveau mot de passe vide."
 
-#: src/Controller/ApiController.php:1089
+#: src/Controller/ApiController.php:1088
 msgid "Wrong password."
 msgstr "Mot de passe incorrect."
 
-#: src/Controller/ApiController.php:1123
+#: src/Controller/ApiController.php:1122
 msgid "You cannot update email and another data in the same time."
 msgstr ""
 "Vous ne pouvez pas mettre à jour l’adresse mail et d’autres données en même "
 "temps."
 
-#: src/Controller/ApiController.php:1129
+#: src/Controller/ApiController.php:1128
 msgid "New email empty."
 msgstr "Nouveau mail vide."
 
-#: src/Controller/ApiController.php:1214
+#: src/Controller/ApiController.php:1213
 msgid "Check your email \"{email}\" to confirm the change."
 msgstr "Vérifiez votre mail « {email} » pour confirmer le changement."
 
-#: src/Controller/Site/AnonymousController.php:256
+#: src/Controller/Site/AnonymousController.php:334
 msgid "[Omeka Guest] New registration"
 msgstr "[Omeka Invité] Nouvelle inscription"
 
-#: src/Controller/Site/AnonymousController.php:292
+#: src/Controller/Site/AnonymousController.php:370
 msgid "Invalid token stop"
 msgstr "Jeton invalide"
 
-#: src/Controller/Site/GuestController.php:52
+#: src/Controller/Site/GuestController.php:70
 msgid "My Account"
 msgstr "Mon compte"
 
-#: src/Controller/Site/GuestController.php:76
+#: src/Controller/Site/GuestController.php:97
 msgid "My account"
 msgstr "Mon compte"
 
-#: src/Site/BlockLayout/Login.php:80
+#: src/Site/BlockLayout/ForgotPassword.php:53
+msgid "Display the form to recover the password."
+msgstr "Afficher le formulaire le mot de passe."
+
+#: src/Site/BlockLayout/Login.php:97
 msgid "Display the login form."
 msgstr "Affiche le formulaire de connexion."
 
-#: src/Site/BlockLayout/Register.php:70
+#: src/Site/BlockLayout/Register.php:60
 msgid "Display the register form. The options are set in site settings."
 msgstr ""
 "Affiche le formulaire d’inscription. Les options sont dans les paramètres du "
@@ -258,7 +262,7 @@ msgid "Agreed terms: %s"
 msgstr "A accepté les termes : %s"
 
 #: view/common/block-layout/guest-register.phtml:30
-#: view/guest/site/anonymous/login.phtml:55
+#: view/guest/site/anonymous/login.phtml:67
 #: view/guest/site/anonymous/register.phtml:22
 #: view/guest/site/anonymous/register.phtml:36
 msgid "Register"
@@ -294,6 +298,10 @@ msgstr "Libellé de la connexion"
 msgid "Label log out"
 msgstr "Libellé de la déconnexion"
 
+#: view/guest/site-admin/index/guest-navigation.phtml:33
+msgid "Guest navigation"
+msgstr "Navigation Invité"
+
 #: view/guest/site/anonymous/auth-error.phtml:12
 msgid "Authentication error"
 msgstr "Erreur d’authentification"
@@ -316,24 +324,29 @@ msgstr "Mot de passe oublié"
 msgid "Send an email to reset the password"
 msgstr "Envoyer un mail pour réinitialiser le mot de passe"
 
-#: view/guest/site/anonymous/login.phtml:25
+#: view/guest/site/anonymous/login-token.phtml:19
+#: view/guest/site/anonymous/login.phtml:36
 msgid "Login"
 msgstr "Identifiez-vous"
 
-#: view/guest/site/guest/accept-terms.phtml:19
+#: view/guest/site/guest/accept-terms.phtml:29
 msgid "Accept terms and conditions"
 msgstr "Accepter les termes et les conditions"
 
-#: view/guest/site/guest/accept-terms.phtml:27
+#: view/guest/site/guest/accept-terms.phtml:37
 msgid "Accept"
 msgstr "Accepter"
 
-#: view/guest/site/guest/accept-terms.phtml:32
+#: view/guest/site/guest/accept-terms.phtml:42
 #, php-format
 msgid "The terms and conditions can be read %shere%s."
 msgstr "Les termes et les conditions peuvent être consultés %sici%s."
 
-#: view/guest/site/guest/update-email.phtml:17
+#: view/guest/site/guest/board.phtml:34
+msgid "Log out"
+msgstr "Se déconnecter"
+
+#: view/guest/site/guest/update-email.phtml:27
 msgid "My email"
 msgstr "Mon adresse mail"
 
@@ -389,21 +402,31 @@ msgstr ""
 "Il est désormais possible d’afficher la page d’inscription sur la page de "
 "connexion. Des blocs Connexion et Inscription sont disponibles également."
 
-#: Module.php:116 Module.php:491 src/Form/SiteSettingsFieldset.php:14
+#: data/scripts/upgrade.php:179
+msgid ""
+"It is now possible to configure a specific navigation and a specific home "
+"page for guest via the site sub-menu \"Navigation for guest\" and in site "
+"settings."
+msgstr ""
+"Il est désormais possible de configurer une navigation et une page d’accueil "
+"spécifiques pour les invités via un sous-menu du site « Navigation Invité » "
+"et dans les paramètres de site."
+
+#: Module.php:128 Module.php:503 src/Form/SiteSettingsFieldset.php:14
 #: src/Form/SiteSettingsFieldset.php:17 src/Form/SettingsFieldset.php:15
-#: src/Form/SettingsFieldset.php:18
+#: src/Form/SettingsFieldset.php:18 config/module.config.php:11
 msgid "Guest"
 msgstr "Invité"
 
-#: Module.php:511 Module.php:570
+#: Module.php:523 Module.php:582
 msgid "Agreed terms"
 msgstr "A accepté les termes"
 
-#: Module.php:552
+#: Module.php:564
 msgid "Guest site"
 msgstr "Site utilisateur"
 
-#: Module.php:553
+#: Module.php:565
 msgid ""
 "This parameter is used to manage some site related features, in particular "
 "messages."
@@ -411,7 +434,7 @@ msgstr ""
 "Ce paramètre est utilisé pour gérer certaines fonctionnalités liées à "
 "certains sites, en particulier les messages."
 
-#: Module.php:582
+#: Module.php:594
 msgid ""
 "Send an email to confirm registration after moderation (user should be "
 "activated first)"
@@ -419,17 +442,17 @@ msgstr ""
 "Envoyer un mail pour confirmer l’inscription après la modération "
 "(l’utilisateur doit être d’abord activé)"
 
-#: Module.php:606
+#: Module.php:618
 msgid "Clear registration token"
 msgstr "Supprimer le jeton d’enregistrement"
 
-#: Module.php:700
+#: Module.php:712
 msgid "You cannot send a message to confirm registration: user is not active."
 msgstr ""
 "Vous ne pouvez pas envoyer un message de confirmation de l’inscription : "
 "l’utilisateur n’est pas actif."
 
-#: Module.php:717
+#: Module.php:729
 msgid ""
 "A default site should be set or the user should have a site in order to "
 "confirm registration."
@@ -437,25 +460,25 @@ msgstr ""
 "Un site par défaut doit être défini pour que l’utilisateur puisse confirmer "
 "son inscription."
 
-#: Module.php:749
+#: Module.php:761
 msgid "The message of confirmation of the registration has been sent."
 msgstr "Le message de confirmation de l’inscription a été envoyé."
 
-#: Module.php:842
+#: Module.php:854
 msgid "Guest: Reset terms agreement for all guests"
 msgstr ""
 "Guest : Réinitialisation de l’acceptation des conditions pour tous les "
 "invités"
 
-#: Module.php:849
+#: Module.php:861
 msgid "Options to reset agreement terms"
 msgstr "Options pour réinitialiser l’acceptation des conditions"
 
-#: Module.php:860
+#: Module.php:872
 msgid "Reset terms agreement for all guests"
 msgstr "Réinitialisation de l’acceptation des termes pour tous les invités"
 
-#: Module.php:861
+#: Module.php:873
 msgid ""
 "When terms and conditions are updated, you may want guests agree them one "
 "more time. Warning: to set false will impact all guests. So warn them some "
@@ -465,25 +488,25 @@ msgstr ""
 "que les utilisateurs invités les acceptent à nouveau. Attention : cocher la "
 "case impactera tous les invités. Il est conseillé de les prévenir auparavant."
 
-#: Module.php:863
+#: Module.php:875
 msgid "No change"
 msgstr "Pas de changement"
 
-#: Module.php:864
+#: Module.php:876
 msgid "Set false"
 msgstr "Indiquer faux"
 
-#: Module.php:865
+#: Module.php:877
 msgid "Set true"
 msgstr "Indiquer vrai"
 
-#: src/Mvc/Controller/Plugin/ValidateLogin.php:144
-#: src/Controller/Site/AnonymousController.php:504
+#: src/Mvc/Controller/Plugin/ValidateLogin.php:191
+#: src/Controller/Site/AnonymousController.php:582
 msgid "User name, email, or password is invalid"
 msgstr "Nom utilisateur, mail ou mot de passe invalide"
 
-#: src/Mvc/Controller/Plugin/ValidateLogin.php:145
-#: src/Controller/Site/AnonymousController.php:503
+#: src/Mvc/Controller/Plugin/ValidateLogin.php:192
+#: src/Controller/Site/AnonymousController.php:581
 msgid "Email or password invalid"
 msgstr "Email ou mot de passe invalide"
 
@@ -604,8 +627,8 @@ msgstr "Sujet du mail envoyé pour confirmer le mail"
 
 #: src/Form/SiteSettingsFieldset.php:141 src/Form/SiteSettingsFieldset.php:200
 #: src/Form/SettingsFieldset.php:207 src/Form/SettingsFieldset.php:266
-#: config/module.config.php:244 config/module.config.php:256
-#: config/module.config.php:293 config/module.config.php:305
+#: config/module.config.php:292 config/module.config.php:304
+#: config/module.config.php:341 config/module.config.php:353
 msgid "[{site_title}] Confirm email"
 msgstr "[{site_title}] Confirmer l’adresse mail"
 
@@ -639,7 +662,7 @@ msgid "Subject of the email sent to confirm registration after moderation"
 msgstr "Sujet du mail envoyer pour confirmer l’inscription après modération"
 
 #: src/Form/SiteSettingsFieldset.php:171 src/Form/SettingsFieldset.php:237
-#: config/module.config.php:250 config/module.config.php:299
+#: config/module.config.php:298 config/module.config.php:347
 msgid "[{site_title}] Account open"
 msgstr "[{site_title}] Compte ouvert"
 
@@ -707,7 +730,7 @@ msgid "The message to  display after confirmation of a mail."
 msgstr "Le message à afficher après confirmation du mail."
 
 #: src/Form/SiteSettingsFieldset.php:232 src/Form/SettingsFieldset.php:298
-#: config/module.config.php:262 config/module.config.php:311
+#: config/module.config.php:310 config/module.config.php:359
 msgid "Your email \"{user_email}\" is confirmed for {site_title}."
 msgstr "Votre mail \"{user_email}\" a été confirmé pour {site_title}."
 
@@ -720,7 +743,7 @@ msgid "Message to confirm registration and moderation on the page"
 msgstr "Message sur la page pour confirmer l’inscription et la modération"
 
 #: src/Form/SiteSettingsFieldset.php:262 src/Form/SettingsFieldset.php:328
-#: config/module.config.php:264 config/module.config.php:313
+#: config/module.config.php:312 config/module.config.php:361
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request and we have confirmed it, you "
@@ -749,6 +772,17 @@ msgstr "Si le texte est sur une page spécifique, ou pour un autre usage."
 #: src/Form/SiteSettingsFieldset.php:299
 msgid "Redirect page after login"
 msgstr "Redirection après connexion"
+
+#: src/Form/SiteSettingsFieldset.php:300 src/Form/SettingsFieldset.php:365
+msgid ""
+"Set \"home\" for home page (admin or public), \"site\" for the current site "
+"home, \"top\" for main public page, \"me\" for guest account, or any path "
+"starting with \"/\", including \"/\" itself for main home page."
+msgstr ""
+"Indiquer « home » pour la page d’accueil (admin ou public), « site » pour "
+"l’accueil du site actuel, « top » pour l’accueil du site principal, « me » "
+"pour le compte utilisateur, ou tout chemin commençant par « / », y compris "
+"« / » pour la page d’accueil principale."
 
 #: src/Form/SettingsFieldset.php:33
 msgid "Registration"
@@ -958,12 +992,25 @@ msgstr "Limiter l’accès à l’api pour ces domaines (cors)"
 msgid "I agree with terms and conditions."
 msgstr "J’accepte les termes et conditions."
 
+#: src/Controller/SiteAdmin/IndexController.php:46
+msgid "Default page for account"
+msgstr "Page du compte par défaut"
+
+#: src/Controller/SiteAdmin/IndexController.php:49
+#: src/Controller/SiteAdmin/IndexController.php:57
+msgid "Classical board (pages of modules)"
+msgstr "Tableau de bord classique (page des modules)"
+
+#: src/Controller/SiteAdmin/IndexController.php:50
+msgid "Guest board (this menu)"
+msgstr "Accueil Invité (ce menu)"
+
 #: src/Controller/ApiController.php:285
 msgid "Role \"{role]\" is not allowed to login via api."
 msgstr "Le rôle « {role} » n’est pas autorisé à se connecter via l’api."
 
 #: src/Controller/ApiController.php:584
-#: src/Controller/Site/AnonymousController.php:190
+#: src/Controller/Site/AnonymousController.php:268
 msgid "An error occurred after creation of the guest user: {exception}"
 msgstr ""
 "Une erreur est survenue après la création de l’utilisateur : {exception}"
@@ -976,11 +1023,11 @@ msgstr ""
 "Guest Api : une application utilise « user-settings » au lieu de « o:"
 "settings » lors de l’inscription d’un utilisateur."
 
-#: src/Controller/ApiController.php:802
+#: src/Controller/ApiController.php:801
 msgid "User token for {site_title}"
 msgstr "Jeton utilisateur pour {site_title}"
 
-#: src/Controller/ApiController.php:805
+#: src/Controller/ApiController.php:804
 msgid ""
 "Greetings!\n"
 "\n"
@@ -989,23 +1036,23 @@ msgid ""
 "\n"
 "Your activation link will expire on {date}."
 msgstr ""
-"Bonjour !\n"
+"Bonjour !\n"
 "\n"
-"Pour réinitialiser votre mot de passe sur {site_title}, saisissez le jeton "
-"suivant : {token}.\n"
+"Pour réinitialiser votre mot de passe sur {site_title}, saisissez ce code "
+"dans l’app : {token}.\n"
 "\n"
-"Votre lien d’activation expirera le {date}."
+"Le lien d’activation expire le {date}."
 
-#: src/Controller/ApiController.php:1137
+#: src/Controller/ApiController.php:1136
 msgid "\"{email}\" is not an email."
 msgstr "« {email} » n’est pas un mail."
 
-#: src/Controller/ApiController.php:1147
-#: src/Controller/Site/GuestController.php:210
+#: src/Controller/ApiController.php:1146
+#: src/Controller/Site/GuestController.php:231
 msgid "The new email is the same than the current one."
 msgstr "Le nouveau mail est le même que l’actuel."
 
-#: src/Controller/ApiController.php:1162
+#: src/Controller/ApiController.php:1161
 msgid ""
 "User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", "
 "used by user #{user_id_2}."
@@ -1013,11 +1060,11 @@ msgstr ""
 "L’utilisateur #{user_id} souhaite changer son mail de « {email} » à "
 "« {email_2} », utilisé par l’utilisateur #{user_id_2}."
 
-#: src/Controller/ApiController.php:1167 src/Controller/ApiController.php:1188
+#: src/Controller/ApiController.php:1166 src/Controller/ApiController.php:1187
 msgid "The email \"{email}\" is not yours."
 msgstr "Le mail « {email} » n’est pas le votre."
 
-#: src/Controller/ApiController.php:1183
+#: src/Controller/ApiController.php:1182
 msgid ""
 "User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", "
 "used by user #{user_id_2} (second check)."
@@ -1025,48 +1072,48 @@ msgstr ""
 "L’utilisateur #{user_id} souhaite changer son mail de « {email} » à "
 "« {email_2} », utilisé par l’utilisateur #{user_id_2} (seconde vérification)."
 
-#: src/Controller/ApiController.php:1205
+#: src/Controller/ApiController.php:1204
 msgid "[GuestApi] An error occurred when the email was sent."
 msgstr "[GuestApi] Une erreur est survenue lorsque le mail a été envoyé."
 
-#: src/Controller/ApiController.php:1325
+#: src/Controller/ApiController.php:1324
 msgid "Missing site."
 msgstr "Site manquant."
 
-#: src/Controller/ApiController.php:1387
-#: src/Controller/Site/AbstractGuestController.php:238
+#: src/Controller/ApiController.php:1386
+#: src/Controller/Site/AbstractGuestController.php:242
 msgid "[No subject]"
 msgstr "[Pas de sujet]"
 
-#: src/Controller/ApiController.php:1388
-#: src/Controller/Site/AbstractGuestController.php:239
+#: src/Controller/ApiController.php:1387
+#: src/Controller/Site/AbstractGuestController.php:243
 msgid "[No message]"
 msgstr "[Pas de message]"
 
-#: src/Controller/Site/AnonymousController.php:97
-#: src/Controller/Site/AnonymousController.php:103
+#: src/Controller/Site/AnonymousController.php:175
+#: src/Controller/Site/AnonymousController.php:181
 msgid "A password must be set."
 msgstr "Un mot de passe doit être indiqué."
 
-#: src/Controller/Site/AnonymousController.php:250
+#: src/Controller/Site/AnonymousController.php:328
 msgid "A new user is registering: {user_email} ({url})."
 msgstr "Un nouvel utilisateur s’est inscrit : {user_email} ({url})."
 
-#: src/Controller/Site/AnonymousController.php:258
+#: src/Controller/Site/AnonymousController.php:336
 msgid "An error occurred when the notification email was sent."
 msgstr "Une erreur est survenue lorsque le mail a été envoyé."
 
-#: src/Controller/Site/AnonymousController.php:260
+#: src/Controller/Site/AnonymousController.php:338
 msgid "[Guest] An error occurred when the notification email was sent."
 msgstr ""
 "[Guest] Une erreur est survenue lorsque le mail de notification a été envoyé."
 
-#: src/Controller/Site/AnonymousController.php:275
-#: src/Controller/Site/GuestController.php:237
+#: src/Controller/Site/AnonymousController.php:353
+#: src/Controller/Site/GuestController.php:258
 msgid "[Guest] An error occurred when the email was sent."
 msgstr "[Guest} Une erreur est survenue lorsque le mail a été envoyé."
 
-#: src/Controller/Site/AnonymousController.php:310
+#: src/Controller/Site/AnonymousController.php:388
 msgid ""
 "Thanks for joining {site_title}! You can now log in using the password you "
 "chose."
@@ -1074,7 +1121,7 @@ msgstr ""
 "Merci d’avoir rejoint {site_title} ! Vous pouvez désormais vous identifier "
 "avec votre mot de passe."
 
-#: src/Controller/Site/AnonymousController.php:320
+#: src/Controller/Site/AnonymousController.php:398
 msgid ""
 "Thanks for joining {site_title}! Your registration is under moderation. See "
 "you soon!"
@@ -1082,23 +1129,23 @@ msgstr ""
 "Merci d’avoir rejoint {site_title} ! Votre inscription est en cours de "
 "modération. À bientôt !"
 
-#: src/Controller/Site/AnonymousController.php:346
+#: src/Controller/Site/AnonymousController.php:424
 msgid "Invalid token: your email was not confirmed for {site_title}."
 msgstr "Jeton invalide : votre mail n’a pas été confirmé pour le {site_title}."
 
-#: src/Controller/Site/AnonymousController.php:347
+#: src/Controller/Site/AnonymousController.php:425
 msgid "site_title"
 msgstr "site_title"
 
-#: src/Controller/Site/GuestController.php:122
+#: src/Controller/Site/GuestController.php:143
 msgid "Password invalid"
 msgstr "Mot de passe incorrect"
 
-#: src/Controller/Site/GuestController.php:135
+#: src/Controller/Site/GuestController.php:156
 msgid "Your modifications have been saved."
 msgstr "Vos modifications ont été enregistrées."
 
-#: src/Controller/Site/GuestController.php:143
+#: src/Controller/Site/GuestController.php:164
 msgid ""
 "Guest: an app uses \"user-settings\" instead of \"o:settings\" when "
 "registering a user."
@@ -1106,44 +1153,44 @@ msgstr ""
 "Guest : une application utilise « user-settings » au lieu de « o:settings » "
 "lors de l’inscription d’un utilisateur."
 
-#: src/Controller/Site/GuestController.php:158
+#: src/Controller/Site/GuestController.php:179
 msgid "password"
 msgstr "mot de passe"
 
-#: src/Controller/Site/GuestController.php:201
+#: src/Controller/Site/GuestController.php:222
 msgid "Email invalid"
 msgstr "Email invalide"
 
-#: src/Controller/Site/GuestController.php:221
+#: src/Controller/Site/GuestController.php:242
 msgid "The email \"{user_email}\" is not yours."
 msgstr "Le mail « {user_email} » n’est pas le votre."
 
-#: src/Controller/Site/GuestController.php:242
+#: src/Controller/Site/GuestController.php:263
 msgid "Check your email \"{user_email}\" to confirm the change."
 msgstr "Vérifiez votre mail « {user_email} » pour confirmer le changement."
 
-#: src/Controller/Site/GuestController.php:260
+#: src/Controller/Site/GuestController.php:281
 msgid "You already agreed the terms and conditions."
 msgstr "Vous avez déjà accepté les termes et conditions."
 
-#: src/Controller/Site/GuestController.php:296
+#: src/Controller/Site/GuestController.php:317
 msgid "Form invalid"
 msgstr "Formulaire invalide"
 
-#: src/Controller/Site/GuestController.php:306
+#: src/Controller/Site/GuestController.php:327
 msgid ""
 "The access to this website requires you accept the current terms and "
 "conditions."
 msgstr ""
 "L’accès au site web nécessite d’accepter les termes et conditions actuelles."
 
-#: src/Controller/Site/GuestController.php:313
+#: src/Controller/Site/GuestController.php:334
 msgid "Thanks for accepting the terms and condtions."
 msgstr "Merci d’avoir accepté les termes et conditions."
 
 #: src/Site/Navigation/Link/Login.php:13
-msgid "Guest log in"
-msgstr "Connexion Invité"
+msgid "Guest: Log in"
+msgstr "Invité : Connexion"
 
 #: src/Site/Navigation/Link/Login.php:24 src/Site/Navigation/Link/Logout.php:24
 #: src/Site/Navigation/Link/Register.php:24
@@ -1152,17 +1199,12 @@ msgid "Invalid navigation: link without label (%s)"
 msgstr "Navigation invalide : lien sans libellé (%s)"
 
 #: src/Site/Navigation/Link/Logout.php:13
-msgid "Guest log out"
-msgstr "Déconnexion (Invité)"
-
-#: src/Site/Navigation/Link/Logout.php:34
-#: src/Site/Navigation/Link/LoginLogout.php:41
-msgid "Log out"
-msgstr "Se déconnecter"
+msgid "Guest: Log out"
+msgstr "Invité : Déconnexion"
 
 #: src/Site/Navigation/Link/LoginLogout.php:13
-msgid "Guest log in/out"
-msgstr "Connexion/Déconnexion (Invité)"
+msgid "Guest: Log in / Log out"
+msgstr "Invité : Connexion/Déconnexion"
 
 #: src/Site/Navigation/Link/LoginLogout.php:24
 #: src/Site/Navigation/Link/LoginBoard.php:24
@@ -1174,8 +1216,8 @@ msgid "Invalid navigation: log out link missing label"
 msgstr "Navigation invalide : manque libellé du lien de déconnexion"
 
 #: src/Site/Navigation/Link/LoginBoard.php:13
-msgid "Guest log in / My board"
-msgstr "Connexion Invité / Mon tableau de bord"
+msgid "Guest: Log in / My board"
+msgstr "Invité : Connexion / Mon tableau de bord"
 
 #: src/Site/Navigation/Link/LoginBoard.php:28
 msgid "Invalid navigation: user board missing label"
@@ -1186,22 +1228,31 @@ msgid "My board"
 msgstr "Mon tableau de bord"
 
 #: src/Site/Navigation/Link/Register.php:13
-msgid "Guest register"
-msgstr "Inscription Invité"
+#: src/Site/BlockLayout/Register.php:50
+msgid "Guest: Register"
+msgstr "Invité : Inscription"
 
-#: src/Site/BlockLayout/Login.php:60
-msgid "Guest login"
-msgstr "Connexion invité"
+#: src/Site/BlockLayout/Login.php:77
+msgid "Guest: Login"
+msgstr "Invité : Connexion"
 
-#: src/Site/BlockLayout/Register.php:60
-msgid "Guest Register"
-msgstr "Inscription invité"
+#: src/Site/BlockLayout/ForgotPassword.php:43
+msgid "Guest: Forgot password"
+msgstr "Invité : Mot de passe oublié"
 
-#: config/module.config.php:238 config/module.config.php:287
+#: src/Site/BlockLayout/ForgotPassword.php:72
+msgid "You cannot change your password here."
+msgstr "Vous ne pouvez pas changer le mot de passe ici."
+
+#: config/module.config.php:104
+msgid "Navigation Guest"
+msgstr "Navigation Invité"
+
+#: config/module.config.php:286 config/module.config.php:335
 msgid "My dashboard"
 msgstr "Mon tableau de bord"
 
-#: config/module.config.php:245 config/module.config.php:294
+#: config/module.config.php:293 config/module.config.php:342
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>You have registered for an account on <a href=\"{site_url}\">{site_title}"
@@ -1219,7 +1270,7 @@ msgstr ""
 "<p>Si vous n’avez pas demandé de rejoindre {main_title} / {site_title}, "
 "merci d’ignorer ce message.</p>"
 
-#: config/module.config.php:251 config/module.config.php:300
+#: config/module.config.php:299 config/module.config.php:348
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>We are happy to open your account on <a href=\"{site_url}\">{site_title}</"
@@ -1235,7 +1286,7 @@ msgstr ""
 "href=\"{token_url}\">{token_url}</a>.</p>\n"
 "<p>Vous pouvez désormais vous connecter et explorer le site.</p>"
 
-#: config/module.config.php:257 config/module.config.php:306
+#: config/module.config.php:305 config/module.config.php:354
 msgid ""
 "<p>Hi {user_name},</p>\n"
 "<p>You have requested to update email on <a href=\"{site_url}\">{site_title}"
@@ -1253,9 +1304,15 @@ msgstr ""
 "<p>Si vous n’avez pas demandé à mettre à jour votre mail sur {main_title}, "
 "merci d’ignorer ce message.</p>"
 
-#: config/module.config.php:265 config/module.config.php:314
+#: config/module.config.php:313 config/module.config.php:362
 msgid "I agree the terms and conditions."
 msgstr "J’accepte les termes et conditions."
+
+#~ msgid "Select the default page"
+#~ msgstr "Choisir la page par défaut"
+
+#~ msgid "Guest register"
+#~ msgstr "Inscription Invité"
 
 #~ msgid ""
 #~ "Your account seems to have an error. Contact your administrator to login."
