@@ -2,7 +2,6 @@
 
 namespace Guest\Site\BlockLayout;
 
-use Guest\Mvc\Controller\Plugin\ValidateLogin;
 use Laminas\Form\FormElementManager;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
@@ -32,11 +31,6 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
     protected $messenger;
 
     /**
-     * @var ValidateLogin
-     */
-    protected $validateLogin;
-
-    /**
      * @var bool
      */
     protected $hasModuleUserNames;
@@ -44,12 +38,10 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
     public function __construct(
         FormElementManager $formElementManager,
         Messenger $messenger,
-        ValidateLogin $validateLogin,
         bool $hasModuleUserNames
     ) {
         $this->formElementManager = $formElementManager;
         $this->messenger = $messenger;
-        $this->validateLogin = $validateLogin;
         $this->hasModuleUserNames = $hasModuleUserNames;
     }
 

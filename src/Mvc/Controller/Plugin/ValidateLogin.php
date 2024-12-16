@@ -197,7 +197,7 @@ class ValidateLogin extends AbstractPlugin
         $postData = $this->request->getPost();
         $form->setData($postData);
         if (!$form->isValid()) {
-            return $this->hasModuleUserName
+            return $this->hasModuleUserNames
                 ? 'User name, email, or password is invalid' // @translate
                 : 'Email or password invalid'; // @translate
         }

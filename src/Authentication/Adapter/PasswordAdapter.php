@@ -12,7 +12,7 @@ use Omeka\Authentication\Adapter\PasswordAdapter as OmekaPasswordAdapter;
  */
 class PasswordAdapter extends OmekaPasswordAdapter
 {
-    protected $token_repository;
+    protected $guestTokenRepository;
 
     public function authenticate()
     {
@@ -27,7 +27,7 @@ class PasswordAdapter extends OmekaPasswordAdapter
         }
 
         if ($user->getRole() == \Guest\Permissions\Acl::ROLE_GUEST) {
-            $guest = $this->token_repository->findOneBy(['email' => $this->identity]);
+            $guest = $this->guestTokenRepository->findOneBy(['email' => $this->identity]);
             // There is no token if the guest is created directly (the role is
             // set to a user).
             if ($guest && !$guest->isConfirmed()) {
@@ -46,8 +46,9 @@ class PasswordAdapter extends OmekaPasswordAdapter
         return new Result(Result::SUCCESS, $user);
     }
 
-    public function setTokenRepository($token_repository): void
+    public function setGuestTokenRepository($guestTokenRepository): self
     {
-        $this->token_repository = $token_repository;
+        $this->guestTokenRepository = $guestTokenRepository;
+        return $this;
     }
 }

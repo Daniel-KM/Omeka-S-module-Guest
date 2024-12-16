@@ -28,7 +28,6 @@ class RegisterFactory implements FactoryInterface
         return new Register(
             $services->get('FormElementManager'),
             $plugins->get('messenger'),
-            $plugins->get('validateLogin'),
             $hasModuleUserNames
         );
     }

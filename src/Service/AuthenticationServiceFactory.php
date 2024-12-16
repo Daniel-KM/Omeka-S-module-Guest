@@ -55,7 +55,7 @@ class AuthenticationServiceFactory implements FactoryInterface
                 // Authenticate using user/password for all other requests.
                 $storage = new DoctrineWrapper(new Session, $userRepository);
                 $adapter = new PasswordAdapter($userRepository);
-                $adapter->setTokenRepository($entityManager->getRepository(GuestToken::class));
+                $adapter->setGuestTokenRepository($entityManager->getRepository(GuestToken::class));
             }
         }
 
