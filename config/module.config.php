@@ -5,12 +5,10 @@ namespace Guest;
 use \Guest\Permissions\Acl as GuestAcl;
 
 return [
-    'acl' => [
-        'roles' => [
-            GuestAcl::ROLE_GUEST=> [],
-        ],
-        'labels' => [
-            GuestAcl::ROLE_GUEST => 'Guest', // @translate
+    'roles' => [
+        GuestAcl::ROLE_GUEST => [
+            'role' => GuestAcl::ROLE_GUEST,
+            'label' => 'Guest', // @translate
         ],
     ],
     'entity_manager' => [
