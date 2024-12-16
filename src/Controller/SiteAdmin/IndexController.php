@@ -2,12 +2,12 @@
 
 namespace Guest\Controller\SiteAdmin;
 
-use Omeka\Site\Navigation\Link\Manager as LinkManager;
-use Omeka\Site\Navigation\Translator;
 use Laminas\Form\Form;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Omeka\Api\Representation\SiteRepresentation;
+use Omeka\Site\Navigation\Link\Manager as LinkManager;
+use Omeka\Site\Navigation\Translator;
 
 class IndexController extends AbstractActionController
 {
@@ -80,7 +80,7 @@ class IndexController extends AbstractActionController
         return new ViewModel([
             'site' => $site,
             'form' => $form,
-            'navTree' =>  $this->toJstree($site, $menuTree),
+            'navTree' => $this->toJstree($site, $menuTree),
         ]);
     }
 

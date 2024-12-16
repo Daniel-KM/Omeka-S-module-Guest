@@ -107,7 +107,7 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
         $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
 
         $form = $this->getUserForm($user);
-        $form ->setAttribute('action', $urlRegister);
+        $form->setAttribute('action', $urlRegister);
 
         $vars = [
             'site' => $block->page()->site(),

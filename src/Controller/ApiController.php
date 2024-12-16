@@ -659,7 +659,6 @@ class ApiController extends \Omeka\Controller\ApiController
         } else {
             $guestToken = $this->createGuestToken($user);
         }
-pf();
         $message = $this->prepareMessage('confirm-email', [
             'user_name' => $user->getName(),
             'user_email' => $user->getEmail(),

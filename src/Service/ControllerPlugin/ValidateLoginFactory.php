@@ -16,7 +16,7 @@ class ValidateLoginFactory implements FactoryInterface
         /** @var \Omeka\Module\Manager $moduleManager */
         $moduleManager = $services->get('Omeka\ModuleManager');
         $module = $moduleManager->getModule('UserNames');
-        $hasModuleUserNames =  $module
+        $hasModuleUserNames = $module
             && $module->getState() === ModuleManager::STATE_ACTIVE;
 
         return new ValidateLogin(
