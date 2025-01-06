@@ -334,11 +334,9 @@ return [
             // Specific to the api.
             'guest_register_site' => false,
             'guest_register_email_is_valid' => false,
-            // By default, for security, only non-backend users can log via api.
+            // For api, there is a sleep of some seconds for security.
             'guest_login_roles' => [
-                'annotator',
-                'contributor',
-                'guest',
+                'all',
             ],
             'guest_login_session' => false,
             'guest_cors' => [],

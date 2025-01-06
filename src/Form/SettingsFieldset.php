@@ -423,6 +423,9 @@ If you did not request to update your email on {main_title}, please disregard th
                     'label' => 'Roles that can login via api', // @translate
                     'info' => 'To allow full access via api increases risks of intrusion.', // @translate
                     'empty_option' => '',
+                    'prepend_value_options' => [
+                        'all' => 'All roles', // @translate
+                    ],
                     'use_hidden_element' => true,
                 ],
                 'attributes' => [
