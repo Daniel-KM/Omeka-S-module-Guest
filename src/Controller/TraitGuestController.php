@@ -129,6 +129,16 @@ trait TraitGuestController
                 ? $form->get($fieldset)->remove($element)
                 : $form->remove($element);
         }
+
+        if ($form->has('change-password') && $form->get('change-password')->has('password-confirm')) {
+            $form->get('change-password')->get('password-confirm')->setLabels(
+                'Password', // @translate
+                'Confirm password' // @translate
+            );
+        }
+
+        $form->getAttribute('id') ?: $form->setAttribute('id', 'user-form');
+
         return $form;
     }
 

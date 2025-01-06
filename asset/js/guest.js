@@ -140,6 +140,61 @@
                 });
         });
 
+        /**
+         * Register a new user.
+         */
+        $(document).on('submit', '#user-form', function(ev) {
+            ev.preventDefault();
+            const form = $(this);
+            const urlLogin = form.attr('action') ? form.attr('action') : window.location.href;
+            const submitButton = form.find('[type=submit]');
+            $
+                .ajax({
+                    type: 'POST',
+                    url: urlLogin,
+                    data: form.serialize(),
+                    beforeSend: beforeSpin(submitButton),
+                })
+                .done(function(data) {
+                    // Success may be a single step login or a second step login.
+                    if (data.data && data.data.login === true) {
+                        window.location.reload();
+                        return;
+                    }
+                    // Success for first step, but require a second step.
+                    // Use the existing dialog if any, else use the one sent.
+                    let dialog = document.querySelector('dialog.dialog-2fa-token');
+                    if (!dialog) {
+                        dialog = data.data.dialog;
+                        $('body').append(dialog);
+                        dialog = document.querySelector('dialog.dialog-2fa-token');
+                        if (!dialog) {
+                            let msg = jSendMessage(data);
+                            dialogMessage(msg ? msg : 'Check input', true);
+                            return;
+                        }
+                    }
+                    dialog.showModal();
+                    $(dialog).trigger('o:dialog-opened');
+                })
+                .fail(function (xhr, textStatus, errorThrown) {
+                    const data = xhr.responseJSON;
+                    if (data && data.status === 'fail') {
+                        // Fail is always an email/password error here.
+                        let msg = jSendMessage(data);
+                        dialogMessage(msg ? msg : 'Check input', true);
+                        form[0].reset();
+                    } else {
+                        // Error is a server error (in particular cannot send mail).
+                        let msg = data && data.status === 'error' && data.message && data.message.length ? data.message : 'An error occurred.';
+                        dialogMessage(msg, true);
+                    }
+                })
+                .always(function () {
+                    afterSpin(submitButton)
+                });
+        });
+
         $(document).on('click', '.button-login', function(e) {
             const button = $(this);
             const urlButton = button.attr('data-url') ? button.attr('data-url') : button.attr('href');
@@ -157,6 +212,42 @@
                         dialog = data.data.dialog;
                         $('body').append(dialog);
                         dialog = document.querySelector('dialog.dialog-login');
+                        if (!dialog) {
+                            let msg = jSendMessage(data);
+                            dialogMessage(msg ? msg : 'Check input', true);
+                            return;
+                        }
+                    }
+                    dialog.showModal();
+                    $(dialog).trigger('o:dialog-opened');
+                })
+                .fail(function (xhr, textStatus, errorThrown) {
+                    const data = xhr.responseJSON;
+                    let msg = jSendMessage(data);
+                    dialogMessage(msg ? msg : 'An error occurred.', true);
+                })
+                .always(function () {
+                    afterSpin(button)
+                });
+        });
+
+        $(document).on('click', '.button-register', function(e) {
+            const button = $(this);
+            const urlButton = button.attr('data-url') ? button.attr('data-url') : button.attr('href');
+            $
+                .ajax({
+                    type: 'GET',
+                    url: urlButton,
+                    beforeSend: beforeSpin(button),
+                })
+                .done(function(data) {
+                    // Success for loading dialog.
+                    // Use the existing dialog if any, else use the one sent.
+                    let dialog = document.querySelector('dialog.dialog-register');
+                    if (!dialog) {
+                        dialog = data.data.dialog;
+                        $('body').append(dialog);
+                        dialog = document.querySelector('dialog.dialog-register');
                         if (!dialog) {
                             let msg = jSendMessage(data);
                             dialogMessage(msg ? msg : 'Check input', true);
