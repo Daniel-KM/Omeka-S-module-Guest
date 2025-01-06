@@ -1,0 +1,36 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Form\LoginForm|\UserNames\Form\LoginForm $form
+ */
+
+$plugins = $this->getHelperPluginManager();
+$url = $plugins->get('url');
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
+?>
+
+<dialog id="login" class="popup popup-dialog dialog-login">
+    <div class="dialog-background">
+        <div class="dialog-panel">
+            <div class="dialog-header">
+                <button type="button" class="dialog-header-close-button" title="<?= $translate('Close') ?>" autofocus="autofocus">
+                    <span class="dialog-close">🗙</span>
+                </button>
+                <div class="dialog-messages">
+                </div>
+            </div>
+            <div class="dialog-contents">
+                <?php if ($form): ?>
+                <?= $this->form($form) ?>
+                <p class="forgot-password">
+                    <?= $hyperlink($translate('Forgot password?'), $url('forgot-password')) ?>
+                </p>
+                <?php endif; ?>
+            </div>
+            <div class="dialog-footer">
+                <?php $this->trigger('view.login.after'); ?>
+            </div>
+        </div>
+    </div>
+</dialog>

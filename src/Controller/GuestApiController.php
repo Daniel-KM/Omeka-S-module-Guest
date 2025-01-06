@@ -762,6 +762,64 @@ class GuestApiController extends AbstractActionController
         ]);
     }
 
+    public function dialogAction()
+    {
+        $dialog = $this->params()->fromQuery('name');
+        $dialogTemplates = [
+            'login' => 'common/dialog/login',
+            'register' => 'common/dialog/register',
+            'forgot-password' => 'common/dialog/forgot-password',
+            '2fa-token' => 'common/dialog/2fa-token',
+        ];
+
+        if (!isset($dialogTemplates[$dialog])) {
+            return $this->jSend(self::FAIL, [
+                'dialog' => $this->translate('This dialog is not managed.'), // @translate
+            ]);
+        }
+
+        $hasForm = true;
+        if ($dialog === 'login') {
+            $hasForm = !$this->siteSettings()->get('guest_login_without_form');
+        } elseif ($dialog === '2fa-token' && !$this->getPluginManager()->has('twoFactorLogin')) {
+            return $this->jSend(self::FAIL, [
+                'dialog' => $this->translate('This dialog requires module Two-Factor Authentication.'), // @translate
+            ]);
+        }
+
+        if ($hasForm) {
+            $dialogForms = [
+                'login' => $this->hasModuleUserNames()
+                    ? \UserNames\Form\LoginForm::class
+                    : \Omeka\Form\LoginForm::class,
+                'register' => null,
+                'forgot-password' => \Omeka\Form\ForgotPasswordForm::class,
+                '2fa-token' => \TwoFactorAuth\Form\TokenForm::class,
+            ];
+            try {
+                $form = $dialog === 'register'
+                    ? $this->getUserForm()
+                    : $this->getForm($dialogForms[$dialog]);
+            } catch (\Exception $e) {
+                return $this->jSend(self::ERROR, null,
+                    $this->translate('An error occurred when loading dialog.'), // @translate
+                );
+            }
+            $action = $dialog === '2fa-token'
+                ? $this->url()->fromRoute('login')
+                : $this->url()->fromRoute('api/guest', ['action' => $dialog], true);
+            $form->setAttribute('action', $action);
+        }
+        $args = [
+            'form' => $form ?? null,
+        ];
+
+        $template = $dialogTemplates[$dialog];
+        return $this->jSend(self::SUCCESS, [
+            'dialog' => $this->viewHelpers()->get('partial')($template, $args),
+        ]);
+    }
+
     // TODO Confirmation through api, not via module guest user (but the email link is always a web page!)
 
     /**

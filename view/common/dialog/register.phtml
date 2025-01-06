@@ -1,0 +1,41 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Form\UserForm $form
+ */
+
+$plugins = $this->getHelperPluginManager();
+$trigger = $plugins->get('trigger');
+$setting = $plugins->get('setting');
+$translate = $plugins->get('translate');
+$siteSetting = $plugins->get('siteSetting');
+
+$form->prepare();
+?>
+
+<dialog id="register" class="popup popup-dialog dialog-register">
+    <div class="dialog-background">
+        <div class="dialog-panel">
+            <div class="dialog-header">
+                <button type="button" class="dialog-header-close-button" title="<?= $translate('Close') ?>" autofocus="autofocus">
+                    <span class="dialog-close">🗙</span>
+                </button>
+                <div class="dialog-messages">
+                </div>
+                <div>
+                    <?= $siteSetting('guest_capabilities') ?: $setting('guest_capabilities') ?>
+                </div>
+            </div>
+            <div class="dialog-contents">
+                <?= $this->form()->openTag($form) ?>
+                    <?= $this->formCollection($form, false) ?>
+                    <?php $trigger('view.add.form.after'); ?>
+                    <button type="submit"><?= $translate('Submit') ?></button>
+                <?= $this->form()->closeTag() ?>
+            </div>
+            <div class="dialog-footer">
+                <?php $trigger('view.add.after'); ?>
+            </div>
+        </div>
+    </div>
+</dialog>
