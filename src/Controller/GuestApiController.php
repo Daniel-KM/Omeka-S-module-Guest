@@ -321,6 +321,21 @@ class GuestApiController extends AbstractActionController
         /** @var \Laminas\Http\PhpEnvironment\Request $request */
         $data = $this->params()->fromPost() ?: [];
 
+        // When the data come from the user form, it can be checked directly.
+        // Furthermore, some data should be reordered.
+        if (isset($data['user-information']['o:email'])) {
+            $form = $this->getUserForm();
+            $form->setData($data);
+            if (!$form->isValid()) {
+                // TODO Add flat messages (common 3.4.65).
+                return $this->jSend(self::FAIL, $form->getMessages());
+            }
+            $data = $form->getData();
+        }
+        $data['email'] ??= $data['user-information']['o:email'] ?? null;
+        $data['username'] ??= $data['user-information']['o:name'] ?? null;
+        $data['password'] ??= $data['change-password']['password-confirm']['password'] ?? null;
+
         $site = null;
         $settings = $this->settings();
         if ($settings->get('guest_register_site')) {
@@ -492,12 +507,12 @@ class GuestApiController extends AbstractActionController
         $user->setIsActive($isOpenRegister);
 
         $id = $user->getId();
-        // For compatibility with old version.
+        // For compatibility with user form.
         if (!empty($data['user-settings']) && is_array($data['user-settings'])) {
             $data['o:settings'] = isset($data['o:settings']) && is_array($data['o:settings'])
                 ? array_merge($data['o:settings'], $data['user-settings'])
                 : $data['user-settings'];
-            $this->logger()->warn('Guest Api: an app uses "user-settings" instead of "o:settings" when registering a user.'); // @translate
+            unset($data['user-settings']);
         }
         if (!empty($data['o:settings']) && is_array($data['o:settings'])) {
             $userSettings = $this->userSettings();
