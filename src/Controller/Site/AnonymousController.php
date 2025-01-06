@@ -34,7 +34,7 @@ class AnonymousController extends AbstractGuestController
 
         // Further, the ajax for 2fa-login is managed by module TwoFactorAuth.
 
-        $loginWithoutForm = $this->siteSettings()->get('guest_login_without_form');
+        $loginWithoutForm = (bool) $this->siteSettings()->get('guest_login_without_form');
 
         // The TokenForm returns to the login action, so check it when needed.
         $request = $this->getRequest();
@@ -175,8 +175,8 @@ class AnonymousController extends AbstractGuestController
         // Ajax is managed by module TwoFactorAuth.
 
         $result
-            ? $this->messenger()->addSuccess('A new code was resent.')
-            :  $this->messenger()->addError('Unable to send email.');
+            ? $this->messenger()->addSuccess('A new code was resent.') // @translate
+            : $this->messenger()->addError('Unable to send email.'); // @translate
 
         $view = new ViewModel([
             'site' => $this->currentSite(),

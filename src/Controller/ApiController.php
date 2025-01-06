@@ -96,6 +96,9 @@ class ApiController extends \Omeka\Controller\ApiController
         $this->config = $config;
     }
 
+    /**
+     * Get info about me (alias of /api/users/#id).
+     */
     public function get($id)
     {
         $user = $this->authenticationService->getIdentity();
@@ -546,8 +549,8 @@ class ApiController extends \Omeka\Controller\ApiController
 
         // Check the creation of the user to manage the creation of usernames:
         // the exception occurs in api.create.post, so user is created.
-        /** @var \Omeka\Entity\User $user */
         try {
+            /** @var \Omeka\Entity\User $user */
             $user = $this->api()->create('users', $userInfo, [], ['responseContent' => 'resource'])->getContent();
         } catch (\Omeka\Api\Exception\PermissionDeniedException $e) {
             // This is the exception thrown by the module UserNames, so the user
@@ -645,7 +648,7 @@ class ApiController extends \Omeka\Controller\ApiController
             //     ],
             // ], [], ['isPartial' => true]);
         } else {
-            $site = $this->defaultSite();
+            $site = $this->viewHelpers()->get('defaultSite')();
             // User is flushed when the guest user token is created.
             $this->entityManager->persist($user);
         }
@@ -717,7 +720,7 @@ class ApiController extends \Omeka\Controller\ApiController
     {
         $user = $this->loggedUser();
         if ($user) {
-            $message = $this->translate('A logged user cannot change the password.'); // @translate
+            $message = $this->translate('A logged user cannot change the password with this method.'); // @translate
             return $this->returnError($message);
         }
 
@@ -786,10 +789,10 @@ class ApiController extends \Omeka\Controller\ApiController
                 }
             }
             $sql = <<<'SQL'
-UPDATE `password_creation`
-SET `id` = :new_id
-WHERE `id` = :old_id;
-SQL;
+                UPDATE `password_creation`
+                SET `id` = :new_id
+                WHERE `id` = :old_id;
+                SQL;
             $this->entityManager->getConnection()->executeStatement($sql, [
                 'old_id' => $passwordCreation->getId(),
                 'new_id' => $newId,
@@ -801,11 +804,13 @@ SQL;
                 'User token for {site_title}', // @translate
                 ['site_title' => $installationTitle]
             );
-            $body = new PsrMessage('Greetings!
-
-To reset your password on {site_title}, fill this token in the app: {token}.
-
-Your activation link will expire on {date}.', // @translate
+            $body = new PsrMessage(<<<'TXT'
+                'Greetings!
+                
+                To reset your password on {site_title}, fill this token in the app: {token}.
+                
+                Your activation link will expire on {date}.'
+                TXT, // @translate
                 [
                     'site_title' => $installationTitle,
                     'token' => $newId,
@@ -869,6 +874,7 @@ Your activation link will expire on {date}.', // @translate
             return $this->returnError($message);
         }
 
+        // TODO Use Omeka checks for password.
         if (strlen($data['password']) < 6) {
             $message = $this->translate('New password should have 6 characters or more.'); // @translate
             return $this->returnError($message);
@@ -1020,7 +1026,7 @@ Your activation link will expire on {date}.', // @translate
                     );
                 }
             } else {
-                $site = $this->defaultSite();
+                $site = $this->viewHelpers()->get('defaultSite')();
             }
 
             $this->getPluginManager()->get('currentSite')->setSite($site);
@@ -1075,6 +1081,7 @@ Your activation link will expire on {date}.', // @translate
                 Response::STATUS_CODE_400
             );
         }
+        // TODO Use Omeka checks for password.
         if (strlen($data['new_password']) < 6) {
             return $this->returnError(
                 $this->translate('New password should have 6 characters or more.'), // @translate
@@ -1406,27 +1413,6 @@ Your activation link will expire on {date}.', // @translate
             'subject' => $subject,
             'body' => $body,
         ];
-    }
-
-    protected function defaultSite(): ?SiteRepresentation
-    {
-        static $defaultSite = false;
-
-        if ($defaultSite === false) {
-            $defaultSiteId = $this->settings()->get('default_site');
-            if ($defaultSiteId) {
-                try {
-                    $defaultSite = $this->api->read('sites', ['id' => $defaultSiteId])->getContent();
-                } catch (\Omeka\Api\Exception\NotFoundException $e) {
-                    $defaultSite = null;
-                }
-            } else {
-                $sites = $this->api->search('sites', ['limit' => 1, 'sort_by' => 'id'])->getContent();
-                $defaultSite = $sites ? reset($sites) : null;
-            }
-        }
-
-        return $defaultSite;
     }
 
     protected function hasModuleUserNames(): bool

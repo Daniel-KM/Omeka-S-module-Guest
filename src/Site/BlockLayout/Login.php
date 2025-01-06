@@ -237,8 +237,8 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         // Ajax is managed by module TwoFactorAuth.
 
         $result
-            ? $this->messenger->addSuccess('A new code was resent.')
-            :  $this->messenger->addError('Unable to send email.');
+            ? $this->messenger->addSuccess('A new code was resent.') // @translate
+            : $this->messenger->addError('Unable to send email.'); // @translate
 
         $form = $this->formElementManager->get(\TwoFactorAuth\Form\TokenForm::class);
         $templateViewScript = 'common/block-template/guest-login-token';

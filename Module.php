@@ -41,7 +41,6 @@ use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Form\Element;
 use Laminas\Mvc\MvcEvent;
-use Laminas\Permissions\Acl\Acl as LaminasAcl;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\UserRepresentation;
 use Omeka\Module\AbstractModule;
@@ -129,19 +128,8 @@ class Module extends AbstractModule
 
         $settings = $services->get('Omeka\Settings');
         $isOpenRegister = $settings->get('guest_open', 'moderate');
-        $this->addRulesForAnonymous($acl, $isOpenRegister);
-        $this->addRulesForGuest($acl);
-        $this->addRulesForApi($acl, $isOpenRegister);
-    }
 
-    /**
-     * Add ACL rules for sites.
-     *
-     * @param LaminasAcl $acl
-     * @param bool $isOpenRegister
-     */
-    protected function addRulesForAnonymous(LaminasAcl $acl, $isOpenRegister = 'moderate'): void
-    {
+        // Rules for anonymous.
         $acl
             ->allow(
                 null,
@@ -177,15 +165,8 @@ class Module extends AbstractModule
                     ['register']
                 );
         }
-    }
 
-    /**
-     * Add ACL rules for "guest" role.
-     *
-     * @param LaminasAcl $acl
-     */
-    protected function addRulesForGuest(LaminasAcl $acl): void
-    {
+        // Rules for guest.
         $roles = $acl->getRoles();
         $acl
             ->allow(
@@ -225,13 +206,8 @@ class Module extends AbstractModule
                 ]
             )
         ;
-    }
 
-    /**
-     * Add ACL role and rules for this module.
-     */
-    protected function addRulesForApi(LaminasAcl $acl, $isOpenRegister = 'moderate'): void
-    {
+        // Rules for api.
         if ($isOpenRegister !== 'closed') {
             $acl
                 ->allow(
@@ -251,21 +227,15 @@ class Module extends AbstractModule
                     [\Omeka\Api\Adapter\UserAdapter::class],
                     'create'
                 );
-        } else {
-            $acl
-                ->allow(
-                    null,
-                    [\Guest\Controller\ApiController::class],
-                    ['login', 'session-token', 'logout']
-                );
         }
 
         // This is an api, so all rest api actions are allowed when available.
+        // Rights are managed via credentials.
         $acl
             ->allow(
                 null,
                 [\Guest\Controller\ApiController::class]
-        );
+            );
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
