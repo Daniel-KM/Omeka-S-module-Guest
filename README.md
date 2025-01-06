@@ -11,7 +11,12 @@ become registered users in Omeka S, but have no other privileges to the admin
 side of your Omeka S installation. This module is thus intended to be a common
 module that other modules needing a guest user use as a dependency.
 
-The module is compatible with module [UserNames].
+All features are available from api, in particular to login, to logout, to
+register, to update the password, to update its own profile and settings, or to
+ajax forms. It does not replace the standard api (/api/users/#id), but adds some
+checks and features useful to build ajax dialogs.
+
+The module is compatible with module [User Names] and [Two Factor Authentication].
 
 The module includes a way to request api without credentials but via session, so
 it's easier to use ajax in public interface or web application (see [omeka/pull/1714]).
@@ -89,11 +94,86 @@ else:
 endif;
 ```
 
+Api endpoint
+------------
+
+First, specify the roles that can login by api in the config form of the module.
+Note that to allow any roles to login, in particular global admins, increase the
+access points to check for security.
+
+The main path is `/api/guest[/:action]` with all following actions that output
+data as [jSend]:
+
+- me
+  Get infos about me (similar to /api/users/#id).
+
+- login
+  The user can log in with a post to `/api/login` with data `{"email":"elisabeth.ii@example.com","password"=""***"}`.
+  In return, a session token will be returned. All other actions can be done
+  with them: `/api/users/me?key_identity=xxx&key_credential=yyy`.
+
+  If the option to create a local session cookie is set, the user will be
+  authenticated locally too, so it allows to log in from a third party webservice,
+  for example if a user logs in inside a Drupal site, he can log in the Omeka
+  site simultaneously. This third party login should be done via an ajax call
+  because the session cookie should be set in the browser, not in the server, so
+  you can’t simply call the endpoint from the third party server. In you third
+  party ajax, the header `Origin` should be filled in the request; this is
+  generally the case with common js libraries.
+
+  When a local session cookie is wanted, it is recommended to add a list of
+  sites that have the right to log in the config for security reasons.
+
+- logout
+
+- session-token
+  A session token can be created for api access. It is reset each time the user
+  login or logout. The api keys have no limited life in Omeka.
+
+- register
+  A visitor can register too, if allowed in the config. Register requires an
+  email. Other params are optional: `username`, `password`, and `site` (id or
+  slug, that may be required via the config).
+
+- forgot-password
+  Requires the eamail as argument.
+
+- dialog
+  Get an html dialog for ajax interaction. The argument is "name" with values
+  "login", "register", "forgot-password", or "2fa-token" (for module [Two Factor Authentication]).
+
+Some specific paths are added. They works the same than /api/guest/:action, but
+the output is slightly different. They are kept for compatibility with old
+third-party tools. Furthermore, they use key_identity/key_credential to
+authenticate.
+
+- /api/login
+- /api/logout
+- /api/session-token
+- /api/register
+- /api/forgot-password
+- /api/users/me
+
+The path `/api/users/me` is used for the user that is currently authenticated
+through the credentials arguments. This is a shortcut to `/api/users/{id}` for
+common actions, in particular to get the current user own data without knowking
+the id.
+
+Other http methods are available to update the profile with the same path. For
+example to update (http method `PATCH`/`POST`):
+- email: /api/users/me?email=elisabeth.ii@example.com
+- name: /api/users/me?name=elisabeth_ii
+- password: /api/users/me?password=xxx&new_password=yyy
+
+In all other cases, you should use the standard api (`/api/users/#id`).
+
 
 TODO
 ----
 
 - [x] Move pages to a standard page, in particular register page (see module [ContactUs]).
+- [x] Normalize all api routes and json for rest api (register, login, logout, session-token, forgot-password, dialog).
+- [ ] Add an option to use key_identity/key_credential with GuestApiController and deprecate ApiController?
 
 
 Warning
@@ -138,9 +218,9 @@ Copyright
 ---------
 
 * Copyright Biblibre, 2016-2017
-* Copyright Daniel Berthereau, 2017-2024 (see [Daniel-KM] on GitLab)
+* Copyright Daniel Berthereau, 2017-2025 (see [Daniel-KM] on GitLab)
 
-This module is based on a full rewrite of the plugin [Guest User] for [Omeka Classic]
+This module was based on a full rewrite of the plugin [Guest User] for [Omeka Classic]
 by [BibLibre].
 
 
@@ -148,10 +228,12 @@ by [BibLibre].
 [Guest User]: https://gitlab.com/omeka/plugin-GuestUser
 [Omeka S]: https://www.omeka.org/s
 [GitLab]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest
-[UserNames]: https://github.com/ManOnDaMoon/omeka-s-module-UserNames
+[User Names]: https://github.com/ManOnDaMoon/omeka-s-module-UserNames
+[Two Factor Authentication]: https://gitlab.com/Daniel-KM/Omeka-S-module-TwoFactorAuth
 [omeka/pull/1714]: https://github.com/omeka/omeka-s/pull/1714
 [ContactUs]: https://gitlab.com/Daniel-KM/Omeka-S-module-ContactUs
 [Shibboleth]: https://gitlab.com/Daniel-KM/Omeka-S-module-Shibboleth
+[jSend]: https://github.com/omniti-labs/jsend
 [more information to upgrade templates]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/blob/9964d30a65505975c4dd1af42eccbc001a02a4b9/Upgrade_from_GuestUser.md
 [version 3.4.20]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/tree/3.4.20
 [installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
