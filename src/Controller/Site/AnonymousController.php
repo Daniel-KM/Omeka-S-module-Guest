@@ -364,7 +364,7 @@ class AnonymousController extends AbstractGuestController
         // Save the site on which the user registered.
         $userSettings->set('guest_site', $this->currentSite()->id(), $id);
 
-        $emails = $this->getOption('guest_notify_register', []);
+        $emails = $this->getOption('guest_notify_register') ?: [];
         if ($emails) {
             $message = new PsrMessage(
                 'A new user is registering: {user_email} ({url}).', // @translate
@@ -625,20 +625,5 @@ class AnonymousController extends AbstractGuestController
             return false;
         }
         return true;
-    }
-
-    protected function hasModuleUserNames(): bool
-    {
-        static $hasModule = null;
-        if (is_null($hasModule)) {
-            // A quick way to check the module without services.
-            try {
-                $this->api()->search('usernames', ['limit' => 0])->getTotalResults();
-                $hasModule = true;
-            } catch (\Exception $e) {
-                $hasModule = false;
-            }
-        }
-        return $hasModule;
     }
 }

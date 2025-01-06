@@ -16,7 +16,6 @@ use Laminas\Session\Container as SessionContainer;
 use Laminas\View\Model\JsonModel;
 use Omeka\Api\Adapter\UserAdapter;
 use Omeka\Api\Manager as ApiManager;
-use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Entity\SitePermission;
 use Omeka\Entity\User;
 use Omeka\Stdlib\Paginator;
@@ -30,6 +29,8 @@ use Omeka\Stdlib\Paginator;
  */
 class GuestApiController extends AbstractActionController
 {
+    use TraitGuestController;
+
     const ERROR = 'error';
     const FAIL = 'fail';
     const SUCCESS = 'success';
@@ -1103,123 +1104,6 @@ class GuestApiController extends AbstractActionController
         return $this->jSend(self::SUCCESS, [
             'session_token' => $sessionToken ?: null,
         ]);
-    }
-
-    /**
-     * Prepare the template.
-     *
-     * @param string $template In case of a token message, this is the action.
-     * @param array $data
-     * @param SiteRepresentation $site
-     * @return array Filled subject and body as PsrMessage, from templates
-     * formatted with moustache style.
-     */
-    protected function prepareMessage($template, array $data, ?SiteRepresentation $site = null)
-    {
-        $settings = $this->settings();
-
-        $site = $site ?: $this->currentSite();
-        if (empty($site) && $settings->get('guest_register_site')) {
-            throw new \Exception('Missing site.'); // @translate
-        }
-
-        $default = [
-            'main_title' => $settings->get('installation_title', 'Omeka S'),
-            'site_title' => $site->title(),
-            'site_url' => $site->siteUrl(null, true),
-            'user_name' => '',
-            'user_email' => '',
-            'token' => null,
-            'token_url' => null,
-        ];
-
-        $data += $default;
-
-        if (isset($data['token'])) {
-            /** @var \Guest\Entity\GuestToken $token */
-            $token = $data['token'];
-            $data['token'] = $token->getToken();
-            $actions = [
-                'register-email-api' => 'confirm-email',
-                'register-email-api-text' => 'confirm-email',
-            ];
-            $action = $actions[$template] ?? $template;
-            $urlOptions = ['force_canonical' => true];
-            $urlOptions['query']['token'] = $data['token'];
-            $data['token_url'] = $this->url()->fromRoute(
-                'site/guest/anonymous',
-                ['site-slug' => $site->slug(),  'action' => $action],
-                $urlOptions
-            );
-        }
-
-        $isText = substr($template, -5) === '-text';
-        if ($isText) {
-            $template = substr($template, 0, -5);
-        }
-
-        switch ($template) {
-            case 'confirm-email':
-                $subject = $settings->get('guest_message_confirm_email_subject',
-                    $this->config['guest']['settings']['guest_message_confirm_email_subject']);
-                $body = $settings->get('guest_message_confirm_email',
-                    $this->config['guest']['settings']['guest_message_confirm_email']);
-                break;
-
-            case 'update-email':
-                $subject = $settings->get('guest_message_update_email_subject',
-                    $this->config['guest']['settings']['guest_message_update_email_subject']);
-                $body = $settings->get('guest_message_update_email',
-                    $this->config['guest']['settings']['guest_message_update_email']);
-                break;
-
-            case 'register-email-api':
-                $subject = $settings->get('guest_message_confirm_registration_email_subject',
-                    $this->config['guest']['settings']['guest_message_confirm_registration_email_subject']);
-                $body = $settings->get('guest_message_confirm_registration_email',
-                    $this->config['guest']['settings']['guest_message_confirm_registration_email']);
-                break;
-
-                // Allows to manage derivative modules.
-            default:
-                $subject = !empty($data['subject']) ? $data['subject'] : '[No subject]'; // @translate
-                $body = !empty($data['body']) ? $data['body'] : '[No message]'; // @translate
-                break;
-        }
-
-        // The url may be protected by html-purifier.
-        $subject = str_replace('%7Btoken_url%7D', '{token_url}', $subject);
-        $body = str_replace('%7Btoken_url%7D', '{token_url}', $body);
-
-        if ($isText) {
-            $subject = strip_tags($subject);
-            $body = strip_tags($body);
-        }
-
-        unset($data['subject']);
-        unset($data['body']);
-        $subject = new PsrMessage($subject, $data);
-        $body = new PsrMessage($body, $data);
-
-        return [
-            'subject' => $subject,
-            'body' => $body,
-        ];
-    }
-
-    protected function hasModuleUserNames(): bool
-    {
-        static $hasModule = null;
-        if (is_null($hasModule)) {
-            // A quick way to check the module without services.
-            try {
-                $this->api()->search('usernames', ['limit' => 0])->getTotalResults();
-                $hasModule = true;
-            } catch (\Exception $e) {
-                $hasModule = false;
-            }
-        }
-        return $hasModule;
     }
 
     /**
