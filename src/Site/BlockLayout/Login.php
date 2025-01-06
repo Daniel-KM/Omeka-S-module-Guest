@@ -158,7 +158,9 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
             'block' => $block,
         ];
 
-        if ($view->setting('twofactorauth_use_dialog')) {
+        if ($view->setting('twofactorauth_use_dialog')
+            && class_exists('TwoFactorAuth\Module', false)
+        ) {
             // For ajax, use standard action.
             $form->setAttribute('action', $view->url('login'));
             $formToken = $this->formElementManager->get(TokenForm::class)->setAttribute('action', $view->url('login'));

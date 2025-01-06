@@ -76,7 +76,10 @@ class AnonymousController extends AbstractGuestController
             'formToken' => null,
         ]);
 
-        if (!$loginWithoutForm && $this->settings()->get('twofactorauth_use_dialog')) {
+        if (!$loginWithoutForm
+            && $this->settings()->get('twofactorauth_use_dialog')
+            && $this->getPluginManager()->has('twoFactorLogin')
+        ) {
             // For ajax, use standard action.
             $form->setAttribute('action', $this->url()->fromRoute('login'));
             $view

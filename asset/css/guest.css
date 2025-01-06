@@ -1,0 +1,28 @@
+/* Guest */
+
+@media all {
+    [hidden],
+    .hidden {
+        display: none;
+    }
+
+    .dialog-header,
+    .dialog-contents,
+    .dialog-bottom {
+        margin-bottom: 6px;
+    }
+
+    .dialog-header {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .dialog-header-close-button {
+        display: block;
+        margin-left: auto;
+        padding: 0;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+    }
+}
