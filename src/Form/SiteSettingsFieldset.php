@@ -304,6 +304,18 @@ If you did not request to update your email on {main_title}, please disregard th
                     'required' => false,
                 ],
             ])
+
+            ->add([
+                'name' => 'guest_show_user_bar',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Display user bar only for admin (require Omeka option)', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_show_user_bar',
+                ],
+            ])
         ;
     }
 }
