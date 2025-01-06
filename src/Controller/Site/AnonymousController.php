@@ -91,8 +91,13 @@ class AnonymousController extends AbstractGuestController
             if ($result === null) {
                 // Internal error (no mail sent).
                 return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
-            } elseif ($result === false || $result === 0) {
-                // Email or password error, so retry below.
+            } elseif ($result === false) {
+                // Email or password error, so retry.
+                // Slow down the process to avoid brute force.
+                sleep(3);
+                return $view;
+            } elseif ($result === 0) {
+                // Email or password error in 2FA. Sleep is already processed.
                 return $view;
             } elseif ($result === 1) {
                 // Success login in first step in 2FA, so go to second step.

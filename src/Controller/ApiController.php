@@ -272,12 +272,16 @@ class ApiController extends \Omeka\Controller\ApiController
         ]);
 
         if (!$user) {
+            // Slow down the process to avoid brute force.
+            sleep(3);
             return $this->returnError(
                 $this->translate('Wrong email or password.') // @translate
             );
         }
 
         if (!$user->verifyPassword($data['password'])) {
+            // Slow down the process to avoid brute force.
+            sleep(3);
             return $this->returnError(
                 // Same message as above for security.
                 $this->translate('Wrong email or password.') // @translate

@@ -134,8 +134,13 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
             if ($result === null) {
                 // Internal error (no mail sent).
                 return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
-            } elseif ($result === false || $result === 0) {
+            } elseif ($result === false ) {
                 // Email or password error, so retry below.
+                // Slow down the process to avoid brute force.
+                sleep(3);
+            } elseif ($result === 0) {
+                // Email or password error in 2FA, so retry below.
+                // Sleep is already processed.
             } elseif ($result === 1) {
                 // Success login in first step in 2FA, so go to second step.
                 $formToken = $this->formElementManager->get(TokenForm::class);

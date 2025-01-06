@@ -164,12 +164,16 @@ class GuestApiController extends AbstractActionController
         ]);
 
         if (!$user) {
+            // Slow down the process to avoid brute force.
+            sleep(3);
             return $this->jSend(self::FAIL, [
                 'user' => $this->translate('Wrong email or password.'), // @translate
             ]);
         }
 
         if (!$user->verifyPassword($data['password'])) {
+            // Slow down the process to avoid brute force.
+            sleep(3);
             return $this->jSend(self::FAIL, [
                 // Same message as above for security.
                 'user' => $this->translate('Wrong email or password.'), // @translate
