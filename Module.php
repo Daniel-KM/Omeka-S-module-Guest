@@ -425,7 +425,9 @@ class Module extends AbstractModule
         if ($plugins->has('ssoLoginLinks')) {
             $url = $plugins->get('url');
             $idps = $settings->get('singlesignon_idps') ?: [];
-            foreach ($idps as $idpName => $idp) {
+            // Manage old an new version of module Single Sign-On.
+            foreach ($idps as $idpSlug => $idp) {
+                $idpName = $idp['idp_entity_short_id'] ?? $idpSlug;
                 $links[] = [
                     'url' => $url('sso', ['action' => 'login', 'idp' => $idpName], true),
                     'label' => !empty($idp['idp_entity_name']) ? $idp['idp_entity_name'] : ($idp['idp_entity_id'] ?? $view->translate('[Unknown idp]')), // @translate
