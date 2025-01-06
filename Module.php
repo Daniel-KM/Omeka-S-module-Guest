@@ -234,7 +234,10 @@ class Module extends AbstractModule
         $acl
             ->allow(
                 null,
-                [\Guest\Controller\ApiController::class]
+                [
+                    \Guest\Controller\ApiController::class,
+                    \Guest\Controller\GuestApiController::class,
+                ]
             );
     }
 

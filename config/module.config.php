@@ -63,6 +63,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\ApiController::class => Service\Controller\ApiControllerFactory::class,
+            Controller\GuestApiController::class => Service\Controller\GuestApiControllerFactory::class,
             Controller\Site\AnonymousController::class => Service\Controller\Site\AnonymousControllerFactory::class,
             Controller\Site\GuestController::class => Service\Controller\Site\GuestControllerFactory::class,
             Controller\SiteAdmin\IndexController::class => Service\Controller\SiteAdmin\IndexControllerFactory::class,
@@ -197,6 +198,19 @@ return [
             'api' => [
                 'child_routes' => [
                     'guest' => [
+                        'type' => \Laminas\Router\Http\Segment::class,
+                        'options' => [
+                            'route' => '/guest[/:action]',
+                            'contraints' => [
+                                'action' => 'forgot-password|login|logout|me|register|session-token',
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\GuestApiController::class,
+                                'action' => 'me',
+                            ],
+                        ],
+                    ],
+                    'guest-me' => [
                         'type' => \Laminas\Router\Http\Literal::class,
                         'options' => [
                             'route' => '/users/me',
@@ -207,6 +221,7 @@ return [
                             ],
                         ],
                     ],
+                    // Deprecated routes.
                     'guest-login' => [
                         'type' => \Laminas\Router\Http\Literal::class,
                         'options' => [
