@@ -137,14 +137,14 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
             } elseif ($result === false || $result === 0) {
                 // Email or password error, so retry below.
             } elseif ($result === 1) {
-                // Success login in first step, so go second step.
-                $formToken = $this->formElementManager->get(\TwoFactorAuth\Form\TokenForm::class);
+                // Success login in first step in 2FA, so go to second step.
+                $formToken = $this->formElementManager->get(TokenForm::class);
                 $templateViewScript = 'common/block-template/guest-login-token';
             } elseif (is_string($result)) {
-                // Email or password error, or something else.
+                // Moderation or confirmation missing or other issue.
                 $this->messenger->addError($result);
             } else {
-                // Here, The user is authenticated.
+                // Here, the user is authenticated.
                 $this->redirectToAdminOrSite($view);
                 return '';
             }
@@ -189,7 +189,7 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
 
         if (!$isFirst && $this->request->isPost()) {
             $data = $this->request->getPost();
-            $form = $this->formElementManager->get(\TwoFactorAuth\Form\TokenForm::class);
+            $form = $this->formElementManager->get(TokenForm::class);
             $form->setData($data);
             if ($form->isValid()) {
                 /**
@@ -210,7 +210,7 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
             }
         }
 
-        $form = $this->formElementManager->get(\TwoFactorAuth\Form\TokenForm::class);
+        $form = $this->formElementManager->get(TokenForm::class);
         $templateViewScript = 'common/block-template/guest-login-token';
 
         $vars = [
@@ -242,7 +242,7 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
             ? $this->messenger->addSuccess('A new code was resent.') // @translate
             : $this->messenger->addError('Unable to send email.'); // @translate
 
-        $form = $this->formElementManager->get(\TwoFactorAuth\Form\TokenForm::class);
+        $form = $this->formElementManager->get(TokenForm::class);
         $templateViewScript = 'common/block-template/guest-login-token';
 
         $vars = [

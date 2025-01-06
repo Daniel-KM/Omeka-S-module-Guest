@@ -92,20 +92,20 @@ class AnonymousController extends AbstractGuestController
                 // Internal error (no mail sent).
                 return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
             } elseif ($result === false || $result === 0) {
-                // Email or password error, so retry.
+                // Email or password error, so retry below.
                 return $view;
             } elseif ($result === 1) {
-                // Success login in first step, so go second step.
+                // Success login in first step in 2FA, so go to second step.
                 // Here, there is no ajax.
                 return $view
                     ->setVariable('formToken', $this->getForm(TokenForm::class))
                     ->setTemplate('guest/site/anonymous/login-token');
             } elseif (is_string($result)) {
-                // Email or password error, or something else.
+                // Moderation or confirmation missing or other issue.
                 $this->messenger()->addError($result);
                 return $view;
             }
-            // Here, The user is authenticated.
+            // Here, the user is authenticated.
         } elseif (!$this->request->isPost()) {
             // Manage login without form.
             return $view;

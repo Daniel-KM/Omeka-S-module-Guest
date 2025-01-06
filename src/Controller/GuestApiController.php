@@ -19,11 +19,15 @@ use Omeka\Api\Manager as ApiManager;
 use Omeka\Entity\SitePermission;
 use Omeka\Entity\User;
 use Omeka\Stdlib\Paginator;
+use TwoFactorAuth\Form\TokenForm;
 
 /**
  * Allow to manage "me" and auth actions via api.
  *
  * Replace ApiController with right jsend messages and JsonModel.
+ * Auth adapter is the standard adapter, not key_identity/key_credential.
+ *
+ * @todo Add an option to use key_identity/key_credential with GuestApiController and deprecate ApiController?
  *
  * @see https://github.com/omniti-labs/jsend
  */
@@ -184,55 +188,55 @@ class GuestApiController extends AbstractActionController
             ]);
         }
 
-        // TODO Use chain storage.
-        if ($this->settings()->get('guest_login_session')) {
-            // Check password.
-            $this->authenticationServiceSession->getAdapter()
-                ->setIdentity($data['email'])
-                ->setCredential($data['password']);
-            $result = $this->authenticationServiceSession
-                ->authenticate();
-            if (!$result->isValid()) {
-                // Check if the user is under moderation in order to add a message.
-                if (!$this->isOpenRegister()) {
-                    /** @var \Omeka\Entity\User $user */
-                    $user = $this->entityManager->getRepository(User::class)->findOneBy([
-                        'email' => $data['email'],
-                    ]);
-                    if ($user) {
-                        $guestToken = $this->entityManager->getRepository(GuestToken::class)
-                            ->findOneBy(['email' => $data['email']], ['id' => 'DESC']);
-                        if (empty($guestToken) || $guestToken->isConfirmed()) {
-                            if (!$user->isActive()) {
-                                return $this->jSend(self::FAIL, [
-                                    'user' => $this->translate('Your account is under moderation for opening.'), // @translate
-                                ]);
-                            }
-                        } else {
-                            return $this->jSend(self::FAIL, [
-                                'user' => $this->translate('Check your email to confirm your registration.'), // @translate
-                            ]);
-                        }
-                    }
-                }
-                return $this->jSend(self::FAIL, [
-                    'user' => $this->translate(reset($result->getMessages())), // @translate
-                ]);
-            }
+        $result = $this->validateLogin([
+            'email' => $data['email'],
+            'password' => $data['password'],
+        ]);
+
+        if ($result === null) {
+            // Internal error (no mail sent).
+            return $this->jSend(self::ERROR);
+        } elseif ($result === false) {
+            // Email or password error, so retry below.
+            // Slow down the process to avoid brute force.
+            sleep(3);
+            return $this->jSend(self::FAIL, [
+                'login' => $this->translate('Wrong email or password.'), // @translate
+            ]);
+        } elseif ($result === 0) {
+            // Email or password error in 2FA. Sleep is already processed.
+            return $this->jSend(self::FAIL, [
+                'login' => $this->translate('Wrong email or password.'), // @translate
+            ]);
+        } elseif ($result === 1) {
+            // Success login in first step in 2FA, so go to second step.
+            return $this->jSend(self::SUCCESS, [
+                'login' => null,
+                'token_email' => null,
+                'dialog' => $this->viewHelpers()->get('partial')('common/dialog/2fa-token', [
+                    'form' => $this->getForm(TokenForm::class)->setAttribute('action', $this->url()->fromRoute('login')),
+                ]),
+            ]);
+        } elseif (is_string($result)) {
+            // Moderation or confirmation missing or other issue.
+            return $this->jSend(self::FAIL, [
+                'login' => $result,
+            ]);
         } else {
-            $this->authenticationServiceSession->clearIdentity();
+            // Here, the user is authenticated.
+            $user = $this->identity();
+            $sessionToken = $this->prepareSessionToken($user);
+            return $this->jSend(self::SUCCESS, [
+                'login' => true,
+                'user' => $this->userAdapter->getRepresentation($user),
+                'session_token' => [
+                    'o:user' => [
+                        '@id' => $this->url()->fromRoute('api/default', ['resource' => 'users', 'id' => $user->getId()], ['force_canonical' => true]),
+                        'o:id' => $user->getId(),
+                    ],
+                ] + $sessionToken,
+            ]);
         }
-
-        $eventManager = $this->getEventManager();
-        $eventManager->trigger('user.login', $user);
-
-        // Redirect if needed (without session token: it won't be readable).
-        $redirect = $this->params()->fromQuery('redirect');
-        if ($redirect) {
-            return $this->redirect()->toUrl($redirect);
-        }
-
-        return $this->returnSessionToken($user);
     }
 
     public function logoutAction()
@@ -286,7 +290,16 @@ class GuestApiController extends AbstractActionController
                 'user' => $this->translate('Unauthorized access.'), // @translate
             ], null, Response::STATUS_CODE_401);
         }
-        return $this->returnSessionToken($user);
+        $sessionToken = $this->prepareSessionToken($user);
+        return $this->jSend(self::SUCCESS, [
+            'login' => true,
+            'session_token' => [
+                'o:user' => [
+                    '@id' => $this->url()->fromRoute('api/default', ['resource' => 'users', 'id' => $user->getId()], ['force_canonical' => true]),
+                    'o:id' => $user->getId(),
+                ],
+            ] + $sessionToken,
+        ]);
     }
 
     /**
@@ -1136,29 +1149,27 @@ class GuestApiController extends AbstractActionController
         ], $message->setTranslator($this->translator));
     }
 
-    protected function prepareSessionToken(User $user)
+    /**
+     * Create a new session token and get key_identity and key_credential.
+     */
+    protected function prepareSessionToken(User $user): array
     {
         $this->removeSessionTokens($user);
 
         // Create a new session token.
-        $key = new \Omeka\Entity\ApiKey;
-        $key->setId();
-        $key->setLabel('guest_session');
-        $key->setOwner($user);
-        $keyId = $key->getId();
-        $keyCredential = $key->setCredential();
-        $this->entityManager->persist($key);
-
+        $apiKey = new \Omeka\Entity\ApiKey;
+        $apiKey->setId();
+        $apiKey->setLabel('guest_session');
+        $apiKey->setOwner($user);
+        $apiKeyId = $apiKey->getId();
+        $apiKeyCredential = $apiKey->setCredential();
+        $this->entityManager->persist($apiKey);
         $this->entityManager->flush();
 
-        return $this->jSend(self::SUCCESS, [
-            'user' => [
-                '@id' => $this->url()->fromRoute('api/default', ['resource' => 'users', 'id' => $user->getId()], ['force_canonical' => true]),
-                'o:id' => $user->getId(),
-            ],
-            'key_identity' => $keyId,
-            'key_credential' => $keyCredential,
-        ]);
+        return [
+            'key_identity' => $apiKeyId,
+            'key_credential' => $apiKeyCredential,
+        ];
     }
 
     protected function removeSessionTokens(User $user): void
@@ -1171,14 +1182,6 @@ class GuestApiController extends AbstractActionController
             }
         }
         $this->entityManager->flush();
-    }
-
-    protected function returnSessionToken(User $user)
-    {
-        $sessionToken = $this->prepareSessionToken($user);
-        return $this->jSend(self::SUCCESS, [
-            'session_token' => $sessionToken ?: null,
-        ]);
     }
 
     /**

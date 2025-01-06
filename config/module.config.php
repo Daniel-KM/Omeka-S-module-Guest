@@ -205,6 +205,8 @@ return [
                                 'action' => 'forgot-password|login|logout|me|register|session-token',
                             ],
                             'defaults' => [
+                                '__API__' => false,
+                                '__KEYAUTH__' => false,
                                 'controller' => Controller\GuestApiController::class,
                                 'action' => 'me',
                             ],

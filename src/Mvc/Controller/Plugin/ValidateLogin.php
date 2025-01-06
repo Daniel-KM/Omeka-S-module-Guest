@@ -93,8 +93,9 @@ class ValidateLogin extends AbstractPlugin
     }
 
     /**
-     * Validate login form, user, and new user token.
+     * Validate login via form or api, user, and new user token.
      *
+     * @param Form|array Form (data from request) or checked data (api).
      * @return bool|null|int|string May be:
      * - null if internal error (cannot send mail),
      * - false if not a post or invalid (missing csrf, email, password),
@@ -107,20 +108,26 @@ class ValidateLogin extends AbstractPlugin
      *
      * @todo Clarify output.
      */
-    public function __invoke(Form $form)
+    public function __invoke($formOrData)
     {
-        $result = $this->checkPostAndValidForm($form);
-        if ($result !== true) {
-            $email = $this->request->getPost('email');
-            if ($email) {
-                $form->get('email')->setValue($email);
+        if ($formOrData instanceof Form) {
+            $isApi = false;
+            $result = $this->checkPostAndValidForm($formOrData);
+            if ($result !== true) {
+                $email = $this->request->getPost('email');
+                if ($email) {
+                    $formOrData->get('email')->setValue($email);
+                }
+                return $result;
             }
-            return $result;
+            $validatedData = $formOrData->getData();
+            $email = $validatedData['email'];
+            $password = $validatedData['password'];
+        } else {
+            $isApi = true;
+            $email = $formOrData['email'];
+            $password = $formOrData['password'];
         }
-
-        $validatedData = $form->getData();
-        $email = $validatedData['email'];
-        $password = $validatedData['password'];
 
         // Manage the module TwoFactorAuth.
         $adapter = $this->authenticationService->getAdapter();

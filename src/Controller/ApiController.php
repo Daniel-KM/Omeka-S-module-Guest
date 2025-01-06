@@ -18,7 +18,9 @@ use Omeka\Stdlib\Paginator;
 use Omeka\View\Model\ApiJsonModel;
 
 /**
- * Allow to manage "me" via api.
+ * Allow to manage "me" and auth actions via api.
+ *
+ * Auth adapter is key_identity/key_credential.
  */
 class ApiController extends \Omeka\Controller\ApiController
 {
