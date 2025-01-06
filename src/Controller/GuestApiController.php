@@ -829,6 +829,8 @@ class GuestApiController extends AbstractActionController
             'form' => $form ?? null,
         ];
 
+        $this->prepareSiteTemplates();
+
         $template = $dialogTemplates[$dialog];
         return $this->jSend(self::SUCCESS, [
             'dialog' => $this->viewHelpers()->get('partial')($template, $args),
@@ -1177,6 +1179,40 @@ class GuestApiController extends AbstractActionController
         return $this->jSend(self::SUCCESS, [
             'session_token' => $sessionToken ?: null,
         ]);
+    }
+
+    /**
+     * Get the site to prepare theme of the site for the dialog template.
+     *
+     * @see \Omeka\Mvc\MvcListeners::preparePublicSite()
+     */
+    protected function prepareSiteTemplates(): void
+    {
+        $siteSlug = $this->params()->fromQuery('site_slug')
+            ?: $this->viewHelpers()->get('defaultSite')('slug');
+        if (!$siteSlug) {
+            return;
+        }
+
+        try {
+            $site = $this->api()->read('sites', ['slug' => $siteSlug])->getContent();
+        } catch (\Omeka\Api\Exception\NotFoundException $e) {
+            $this->logger()->err(
+                '[Guest] Site #{site_slug} is not available.', // @translate
+                ['site_slug' => $siteSlug]
+            );
+            return;
+        }
+
+        // TODO It may be simpler if the route is a site one.
+        /** @var \Laminas\Mvc\MvcEvent $mvcEvent */
+        $mvcEvent = $site->getServiceLocator()->get('Application')->getMvcEvent();
+        $routeMatch = $mvcEvent->getRouteMatch();
+        $routeMatch
+            ->setParam('__SITE__', true)
+            ->setParam('site-slug', $siteSlug);
+        $mvcListeners = new \Omeka\Mvc\MvcListeners();
+        $mvcListeners->preparePublicSite($mvcEvent);
     }
 
     /**
