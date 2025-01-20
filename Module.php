@@ -427,10 +427,14 @@ class Module extends AbstractModule
             $idps = $settings->get('singlesignon_idps') ?: [];
             // Manage old an new version of module Single Sign-On.
             foreach ($idps as $idpSlug => $idp) {
-                $idpName = $idp['idp_entity_short_id'] ?? $idpSlug;
+                $idpName = $idp['entity_short_id'] ?? $idp['idp_entity_short_id'] ?? $idpSlug;
                 $links[] = [
                     'url' => $url('sso', ['action' => 'login', 'idp' => $idpName], true),
-                    'label' => !empty($idp['idp_entity_name']) ? $idp['idp_entity_name'] : ($idp['idp_entity_id'] ?? $view->translate('[Unknown idp]')), // @translate
+                    'label' => !empty($idp['entity_name'])
+                        ? $idp['entity_name']
+                        : (!empty($idp['idp_entity_name'])
+                            ? $idp['idp_entity_name']
+                            : ($idp['entity_id'] ?? $idp['idp_entity_id'] ?? $view->translate('[Unknown idp]'))), // @translate
                     'class' => str_replace(['.', ':'], '-', $idpName),
                 ];
             }
