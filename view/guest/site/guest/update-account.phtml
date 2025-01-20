@@ -9,6 +9,8 @@
 $plugins = $this->getHelperPluginManager();
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
+$pageTitle = $plugins->get('pageTitle');
+$breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;
 $guestNavigation = $plugins->get('guestNavigation')();
 
 $hasGuestNav = (bool) $guestNavigation->getContainer()->count();
@@ -30,10 +32,13 @@ $this->headScript()
     ->appendScript($script);
 
 $this->htmlElement('body')->appendAttribute('class', 'guest account');
+
 $form->prepare();
 ?>
 
-<?= $this->messages() ?>
+<?php if ($breadcrumbs && !$hasGuestNav): ?>
+<?= $breadcrumbs() ?>
+<?php endif; ?>
 
 <?php if ($hasGuestNav): ?>
 <nav class="navigation-guest">
@@ -41,7 +46,9 @@ $form->prepare();
 </nav>
 <?php endif; ?>
 
-<?= $this->pageTitle($this->label) ?>
+<?= $this->messages() ?>
+
+<?= $pageTitle($this->label) ?>
 
 <?= $this->form()->openTag($form) ?>
 <?= $this->formCollection($form, false) ?>
