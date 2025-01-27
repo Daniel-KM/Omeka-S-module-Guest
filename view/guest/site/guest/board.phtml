@@ -12,6 +12,7 @@ $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
 $translate = $plugins->get('translate');
 $pageTitle = $plugins->get('pageTitle');
+$breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;
 $guestNavigation = $plugins->get('guestNavigation')();
 
 $hasGuestNav = (bool) $guestNavigation->getContainer()->count();
@@ -19,13 +20,17 @@ $hasGuestNav = (bool) $guestNavigation->getContainer()->count();
 $this->htmlElement('body')->appendAttribute('class', 'guest account');
 ?>
 
-<?= $this->messages() ?>
+<?php if ($breadcrumbs && !$hasGuestNav): ?>
+<?= $breadcrumbs() ?>
+<?php endif; ?>
 
 <?php if ($hasGuestNav): ?>
 <nav class="navigation-guest">
     <?= $guestNavigation->menu()->renderMenu() ?>
 </nav>
 <?php endif; ?>
+
+<?= $this->messages() ?>
 
 <?= $pageTitle($this->siteSetting('guest_dashboard_label') ?: $this->setting('guest_dashboard_label')) ?>
 

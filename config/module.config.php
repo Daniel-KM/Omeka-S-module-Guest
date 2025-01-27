@@ -383,6 +383,7 @@ return [
             'guest_navigation_home' => null,
         ],
         'block_settings' => [
+            'forgotPassword' => [],
             'login' => [],
             'register' => [],
         ],
