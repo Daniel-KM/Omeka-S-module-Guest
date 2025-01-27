@@ -41,9 +41,11 @@ use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Form\Element;
 use Laminas\Mvc\MvcEvent;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\UserRepresentation;
 use Omeka\Module\AbstractModule;
+use Omeka\Module\Exception\ModuleCannotInstallException;
 use Omeka\Permissions\Assertion\IsSelfAssertion;
 
 /**
@@ -75,6 +77,68 @@ class Module extends AbstractModule
         $this->addAclRoleAndRules();
     }
 
+    public function install(ServiceLocatorInterface $services): void
+    {
+        // Required during install because the role is set in config.
+        require_once __DIR__ . '/src/Permissions/Acl.php';
+
+        $this->installAuto($services);
+    }
+
+    /**
+     * @depracated See Common 3.4.66.
+     */
+    protected function installAuto(ServiceLocatorInterface $services): void
+    {
+        $this->setServiceLocator($services);
+
+        $this->initTranslations();
+
+        /**@var \Laminas\Mvc\I18n\Translator $translator */
+        $translator = $services->get('MvcTranslator');
+
+        $this->preInstall();
+        if (!$this->checkDependencies()) {
+            if (count($this->dependencies) === 1) {
+                $message = new PsrMessage(
+                    'This module requires the module "{module}".', // @translate
+                    ['module' => reset($this->dependencies)]
+                );
+            } else {
+                $message = new PsrMessage(
+                    'This module requires modules "{modules}".', // @translate
+                    ['modules' => implode('", "', $this->dependencies)]
+                );
+            }
+            throw new ModuleCannotInstallException((string) $message->setTranslator($translator));
+        }
+
+        if (!$this->checkAllResourcesToInstall()) {
+            $message = new PsrMessage(
+                'This module has resources that cannot be installed.' // @translate
+            );
+            throw new ModuleCannotInstallException((string) $message->setTranslator($translator));
+        }
+
+        $sqlFile = $this->modulePath() . '/data/install/schema.sql';
+        if (!$this->checkNewTablesFromFile($sqlFile)) {
+            $message = new PsrMessage(
+                'This module cannot install its tables, because they exist already. Try to remove them first.' // @translate
+            );
+            throw new ModuleCannotInstallException((string) $message->setTranslator($translator));
+        }
+
+        $this->execSqlFromFile($sqlFile);
+
+        $this
+            ->installAllResources()
+            ->manageConfig('install')
+            ->manageMainSettings('install')
+            ->manageSiteSettings('install')
+            ->manageUserSettings('install')
+            ->postInstall();
+    }
+
     protected function preInstall(): void
     {
         $services = $this->getServiceLocator();
@@ -87,9 +151,6 @@ class Module extends AbstractModule
             );
             throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
         }
-
-        // Required during install because the role is set in config.
-        require_once __DIR__ . '/src/Permissions/Acl.php';
     }
 
     protected function preUninstall(): void
