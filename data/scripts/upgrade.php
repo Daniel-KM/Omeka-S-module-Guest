@@ -187,3 +187,10 @@ if (version_compare($oldVersion, '3.4.30', '<')) {
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare($oldVersion, '3.4.33', '<')) {
+    $message = new PsrMessage(
+        'It is now possible to theme the default login page with the default site theme.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
