@@ -24,7 +24,6 @@ if (!empty($formToken)) {
     $headScript
         ->appendFile($assetUrl('js/two-factor-auth.js', 'TwoFactorAuth'), 'text/javascript', ['defer' => 'defer']);
 }
-
 ?>
 
 <div class="block block-login">
@@ -38,7 +37,7 @@ if (!empty($formToken)) {
     <p class="forgot-password">
         <?= $hyperlink($translate('Forgot password?'), $url('site/guest/anonymous', ['action' => 'forgot-password'], true)) ?>
     </p>
-    <?= isset($formToken) ? $this->partial('omeka/login/token-dialog') : '' ?>
+    <?= isset($formToken) ? $this->partial('common/dialog/2fa-token', ['site' => $site, 'form' => $formToken]) : '' ?>
     <?php endif; ?>
 
     <?php $trigger('view.login.after'); // Needed as long as other auth modules have no block. ?>
