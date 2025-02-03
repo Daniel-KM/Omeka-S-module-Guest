@@ -53,8 +53,10 @@ class SettingsFieldset extends Fieldset
                 ],
                 'attributes' => [
                     'required' => false,
-                    'placeholder' => 'contact@example.org
-info@example2.org',
+                    'placeholder' => <<<'TXT'
+                        contact@example.org
+                        info@example2.org
+                        TXT,
                 ],
             ])
 
@@ -247,10 +249,12 @@ info@example2.org',
                 ],
                 'attributes' => [
                     'id' => 'guest_message_confirm_email',
-                    'placeholder' => 'Hi {user_name},
-You have registered for an account on {main_title} / {site_title} ({site_url}).
-Please confirm your registration by following this link: {token_url}.
-If you did not request to join {main_title} please disregard this email.', // @translate
+                    'placeholder' => <<<'MAIL'
+                        Hi {user_name},
+                        You have registered for an account on {main_title} / {site_title} ({site_url}).
+                        Please confirm your registration by following this link: {token_url}.
+                        If you did not request to join {main_title} please disregard this email.
+                        MAIL, // @translate
                 ],
             ])
 
@@ -276,9 +280,11 @@ If you did not request to join {main_title} please disregard this email.', // @t
                 ],
                 'attributes' => [
                     'id' => 'guest_message_confirm_registration_email',
-                    'placeholder' => 'Hi {user_name},
-We are happy to open your account on {main_title} / {site_title} ({site_url}).
-You can now login and discover the site.', // @translate
+                    'placeholder' => <<<'MAIL'
+                        'Hi {user_name},
+                        We are happy to open your account on {main_title} / {site_title} ({site_url}).
+                        You can now login and discover the site.
+                        MAIL, // @translate
                 ],
             ])
 
@@ -304,10 +310,12 @@ You can now login and discover the site.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'guest_message_update_email',
-                    'placeholder' => 'Hi {user_name},
-You have requested to update email on {main_title} / {site_title} ({site_url}).
-Please confirm your email by following this link: {token_url}.
-If you did not request to update your email on {main_title}, please disregard this email.', // @translate
+                    'placeholder' => <<<'MAIL'
+                        Hi {user_name},
+                        You have requested to update email on {main_title} / {site_title} ({site_url}).
+                        Please confirm your email by following this link: {token_url}.
+                        If you did not request to update your email on {main_title}, please disregard this email.
+                        MAIL, // @translate
                 ],
             ])
 
@@ -484,8 +492,10 @@ If you did not request to update your email on {main_title}, please disregard th
                 'attributes' => [
                     'id' => 'guest_cors',
                     'rows' => 5,
-                    'placeholder' => 'http://example.org
-https://example.org',
+                    'placeholder' => <<<'TXT'
+                        http://example.org
+                        https://example.org
+                        TXT,
                 ],
             ])
         ;

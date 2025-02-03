@@ -13,7 +13,7 @@ use Omeka\Settings\UserSettings;
 /**
  * Copy:
  * @see \Guest\Mvc\Controller\Plugin\UserRedirectUrl
- * @see \GuestPrivateRole\Mvc\Controller\Plugin\UserRedirectUrl
+ * @see \GuestPrivate\Mvc\Controller\Plugin\UserRedirectUrl
  */
 class UserRedirectUrl extends AbstractPlugin
 {

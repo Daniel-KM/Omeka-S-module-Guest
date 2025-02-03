@@ -49,7 +49,7 @@ use Omeka\Module\Exception\ModuleCannotInstallException;
 use Omeka\Permissions\Assertion\IsSelfAssertion;
 
 /**
- * Guest
+ * Guest.
  *
  * @copyright BibLibre, 2016
  * @copyright Daniel Berthereau, 2017-2025
@@ -517,7 +517,7 @@ class Module extends AbstractModule
      *
      * Copy :
      * @see \Guest\Module::handleUserLogin()
-     * @see \GuestPrivateRole\Module::handleUserLogin()
+     * @see \GuestPrivate\Module::handleUserLogin()
      */
     public function handleUserLogin(Event $event): void
     {

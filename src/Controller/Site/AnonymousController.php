@@ -282,8 +282,8 @@ class AnonymousController extends AbstractGuestController
 
         // Check the creation of the user to manage the creation of usernames:
         // the exception occurs in api.create.post, so user is created.
-        /** @var \Omeka\Entity\User $user */
         try {
+            /** @var \Omeka\Entity\User $user */
             $user = $this->api()->create('users', $userInfo, [], ['responseContent' => 'resource'])->getContent();
         } catch (\Omeka\Api\Exception\PermissionDeniedException $e) {
             // This is the exception thrown by the module UserNames, so the user
@@ -335,9 +335,11 @@ class AnonymousController extends AbstractGuestController
         }
 
         $user->setPassword($password);
+        // To create user with another role, don't use register, but /api/users.
         $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
         // The account is active, but not confirmed, so login is not possible.
-        // Guest has no right to set active his account.
+        // Guest user has no right to set active his account.
+        // Except if the option "email is valid" is set.
         $isOpenRegister = $this->isOpenRegister();
         $user->setIsActive($isOpenRegister);
 

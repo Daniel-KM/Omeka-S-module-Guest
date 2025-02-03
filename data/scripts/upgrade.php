@@ -53,20 +53,20 @@ if (version_compare($oldVersion, '3.4.6', '<')) {
 if (version_compare($oldVersion, '3.4.19', '<')) {
     // Update existing tables.
     $sqls = <<<'SQL'
-DROP INDEX guest_token_idx ON `guest_token`;
-DROP INDEX IDX_4AC9362FA76ED395 ON `guest_token`;
-DROP INDEX IDX_4AC9362F5F37A13B ON `guest_token`;
-ALTER TABLE `guest_token`
-    CHANGE `id` `id` INT AUTO_INCREMENT NOT NULL,
-    CHANGE `user_id` `user_id` INT NOT NULL AFTER `id`,
-    CHANGE `email` `email` VARCHAR(255) NOT NULL AFTER `user_id`,
-    CHANGE `token` `token` VARCHAR(255) NOT NULL AFTER `email`,
-    CHANGE `confirmed` `confirmed` TINYINT(1) NOT NULL AFTER `token`,
-    CHANGE `created` `created` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL AFTER `confirmed`,
-    INDEX IDX_4AC9362FA76ED395 (`user_id`),
-    INDEX IDX_4AC9362F5F37A13B (`token`);
-ALTER TABLE `guest_token` ADD CONSTRAINT FK_4AC9362FA76ED395 FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
-SQL;
+        DROP INDEX guest_token_idx ON `guest_token`;
+        DROP INDEX IDX_4AC9362FA76ED395 ON `guest_token`;
+        DROP INDEX IDX_4AC9362F5F37A13B ON `guest_token`;
+        ALTER TABLE `guest_token`
+            CHANGE `id` `id` INT AUTO_INCREMENT NOT NULL,
+            CHANGE `user_id` `user_id` INT NOT NULL AFTER `id`,
+            CHANGE `email` `email` VARCHAR(255) NOT NULL AFTER `user_id`,
+            CHANGE `token` `token` VARCHAR(255) NOT NULL AFTER `email`,
+            CHANGE `confirmed` `confirmed` TINYINT(1) NOT NULL AFTER `token`,
+            CHANGE `created` `created` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL AFTER `confirmed`,
+            INDEX IDX_4AC9362FA76ED395 (`user_id`),
+            INDEX IDX_4AC9362F5F37A13B (`token`);
+        ALTER TABLE `guest_token` ADD CONSTRAINT FK_4AC9362FA76ED395 FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+        SQL;
     foreach (explode(";\n", $sqls) as $sql) {
         try {
             $connection->executeStatement($sql);
@@ -102,10 +102,10 @@ if (version_compare($oldVersion, '3.4.21', '<')) {
 if (version_compare($oldVersion, '3.4.22', '<')) {
     // Update existing tables.
     $sqls = <<<'SQL'
-ALTER TABLE `guest_token`
-CHANGE `email` `email` varchar(190) COLLATE 'utf8mb4_unicode_ci' NOT NULL AFTER `user_id`,
-CHANGE `token` `token` varchar(190) COLLATE 'utf8mb4_unicode_ci' NOT NULL AFTER `email`;
-SQL;
+        ALTER TABLE `guest_token`
+        CHANGE `email` `email` varchar(190) COLLATE 'utf8mb4_unicode_ci' NOT NULL AFTER `user_id`,
+        CHANGE `token` `token` varchar(190) COLLATE 'utf8mb4_unicode_ci' NOT NULL AFTER `email`;
+        SQL;
     foreach (explode(";\n", $sqls) as $sql) {
         try {
             $connection->executeStatement($sql);
@@ -114,9 +114,11 @@ SQL;
     }
 
     $message = $settings->get('guest_message_confirm_registration_email');
-    $old = '<p>Hi {user_name},</p>
-<p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
-<p>You can now login and discover the site.</p>';
+    $old = <<<'MAIL'
+        <p>Hi {user_name},</p>
+        <p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+        <p>You can now login and discover the site.</p>
+        MAIL;
     if ($message === $old) {
         $settings->set('guest_message_confirm_registration_email', $localConfig['guest']['settings']['guest_message_confirm_registration_email']);
     }

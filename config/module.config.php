@@ -2,7 +2,7 @@
 
 namespace Guest;
 
-use \Guest\Permissions\Acl as GuestAcl;
+use Guest\Permissions\Acl as GuestAcl;
 
 return [
     'roles' => [
@@ -84,11 +84,11 @@ return [
             'Omeka\AuthenticationService' => Service\AuthenticationServiceFactory::class,
         ],
         'invokables' => [
-            'Guest\MvcListeners' => Mvc\MvcListeners::class,
+            Mvc\MvcListeners::class => Mvc\MvcListeners::class,
         ],
     ],
     'listeners' => [
-        'Guest\MvcListeners',
+        Mvc\MvcListeners::class,
     ],
     'navigation_links' => [
         'invokables' => [
@@ -289,6 +289,8 @@ return [
         ],
     ],
     'guest' => [
+        // Main settings.
+
         'settings' => [
             'guest_open' => 'moderate',
             'guest_notify_register' => [],
@@ -315,22 +317,28 @@ return [
                 MAIL, // @translate
 
             'guest_message_confirm_email_subject' => '[{site_title}] Confirm email', // @translate
-            'guest_message_confirm_email' => '<p>Hi {user_name},</p>
-<p>You have registered for an account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
-<p>Please confirm your registration by following this link: <a href="{token_url}"> {token_url}</a></p>
-<p>If you did not request to join {main_title} / {site_title}, please disregard this email.</p>', // @translate
+            'guest_message_confirm_email' => <<<'MAIL'
+                <p>Hi {user_name},</p>
+                <p>You have registered for an account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+                <p>Please confirm your registration by following this link: <a href="{token_url}"> {token_url}</a></p>
+                <p>If you did not request to join {main_title} / {site_title}, please disregard this email.</p>
+                MAIL, // @translate
 
             'guest_message_confirm_registration_email_subject' => '[{site_title}] Account open', // @translate
-            'guest_message_confirm_registration_email' => '<p>Hi {user_name},</p>
-<p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
-<p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
-<p>You can now login and discover the site.</p>', // @translate
+            'guest_message_confirm_registration_email' => <<<'MAIL'
+                <p>Hi {user_name},</p>
+                <p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+                <p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
+                <p>You can now login and discover the site.</p>
+                MAIL, // @translate
 
             'guest_message_update_email_subject' => '[{site_title}] Confirm email', // @translate
-            'guest_message_update_email' => '<p>Hi {user_name},</p>
-<p>You have requested to update email on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
-<p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
-<p>If you did not request to update your email on {main_title}, please disregard this email.</p>', // @translate
+            'guest_message_update_email' => <<<'MAIL'
+                '<p>Hi {user_name},</p>
+                <p>You have requested to update email on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+                <p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
+                <p>If you did not request to update your email on {main_title}, please disregard this email.</p>
+                MAIL, // @translate
 
             'guest_message_confirm_email_site' => 'Your email "{user_email}" is confirmed for {site_title}.', // @translate
             'guest_message_confirm_register_site' => 'Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in.', // @translate
@@ -350,6 +358,9 @@ return [
             'guest_login_session' => false,
             'guest_cors' => [],
         ],
+
+        // Site settings.
+
         'site_settings' => [
             'guest_notify_register' => [],
             'guest_login_text' => 'Login', // @translate
@@ -371,22 +382,28 @@ return [
                 MAIL, // @translate
 
             'guest_message_confirm_email_subject' => '[{site_title}] Confirm email', // @translate
-            'guest_message_confirm_email' => '<p>Hi {user_name},</p>
-<p>You have registered for an account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
-<p>Please confirm your registration by following this link: <a href="{token_url}"> {token_url}</a></p>
-<p>If you did not request to join {main_title} / {site_title}, please disregard this email.</p>', // @translate
+            'guest_message_confirm_email' => <<<'MAIL'
+                <p>Hi {user_name},</p>
+                <p>You have registered for an account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+                <p>Please confirm your registration by following this link: <a href="{token_url}"> {token_url}</a></p>
+                <p>If you did not request to join {main_title} / {site_title}, please disregard this email.</p>
+                MAIL, // @translate
 
             'guest_message_confirm_registration_email_subject' => '[{site_title}] Account open', // @translate
-            'guest_message_confirm_registration_email' => '<p>Hi {user_name},</p>
-<p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
-<p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
-<p>You can now login and discover the site.</p>', // @translate
+            'guest_message_confirm_registration_email' => <<<'MAIL'
+                <p>Hi {user_name},</p>
+                <p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+                <p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
+                <p>You can now login and discover the site.</p>
+                MAIL, // @translate
 
             'guest_message_update_email_subject' => '[{site_title}] Confirm email', // @translate
-            'guest_message_update_email' => '<p>Hi {user_name},</p>
-<p>You have requested to update email on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
-<p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
-<p>If you did not request to update your email on {main_title}, please disregard this email.</p>', // @translate
+            'guest_message_update_email' => <<<'MAIL'
+                <p>Hi {user_name},</p>
+                <p>You have requested to update email on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+                <p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
+                <p>If you did not request to update your email on {main_title}, please disregard this email.</p>
+                MAIL, // @translate
 
             'guest_message_confirm_email_site' => 'Your email "{user_email}" is confirmed for {site_title}.', // @translate
             'guest_message_confirm_register_site' => 'Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in.', // @translate
@@ -400,11 +417,17 @@ return [
             'guest_navigation' => [],
             'guest_navigation_home' => null,
         ],
+
+        // Block settings.
+
         'block_settings' => [
             'forgotPassword' => [],
             'login' => [],
             'register' => [],
         ],
+
+        // User settings.
+
         'user_settings' => [
             'guest_site' => null,
             'guest_agreed_terms' => false,

@@ -525,7 +525,7 @@ class GuestApiController extends AbstractActionController
         }
 
         $user->setPassword($data['password']);
-        // To create a use with another role, don't use register, but /api/users.
+        // To create user with another role, don't use register, but /api/users.
         $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
         // The account is active, but not confirmed, so login is not possible.
         // Guest user has no right to set active his account.
