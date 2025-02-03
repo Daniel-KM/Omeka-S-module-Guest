@@ -306,6 +306,14 @@ return [
             // TODO Remove option "guest_short_capabilities" or implement it.
             'guest_short_capabilities' => '',
 
+            'guest_message_notify_registration_email_subject' => '[{site_title}] Account open', // @translate
+            'guest_message_notify_registration_email' => <<<'MAIL'
+                <p>Hi,</p>
+                <p>A new user, {user_name}, is registering on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+                <p>You may moderate this email: {user_email}.</p>
+                <p>This is an automatic message.</p>
+                MAIL, // @translate
+
             'guest_message_confirm_email_subject' => '[{site_title}] Confirm email', // @translate
             'guest_message_confirm_email' => '<p>Hi {user_name},</p>
 <p>You have registered for an account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
@@ -327,6 +335,7 @@ return [
             'guest_message_confirm_email_site' => 'Your email "{user_email}" is confirmed for {site_title}.', // @translate
             'guest_message_confirm_register_site' => 'Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in.', // @translate
             'guest_message_confirm_register_moderate_site' => 'Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request and we have confirmed it, you will be able to log in.', // @translate
+
             'guest_terms_text' => 'I agree the terms and conditions.', // @translate
             'guest_terms_page' => 'terms-and-conditions',
             'guest_redirect' => 'site',
@@ -353,6 +362,14 @@ return [
             // TODO Remove option "guest_short_capabilities" or implement it.
             'guest_short_capabilities' => '',
 
+            'guest_message_notify_registration_email_subject' => '[{site_title}] A user is registering', // @translate
+            'guest_message_notify_registration_email' => <<<'MAIL'
+                <p>Hi,</p>
+                <p>A new user, {user_name}, is registering on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
+                <p>You may moderate this email: {user_email}.</p>
+                <p>This is an automatic message.</p>
+                MAIL, // @translate
+
             'guest_message_confirm_email_subject' => '[{site_title}] Confirm email', // @translate
             'guest_message_confirm_email' => '<p>Hi {user_name},</p>
 <p>You have registered for an account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
@@ -374,6 +391,7 @@ return [
             'guest_message_confirm_email_site' => 'Your email "{user_email}" is confirmed for {site_title}.', // @translate
             'guest_message_confirm_register_site' => 'Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in.', // @translate
             'guest_message_confirm_register_moderate_site' => 'Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request and we have confirmed it, you will be able to log in.', // @translate
+
             'guest_terms_text' => 'I agree the terms and conditions.', // @translate
             'guest_terms_page' => 'terms-and-conditions',
             'guest_redirect' => 'site',

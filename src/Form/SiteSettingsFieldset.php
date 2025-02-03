@@ -130,6 +130,36 @@ info@example2.org',
             */
 
             ->add([
+                'name' => 'guest_message_notify_registration_email_subject',
+                'type' => Element\Text::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Subject of the email sent to administrator to notify about a new user', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_message_notify_registration_email_subject',
+                    'placeholder' => '[{site_title}] A user is registering', // @translate
+                ],
+            ])
+            ->add([
+                'name' => 'guest_message_notify_registration_email',
+                'type' => OmekaElement\CkeditorInline::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Email sent to administrator to notify about a new user', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_message_notify_registration_email',
+                    'placeholder' => <<<'MAIL'
+                        Hi,
+                        A new user, {user_name}, is registering on <a href="{site_url}">{site_title}</a> ({main_title}).
+                        You may moderate this email: {user_email}.
+                        This is an automatic message.
+                        MAIL, // @translate
+                ],
+            ])
+
+            ->add([
                 'name' => 'guest_message_confirm_email_subject',
                 'type' => Element\Text::class,
                 'options' => [
@@ -141,7 +171,6 @@ info@example2.org',
                     'placeholder' => '[{site_title}] Confirm email', // @translate
                 ],
             ])
-
             ->add([
                 'name' => 'guest_message_confirm_email',
                 'type' => OmekaElement\CkeditorInline::class,
@@ -171,7 +200,6 @@ If you did not request to join {main_title} please disregard this email.', // @t
                     'placeholder' => '[{site_title}] Account open', // @translate
                 ],
             ])
-
             ->add([
                 'name' => 'guest_message_confirm_registration_email',
                 'type' => OmekaElement\CkeditorInline::class,
@@ -200,7 +228,6 @@ You can now login and discover the site.', // @translate
                     'placeholder' => '[{site_title}] Confirm email', // @translate
                 ],
             ])
-
             ->add([
                 'name' => 'guest_message_update_email',
                 'type' => OmekaElement\CkeditorInline::class,
@@ -233,7 +260,6 @@ If you did not request to update your email on {main_title}, please disregard th
                     'rows' => 3,
                 ],
             ])
-
             ->add([
                 'name' => 'guest_message_confirm_register_site',
                 'type' => Element\Textarea::class,
@@ -248,7 +274,6 @@ If you did not request to update your email on {main_title}, please disregard th
                     'rows' => 3,
                 ],
             ])
-
             ->add([
                 'name' => 'guest_message_confirm_register_moderate_site',
                 'type' => Element\Textarea::class,

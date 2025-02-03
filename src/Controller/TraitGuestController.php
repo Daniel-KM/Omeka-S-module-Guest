@@ -214,6 +214,7 @@ trait TraitGuestController
             $token = $data['token'];
             $data['token'] = $token->getToken();
             $actions = [
+                'notify-registration' => 'notify-registration',
                 'confirm-email' => 'confirm-email',
                 'confirm-email-text' => 'confirm-email',
                 'register-email-api' => 'confirm-email',
@@ -254,6 +255,11 @@ trait TraitGuestController
         }
 
         switch ($template) {
+            case 'notify-registration':
+                $subject = $getValue('guest_message_notify_registration_email_subject');
+                $body = $getValue('guest_message_notify_registration_email');
+                break;
+
             case 'confirm-email':
                 $subject = $getValue('guest_message_confirm_email_subject');
                 $body = $getValue('guest_message_confirm_email');

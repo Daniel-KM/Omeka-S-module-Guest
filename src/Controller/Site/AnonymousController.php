@@ -404,6 +404,16 @@ class AnonymousController extends AbstractGuestController
             return $view;
         }
 
+        // In any case, warn the administrator that a new user is registering.
+        $message = $this->prepareMessage('notify-registration', [
+            'user_email' => $user->getEmail(),
+            'user_name' => $user->getName(),
+            'site' => $site,
+        ]);
+        $fromEmail = $this->settings()->get('administrator_email');
+        $toEmails = $this->settings()->get('guest_notify_register') ?: $fromEmail;
+        $result = $this->sendEmail($toEmails, $message['subject'], $message['body'], $user->getName());
+
         $message = $this->isOpenRegister()
             ? $this->getOption('guest_message_confirm_register_site')
             : $this->getOption('guest_message_confirm_register_moderate_site');

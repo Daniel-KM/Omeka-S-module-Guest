@@ -677,34 +677,28 @@ class ApiController extends \Omeka\Controller\ApiController
             $guestToken = $this->createGuestToken($user);
         }
         $message = $this->prepareMessage('confirm-email', [
-            'user_name' => $user->getName(),
             'user_email' => $user->getEmail(),
+            'user_name' => $user->getName(),
             'token' => $guestToken,
             'site' => $site,
         ]);
-        $messageText = $this->prepareMessage('confirm-email-text', [
-            'user_name' => $user->getName(),
-            'user_email' => $user->getEmail(),
-            'token' => $guestToken,
-            'site' => $site,
-        ]);
-        $fromEmail = $this->settings()->get('administrator_email');
-        $fromName = $this->settings()->get('installation_title');
-        $result = $this->sendEmail(
-            $user->getEmail(),
-            $message['subject'],
-            $message['body'],
-            $user->getName(),
-            $messageText['body'],
-            $fromEmail,
-            $fromName
-        );
+        $result = $this->sendEmail($user->getEmail(), $message['subject'], $message['body'], $user->getName());
         if (!$result) {
             return $this->returnError(
                 $this->translate('An error occurred when the email was sent.'), // @translate
                 Response::STATUS_CODE_500
             );
         }
+
+        // In any case, warn the administrator that a new user is registering.
+        $message = $this->prepareMessage('notify-registration', [
+            'user_email' => $user->getEmail(),
+            'user_name' => $user->getName(),
+            'site' => $site,
+        ]);
+        $fromEmail = $this->settings()->get('administrator_email');
+        $toEmails = $this->settings()->get('guest_notify_register') ?: $fromEmail;
+        $result = $this->sendEmail($toEmails, $message['subject'], $message['body'], $user->getName());
 
         if ($emailIsAlwaysValid) {
             $message = $this->settings()->get('guest_message_confirm_register_site')
