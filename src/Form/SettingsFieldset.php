@@ -281,7 +281,7 @@ class SettingsFieldset extends Fieldset
                 'attributes' => [
                     'id' => 'guest_message_confirm_registration_email',
                     'placeholder' => <<<'MAIL'
-                        'Hi {user_name},
+                        Hi {user_name},
                         We are happy to open your account on {main_title} / {site_title} ({site_url}).
                         You can now login and discover the site.
                         MAIL, // @translate
