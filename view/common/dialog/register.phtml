@@ -18,6 +18,7 @@ try {
 }
 
 $form->prepare();
+$form->setAttribute('data-msg-error-password-matching', $translate('The two passwords do not match.'));
 ?>
 
 <dialog id="register" class="popup popup-dialog dialog-register">

@@ -85,8 +85,20 @@
         };
 
         /**
+         * Check if a password is set and if the confirm is the same for a new user.
+         */
+        const checkPassword = function (form) {
+            const password = $(form).find('[name="change-password[password-confirm][password]"]');
+            const passwordConfirm = $(form).find('[name="change-password[password-confirm][password-confirm]"]');
+            if (!password.length || !passwordConfirm.length || !password.val().length) {
+                return null;
+            }
+            return password.val() === passwordConfirm.val();
+        }
+
+        /**
          * Override submit of login form to manage optional login-token form.
-         * @see\TwoFactorAuth to manage the same login form off-site (use stopPropagation()).
+         * @see TwoFactorAuth to manage the same login form off-site (use stopPropagation()).
          */
         $(document).on('submit', '#loginform', function(ev) {
             ev.preventDefault();
@@ -145,12 +157,16 @@
 
         /**
          * Register a new user.
-         * @todo Check email and double password early.
          */
         $(document).on('submit', '#user-form', function(ev) {
             ev.preventDefault();
             ev.stopImmediatePropagation();
             const form = $(this);
+            if (!checkPassword(form)) {
+                const msg = form.data('msg-error-password-matching');
+                dialogMessage(msg ? msg : 'The two passwords do not match.', true);
+                return;
+            }
             const urlForm = form.attr('action') ? form.attr('action') : window.location.href;
             const submitButton = form.find('[type=submit]');
             $
