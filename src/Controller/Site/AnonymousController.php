@@ -590,7 +590,10 @@ class AnonymousController extends AbstractGuestController
             return $this->redirect()->toUrl($redirectUrl);
         }
 
-        return $this->redirect()->toRoute('site', [], true);
+        $siteSlug = $this->params('site-slug');
+        return $siteSlug && !$this->params('outside')
+            ? $this->redirect()->toRoute('site-slug', ['site-slug' => $siteSlug])
+            : $this->redirect()->toRoute('top');
     }
 
     public function staleTokenAction(): void
