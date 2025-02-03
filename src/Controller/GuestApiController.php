@@ -624,6 +624,9 @@ class GuestApiController extends AbstractActionController
 
         return $this->jSend(self::SUCCESS, [
             'user' => $this->userAdapter->getRepresentation($user),
+            'redirect_url' => $site && $site->isPublic()
+                ? $site->siteUrl()
+                : $this->url()->fromRoute('top'),
         ], $message);
     }
 

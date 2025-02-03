@@ -54,7 +54,7 @@
             return null;
         }
 
-        const dialogMessage = function (message, nl2br = false) {
+        const dialogMessage = function (message, nl2br = false, redirectUrl = null) {
             // Use a dialog to display a message, that should be escaped.
             var dialog = document.querySelector('dialog.popup-message');
             if (!dialog) {
@@ -80,8 +80,18 @@
                 message = message.replace(/(?:\r\n|\r|\n)/g, '<br/>');
             }
             dialog.innerHTML = dialog.innerHTML.replace('{{ message }}', message);
+            dialogAddRedirect(dialog, redirectUrl);
             dialog.showModal();
             $(dialog).trigger('o:dialog-opened');
+        };
+
+        const dialogAddRedirect = function (dialog, redirectUrl) {
+            if (dialog && redirectUrl) {
+                $(dialog).data('redirect-url', redirectUrl);
+                dialog.addEventListener('close', (event) => {
+                    window.location.href = $(event.target).data('redirect-url');
+                });
+            }
         };
 
         /**
@@ -182,6 +192,7 @@
                         window.location.reload();
                         return;
                     }
+                    const redirectUrl = data && data.data ? data.data.redirect_url : null;
                     // Success for first step, but require a second step:
                     // confirm email or moderate.
                     let dialog = document.querySelector('dialog.dialog-register-step');
@@ -193,10 +204,11 @@
                         }
                         if (!dialog) {
                             let msg = jSendMessage(data);
-                            dialogMessage(msg ? msg : 'Check input', true);
+                            dialogMessage(msg ? msg : 'Check input', true, redirectUrl);
                             return;
                         }
                     }
+                    dialogAddRedirect(dialog, redirectUrl);
                     dialog.showModal();
                     $(dialog).trigger('o:dialog-opened');
                 })
@@ -302,6 +314,7 @@
                     dialog.remove();
                 }
             } else {
+                // Non standard dialog has no event.
                 $(this).closest('.popup').addClass('hidden').hide();
             }
         });
