@@ -38,7 +38,7 @@ $form->prepare();
 
     <div id="page-actions">
         <?= $this->cancelButton() ?>
-        <button><?= $translate('Save') ?></button>
+        <button type="button" class="button"><?= $translate('Save') ?></button>
     </div>
 
     <div id="nav-tree"
@@ -46,7 +46,7 @@ $form->prepare();
         data-jstree-data="<?= $escape(json_encode($navTree)) ?>">
     </div>
 
-    <button id="nav-selector-button" class="mobile-only"><?= $translate('Add a link to a site page') ?></button>
+    <button id="nav-selector-button" class="button mobile-only"><?= $translate('Add a link to a site page') ?></button>
 
     <div id="nav-selector" class="always-open sidebar">
         <a href="#" class="mobile-only sidebar-close o-icon-close"><span class="screen-reader-text"><?= $translate('Close') ?></span></a>
@@ -61,6 +61,7 @@ $form->prepare();
                 <?php $name = $this->navigationLink()->getName($type); ?>
                 <button
                     type="button"
+                    class="button"
                     data-type="<?= $escape($type) ?>"
                     data-value="<?= $escape($type) ?>" class="option"><?= $escape($translate($name)) ?></button>
                 <?php endforeach; ?>
@@ -74,6 +75,7 @@ $form->prepare();
             <?php foreach ($pages as $page): ?>
                 <button class="nav-page-link option active"
                     type="button"
+                    class="button"
                     data-type="page"
                     data-label="<?= $escape($page->title()) ?>"
                     data-id="<?= $escape($page->id()) ?>"
