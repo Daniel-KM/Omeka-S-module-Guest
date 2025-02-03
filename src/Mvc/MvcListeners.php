@@ -86,7 +86,7 @@ class MvcListeners extends AbstractListenerAggregate
         // Use the default page if no site.
         $page = $settings->get('guest_terms_page');
         $regex = $settings->get('guest_terms_request_regex');
-        if ($site) {
+        if ($siteId) {
             /** @var \Omeka\Settings\SiteSettings $siteSettings */
             $siteSettings = $services->get('Omeka\Settings\Site');
             $page = $siteSettings->get('guest_terms_page', $page, $siteId) ?: $page;
