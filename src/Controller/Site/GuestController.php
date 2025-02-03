@@ -35,7 +35,14 @@ class GuestController extends AbstractGuestController
             return $this->redirect()->toUrl($redirectUrl);
         }
 
-        return $this->redirect()->toUrl($this->currentSite()->url());
+        $currentSite = $this->currentSite();
+        if ($currentSite && !$currentSite->isPublic()) {
+            $currentSite = null;
+        }
+
+        return $currentSite
+            ? $this->redirect()->toUrl($this->currentSite()->url())
+            : $this->redirect()->toRoute('top');
     }
 
     public function meAction()
