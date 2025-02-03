@@ -86,10 +86,11 @@
 
         /**
          * Override submit of login form to manage optional login-token form.
-         * @see\TwoFactorAuth to manage the same login form off-site.
+         * @see\TwoFactorAuth to manage the same login form off-site (use stopPropagation()).
          */
         $(document).on('submit', '#loginform', function(ev) {
             ev.preventDefault();
+            ev.stopImmediatePropagation();
             const form = $(this);
             const urlLogin = form.attr('action') ? form.attr('action') : window.location.href;
             const submitButton = form.find('[type=submit]');
@@ -102,7 +103,7 @@
                 })
                 .done(function(data) {
                     // Success may be a single step login or a second step login.
-                    if (data.data && data.data.login === true) {
+                    if (data && data.data && data.data.login === true) {
                         window.location.reload();
                         return;
                     }
@@ -110,7 +111,7 @@
                     // Use the existing dialog if any, else use the one sent.
                     let dialog = document.querySelector('dialog.dialog-2fa-token');
                     if (!dialog) {
-                        dialog = data.data.dialog;
+                        dialog = data && data.data ? data.data.dialog : null;
                         $('body').append(dialog);
                         dialog = document.querySelector('dialog.dialog-2fa-token');
                         if (!dialog) {
@@ -142,9 +143,11 @@
 
         /**
          * Register a new user.
+         * @todo Check email and double password early.
          */
         $(document).on('submit', '#user-form', function(ev) {
             ev.preventDefault();
+            ev.stopImmediatePropagation();
             const form = $(this);
             const urlLogin = form.attr('action') ? form.attr('action') : window.location.href;
             const submitButton = form.find('[type=submit]');
@@ -156,8 +159,8 @@
                     beforeSend: beforeSpin(submitButton),
                 })
                 .done(function(data) {
-                    // Success may be a single step login or a second step login.
-                    if (data.data && data.data.login === true) {
+                    // Success may be a single step register without registration.
+                    if (data && data.data && data.data.login === true) {
                         window.location.reload();
                         return;
                     }
@@ -165,7 +168,7 @@
                     // Use the existing dialog if any, else use the one sent.
                     let dialog = document.querySelector('dialog.dialog-2fa-token');
                     if (!dialog) {
-                        dialog = data.data.dialog;
+                        dialog = data && data.data ? data.data.dialog : null;
                         $('body').append(dialog);
                         dialog = document.querySelector('dialog.dialog-2fa-token');
                         if (!dialog) {
@@ -209,7 +212,7 @@
                     // Use the existing dialog if any, else use the one sent.
                     let dialog = document.querySelector('dialog.dialog-login');
                     if (!dialog) {
-                        dialog = data.data.dialog;
+                        dialog = data && data.data ? data.data.dialog : null;
                         $('body').append(dialog);
                         dialog = document.querySelector('dialog.dialog-login');
                         if (!dialog) {
@@ -245,7 +248,7 @@
                     // Use the existing dialog if any, else use the one sent.
                     let dialog = document.querySelector('dialog.dialog-register');
                     if (!dialog) {
-                        dialog = data.data.dialog;
+                        dialog = data && data.data ? data.data.dialog : null;
                         $('body').append(dialog);
                         dialog = document.querySelector('dialog.dialog-register');
                         if (!dialog) {
