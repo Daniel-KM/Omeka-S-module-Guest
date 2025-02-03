@@ -10,6 +10,13 @@ $setting = $plugins->get('setting');
 $translate = $plugins->get('translate');
 $siteSetting = $plugins->get('siteSetting');
 
+try {
+    // Register form can be use on a site without public site.
+    $capabilities = $siteSetting('guest_capabilities') ?: $setting('guest_capabilities');
+} catch (Exception $e) {
+    $capabilities = $setting('guest_capabilities');
+}
+
 $form->prepare();
 ?>
 
@@ -23,7 +30,7 @@ $form->prepare();
                 <div class="dialog-messages">
                 </div>
                 <div>
-                    <?= $siteSetting('guest_capabilities') ?: $setting('guest_capabilities') ?>
+                    <?= $capabilities ?>
                 </div>
             </div>
             <div class="dialog-contents">
