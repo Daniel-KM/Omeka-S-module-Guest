@@ -16,6 +16,12 @@ register, to update the password, to update its own profile and settings, or to
 ajax forms. It does not replace the standard api (/api/users/#id), but adds some
 checks and features useful to build ajax dialogs.
 
+If you need more similar roles, you may use the module [Guest Private], that
+provides two more roles: `guest_private_site`, who can see all sites, that are
+public or private, but not private pages or resources; `guest_private`, who can
+see all sites, site pages and resources that are public or private. Like
+`guest`, they don't have admin permission and cannot go to the admin board.
+
 The module is compatible with module [User Names] and [Two Factor Authentication].
 
 The module includes a way to request api without credentials but via session, so
@@ -32,18 +38,17 @@ See general end user documentation for [installing a module].
 
 The module [Common] must be installed first.
 
-The module uses external libraries, so use the release zip to install it, or
-use and init the source.
-
 * From the zip
 
-Download the last release [Guest.zip] from the list of releases (the master does
-not contain the dependency), and uncompress it in the `modules` directory.
+Download the last release [Guest.zip] from the list of releases, and uncompress
+it in the `modules` directory.
 
 * From the source and for development
 
 If the module was installed from the source, rename the name of the folder of
 the module to `Guest`.
+
+Then install it like any other Omeka module and follow the config instructions.
 
 ### Upgrade from module Guest User
 
@@ -228,6 +233,7 @@ by [BibLibre].
 [Guest User]: https://gitlab.com/omeka/plugin-GuestUser
 [Omeka S]: https://www.omeka.org/s
 [GitLab]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest
+[Guest Private]: https://gitlab.com/Daniel-KM/Omeka-S-module-GuestPrivate
 [User Names]: https://github.com/ManOnDaMoon/omeka-s-module-UserNames
 [Two Factor Authentication]: https://gitlab.com/Daniel-KM/Omeka-S-module-TwoFactorAuth
 [omeka/pull/1714]: https://github.com/omeka/omeka-s/pull/1714
