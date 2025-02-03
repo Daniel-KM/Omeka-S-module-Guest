@@ -92,12 +92,12 @@
             ev.preventDefault();
             ev.stopImmediatePropagation();
             const form = $(this);
-            const urlLogin = form.attr('action') ? form.attr('action') : window.location.href;
+            const urlForm = form.attr('action') ? form.attr('action') : window.location.href;
             const submitButton = form.find('[type=submit]');
             $
                 .ajax({
                     type: 'POST',
-                    url: urlLogin,
+                    url: urlForm,
                     data: form.serialize(),
                     beforeSend: beforeSpin(submitButton),
                 })
@@ -112,8 +112,10 @@
                     let dialog = document.querySelector('dialog.dialog-2fa-token');
                     if (!dialog) {
                         dialog = data && data.data ? data.data.dialog : null;
-                        $('body').append(dialog);
-                        dialog = document.querySelector('dialog.dialog-2fa-token');
+                        if (dialog) {
+                            $('body').append(dialog);
+                            dialog = document.querySelector('dialog.dialog-2fa-token');
+                        }
                         if (!dialog) {
                             let msg = jSendMessage(data);
                             dialogMessage(msg ? msg : 'Check input', true);
@@ -149,12 +151,12 @@
             ev.preventDefault();
             ev.stopImmediatePropagation();
             const form = $(this);
-            const urlLogin = form.attr('action') ? form.attr('action') : window.location.href;
+            const urlForm = form.attr('action') ? form.attr('action') : window.location.href;
             const submitButton = form.find('[type=submit]');
             $
                 .ajax({
                     type: 'POST',
-                    url: urlLogin,
+                    url: urlForm,
                     data: form.serialize(),
                     beforeSend: beforeSpin(submitButton),
                 })
@@ -164,13 +166,15 @@
                         window.location.reload();
                         return;
                     }
-                    // Success for first step, but require a second step.
-                    // Use the existing dialog if any, else use the one sent.
-                    let dialog = document.querySelector('dialog.dialog-2fa-token');
+                    // Success for first step, but require a second step:
+                    // confirm email or moderate.
+                    let dialog = document.querySelector('dialog.dialog-register-step');
                     if (!dialog) {
                         dialog = data && data.data ? data.data.dialog : null;
-                        $('body').append(dialog);
-                        dialog = document.querySelector('dialog.dialog-2fa-token');
+                        if (dialog) {
+                            $('body').append(dialog);
+                            dialog = document.querySelector('dialog.dialog-register-step');
+                        }
                         if (!dialog) {
                             let msg = jSendMessage(data);
                             dialogMessage(msg ? msg : 'Check input', true);
@@ -213,8 +217,10 @@
                     let dialog = document.querySelector('dialog.dialog-login');
                     if (!dialog) {
                         dialog = data && data.data ? data.data.dialog : null;
-                        $('body').append(dialog);
-                        dialog = document.querySelector('dialog.dialog-login');
+                        if (dialog) {
+                            $('body').append(dialog);
+                            dialog = document.querySelector('dialog.dialog-login');
+                        }
                         if (!dialog) {
                             let msg = jSendMessage(data);
                             dialogMessage(msg ? msg : 'Check input', true);
@@ -249,8 +255,10 @@
                     let dialog = document.querySelector('dialog.dialog-register');
                     if (!dialog) {
                         dialog = data && data.data ? data.data.dialog : null;
-                        $('body').append(dialog);
-                        dialog = document.querySelector('dialog.dialog-register');
+                        if (dialog) {
+                            $('body').append(dialog);
+                            dialog = document.querySelector('dialog.dialog-register');
+                        }
                         if (!dialog) {
                             let msg = jSendMessage(data);
                             dialogMessage(msg ? msg : 'Check input', true);
