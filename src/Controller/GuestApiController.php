@@ -14,9 +14,11 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Mvc\Exception\RuntimeException;
 use Laminas\Session\Container as SessionContainer;
 use Laminas\View\Model\JsonModel;
+use Omeka\Api\Adapter\SiteAdapter;
 use Omeka\Api\Adapter\UserAdapter;
 use Omeka\Api\Manager as ApiManager;
 use Omeka\Entity\SitePermission;
+use Omeka\Entity\Site;
 use Omeka\Entity\User;
 use Omeka\Stdlib\Paginator;
 use TwoFactorAuth\Form\TokenForm;
@@ -70,6 +72,11 @@ class GuestApiController extends AbstractActionController
     protected $paginator;
 
     /**
+     * @var SiteAdapter
+     */
+    protected $siteAdapter;
+
+    /**
      * @var \Laminas\I18n\Translator\TranslatorInterface
      */
     protected $translator;
@@ -86,6 +93,7 @@ class GuestApiController extends AbstractActionController
         array $config,
         EntityManager $entityManager,
         Paginator $paginator,
+        SiteAdapter $siteAdapter,
         TranslatorInterface $translator,
         UserAdapter $userAdapter
     ) {
@@ -95,6 +103,7 @@ class GuestApiController extends AbstractActionController
         $this->config = $config;
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
+        $this->siteAdapter = $siteAdapter;
         $this->translator = $translator;
         $this->userAdapter = $userAdapter;
     }
@@ -354,6 +363,7 @@ class GuestApiController extends AbstractActionController
         $data['password'] ??= $data['change-password']['password-confirm']['password'] ?? null;
 
         $site = null;
+        $siteEntity = null;
         $settings = $this->settings();
         if ($settings->get('guest_register_site')) {
             if (empty($data['site'])) {
@@ -362,17 +372,17 @@ class GuestApiController extends AbstractActionController
                 ]);
             }
 
-            $site = is_numeric($data['site']) ? ['id' => $data['site']] : ['slug' => $data['site']];
-            try {
-                $site = $this->api->read('sites', $site)->getContent();
-            } catch (\Omeka\Api\Exception\NotFoundException $e) {
-                $site = null;
-            }
-            if (empty($site)) {
+            // The site may be private, so don't use api.
+            $siteEntityRepository = $this->entityManager->getRepository(Site::class);
+            $criteria = new \Doctrine\Common\Collections\Criteria();
+            $criteria->where($criteria->expr()->eq(is_numeric($data['site']) ? 'id' : 'slug', $data['site']));
+            $siteEntity = $siteEntityRepository->matching($criteria)->first();
+            if (empty($siteEntity)) {
                 return $this->jSend(self::FAIL, [
                     'site' => $this->translate('The site doesn’t exist.'), // @translate
                 ]);
             }
+            $site = $this->siteAdapter->getRepresentation($siteEntity);
         }
 
         if (!isset($data['email'])) {
@@ -540,9 +550,8 @@ class GuestApiController extends AbstractActionController
 
         // Add the user as a viewer of the specified site.
         // TODO Add a check of the site.
-        if ($site) {
+        if ($siteEntity) {
             // A guest user cannot update site, so the entity manager is used.
-            $siteEntity = $this->api->read('sites', $site->id(), [], ['responseContent' => 'resource'])->getContent();
             $sitePermission = new SitePermission;
             $sitePermission->setSite($siteEntity);
             $sitePermission->setUser($user);
@@ -550,20 +559,27 @@ class GuestApiController extends AbstractActionController
             $siteEntity->getSitePermissions()->add($sitePermission);
             $this->entityManager->persist($siteEntity);
             $this->entityManager->flush();
-        // $this->api->update('sites', $site->id(), [
+            // $this->api->update('sites', $site->id(), [
             //     'o:site_permission' => [
             //         'o:user' => ['o:id' => $user->getId()],
             //         'o:role' => 'viewer',
             //     ],
             // ], [], ['isPartial' => true]);
         } else {
+            // The site may be private.
             $site = $this->viewHelpers()->get('defaultSite')();
+            $siteEntity = $site
+                ? $this->entityManager->find(Site::class, $site->id())
+                : null;
             // User is flushed when the guest user token is created.
             $this->entityManager->persist($user);
         }
 
         // Set the current site, disabled in api.
-        $this->getPluginManager()->get('currentSite')->setSite($site);
+        // The site may be private, so check it.
+        if ($site) {
+            $this->getPluginManager()->get('currentSite')->setSite($site);
+        }
 
         if ($emailIsAlwaysValid) {
             $this->entityManager->flush();

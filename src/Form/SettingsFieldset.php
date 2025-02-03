@@ -389,7 +389,7 @@ If you did not request to update your email on {main_title}, please disregard th
                 ],
             ])
 
-            // Specific to api.
+            // Specific to api (or not).
 
             ->add([
                 'name' => 'guest_register_site',
@@ -404,11 +404,12 @@ If you did not request to update your email on {main_title}, please disregard th
                 ],
             ])
             ->add([
+                // Not specific to api.
                 'name' => 'guest_register_email_is_valid',
                 'type' => Element\Checkbox::class,
                 'options' => [
                     'element_group' => 'guest',
-                    'label' => 'Validate email set by api', // @translate
+                    'label' => 'Skip email validation on register', // @translate
                     'info' => 'If checked, the user won’t have to validate his email, so he will be able to login directly.', // @translate
                 ],
                 'attributes' => [

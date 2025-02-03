@@ -18,18 +18,23 @@ class ApiControllerFactory implements FactoryInterface
         // is set, the user should be authenticalted vai the local session too.
         $entityManager = $services->get('Omeka\EntityManager');
         $userRepository = $entityManager->getRepository('Omeka\Entity\User');
+
+        $adapters = $services->get('Omeka\ApiAdapterManager');
+
         $storage = new DoctrineWrapper(new Session, $userRepository);
         $adapter = new PasswordAdapter($userRepository);
         $authServiceSession = new AuthenticationService($storage, $adapter);
+
         return new ApiController(
-            $services->get('Omeka\Paginator'),
             $services->get('Omeka\ApiManager'),
             $services->get('Omeka\AuthenticationService'),
             $authServiceSession,
+            $services->get('Config'),
             $services->get('Omeka\EntityManager'),
+            $services->get('Omeka\Paginator'),
+            $adapters->get('sites'),
             $services->get('MvcTranslator'),
-            $services->get('Omeka\ApiAdapterManager')->get('users'),
-            $services->get('Config')
+            $adapters->get('users')
         );
     }
 }

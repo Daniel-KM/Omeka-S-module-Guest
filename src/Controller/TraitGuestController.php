@@ -199,8 +199,8 @@ trait TraitGuestController
 
         $default = [
             'main_title' => $settings->get('installation_title', 'Omeka S'),
-            'site_title' => $site->title(),
-            'site_url' => $site->siteUrl(null, true),
+            'site_title' => $site ? $site->title() : null,
+            'site_url' => $site ? $site->siteUrl(null, true): null,
             'user_name' => '',
             'user_email' => '',
             'token' => null,
@@ -223,11 +223,21 @@ trait TraitGuestController
             $action = $actions[$template] ?? $template;
             $urlOptions = ['force_canonical' => true];
             $urlOptions['query']['token'] = $data['token'];
-            $data['token_url'] = $this->url()->fromRoute(
-                'site/guest/anonymous',
-                ['site-slug' => $site->slug(),  'action' => $action],
-                $urlOptions
-            );
+            if ($site) {
+                $data['token_url'] = $this->url()->fromRoute(
+                    'site/guest/anonymous',
+                    ['site-slug' => $site->slug(),  'action' => $action],
+                    $urlOptions
+                );
+            } else {
+                // TODO Add an url to validate email by token (an url is not possible to fix issue in phone).
+                // For now, it should be disabled (set "guest_register_email_is_valid").
+                // $data['token_url'] = $this->url()->fromRoute('guest-token', [], $urlOptions);
+                $data['token_url'] = null;
+                if (!$this->settings()->get('guest_register_email_is_valid')) {
+                    $this->logger()->warn('It is currently not possible to send a token for a private site. Set option to skip email validation.'); // @translate
+                }
+            }
         }
 
         if ($siteSettings) {
