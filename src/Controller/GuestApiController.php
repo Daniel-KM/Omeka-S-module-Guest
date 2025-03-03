@@ -17,8 +17,8 @@ use Laminas\View\Model\JsonModel;
 use Omeka\Api\Adapter\SiteAdapter;
 use Omeka\Api\Adapter\UserAdapter;
 use Omeka\Api\Manager as ApiManager;
-use Omeka\Entity\SitePermission;
 use Omeka\Entity\Site;
+use Omeka\Entity\SitePermission;
 use Omeka\Entity\User;
 use Omeka\Stdlib\Paginator;
 use TwoFactorAuth\Form\TokenForm;
@@ -1090,7 +1090,7 @@ class GuestApiController extends AbstractActionController
                 ['email' => $email]
             );
             return $this->jSend(self::FAIL, [
-                'email' => $message->setTranslator($this->translator)
+                'email' => $message->setTranslator($this->translator),
             ]);
         }
 

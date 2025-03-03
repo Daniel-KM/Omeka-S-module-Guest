@@ -136,7 +136,7 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
             if ($result === null) {
                 // Internal error (no mail sent).
                 return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
-            } elseif ($result === false ) {
+            } elseif ($result === false) {
                 // Email or password error, so retry below.
                 // Slow down the process to avoid brute force.
                 sleep(3);

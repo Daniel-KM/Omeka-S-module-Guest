@@ -161,7 +161,6 @@ trait TraitGuestController
         return false;
     }
 
-
     protected function hasModuleUserNames(): bool
     {
         static $hasModule = null;
@@ -200,7 +199,7 @@ trait TraitGuestController
         $default = [
             'main_title' => $settings->get('installation_title', 'Omeka S'),
             'site_title' => $site ? $site->title() : null,
-            'site_url' => $site ? $site->siteUrl(null, true): null,
+            'site_url' => $site ? $site->siteUrl(null, true) : null,
             'user_name' => '',
             'user_email' => '',
             'token' => null,
