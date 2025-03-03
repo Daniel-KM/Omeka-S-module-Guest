@@ -60,7 +60,7 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         FormElementManager $formElementManager,
         Messenger $messenger,
         Request $request,
-        TwoFactorLogin $twoFactorLogin,
+        ?TwoFactorLogin $twoFactorLogin,
         ValidateLogin $validateLogin,
         bool $hasModuleUserNames
     ) {
@@ -115,12 +115,14 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         /** @var \Omeka\View\Helper\Params $params */
         $params = $view->params();
         $post = $params->fromPost();
-        if (!empty($post['token_email']) || !empty($post['submit_token'])) {
-            return $this->loginToken($view, $block, $templateViewScript);
-        }
 
-        if (!$post && $params->fromQuery('resend_token')) {
-            return $this->resendToken($view, $block, $templateViewScript);
+        if ($this->twoFactorLogin) {
+            if (!empty($post['token_email']) || !empty($post['submit_token'])) {
+                return $this->loginToken($view, $block, $templateViewScript);
+            }
+            if (!$post && $params->fromQuery('resend_token')) {
+                return $this->resendToken($view, $block, $templateViewScript);
+            }
         }
 
         $loginWithoutForm = $view->siteSetting('guest_login_without_form');

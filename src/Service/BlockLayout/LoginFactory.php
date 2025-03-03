@@ -29,7 +29,7 @@ class LoginFactory implements FactoryInterface
             $services->get('FormElementManager'),
             $plugins->get('messenger'),
             $services->get('Request'),
-            $plugins->get('twoFactorLogin'),
+            $plugins->has('twoFactorLogin') ? $plugins->get('twoFactorLogin') : null,
             $plugins->get('validateLogin'),
             $hasModuleUserNames
         );
