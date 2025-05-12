@@ -49,8 +49,7 @@ class GuestAgreement extends AbstractJob
         $guests = $entityManager->getRepository(\Omeka\Entity\User::class)
             ->findBy(['role' => Acl::ROLE_GUEST]);
         foreach ($guests as $user) {
-            $userSettings->setTargetId($user->getId());
-            $userSettings->set('guest_agreed_terms', $reset);
+            $userSettings->set('guest_agreed_terms', $reset, $user->getId());
         }
     }
 
@@ -61,16 +60,17 @@ class GuestAgreement extends AbstractJob
     {
         $reset = $reset ? 'true' : 'false';
         $sql = <<<SQL
-DELETE FROM user_setting
-WHERE id="guest_agreed_terms";
-
-INSERT INTO user_setting (id, user_id, value)
-SELECT "guest_agreed_terms", user.id, "$reset"
-FROM user
-WHERE role="guest";
-SQL;
+            DELETE FROM user_setting
+            WHERE id="guest_agreed_terms"
+            ;
+            INSERT INTO user_setting (id, user_id, value)
+            SELECT "guest_agreed_terms", user.id, "$reset"
+            FROM user
+            WHERE role="guest"
+            ;
+            SQL;
         $connection = $this->getServiceLocator()->get('Omeka\Connection');
-        $sqls = array_filter(array_map('trim', explode(';', $sql)));
+        $sqls = array_filter(array_map('trim', explode(";\n", $sql)));
         foreach ($sqls as $sql) {
             $connection->executeStatement($sql);
         }

@@ -22,7 +22,7 @@ class ValidateLoginFactory implements FactoryInterface
             $plugins->has('twoFactorLogin') ? $plugins->get('twoFactorLogin') : null,
             $plugins->get('currentSite')(),
             $services->get('Config'),
-            class_exists('UserNamesModule')
+            class_exists('UserNamesModule', false)
         );
     }
 }

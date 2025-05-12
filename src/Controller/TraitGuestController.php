@@ -167,7 +167,7 @@ trait TraitGuestController
         if (is_null($hasModule)) {
             // A quick way to check the module without services.
             try {
-                $this->api()->search('usernames', ['limit' => 0])->getTotalResults();
+                $this->api()->search('usernames', [], ['returnScalar' => 'id'])->getTotalResults();
                 $hasModule = true;
             } catch (\Exception $e) {
                 $hasModule = false;

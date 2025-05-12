@@ -2,6 +2,7 @@
 
 namespace Guest\Controller;
 
+use Common\Mvc\Controller\Plugin\JSend;
 use Common\Stdlib\PsrMessage;
 use Doctrine\ORM\EntityManager;
 use Guest\Entity\GuestToken;
@@ -36,10 +37,6 @@ use TwoFactorAuth\Form\TokenForm;
 class GuestApiController extends AbstractActionController
 {
     use TraitGuestController;
-
-    const ERROR = 'error';
-    const FAIL = 'fail';
-    const SUCCESS = 'success';
 
     /**
      * @var \Omeka\Api\Manager
@@ -115,12 +112,12 @@ class GuestApiController extends AbstractActionController
     {
         $user = $this->authenticationService->getIdentity();
         if (!$user) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('Unauthorized access.'), // @translate
             ], null, Response::STATUS_CODE_401);
         }
         $userRepr = $this->userAdapter->getRepresentation($user);
-        return $this->jSend(self::SUCCESS, [
+        return $this->jSend(JSend::SUCCESS, [
             'user' => $userRepr,
         ]);
     }
@@ -139,7 +136,7 @@ class GuestApiController extends AbstractActionController
 
         $user = $this->loggedUser();
         if ($user) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('User cannot login: already logged.'), // @translate
             ]);
         }
@@ -148,19 +145,19 @@ class GuestApiController extends AbstractActionController
         $data = $this->params()->fromPost() ?: [];
 
         if (empty($data['email'])) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('Email is required.'), // @translate
             ]);
         }
 
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('Invalid email.'), // @translate
             ]);
         }
 
         if (empty($data['password'])) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'password' => $this->translate('Password is required.'), // @translate
             ]);
         }
@@ -175,7 +172,7 @@ class GuestApiController extends AbstractActionController
         if (!$user) {
             // Slow down the process to avoid brute force.
             sleep(3);
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('Wrong email or password.'), // @translate
             ]);
         }
@@ -183,7 +180,7 @@ class GuestApiController extends AbstractActionController
         if (!$user->verifyPassword($data['password'])) {
             // Slow down the process to avoid brute force.
             sleep(3);
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 // Same message as above for security.
                 'user' => $this->translate('Wrong email or password.'), // @translate
             ]);
@@ -196,7 +193,7 @@ class GuestApiController extends AbstractActionController
                 'Role "{role]" is not allowed to login via api.', // @translate
                 ['role' => $role]
             );
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'user' => $message->setTranslator($this->translator()),
             ]);
         }
@@ -208,22 +205,22 @@ class GuestApiController extends AbstractActionController
 
         if ($result === null) {
             // Internal error (no mail sent).
-            return $this->jSend(self::ERROR);
+            return $this->jSend(JSend::ERROR);
         } elseif ($result === false) {
             // Email or password error, so retry below.
             // Slow down the process to avoid brute force.
             sleep(3);
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'login' => $this->translate('Wrong email or password.'), // @translate
             ]);
         } elseif ($result === 0) {
             // Email or password error in 2FA. Sleep is already processed.
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'login' => $this->translate('Wrong email or password.'), // @translate
             ]);
         } elseif ($result === 1) {
             // Success login in first step in 2FA, so go to second step.
-            return $this->jSend(self::SUCCESS, [
+            return $this->jSend(JSend::SUCCESS, [
                 'login' => null,
                 'token_email' => null,
                 'dialog' => $this->viewHelpers()->get('partial')('common/dialog/2fa-token', [
@@ -232,14 +229,14 @@ class GuestApiController extends AbstractActionController
             ]);
         } elseif (is_string($result)) {
             // Moderation or confirmation missing or other issue.
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'login' => $result,
             ]);
         } else {
             // Here, the user is authenticated.
             $user = $this->identity();
             $sessionToken = $this->prepareSessionToken($user);
-            return $this->jSend(self::SUCCESS, [
+            return $this->jSend(JSend::SUCCESS, [
                 'login' => true,
                 'user' => $this->userAdapter->getRepresentation($user),
                 'session_token' => [
@@ -264,7 +261,7 @@ class GuestApiController extends AbstractActionController
         if (!$user) {
             $user = $this->authenticationServiceSession->getIdentity();
             if (!$user) {
-                return $this->jSend(self::FAIL, [
+                return $this->jSend(JSend::FAIL, [
                     'user' => $this->translate('User not logged.'), // @translate
                 ]);
             }
@@ -285,7 +282,7 @@ class GuestApiController extends AbstractActionController
         $sessionManager->destroy();
 
         $message = $this->translate('Successfully logout.'); // @translate
-        return $this->jSend(self::SUCCESS, [
+        return $this->jSend(JSend::SUCCESS, [
             'user' => null,
         ], $message);
     }
@@ -299,12 +296,12 @@ class GuestApiController extends AbstractActionController
 
         $user = $this->loggedUser();
         if (!$user) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('Unauthorized access.'), // @translate
             ], null, Response::STATUS_CODE_401);
         }
         $sessionToken = $this->prepareSessionToken($user);
-        return $this->jSend(self::SUCCESS, [
+        return $this->jSend(JSend::SUCCESS, [
             'login' => true,
             'session_token' => [
                 'o:user' => [
@@ -334,7 +331,7 @@ class GuestApiController extends AbstractActionController
         }
 
         if ($this->loggedUser()) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('User cannot register: already logged.'), // @translate
             ]);
         }
@@ -354,7 +351,7 @@ class GuestApiController extends AbstractActionController
             $form->setData($data);
             if (!$form->isValid()) {
                 // TODO Add flat messages (common 3.4.65).
-                return $this->jSend(self::FAIL, $form->getMessages());
+                return $this->jSend(JSend::FAIL, $form->getMessages());
             }
             $data = $form->getData();
         }
@@ -367,7 +364,7 @@ class GuestApiController extends AbstractActionController
         $settings = $this->settings();
         if ($settings->get('guest_register_site')) {
             if (empty($data['site'])) {
-                return $this->jSend(self::FAIL, [
+                return $this->jSend(JSend::FAIL, [
                     'site' => $this->translate('A site is required to register.'), // @translate
                 ]);
             }
@@ -378,7 +375,7 @@ class GuestApiController extends AbstractActionController
             $criteria->where($criteria->expr()->eq(is_numeric($data['site']) ? 'id' : 'slug', $data['site']));
             $siteEntity = $siteEntityRepository->matching($criteria)->first();
             if (empty($siteEntity)) {
-                return $this->jSend(self::FAIL, [
+                return $this->jSend(JSend::FAIL, [
                     'site' => $this->translate('The site doesn’t exist.'), // @translate
                 ]);
             }
@@ -386,13 +383,13 @@ class GuestApiController extends AbstractActionController
         }
 
         if (!isset($data['email'])) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('Email is required.'), // @translate
             ]);
         }
 
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('Invalid email.'), // @translate
             ]);
         }
@@ -423,7 +420,7 @@ class GuestApiController extends AbstractActionController
             $guestToken = $this->entityManager->getRepository(GuestToken::class)
                 ->findOneBy(['email' => $userInfo['o:email']], ['id' => 'DESC']);
             if (empty($guestToken) || $guestToken->isConfirmed()) {
-                return $this->jSend(self::FAIL, [
+                return $this->jSend(JSend::FAIL, [
                     'user' => $this->translate('Already registered.'), // @translate
                 ]);
             }
@@ -434,13 +431,13 @@ class GuestApiController extends AbstractActionController
                 $guestToken->setConfirmed(true);
                 $this->entityManager->persist($guestToken);
                 $this->entityManager->flush();
-                return $this->jSend(self::FAIL, [
+                return $this->jSend(JSend::FAIL, [
                     'user' => $this->translate('Already registered.'), // @translate
                 ]);
             }
 
             // TODO Check if the token is expired to ask a new one.
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('Check your email to confirm your registration.'), // @translate
             ]);
         }
@@ -461,7 +458,7 @@ class GuestApiController extends AbstractActionController
             $errors = $errorStore->getErrors();
             if (!empty($errors['o-module-usernames:username'])) {
                 // TODO Return only the first error currently.
-                return $this->jSend(self::FAIL, [
+                return $this->jSend(JSend::FAIL, [
                     'user' => $this->translate(reset($errors['o-module-usernames:username'])),
                 ]);
             }
@@ -482,7 +479,7 @@ class GuestApiController extends AbstractActionController
             ]);
             // An error occurred in another module.
             if (!$user) {
-                return $this->jSend(self::ERROR, null,
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate('Unknown error before creation of user.') // @translate
                 );
             }
@@ -515,7 +512,7 @@ class GuestApiController extends AbstractActionController
                 'email' => $userInfo['o:email'],
             ]);
             if (!$user) {
-                return $this->jSend(self::ERROR, null,
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate('Unknown error during creation of user.') // @translate
                 );
             }
@@ -596,7 +593,7 @@ class GuestApiController extends AbstractActionController
         ]);
         $result = $this->sendEmail($user->getEmail(), $message['subject'], $message['body'], $user->getName());
         if (!$result) {
-            return $this->jSend(self::ERROR, null,
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('An error occurred when the email was sent.') // @translate
             );
         }
@@ -622,7 +619,7 @@ class GuestApiController extends AbstractActionController
                 ?: $this->translate('Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, a moderator will confirm registration.'); // @translate
         }
 
-        return $this->jSend(self::SUCCESS, [
+        return $this->jSend(JSend::SUCCESS, [
             'user' => $this->userAdapter->getRepresentation($user),
             'redirect_url' => $site && $site->isPublic()
                 ? $site->siteUrl()
@@ -637,7 +634,7 @@ class GuestApiController extends AbstractActionController
     {
         $user = $this->loggedUser();
         if ($user) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('A logged user cannot change the password with this method.'), // @translate
             ]);
         }
@@ -645,13 +642,13 @@ class GuestApiController extends AbstractActionController
         $data = $this->params()->fromPost() ?: [];
 
         if (!isset($data['email'])) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('Email is required.'), // @translate
             ]);
         }
 
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('Invalid email.'), // @translate
             ]);
         }
@@ -663,13 +660,13 @@ class GuestApiController extends AbstractActionController
                 'email' => $data['email'],
             ]);
         if (!$user) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('Invalid email.'), // @translate
             ]);
         }
 
         if (!$user->isActive()) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('User is not active and cannot update password.'), // @translate
             ]);
         }
@@ -746,7 +743,7 @@ class GuestApiController extends AbstractActionController
                 ->setBody($body->setTranslator($this->translator())->translate());
             $mailer->send($message);
 
-            return $this->jSend(self::SUCCESS, [
+            return $this->jSend(JSend::SUCCESS, [
                 // Of course, don't send anything else here.
                 'email' => $data['email'],
             ]);
@@ -761,14 +758,14 @@ class GuestApiController extends AbstractActionController
         );
 
         if (!$passwordCreation) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('Invalid token.'), // @translate
             ]);
         }
 
         $userToken = $passwordCreation->getUser();
         if ($userToken->getId() !== $user->getId()) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('This token is invalid. Check your email.'), // @translate
             ]);
         }
@@ -778,20 +775,20 @@ class GuestApiController extends AbstractActionController
         if (new \DateTime > $passwordCreation->getCreated()->add(new \DateInterval('PT1H'))) {
             $this->entityManager->remove($passwordCreation);
             $this->entityManager->flush();
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'token' => $this->translate('Password token expired.'), // @translate
             ]);
         }
 
         if (!isset($data['password'])) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'token' => $this->translate('Password is required.'), // @translate
             ]);
         }
 
         // TODO Use Omeka checks for password.
         if (strlen($data['password']) < 6) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'token' => $this->translate('New password should have 6 characters or more.'), // @translate
             ]);
         }
@@ -803,7 +800,7 @@ class GuestApiController extends AbstractActionController
         $this->entityManager->remove($passwordCreation);
         $this->entityManager->flush();
 
-        return $this->jSend(self::SUCCESS, [
+        return $this->jSend(JSend::SUCCESS, [
             'user' => $this->userAdapter->getRepresentation($user),
         ]);
     }
@@ -819,7 +816,7 @@ class GuestApiController extends AbstractActionController
         ];
 
         if (!isset($dialogTemplates[$dialog])) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'dialog' => $this->translate('This dialog is not managed.'), // @translate
             ]);
         }
@@ -828,7 +825,7 @@ class GuestApiController extends AbstractActionController
         if ($dialog === 'login') {
             $hasForm = !$this->siteSettings()->get('guest_login_without_form');
         } elseif ($dialog === '2fa-token' && !$this->getPluginManager()->has('twoFactorLogin')) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'dialog' => $this->translate('This dialog requires module Two-Factor Authentication.'), // @translate
             ]);
         }
@@ -847,7 +844,7 @@ class GuestApiController extends AbstractActionController
                     ? $this->getUserForm()
                     : $this->getForm($dialogForms[$dialog]);
             } catch (\Exception $e) {
-                return $this->jSend(self::ERROR, null,
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate('An error occurred when loading dialog.'), // @translate
                 );
             }
@@ -863,7 +860,7 @@ class GuestApiController extends AbstractActionController
         $this->prepareSiteTemplates();
 
         $template = $dialogTemplates[$dialog];
-        return $this->jSend(self::SUCCESS, [
+        return $this->jSend(JSend::SUCCESS, [
             'dialog' => $this->viewHelpers()->get('partial')($template, $args),
         ]);
     }
@@ -889,7 +886,7 @@ class GuestApiController extends AbstractActionController
                 || (!is_array($origin) && !in_array($origin, $cors))
                 || (is_array($origin) && !array_intersect($origin, $cors))
             ) {
-                return $this->jSend(self::FAIL, [
+                return $this->jSend(JSend::FAIL, [
                     'user' => $this->translate('Access forbidden.'), // @translate
                 ], null, Response::STATUS_CODE_403);
             }
@@ -961,7 +958,7 @@ class GuestApiController extends AbstractActionController
     protected function updatePatch(User $user, array $data, $isUpdate = false)
     {
         if (empty($data) || !array_filter($data)) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('Request is empty.'), // @translate
             ]);
         }
@@ -985,7 +982,7 @@ class GuestApiController extends AbstractActionController
             if ($settings->get('guest_register_site')) {
                 $site = $this->userSites($user, true);
                 if (empty($site)) {
-                    return $this->jSend(self::FAIL, [
+                    return $this->jSend(JSend::FAIL, [
                         'email' => $this->translate('Email cannot be updated: the user is not related to a site.'), // @translate
                     ]);
                 }
@@ -1006,20 +1003,20 @@ class GuestApiController extends AbstractActionController
             // 'new_password' => null,
         ]);
         if (count($data) !== count($toPatch)) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('Your request contains metadata that cannot be updated.'), // @translate
             ]);
         }
 
         if (isset($data['o:name']) && empty($data['o:name'])) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'name' => $this->translate('The new name is empty.'), // @translate
             ]);
         }
 
         // Update me is always partial for security, else use standard api.
         $response = $this->api->update('users', $user->getId(), $toPatch, [], ['isPartial' => true]);
-        return $this->jSend(self::SUCCESS, [
+        return $this->jSend(JSend::SUCCESS, [
             'user' => $response->getContent(),
         ]);
     }
@@ -1028,30 +1025,30 @@ class GuestApiController extends AbstractActionController
     {
         // TODO Remove limit to update password separately.
         if (count($data) > 2) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'password' => $this->translate('You cannot update password and another data in the same time.'), // @translate
             ]);
         }
         if (empty($data['password'])) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'password' => $this->translate('Existing password empty.'), // @translate
             ]);
         }
         if (empty($data['new_password'])) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'password' => $this->translate('New password empty.'), // @translate
             ]);
         }
         // TODO Use Omeka checks for password.
         if (strlen($data['new_password']) < 6) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'password' => $this->translate('New password should have 6 characters or more.'), // @translate
             ]);
         }
         if (!$user->verifyPassword($data['password'])) {
             // Security to avoid batch hack.
             sleep(1);
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'password' => $this->translate('Wrong password.'), // @translate
             ]);
         }
@@ -1060,7 +1057,7 @@ class GuestApiController extends AbstractActionController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        return $this->jSend(self::SUCCESS, [
+        return $this->jSend(JSend::SUCCESS, [
             'user' => $this->userAdapter->getRepresentation($user),
         ], $this->translate('Password successfully changed')); // @translate
     }
@@ -1074,12 +1071,12 @@ class GuestApiController extends AbstractActionController
     {
         // TODO Remove limit to update email separately.
         if (count($data) > 1) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('You cannot update email and another data in the same time.'), // @translate
             ]);
         }
         if (empty($data['o:email'])) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('New email empty.'), // @translate
             ]);
         }
@@ -1089,13 +1086,13 @@ class GuestApiController extends AbstractActionController
                 '"{email}" is not an email.', // @translate
                 ['email' => $email]
             );
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $message->setTranslator($this->translator),
             ]);
         }
 
         if ($email === $user->getEmail()) {
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $this->translate('The new email is the same than the current one.'), // @translate
             ]);
         }
@@ -1116,7 +1113,7 @@ class GuestApiController extends AbstractActionController
                 'The email "{email}" is not yours.', // @translate
                 ['email' => $email]
             );
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $message->setTranslator($this->translator),
             ]);
         }
@@ -1137,7 +1134,7 @@ class GuestApiController extends AbstractActionController
                 'The email "{email}" is not yours.', // @translate
                 ['email' => $email]
             );
-            return $this->jSend(self::FAIL, [
+            return $this->jSend(JSend::FAIL, [
                 'email' => $message->setTranslator($this->translator),
             ]);
         }
@@ -1153,7 +1150,7 @@ class GuestApiController extends AbstractActionController
         $result = $this->sendEmail($email, $message['subject'], $message['body'], $user->getName());
         if (!$result) {
             $this->logger()->err('[GuestApi] An error occurred when the email was sent.'); // @translate
-            return $this->jSend(self::ERROR, null,
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('An error occurred when the email was sent.') // @translate,
             );
         }
@@ -1162,7 +1159,7 @@ class GuestApiController extends AbstractActionController
             'Check your email "{email}" to confirm the change.', // @translate
             ['email' => $email]
         );
-        return $this->jSend(self::SUCCESS, [
+        return $this->jSend(JSend::SUCCESS, [
             'user' => $this->userAdapter->getRepresentation($user),
         ], $message->setTranslator($this->translator));
     }

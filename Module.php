@@ -29,7 +29,7 @@
 
 namespace Guest;
 
-if (!class_exists(\Common\TraitModule::class)) {
+if (!class_exists('Common\TraitModule', false)) {
     require_once dirname(__DIR__) . '/Common/TraitModule.php';
 }
 
@@ -536,15 +536,11 @@ class Module extends AbstractModule
         $settings = $services->get('Omeka\Settings');
         $skip = $settings->get('guest_terms_skip');
 
-        $isV4 = version_compare(\Omeka\Module::VERSION, '4', '>=');
-
-        if ($isV4) {
-            $elementGroups = [
-                'guest' => 'Guest', // @translate
-            ];
-            $userSettingsFieldset = $form->get('user-settings');
-            $userSettingsFieldset->setOption('element_groups', array_merge($userSettingsFieldset->getOption('element_groups') ?: [], $elementGroups));
-        }
+        $elementGroups = [
+            'guest' => 'Guest', // @translate
+        ];
+        $userSettingsFieldset = $form->get('user-settings');
+        $userSettingsFieldset->setOption('element_groups', array_merge($userSettingsFieldset->getOption('element_groups') ?: [], $elementGroups));
 
         // Public form.
         if ($form->getOption('is_public') && !$skip) {
