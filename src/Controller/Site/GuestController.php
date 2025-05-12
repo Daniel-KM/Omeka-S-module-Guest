@@ -133,6 +133,11 @@ class GuestController extends AbstractGuestController
             return $view;
         }
 
+        // Is updated with:
+        // $data['o:name'] => $postData['user-information']['o:name']
+        // $data['o:email'] => $postData['user-information']['o:email'] but not here
+        // $data['o:setting'] => $postData['user-settings']
+
         $postData = $this->params()->fromPost();
 
         // A security.
@@ -151,6 +156,8 @@ class GuestController extends AbstractGuestController
             $this->messenger()->addError('Password invalid'); // @translate
             return $view;
         }
+
+        // Here, update only the name.
         $values = $form->getData();
         $response = $this->api($form)->update('users', $user->getId(), $values['user-information']);
 
@@ -165,15 +172,28 @@ class GuestController extends AbstractGuestController
 
         // The values were filtered: no hack is possible with added values.
         // For compatibility with old version.
-        if (!empty($data['user-settings']) && is_array($data['user-settings'])) {
-            $data['o:settings'] = isset($data['o:settings']) && is_array($data['o:settings'])
-                ? array_merge($data['o:settings'], $data['user-settings'])
-                : $data['user-settings'];
-            $this->logger()->warn('Guest: an app uses "user-settings" instead of "o:settings" when registering a user.'); // @translate
+        if (!empty($values['user-settings']) && is_array($values['user-settings'])) {
+            $values['o:setting'] = isset($values['o:setting']) && is_array($values['o:setting'])
+                ? array_merge($values['o:setting'], $values['user-settings'])
+                : $values['user-settings'];
+            // But this is the normal form when not api.
+            // $this->logger()->warn('Guest: an app uses "user-settings" instead of "o:setting" when registering a user.'); // @translate
         }
-        if (!empty($data['o:settings']) && is_array($data['o:settings'])) {
+
+        if (!empty($values['o:settings']) && is_array($values['o:settings'])) {
+            $values['o:setting'] = isset($values['o:setting']) && is_array($values['o:setting'])
+                ? array_merge($values['o:setting'], $values['o:settings'])
+                : $values['o:settings'];
+        }
+
+        unset($values['user-settings'], $values['o:settings']);
+
+        // Only allow default keys (may be added by module like UserProfile).
+        $values['o:setting'] = array_intersect_key($values['o:setting'], $data['o:setting']);
+
+        if (!empty($values['o:setting']) && is_array($values['o:setting'])) {
             $userSettings = $this->userSettings();
-            foreach ($data['o:settings'] as $settingId => $settingValue) {
+            foreach ($values['o:setting'] as $settingId => $settingValue) {
                 $userSettings->set($settingId, $settingValue, $id);
             }
         }
