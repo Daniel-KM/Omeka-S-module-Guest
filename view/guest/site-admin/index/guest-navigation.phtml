@@ -38,7 +38,7 @@ $form->prepare();
 
     <div id="page-actions">
         <?= $this->cancelButton() ?>
-        <button type="button" class="button"><?= $translate('Save') ?></button>
+        <button type="submit" class="button"><?= $translate('Save') ?></button>
     </div>
 
     <div id="nav-tree"
@@ -61,7 +61,7 @@ $form->prepare();
                 <?php $name = $this->navigationLink()->getName($type); ?>
                 <button
                     type="button"
-                    class="button"
+                    class="button option"
                     data-type="<?= $escape($type) ?>"
                     data-value="<?= $escape($type) ?>" class="option"><?= $escape($translate($name)) ?></button>
                 <?php endforeach; ?>
@@ -73,9 +73,9 @@ $form->prepare();
             <input type="text" class="page-selector-filter" placeholder="<?= $translate('Filter pages') ?>" aria-label="<?= $translate('Filter pages') ?>">
             <div id="nav-page-links">
             <?php foreach ($pages as $page): ?>
-                <button class="nav-page-link option active"
+                <button
+                	class="nav-page-link option active"
                     type="button"
-                    class="button"
                     data-type="page"
                     data-label="<?= $escape($page->title()) ?>"
                     data-id="<?= $escape($page->id()) ?>"
