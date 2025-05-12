@@ -284,7 +284,11 @@ class AnonymousController extends AbstractGuestController
         // the exception occurs in api.create.post, so user is created.
         try {
             /** @var \Omeka\Entity\User $user */
-            $user = $this->api()->create('users', $userInfo, [], ['responseContent' => 'resource'])->getContent();
+            $userResponse = $this->api()->create('users', $userInfo, [], ['responseContent' => 'resource']);
+            if (!$userResponse) {
+                throw new \Exception();
+            }
+            $user = $userResponse->getContent();
         } catch (\Omeka\Api\Exception\PermissionDeniedException $e) {
             // This is the exception thrown by the module UserNames, so the user
             // is created, but not the username.
