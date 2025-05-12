@@ -86,7 +86,7 @@ class Module extends AbstractModule
     }
 
     /**
-     * @depracated See Common 3.4.66.
+     * @deprecated See Common 3.4.66.
      */
     protected function installAuto(ServiceLocatorInterface $services): void
     {
@@ -144,10 +144,10 @@ class Module extends AbstractModule
         $services = $this->getServiceLocator();
         $translate = $services->get('ControllerPluginManager')->get('translate');
 
-        if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.66')) {
+        if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.67')) {
             $message = new \Omeka\Stdlib\Message(
                 $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
-                'Common', '3.4.66'
+                'Common', '3.4.67'
             );
             throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
         }
