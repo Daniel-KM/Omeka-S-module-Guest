@@ -378,6 +378,7 @@ class AnonymousController extends AbstractGuestController
         // Save the site on which the user registered.
         $userSettings->set('guest_site', $this->currentSite()->id(), $id);
 
+        // TODO Do not send email of notification before confirming email?
         $emails = $this->getOption('guest_notify_register') ?: [];
         if ($emails) {
             $message = new PsrMessage(
@@ -470,15 +471,15 @@ class AnonymousController extends AbstractGuestController
 
     public function confirmEmailAction()
     {
-        return $this->confirmEmail(false);
+        return $this->confirmEmail(true);
     }
 
     public function validateEmailAction()
     {
-        return $this->confirmEmail(true);
+        return $this->confirmEmail(false);
     }
 
-    protected function confirmEmail($isUpdate)
+    protected function confirmEmail(bool $isCreate = true): \Laminas\Http\Response
     {
         $token = $this->params()->fromQuery('token');
         $entityManager = $this->getEntityManager();
@@ -523,12 +524,40 @@ class AnonymousController extends AbstractGuestController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        // The message is not the same for an existing user and a new user.
-        $message = $isUpdate
-            ? 'Your email "{user_email}" is confirmed for {site_title}.'
-            : $this->getOption('guest_message_confirm_email_site');
-        $message = new PsrMessage($message, ['user_email' => $email, 'site_title' => $siteTitle]);
-        $this->messenger()->addSuccess($message);
+        // The message is not the same for a new user or an existing user.
+        // Furthermore, a notification should be sent for information and
+        // moderation.
+        if ($isCreate) {
+            // Send notification.
+            $emails = $this->getOption('guest_notify_register') ?: [];
+            if ($emails) {
+                $message = new PsrMessage(
+                    'A new user is registering and has confirmed email: {user_email} ({url}).', // @translate
+                    [
+                        'user_email' => $user->getEmail(),
+                        'url' => $this->url()->fromRoute('admin/id', ['controller' => 'user', 'id' => $user->getId()], ['force_canonical' => true]),
+                    ]
+                );
+                $result = $this->sendEmail($emails, $this->translate('[Omeka Guest] New registration'), $message); // @translate
+                if (!$result) {
+                    $message = new PsrMessage('An error occurred when the notification email was sent.'); // @translate
+                    $this->messenger()->addError($message);
+                    $this->logger()->err('[Guest] An error occurred when the notification email was sent.'); // @translate
+                }
+            }
+            // Display the confirmation message in all cases.
+            $message = new PsrMessage(
+                $this->getOption('guest_message_confirm_email_site'),
+                ['user_email' => $email, 'site_title' => $siteTitle]
+            );
+            $this->messenger()->addSuccess($message);
+        } else {
+            $message = new PsrMessage(
+                'Your email "{user_email}" is confirmed for {site_title}.', // @translate
+                ['user_email' => $email, 'site_title' => $siteTitle]
+            );
+            $this->messenger()->addSuccess($message);
+        }
 
         if ($this->isUserLogged()) {
             $redirectUrl = $this->url()->fromRoute('site/guest', [

@@ -777,13 +777,13 @@ class Module extends AbstractModule
 
         $siteSettings = $services->get('Omeka\Settings\Site');
         $siteSettings->setTargetId($guestSite->id());
-        $config = $this->getConfig()['settings']['guest'];
+        $configModule = $this->getModuleConfig('settings');
         $subject = $siteSettings->get('guest_message_confirm_registration_email_subject')
             ?: $settings->get('guest_message_confirm_registration_email_subject');
         $body = $siteSettings->get('guest_message_confirm_registration_email')
             ?: $settings->get('guest_message_confirm_registration_email');
-        $subject = $subject ?: $config['guest_message_confirm_registration_email_subject'];
-        $body = $body ?: $config['guest_message_confirm_registration_email'];
+        $subject = $subject ?: $configModule['guest_message_confirm_registration_email_subject'];
+        $body = $body ?: $configModule['guest_message_confirm_registration_email'];
 
         // TODO Factorize creation of email.
         $data = [
