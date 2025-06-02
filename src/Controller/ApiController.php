@@ -678,7 +678,7 @@ class ApiController extends \Omeka\Controller\ApiController
             'token' => $guestToken,
             'site' => $site,
         ]);
-        $result = $this->sendEmail($user->getEmail(), $message['subject'], $message['body'], $user->getName());
+        $result = $this->sendEmail($message['subject'], $message['body'], [$user->getEmail() => $user->getName()]);
         if (!$result) {
             return $this->jSend(JSend::ERROR, null,
                 $this->translate('An error occurred when the email was sent.'), // @translate
@@ -692,9 +692,8 @@ class ApiController extends \Omeka\Controller\ApiController
             'user_name' => $user->getName(),
             'site' => $site,
         ]);
-        $fromEmail = $this->settings()->get('administrator_email');
-        $toEmails = $this->settings()->get('guest_notify_register') ?: $fromEmail;
-        $result = $this->sendEmail($toEmails, $message['subject'], $message['body'], $user->getName());
+        $toEmails = $this->settings()->get('guest_notify_register') ?: null;
+        $result = $this->sendEmail($message['subject'], $message['body'], $toEmails);
 
         if ($emailIsAlwaysValid) {
             $message = $this->settings()->get('guest_message_confirm_register_site')
@@ -1192,7 +1191,7 @@ class ApiController extends \Omeka\Controller\ApiController
             'user_name' => $user->getName(),
             'token' => $guestToken,
         ], $site);
-        $result = $this->sendEmail($email, $message['subject'], $message['body'], $user->getName());
+        $result = $this->sendEmail($message['subject'], $message['body'], [$email => $user->getName()]);
         if (!$result) {
             $this->logger()->err('[GuestApi] An error occurred when the email was sent.'); // @translate
             $message = new PsrMessage('An error occurred when the email was sent.'); // @translate

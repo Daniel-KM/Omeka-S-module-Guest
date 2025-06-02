@@ -73,7 +73,6 @@ return [
         'factories' => [
             'createGuestToken' => Service\ControllerPlugin\CreateGuestTokenFactory::class,
             'guestNavigationTranslator' => Service\ControllerPlugin\GuestNavigationTranslatorFactory::class,
-            'sendEmail' => Service\ControllerPlugin\SendEmailFactory::class,
             'userRedirectUrl' => Service\ControllerPlugin\UserRedirectUrlFactory::class,
             'userSites' => Service\ControllerPlugin\UserSitesFactory::class,
             'validateLogin' => Service\ControllerPlugin\ValidateLoginFactory::class,

@@ -379,7 +379,7 @@ class AnonymousController extends AbstractGuestController
         $userSettings->set('guest_site', $this->currentSite()->id(), $id);
 
         // TODO Do not send email of notification before confirming email?
-        $emails = $this->getOption('guest_notify_register') ?: [];
+        $emails = $this->getOption('guest_notify_register') ?: null;
         if ($emails) {
             $message = new PsrMessage(
                 'A new user is registering: {user_email} ({url}).', // @translate
@@ -388,7 +388,7 @@ class AnonymousController extends AbstractGuestController
                     'url' => $this->url()->fromRoute('admin/id', ['controller' => 'user', 'id' => $user->getId()], ['force_canonical' => true]),
                 ]
             );
-            $result = $this->sendEmail($emails, $this->translate('[Omeka Guest] New registration'), $message); // @translate
+            $result = $this->sendEmail($this->translate('[Omeka Guest] New registration'), $message, $emails); // @translate
             if (!$result) {
                 $message = new PsrMessage('An error occurred when the notification email was sent.'); // @translate
                 $this->messenger()->addError($message);
@@ -403,7 +403,7 @@ class AnonymousController extends AbstractGuestController
             'user_name' => $user->getName(),
             'token' => $guestToken,
         ]);
-        $result = $this->sendEmail($user->getEmail(), $message['subject'], $message['body'], $user->getName());
+        $result = $this->sendEmail($message['subject'], $message['body'], [$user->getEmail() => $user->getName()]);
         if (!$result) {
             $message = new PsrMessage('An error occurred when the email was sent.'); // @translate
             $this->messenger()->addError($message);
@@ -417,9 +417,8 @@ class AnonymousController extends AbstractGuestController
             'user_name' => $user->getName(),
             'site' => $site,
         ]);
-        $fromEmail = $this->settings()->get('administrator_email');
-        $toEmails = $this->settings()->get('guest_notify_register') ?: $fromEmail;
-        $result = $this->sendEmail($toEmails, $message['subject'], $message['body'], $user->getName());
+        $toEmails = $this->settings()->get('guest_notify_register') ?: null;
+        $result = $this->sendEmail($message['subject'], $message['body'], $toEmails);
 
         $message = $this->isOpenRegister()
             ? $this->getOption('guest_message_confirm_register_site')
@@ -538,7 +537,7 @@ class AnonymousController extends AbstractGuestController
                         'url' => $this->url()->fromRoute('admin/id', ['controller' => 'user', 'id' => $user->getId()], ['force_canonical' => true]),
                     ]
                 );
-                $result = $this->sendEmail($emails, $this->translate('[Omeka Guest] New registration'), $message); // @translate
+                $result = $this->sendEmail($this->translate('[Omeka Guest] New registration'), $message, $emails); // @translate
                 if (!$result) {
                     $message = new PsrMessage('An error occurred when the notification email was sent.'); // @translate
                     $this->messenger()->addError($message);

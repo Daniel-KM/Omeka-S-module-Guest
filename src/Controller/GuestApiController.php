@@ -8,13 +8,10 @@ use Doctrine\ORM\EntityManager;
 use Guest\Entity\GuestToken;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Http\Response;
-use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Laminas\Math\Rand;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\Mvc\Exception\RuntimeException;
 use Laminas\Session\Container as SessionContainer;
-use Laminas\View\Model\JsonModel;
 use Omeka\Api\Adapter\SiteAdapter;
 use Omeka\Api\Adapter\UserAdapter;
 use Omeka\Api\Manager as ApiManager;
@@ -591,7 +588,7 @@ class GuestApiController extends AbstractActionController
             'token' => $guestToken,
             'site' => $site,
         ]);
-        $result = $this->sendEmail($user->getEmail(), $message['subject'], $message['body'], $user->getName());
+        $result = $this->sendEmail($message['subject'], $message['body'], [$user->getEmail() => $user->getName()]);
         if (!$result) {
             return $this->jSend(JSend::ERROR, null,
                 $this->translate('An error occurred when the email was sent.') // @translate
@@ -604,9 +601,9 @@ class GuestApiController extends AbstractActionController
             'user_name' => $user->getName(),
             'site' => $site,
         ]);
-        $fromEmail = $this->settings()->get('administrator_email');
-        $toEmails = $this->settings()->get('guest_notify_register') ?: $fromEmail;
-        $result = $this->sendEmail($toEmails, $message['subject'], $message['body'], $user->getName());
+
+        $toEmails = $this->settings()->get('guest_notify_register') ?: null;
+        $result = $this->sendEmail($message['subject'], $message['body'], $toEmails);
 
         if ($emailIsAlwaysValid) {
             $message = $this->settings()->get('guest_message_confirm_register_site')
@@ -1147,7 +1144,7 @@ class GuestApiController extends AbstractActionController
             'user_name' => $user->getName(),
             'token' => $guestToken,
         ], $site);
-        $result = $this->sendEmail($email, $message['subject'], $message['body'], $user->getName());
+        $result = $this->sendEmail($message['subject'], $message['body'], [$email => $user->getName()]);
         if (!$result) {
             $this->logger()->err('[GuestApi] An error occurred when the email was sent.'); // @translate
             return $this->jSend(JSend::ERROR, null,
