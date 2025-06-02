@@ -334,7 +334,7 @@ return [
 
             'guest_message_update_email_subject' => '[{site_title}] Confirm email', // @translate
             'guest_message_update_email' => <<<'MAIL'
-                '<p>Hi {user_name},</p>
+                <p>Hi {user_name},</p>
                 <p>You have requested to update email on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
                 <p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
                 <p>If you did not request to update your email on {main_title}, please disregard this email.</p>

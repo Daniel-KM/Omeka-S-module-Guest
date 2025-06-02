@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 /*
  * Copyright BibLibre, 2016
- * Copyright Daniel Berthereau, 2017-2024
+ * Copyright Daniel Berthereau, 2017-2025
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -590,6 +590,21 @@ class Module extends AbstractModule
         }
 
         // Admin board.
+        $fieldset = $form->get('user-information');
+        $fieldset
+            ->add([
+                'name' => 'guest_send_email_moderated_registration',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Send an email to confirm registration after moderation (user should be activated first)', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_send_email_moderated_registration',
+                ],
+            ]);
+
+        // Admin board.
         $fieldset = $form->get('user-settings');
         $fieldset
             ->add([
@@ -622,17 +637,7 @@ class Module extends AbstractModule
                     'value' => $agreedTerms,
                 ],
             ])
-            ->add([
-                'name' => 'guest_send_email_moderated_registration',
-                'type' => Element\Checkbox::class,
-                'options' => [
-                    'element_group' => 'guest',
-                    'label' => 'Send an email to confirm registration after moderation (user should be activated first)', // @translate
-                ],
-                'attributes' => [
-                    'id' => 'guest_send_email_moderated_registration',
-                ],
-            ]);
+        ;
 
         if (!$user) {
             return;
@@ -645,6 +650,7 @@ class Module extends AbstractModule
             return;
         }
 
+        $fieldset = $form->get('user-information');
         $fieldset
             ->add([
                 'name' => 'guest_clear_token',
@@ -676,7 +682,7 @@ class Module extends AbstractModule
         }
 
         $inputFilter = $event->getParam('inputFilter');
-        $inputFilter->get('user-settings')
+        $inputFilter->get('user-information')
             ->add([
                 'name' => 'guest_send_email_moderated_registration',
                 'required' => false,
@@ -704,7 +710,7 @@ class Module extends AbstractModule
             return;
         }
 
-        $inputFilter->get('user-settings')
+        $inputFilter->get('user-information')
             ->add([
                 'name' => 'guest_clear_token',
                 'required' => false,
