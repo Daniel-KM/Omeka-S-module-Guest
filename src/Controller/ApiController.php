@@ -2,11 +2,12 @@
 
 namespace Guest\Controller;
 
+use Common\Mvc\Controller\Plugin\JSend;
 use Common\Stdlib\PsrMessage;
 use Doctrine\ORM\EntityManager;
 use Guest\Entity\GuestToken;
 use Laminas\Authentication\AuthenticationService;
-use Laminas\Http\Response;
+use Laminas\Http\Response as HttpResponse;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Laminas\Math\Rand;
 use Laminas\Session\Container as SessionContainer;
@@ -27,10 +28,6 @@ use Omeka\View\Model\ApiJsonModel;
 class ApiController extends \Omeka\Controller\ApiController
 {
     use TraitGuestController;
-
-    const STATUS_SUCCESS = 'success';
-    const STATUS_FAIL = 'fail';
-    const STATUS_ERROR = 'error';
 
     /**
      * @var \Omeka\Api\Manager
@@ -101,14 +98,16 @@ class ApiController extends \Omeka\Controller\ApiController
 
     /**
      * Get info about me (alias of /api/users/#id).
+     *
+     * @todo Use JSend::FAIL when needed instead of JSend::ERROR.
      */
     public function get($id)
     {
         $user = $this->authenticationService->getIdentity();
         if (!$user) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Access forbidden.'), // @translate
-                Response::STATUS_CODE_403
+                HttpResponse::STATUS_CODE_403
             );
         }
         $userRepr = $this->userAdapter->getRepresentation($user);
@@ -120,17 +119,17 @@ class ApiController extends \Omeka\Controller\ApiController
 
     public function getList()
     {
-        return $this->returnError(
+        return $this->jSend(JSend::ERROR, null,
             $this->translate('Method Not Allowed'), // @translate
-            Response::STATUS_CODE_405
+            HttpResponse::STATUS_CODE_405
         );
     }
 
     public function create($data, $fileData = [])
     {
-        return $this->returnError(
+        return $this->jSend(JSend::ERROR, null,
             $this->translate('Method Not Allowed'), // @translate
-            Response::STATUS_CODE_405
+            HttpResponse::STATUS_CODE_405
         );
     }
 
@@ -138,9 +137,9 @@ class ApiController extends \Omeka\Controller\ApiController
     {
         $user = $this->authenticationService->getIdentity();
         if (!$user) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Access forbidden.'), // @translate
-                Response::STATUS_CODE_403
+                HttpResponse::STATUS_CODE_403
             );
         }
         return $this->updatePatch($user, $data, true);
@@ -148,9 +147,9 @@ class ApiController extends \Omeka\Controller\ApiController
 
     public function replaceList($data)
     {
-        return $this->returnError(
+        return $this->jSend(JSend::ERROR, null,
             $this->translate('Method Not Allowed'), // @translate
-            Response::STATUS_CODE_405
+            HttpResponse::STATUS_CODE_405
         );
     }
 
@@ -158,9 +157,9 @@ class ApiController extends \Omeka\Controller\ApiController
     {
         $user = $this->authenticationService->getIdentity();
         if (!$user) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Access forbidden.'), // @translate
-                Response::STATUS_CODE_403
+                HttpResponse::STATUS_CODE_403
             );
         }
         return $this->updatePatch($user, $data, false);
@@ -168,49 +167,49 @@ class ApiController extends \Omeka\Controller\ApiController
 
     public function patchList($data)
     {
-        return $this->returnError(
+        return $this->jSend(JSend::ERROR, null,
             $this->translate('Method Not Allowed'), // @translate
-            Response::STATUS_CODE_405
+            HttpResponse::STATUS_CODE_405
         );
     }
 
     public function delete($id)
     {
-        return $this->returnError(
+        return $this->jSend(JSend::ERROR, null,
             $this->translate('Method Not Allowed'), // @translate
-            Response::STATUS_CODE_405
+            HttpResponse::STATUS_CODE_405
         );
     }
 
     public function deleteList($data)
     {
-        return $this->returnError(
+        return $this->jSend(JSend::ERROR, null,
             $this->translate('Method Not Allowed'), // @translate
-            Response::STATUS_CODE_405
+            HttpResponse::STATUS_CODE_405
         );
     }
 
     public function head($id = null)
     {
-        return $this->returnError(
+        return $this->jSend(JSend::ERROR, null,
             $this->translate('Method Not Allowed'), // @translate
-            Response::STATUS_CODE_405
+            HttpResponse::STATUS_CODE_405
         );
     }
 
     public function options()
     {
-        return $this->returnError(
+        return $this->jSend(JSend::ERROR, null,
             $this->translate('Method Not Allowed'), // @translate
-            Response::STATUS_CODE_405
+            HttpResponse::STATUS_CODE_405
         );
     }
 
     public function notFoundAction()
     {
-        return $this->returnError(
+        return $this->jSend(JSend::ERROR, null,
             $this->translate('Page not found'), // @translate
-            Response::STATUS_CODE_404
+            HttpResponse::STATUS_CODE_404
         );
     }
 
@@ -231,7 +230,7 @@ class ApiController extends \Omeka\Controller\ApiController
 
         $user = $this->loggedUser();
         if ($user) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('User cannot login: already logged.') // @translate
             );
         }
@@ -247,19 +246,19 @@ class ApiController extends \Omeka\Controller\ApiController
         }
 
         if (empty($data['email'])) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Email is required.') // @translate
             );
         }
 
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Invalid email.') // @translate
             );
         }
 
         if (empty($data['password'])) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Password is required.') // @translate
             );
         }
@@ -274,7 +273,7 @@ class ApiController extends \Omeka\Controller\ApiController
         if (!$user) {
             // Slow down the process to avoid brute force.
             sleep(3);
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Wrong email or password.') // @translate
             );
         }
@@ -282,7 +281,7 @@ class ApiController extends \Omeka\Controller\ApiController
         if (!$user->verifyPassword($data['password'])) {
             // Slow down the process to avoid brute force.
             sleep(3);
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 // Same message as above for security.
                 $this->translate('Wrong email or password.') // @translate
             );
@@ -295,7 +294,9 @@ class ApiController extends \Omeka\Controller\ApiController
                 'Role "{role]" is not allowed to login via api.', // @translate
                 ['role' => $role]
             );
-            return $this->returnError($message->setTranslator($this->translator()));
+            return $this->jSend(JSend::ERROR, null,
+                $message->setTranslator($this->translator())
+            );
         }
 
         // TODO Use chain storage.
@@ -318,18 +319,18 @@ class ApiController extends \Omeka\Controller\ApiController
                             ->findOneBy(['email' => $data['email']], ['id' => 'DESC']);
                         if (empty($guestToken) || $guestToken->isConfirmed()) {
                             if (!$user->isActive()) {
-                                return $this->returnError(
+                                return $this->jSend(JSend::ERROR, null,
                                     $this->translate('Your account is under moderation for opening.') // @translate
                                 );
                             }
                         } else {
-                            return $this->returnError(
+                            return $this->jSend(JSend::ERROR, null,
                                 $this->translate('Check your email to confirm your registration.') // @translate
                             );
                         }
                     }
                 }
-                return $this->returnError(
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate(reset($result->getMessages())) // @translate
                 );
             }
@@ -361,7 +362,7 @@ class ApiController extends \Omeka\Controller\ApiController
         if (!$user) {
             $user = $this->authenticationServiceSession->getIdentity();
             if (!$user) {
-                return $this->returnError(
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate('User not logged.') // @translate
                 );
             }
@@ -382,12 +383,7 @@ class ApiController extends \Omeka\Controller\ApiController
         $sessionManager->destroy();
 
         $message = $this->translate('Successfully logout.'); // @translate
-        $result = [
-            'status' => self::STATUS_SUCCESS,
-            'data' => null,
-            'message' => $message,
-        ];
-        return new ApiJsonModel($result, $this->getViewOptions());
+        return $this->jSend(JSend::SUCCESS, null, $message);
     }
 
     public function sessionTokenAction()
@@ -399,9 +395,9 @@ class ApiController extends \Omeka\Controller\ApiController
 
         $user = $this->loggedUser();
         if (!$user) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Access forbidden.'), // @translate
-                Response::STATUS_CODE_403
+                HttpResponse::STATUS_CODE_403
             );
         }
         return $this->returnSessionToken($user);
@@ -423,14 +419,14 @@ class ApiController extends \Omeka\Controller\ApiController
         $settings = $this->settings();
         $apiOpenRegistration = $settings->get('guest_open');
         if ($apiOpenRegistration === 'closed') {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Access forbidden.'), // @translate
-                Response::STATUS_CODE_403
+                HttpResponse::STATUS_CODE_403
             );
         }
 
         if ($this->loggedUser()) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('User cannot register: already logged.') // @translate
             );
         }
@@ -454,7 +450,7 @@ class ApiController extends \Omeka\Controller\ApiController
         $settings = $this->settings();
         if ($settings->get('guest_register_site')) {
             if (empty($data['site'])) {
-                return $this->returnError(
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate('A site is required to register.') // @translate
                 );
             }
@@ -465,7 +461,7 @@ class ApiController extends \Omeka\Controller\ApiController
             $criteria->where($criteria->expr()->eq(is_numeric($data['site']) ? 'id' : 'slug', $data['site']));
             $siteEntity = $siteEntityRepository->matching($criteria)->first();
             if (empty($siteEntity)) {
-                return $this->returnError(
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate('The site doesn’t exist.') // @translate
                 );
             }
@@ -473,13 +469,13 @@ class ApiController extends \Omeka\Controller\ApiController
         }
 
         if (!isset($data['email'])) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Email is required.') // @translate
             );
         }
 
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Invalid email.') // @translate
             );
         }
@@ -510,7 +506,7 @@ class ApiController extends \Omeka\Controller\ApiController
             $guestToken = $this->entityManager->getRepository(GuestToken::class)
                 ->findOneBy(['email' => $userInfo['o:email']], ['id' => 'DESC']);
             if (empty($guestToken) || $guestToken->isConfirmed()) {
-                return $this->returnError(
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate('Already registered.') // @translate
                 );
             }
@@ -521,13 +517,13 @@ class ApiController extends \Omeka\Controller\ApiController
                 $guestToken->setConfirmed(true);
                 $this->entityManager->persist($guestToken);
                 $this->entityManager->flush();
-                return $this->returnError(
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate('Already registered.') // @translate
                 );
             }
 
             // TODO Check if the token is expired to ask a new one.
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Check your email to confirm your registration.') // @translate
             );
         }
@@ -548,7 +544,7 @@ class ApiController extends \Omeka\Controller\ApiController
             $errors = $errorStore->getErrors();
             if (!empty($errors['o-module-usernames:username'])) {
                 // TODO Return only the first error currently.
-                return $this->returnError(
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate(reset($errors['o-module-usernames:username']))
                 );
             }
@@ -569,9 +565,9 @@ class ApiController extends \Omeka\Controller\ApiController
             ]);
             // An error occurred in another module.
             if (!$user) {
-                return $this->returnError(
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate('Unknown error before creation of user.'), // @translate
-                    Response::STATUS_CODE_500
+                    HttpResponse::STATUS_CODE_500
                 );
             }
             if ($this->hasModuleUserNames()) {
@@ -603,9 +599,9 @@ class ApiController extends \Omeka\Controller\ApiController
                 'email' => $userInfo['o:email'],
             ]);
             if (!$user) {
-                return $this->returnError(
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate('Unknown error during creation of user.'), // @translate
-                    Response::STATUS_CODE_500
+                    HttpResponse::STATUS_CODE_500
                 );
             }
             // Issue in another module?
@@ -684,9 +680,9 @@ class ApiController extends \Omeka\Controller\ApiController
         ]);
         $result = $this->sendEmail($user->getEmail(), $message['subject'], $message['body'], $user->getName());
         if (!$result) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('An error occurred when the email was sent.'), // @translate
-                Response::STATUS_CODE_500
+                HttpResponse::STATUS_CODE_500
             );
         }
 
@@ -711,14 +707,9 @@ class ApiController extends \Omeka\Controller\ApiController
                 ?: $this->translate('Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, a moderator will confirm registration.'); // @translate
         }
 
-        $result = [
-            'status' => self::STATUS_SUCCESS,
-            'data' => [
-                'user' => $this->userAdapter->getRepresentation($user),
-            ],
-            'message' => $message,
-        ];
-        return new ApiJsonModel($result, $this->getViewOptions());
+        return $this->jSend(JSend::SUCCESS, [
+           'user' => $this->userAdapter->getRepresentation($user),
+        ], $message);
     }
 
     /**
@@ -729,7 +720,7 @@ class ApiController extends \Omeka\Controller\ApiController
         $user = $this->loggedUser();
         if ($user) {
             $message = $this->translate('A logged user cannot change the password with this method.'); // @translate
-            return $this->returnError($message);
+            return $this->jSend(JSend::ERROR, null, $message);
         }
 
         // Post may be empty because it is not the standard controller, so get
@@ -743,12 +734,12 @@ class ApiController extends \Omeka\Controller\ApiController
 
         if (!isset($data['email'])) {
             $message = $this->translate('Email is required.'); // @translate
-            return $this->returnError($message);
+            return $this->jSend(JSend::ERROR, null, $message);
         }
 
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $message = $this->translate('Invalid email.'); // @translate
-            return $this->returnError($message);
+            return $this->jSend(JSend::ERROR, null, $message);
         }
 
         // Use entity manager, because anonymous user cannot read users.
@@ -759,12 +750,12 @@ class ApiController extends \Omeka\Controller\ApiController
             ]);
         if (!$user) {
             $message = $this->translate('Invalid email.'); // @translate
-            return $this->returnError($message);
+            return $this->jSend(JSend::ERROR, null, $message);
         }
 
         if (!$user->isActive()) {
             $message = $this->translate('User is not active and cannot update password.'); // @translate
-            return $this->returnError($message);
+            return $this->jSend(JSend::ERROR, null, $message);
         }
 
         $token = $data['token'] ?? null;
@@ -839,14 +830,10 @@ class ApiController extends \Omeka\Controller\ApiController
                 ->setBody($body->setTranslator($this->translator())->translate());
             $mailer->send($message);
 
-            $result = [
-                'status' => self::STATUS_SUCCESS,
-                'data' => [
-                    // Of course, don't send anything else here.
-                    'email' => $data['email'],
-                ],
-            ];
-            return new ApiJsonModel($result, $this->getViewOptions());
+            return $this->jSend(JSend::SUCCESS, [
+                // Of course, don't send anything else here.
+                'email' => $data['email'],
+            ]);
         }
 
         // Check token.
@@ -859,13 +846,13 @@ class ApiController extends \Omeka\Controller\ApiController
 
         if (!$passwordCreation) {
             $message = $this->translate('Invalid token.'); // @translate
-            return $this->returnError($message);
+            return $this->jSend(JSend::ERROR, null, $message);
         }
 
         $userToken = $passwordCreation->getUser();
         if ($userToken->getId() !== $user->getId()) {
             $message = $this->translate('This token is invalid. Check your email.'); // @translate
-            return $this->returnError($message);
+            return $this->jSend(JSend::ERROR, null, $message);
         }
 
         // The default expiration (deux weeks) is too much long for a
@@ -874,18 +861,18 @@ class ApiController extends \Omeka\Controller\ApiController
             $this->entityManager->remove($passwordCreation);
             $this->entityManager->flush();
             $message = $this->translate('Password token expired.'); // @translate
-            return $this->returnError($message);
+            return $this->jSend(JSend::ERROR, null, $message);
         }
 
         if (!isset($data['password'])) {
             $message = $this->translate('Password is required.'); // @translate
-            return $this->returnError($message);
+            return $this->jSend(JSend::ERROR, null, $message);
         }
 
         // TODO Use Omeka checks for password.
         if (strlen($data['password']) < 6) {
             $message = $this->translate('New password should have 6 characters or more.'); // @translate
-            return $this->returnError($message);
+            return $this->jSend(JSend::ERROR, null, $message);
         }
 
         $user->setPassword($data['password']);
@@ -895,13 +882,9 @@ class ApiController extends \Omeka\Controller\ApiController
         $this->entityManager->remove($passwordCreation);
         $this->entityManager->flush();
 
-        $result = [
-            'status' => self::STATUS_SUCCESS,
-            'data' => [
-                'user' => $this->userAdapter->getRepresentation($user),
-            ],
-        ];
-        return new ApiJsonModel($result, $this->getViewOptions());
+        return $this->jSend(JSend::SUCCESS, [
+            'user' => $this->userAdapter->getRepresentation($user),
+        ]);
     }
 
     // TODO Confirmation through api, not via module guest user (but the email link is always a web page!)
@@ -927,9 +910,9 @@ class ApiController extends \Omeka\Controller\ApiController
                 || (!is_array($origin) && !in_array($origin, $cors))
                 || (is_array($origin) && !array_intersect($origin, $cors))
             ) {
-                return $this->returnError(
+                return $this->jSend(JSend::ERROR, null,
                     $this->translate('Access forbidden.'), // @translate
-                    Response::STATUS_CODE_403
+                    HttpResponse::STATUS_CODE_403
                 );
             }
         }
@@ -1003,9 +986,9 @@ class ApiController extends \Omeka\Controller\ApiController
     protected function updatePatch(User $user, array $data, $isUpdate = false)
     {
         if (empty($data) || !array_filter($data)) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Request is empty.'), // @translate
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
 
@@ -1028,9 +1011,9 @@ class ApiController extends \Omeka\Controller\ApiController
             if ($settings->get('guest_register_site')) {
                 $site = $this->userSites($user, true);
                 if (empty($site)) {
-                    return $this->returnError(
+                    return $this->jSend(JSend::ERROR, null,
                         $this->translate('Email cannot be updated: the user is not related to a site.'), // @translate
-                        Response::STATUS_CODE_400
+                        HttpResponse::STATUS_CODE_400
                     );
                 }
             } else {
@@ -1050,16 +1033,16 @@ class ApiController extends \Omeka\Controller\ApiController
             // 'new_password' => null,
         ]);
         if (count($data) !== count($toPatch)) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Your request contains metadata that cannot be updated.'), // @translate
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
 
         if (isset($data['o:name']) && empty($data['o:name'])) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('The new name is empty.'), // @translate
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
 
@@ -1072,36 +1055,36 @@ class ApiController extends \Omeka\Controller\ApiController
     {
         // TODO Remove limit to update password separately.
         if (count($data) > 2) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('You cannot update password and another data in the same time.'), // @translate
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
         if (empty($data['password'])) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Existing password empty.'), // @translate
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
         if (empty($data['new_password'])) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('New password empty.'), // @translate
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
         // TODO Use Omeka checks for password.
         if (strlen($data['new_password']) < 6) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('New password should have 6 characters or more.'), // @translate
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
         if (!$user->verifyPassword($data['password'])) {
             // Security to avoid batch hack.
             sleep(1);
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('Wrong password.'), // @translate
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
 
@@ -1110,14 +1093,9 @@ class ApiController extends \Omeka\Controller\ApiController
         $this->entityManager->flush();
 
         $message = $this->translate('Password successfully changed'); // @translate
-        $result = [
-            'status' => self::STATUS_SUCCESS,
-            'data' => [
-                'user' => $this->userAdapter->getRepresentation($user),
-            ],
-            'message' => $message,
-        ];
-        return new ApiJsonModel($result, $this->getViewOptions());
+        return $this->jSend(JSend::SUCCESS, [
+            'user' => $this->userAdapter->getRepresentation($user),
+        ], $message);
     }
 
     /**
@@ -1133,34 +1111,34 @@ class ApiController extends \Omeka\Controller\ApiController
     {
         // TODO Remove limit to update email separately.
         if (count($data) > 1) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('You cannot update email and another data in the same time.'), // @translate
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
         if (empty($data['o:email'])) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 $this->translate('New email empty.'), // @translate
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
         $email = $data['o:email'];
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 (new PsrMessage(
                     '"{email}" is not an email.', // @translate
                     ['email' => $email]
                 ))->setTranslator($this->translator),
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
 
         if ($email === $user->getEmail()) {
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 (new PsrMessage(
                     'The new email is the same than the current one.', // @translate
                 ))->setTranslator($this->translator),
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
 
@@ -1176,12 +1154,12 @@ class ApiController extends \Omeka\Controller\ApiController
                 'User #{user_id} wants to change email from "{email}" to "{email_2}", used by user #{user_id_2}.', // @translate
                 ['user_id' => $user->getId(), 'email' => $user->getEmail(), 'email_2' => $email, 'user_id_2' => $existUser->id()]
             );
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 (new PsrMessage(
                     'The email "{email}" is not yours.', // @translate
                     ['email' => $email]
                 ))->setTranslator($this->translator),
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
 
@@ -1197,12 +1175,12 @@ class ApiController extends \Omeka\Controller\ApiController
                 'User #{user_id} wants to change email from "{email}" to "{email_2}", used by user #{user_id_2} (second check).', // @translate
                 ['user_id' => $user->getId(), 'email' => $user->getEmail(), 'email_2' => $email, 'user_id_2' => (reset($users))->getId()]
             );
-            return $this->returnError(
+            return $this->jSend(JSend::ERROR, null,
                 (new PsrMessage(
                     'The email "{email}" is not yours.', // @translate
                     ['email' => $email]
                 ))->setTranslator($this->translator),
-                Response::STATUS_CODE_400
+                HttpResponse::STATUS_CODE_400
             );
         }
 
@@ -1218,9 +1196,9 @@ class ApiController extends \Omeka\Controller\ApiController
         if (!$result) {
             $this->logger()->err('[GuestApi] An error occurred when the email was sent.'); // @translate
             $message = new PsrMessage('An error occurred when the email was sent.'); // @translate
-            return $this->returnError(
-                $message,
-                Response::STATUS_CODE_500
+            return $this->jSend(JSend::ERROR, null,
+                $message->setTranslator($this->translator),
+                HttpResponse::STATUS_CODE_500
             );
         }
 
@@ -1228,14 +1206,9 @@ class ApiController extends \Omeka\Controller\ApiController
             $this->translate('Check your email "{email}" to confirm the change.'), // @translate
             ['email' => $email]
         );
-        $result = [
-            'status' => self::STATUS_SUCCESS,
-            'data' => [
-                'user' => $this->userAdapter->getRepresentation($user),
-            ],
-            'message' => $message,
-        ];
-        return new ApiJsonModel($result, $this->getViewOptions());
+        return $this->jSend(JSend::SUCCESS, [
+            'user' => $this->userAdapter->getRepresentation($user),
+        ], $message);
     }
 
     protected function prepareSessionToken(User $user)
@@ -1277,47 +1250,9 @@ class ApiController extends \Omeka\Controller\ApiController
 
     protected function returnSessionToken(User $user)
     {
-        $sessionToken = $this->prepareSessionToken($user);
-        return new ApiJsonModel(
-            [
-                'status' => self::STATUS_SUCCESS,
-                'data' => [
-                    'session_token' => $sessionToken ?: null,
-                ],
-            ],
-            $this->getViewOptions()
-        );
-    }
-
-    protected function returnError(
-        $message,
-        $statusCode = Response::STATUS_CODE_400,
-        array $errors = null,
-        array $data = null,
-        $isFail = false
-    ) {
-        $response = $this->getResponse();
-        $response->setStatusCode($statusCode);
-        if ($isFail) {
-            $result = [
-                'status' => self::STATUS_FAIL,
-                'message' => $message,
-                'code' => $statusCode,
-                'data' => $data,
-            ];
-        } else {
-            $result = [
-                'status' => self::STATUS_ERROR,
-                'message' => $message,
-                'code' => $statusCode,
-            ];
-            if (is_array($errors)) {
-                $result['errors'] = $errors;
-            }
-            if (is_array($data)) {
-                $result['data'] = $data;
-            }
-        }
-        return new ApiJsonModel($result, $this->getViewOptions());
+        $sessionToken = $this->prepareSessionToken($user) ?: null;
+        return $this->jSend(JSend::SUCCESS, [
+            'session_token' => $sessionToken,
+        ]);
     }
 }
