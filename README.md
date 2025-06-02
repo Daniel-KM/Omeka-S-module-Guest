@@ -11,7 +11,7 @@ become registered users in Omeka S, but have no other privileges to the admin
 side of your Omeka S installation. This module is thus intended to be a common
 module that other modules needing a guest user use as a dependency.
 
-All features are available from api, in particular to login, to logout, to
+All features are available from api, in particular to log in, to log out, to
 register, to update the password, to update its own profile and settings, or to
 ajax forms. It does not replace the standard api (/api/users/#id), but adds some
 checks and features useful to build ajax dialogs.
@@ -81,7 +81,7 @@ A check box allows to force guests to accept terms agreement.
 A button in the config forms allows to set or unset all guests acceptation,
 in order to allow update of terms.
 
-### Option redirect after login
+### Option redirect after log in
 
 When the module [Shibboleth] is used, this option is bypassed.
 
@@ -93,17 +93,17 @@ have to adapt it. You may use the navigation link too (in admin > sites > my-sit
 ```php
 <?php
 if ($this->identity()):
-    echo $this->hyperlink($this->translate('Logout'), $this->url()->fromRoute('site/guest/guest', ['site-slug' => $site->slug(), 'action' => 'logout']), ['class' => 'logout']);
+    echo $this->hyperlink($this->translate('Log out'), $this->url()->fromRoute('site/guest/guest', ['site-slug' => $site->slug(), 'action' => 'logout']), ['class' => 'logout']);
 else:
-    echo $this->hyperlink($this->translate('Login'), $this->url()->fromRoute('site/guest/anonymous', ['site-slug' => $site->slug(), 'action' => 'login']), ['class' => 'login']);
+    echo $this->hyperlink($this->translate('Log in'), $this->url()->fromRoute('site/guest/anonymous', ['site-slug' => $site->slug(), 'action' => 'login']), ['class' => 'login']);
 endif;
 ```
 
 Api endpoint
 ------------
 
-First, specify the roles that can login by api in the config form of the module.
-Note that to allow any roles to login, in particular global admins, increase the
+First, specify the roles that can log in by api in the config form of the module.
+Note that to allow any roles to log in, in particular global admins, increase the
 access points to check for security.
 
 The main path is `/api/guest[/:action]` with all following actions that output
@@ -133,7 +133,7 @@ data as [jSend]:
 
 - session-token
   A session token can be created for api access. It is reset each time the user
-  login or logout. The api keys have no limited life in Omeka.
+  logs in or logs out. The api keys have no limited life in Omeka.
 
 - register
   A visitor can register too, if allowed in the config. Register requires an
@@ -225,8 +225,8 @@ Copyright
 * Copyright Biblibre, 2016-2017
 * Copyright Daniel Berthereau, 2017-2025 (see [Daniel-KM] on GitLab)
 
-This module was based on a full rewrite of the plugin [Guest User] for [Omeka Classic]
-by [BibLibre].
+This module was initially based on a full rewrite of the plugin [Guest User]
+for [Omeka Classic] by [BibLibre].
 
 
 [Guest]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest

@@ -135,8 +135,8 @@ class SettingsFieldset extends Fieldset
                 'type' => Element\Text::class,
                 'options' => [
                     'element_group' => 'guest',
-                    'label' => 'Default login text', // @translate
-                    'info' => 'The text to use for the "Login" link in the user bar', // @translate
+                    'label' => 'Default log in text', // @translate
+                    'info' => 'The text to use for the "Log in" link in the user bar', // @translate
                 ],
                 'attributes' => [
                     'id' => 'guest_login_text',
@@ -283,7 +283,7 @@ class SettingsFieldset extends Fieldset
                     'placeholder' => <<<'MAIL'
                         Hi {user_name},
                         We are happy to open your account on {main_title} / {site_title} ({site_url}).
-                        You can now login and discover the site.
+                        You can now log in and discover the site.
                         MAIL, // @translate
                 ],
             ])
@@ -443,7 +443,7 @@ class SettingsFieldset extends Fieldset
                 'options' => [
                     'element_group' => 'guest',
                     'label' => 'Skip email validation on register', // @translate
-                    'info' => 'If checked, the user won’t have to validate his email, so he will be able to login directly.', // @translate
+                    'info' => 'If checked, the user won’t have to validate his email, so he will be able to log in directly.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'guest_register_email_is_valid',
@@ -454,7 +454,7 @@ class SettingsFieldset extends Fieldset
                 'type' => CommonElement\OptionalRoleSelect::class,
                 'options' => [
                     'element_group' => 'guest',
-                    'label' => 'Roles that can login via api', // @translate
+                    'label' => 'Roles that can log in via api', // @translate
                     'info' => 'To allow full access via api increases risks of intrusion.', // @translate
                     'empty_option' => '',
                     'prepend_value_options' => [
@@ -476,7 +476,7 @@ class SettingsFieldset extends Fieldset
                 'options' => [
                     'element_group' => 'guest',
                     'label' => 'Create a local session cookie for api', // @translate
-                    'info' => 'If checked, a session cookie will be created, so the user will be able to login in Omeka from an other web app.', // @translate
+                    'info' => 'If checked, a session cookie will be created, so the user will be able to log in in Omeka from an other web app.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'guest_login_session',

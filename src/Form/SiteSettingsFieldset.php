@@ -44,8 +44,8 @@ class SiteSettingsFieldset extends Fieldset
                 'type' => Element\Text::class,
                 'options' => [
                     'element_group' => 'guest',
-                    'label' => 'Login Text', // @translate
-                    'info' => 'The text to use for the "Login" link in the user bar', // @translate
+                    'label' => 'Log in Text', // @translate
+                    'info' => 'The text to use for the "Log in" link in the user bar', // @translate
                 ],
                 'attributes' => [
                     'id' => 'guest_login_text',
@@ -217,7 +217,7 @@ class SiteSettingsFieldset extends Fieldset
                     'placeholder' => <<<'MAIL'
                         Hi {user_name},
                         We are happy to open your account on {main_title} / {site_title} ({site_url}).
-                        You can now login and discover the site.
+                        You can now log in and discover the site.
                         MAIL, // @translate
                 ],
             ])
@@ -329,7 +329,7 @@ class SiteSettingsFieldset extends Fieldset
                 'type' => Element\Text::class,
                 'options' => [
                     'element_group' => 'guest',
-                    'label' => 'Redirect page after login', // @translate
+                    'label' => 'Redirect page after logging in', // @translate
                     'info' => 'Set "home" for home page (admin or public), "site" for the current site home, "top" for main public page, "me" for guest account, or any path starting with "/", including "/" itself for main home page.', // @translate
                 ],
                 'attributes' => [

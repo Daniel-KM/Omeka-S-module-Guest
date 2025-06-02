@@ -299,7 +299,7 @@ return [
             'guest_terms_request_regex' => '',
             'guest_terms_force_agree' => true,
             // Fields default when no site setting.
-            'guest_login_text' => 'Login', // @translate
+            'guest_login_text' => 'Log in', // @translate
             'guest_register_text' => 'Register', // @translate
             'guest_dashboard_label' => 'My dashboard', // @translate
             'guest_capabilities' => '',
@@ -328,7 +328,7 @@ return [
                 <p>Hi {user_name},</p>
                 <p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
                 <p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
-                <p>You can now login and discover the site.</p>
+                <p>You can now log in and discover the site.</p>
                 MAIL, // @translate
 
             'guest_message_update_email_subject' => '[{site_title}] Confirm email', // @translate
@@ -362,7 +362,7 @@ return [
 
         'site_settings' => [
             'guest_notify_register' => [],
-            'guest_login_text' => 'Login', // @translate
+            'guest_login_text' => 'Log in', // @translate
             'guest_register_text' => 'Register', // @translate
             'guest_login_without_form' => false,
             'guest_login_with_register' => false,
@@ -393,7 +393,7 @@ return [
                 <p>Hi {user_name},</p>
                 <p>We are happy to open your account on <a href="{site_url}">{site_title}</a> ({main_title}).</p>
                 <p>Please confirm your email by following this link: <a href="{token_url}">{token_url}</a>.</p>
-                <p>You can now login and discover the site.</p>
+                <p>You can now log in and discover the site.</p>
                 MAIL, // @translate
 
             'guest_message_update_email_subject' => '[{site_title}] Confirm email', // @translate

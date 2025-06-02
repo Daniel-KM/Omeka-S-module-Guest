@@ -382,7 +382,7 @@ class ApiController extends \Omeka\Controller\ApiController
 
         $sessionManager->destroy();
 
-        $message = $this->translate('Successfully logout.'); // @translate
+        $message = $this->translate('Successfully logged out.'); // @translate
         return $this->jSend(JSend::SUCCESS, null, $message);
     }
 

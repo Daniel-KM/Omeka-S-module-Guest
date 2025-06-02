@@ -10,7 +10,7 @@ class ConfigFormControllerTest extends GuestControllerTestCase
             ['guest_capabilities', 'long description', 'textarea'],
             ['guest_short_capabilities', 'short', 'textarea'],
             ['guest_dashboard_label', 'dashboard label', 'input'],
-            ['guest_login_text', 'Log !', 'input'],
+            ['guest_login_text', 'Log!', 'input'],
         ];
     }
 

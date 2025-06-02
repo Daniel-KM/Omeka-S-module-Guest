@@ -120,7 +120,7 @@ class GuestApiController extends AbstractActionController
     }
 
     /**
-     * Login via api.
+     * Log in via api.
      *
      * Here, it's not the true api, so there may be credentials that are not checked.
      */
@@ -134,7 +134,7 @@ class GuestApiController extends AbstractActionController
         $user = $this->loggedUser();
         if ($user) {
             return $this->jSend(JSend::FAIL, [
-                'user' => $this->translate('User cannot login: already logged.'), // @translate
+                'user' => $this->translate('User cannot log in: already logged.'), // @translate
             ]);
         }
 
@@ -187,7 +187,7 @@ class GuestApiController extends AbstractActionController
         $loginRoles = $this->settings()->get('guest_login_roles', []);
         if (!in_array('all', $loginRoles) && !in_array($role, $loginRoles)) {
             $message = new PsrMessage(
-                'Role "{role]" is not allowed to login via api.', // @translate
+                'Role "{role]" is not allowed to log in via api.', // @translate
                 ['role' => $role]
             );
             return $this->jSend(JSend::FAIL, [
@@ -278,7 +278,7 @@ class GuestApiController extends AbstractActionController
 
         $sessionManager->destroy();
 
-        $message = $this->translate('Successfully logout.'); // @translate
+        $message = $this->translate('Successfully logged out.'); // @translate
         return $this->jSend(JSend::SUCCESS, [
             'user' => null,
         ], $message);
