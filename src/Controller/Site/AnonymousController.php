@@ -174,6 +174,7 @@ class AnonymousController extends AbstractGuestController
         $request = $this->getRequest();
         $codeKey = $request->getQuery('resend_token');
         if ($codeKey) {
+            /** @var \TwoFactorAuth\Mvc\Controller\Plugin\TwoFactorLogin $twoFactorLogin */
             $twoFactorLogin = $this->twoFactorLogin();
             $result = $twoFactorLogin->resendToken();
         } else {
