@@ -832,12 +832,17 @@ class Module extends AbstractModule
         }
 
         /** @var \Guest\Entity\GuestToken $guestToken */
-        $token = $entityManager->getRepository(GuestToken::class)
-            ->findOneBy(['email' => $user->getEmail()], ['id' => 'DESC']);
-        if (!$token || $token->isConfirmed()) {
+        $tokens = $entityManager->getRepository(GuestToken::class)
+            ->findBy(['email' => $user->getEmail()], ['id' => 'DESC']);
+
+        // Check the last token only.
+        if (!count($tokens) || (reset($tokens))->isConfirmed()) {
             return;
         }
-        $entityManager->remove($token);
+
+        foreach ($tokens as $token) {
+            $entityManager->remove($token);
+        }
         $entityManager->flush();
     }
 
