@@ -3,6 +3,7 @@
 namespace Guest\Controller;
 
 use Common\Stdlib\PsrMessage;
+use Guest\Permissions\Acl as GuestAcl;
 use Laminas\Session\Container as SessionContainer;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Entity\User;
@@ -70,6 +71,31 @@ trait TraitGuestController
         return $this->siteSettings()->get($key)
             ?: $this->settings()->get($key)
             ?: ($this->getConfig()['guest']['settings'][$key] ?? null);
+    }
+
+    /**
+     * @todo Factorize.
+     * @see \Guest\Controller\TraitGuestController::getDefaultRole()
+     * @see \Guest\Site\BlockLayout\Register::getDefaultRole()
+     */
+    protected function getDefaultRole(): string
+    {
+        $settings = $this->settings();
+        $registerRoleDefault = $settings->get('guest_register_role_default') ?: GuestAcl::ROLE_GUEST;
+        if (!in_array($registerRoleDefault, $this->acl->getRoles(), true)) {
+            $this->logger()->warn(
+                'The role {role} is not valid. Role "guest" is used instead.', // @translate
+                ['role' => $registerRoleDefault]
+            );
+            $registerRoleDefault = GuestAcl::ROLE_GUEST;
+        } elseif ($this->acl->isAdminRole($registerRoleDefault)) {
+            $this->logger()->warn(
+                'The role {role} is an admin role and cannot be used for registering. Role "guest" is used instead.', // @translate
+                ['role' => $registerRoleDefault]
+            );
+            $registerRoleDefault = GuestAcl::ROLE_GUEST;
+        }
+        return $registerRoleDefault;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Guest\Site\BlockLayout;
 
+use Guest\Permissions\Acl as GuestAcl;
 use Laminas\Form\FormElementManager;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
@@ -10,6 +11,7 @@ use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Entity\User;
 use Omeka\Form\UserForm;
 use Omeka\Mvc\Controller\Plugin\Messenger;
+use Omeka\Permissions\Acl;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Site\BlockLayout\TemplateableBlockLayoutInterface;
 
@@ -19,6 +21,11 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
      * The default partial view script.
      */
     const PARTIAL_NAME = 'common/block-layout/guest-register';
+
+    /**
+     * @var \Omeka\Permissions\Acl $acl
+     */
+    protected $acl;
 
     /**
      * @var FormElementManager
@@ -36,10 +43,12 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
     protected $hasModuleUserNames;
 
     public function __construct(
+        Acl $acl,
         FormElementManager $formElementManager,
         Messenger $messenger,
         bool $hasModuleUserNames
     ) {
+        $this->acl = $acl;
         $this->formElementManager = $formElementManager;
         $this->messenger = $messenger;
         $this->hasModuleUserNames = $hasModuleUserNames;
@@ -95,8 +104,9 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
         }
 
         // Needed to prepare the form.
+        $roleDefault = $this->getDefaultRole();
         $user = new User();
-        $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
+        $user->setRole($roleDefault);
 
         $form = $this->getUserForm($user);
         $form->setAttribute('action', $urlRegister);
@@ -107,6 +117,31 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
             'form' => $form,
         ];
         return $view->partial($templateViewScript, $vars);
+    }
+
+    /**
+     * @todo Factorize.
+     * @see \Guest\Controller\TraitGuestController::getDefaultRole()
+     * @see \Guest\Site\BlockLayout\Register::getDefaultRole()
+     */
+    protected function getDefaultRole(): string
+    {
+        $settings = $this->settings();
+        $registerRoleDefault = $settings->get('guest_register_role_default') ?: GuestAcl::ROLE_GUEST;
+        if (!in_array($registerRoleDefault, $this->acl->getRoles(), true)) {
+            $this->logger()->warn(
+                'The role {role} is not valid. Role "guest" is used instead.', // @translate
+                ['role' => $registerRoleDefault]
+            );
+            $registerRoleDefault = GuestAcl::ROLE_GUEST;
+        } elseif ($this->acl->isAdminRole($registerRoleDefault)) {
+            $this->logger()->warn(
+                'The role {role} is an admin role and cannot be used for registering. Role "guest" is used instead.', // @translate
+                ['role' => $registerRoleDefault]
+            );
+            $registerRoleDefault = GuestAcl::ROLE_GUEST;
+        }
+        return $registerRoleDefault;
     }
 
     /**

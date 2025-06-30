@@ -44,6 +44,27 @@ class SettingsFieldset extends Fieldset
             ])
 
             ->add([
+                // This element is a select built with a factory, not a class.
+                // Anyway, it cannot be used simply, because it requires a value.
+                // 'type' => 'Omeka\Form\Element\RoleSelect',
+                'type' => CommonElement\OptionalRoleSelect::class,
+                'name' => 'guest_register_role_default',
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Default role on register', // @translate
+                    'info' => 'This option is useful for modules that create derivative roles for guests.', // @translate
+                    'empty_option' => '',
+                ],
+                'attributes' => [
+                    'id' => 'guest_register_role_default',
+                    'required' => false,
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Select role…', // @translate
+                    'value' => 'guest'
+                ],
+            ])
+
+            ->add([
                 'name' => 'guest_notify_register',
                 'type' => OmekaElement\ArrayTextarea::class,
                 'options' => [

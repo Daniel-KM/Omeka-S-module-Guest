@@ -26,6 +26,7 @@ class RegisterFactory implements FactoryInterface
         $plugins = $services->get('ControllerPluginManager');
 
         return new Register(
+            $services->get('Omeka\Acl'),
             $services->get('FormElementManager'),
             $plugins->get('messenger'),
             $hasModuleUserNames

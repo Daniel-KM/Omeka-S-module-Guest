@@ -18,6 +18,7 @@ use Omeka\Api\Manager as ApiManager;
 use Omeka\Entity\Site;
 use Omeka\Entity\SitePermission;
 use Omeka\Entity\User;
+use Omeka\Permissions\Acl;
 use Omeka\Stdlib\Paginator;
 use TwoFactorAuth\Form\TokenForm;
 
@@ -34,6 +35,11 @@ use TwoFactorAuth\Form\TokenForm;
 class GuestApiController extends AbstractActionController
 {
     use TraitGuestController;
+
+    /**
+     * @var \Omeka\Permissions\Acl $acl
+     */
+    protected $acl;
 
     /**
      * @var \Omeka\Api\Manager
@@ -81,6 +87,7 @@ class GuestApiController extends AbstractActionController
     protected $userAdapter;
 
     public function __construct(
+        Acl $acl,
         ApiManager $api,
         AuthenticationService $authenticationService,
         AuthenticationService $authenticationServiceSession,
@@ -91,6 +98,7 @@ class GuestApiController extends AbstractActionController
         TranslatorInterface $translator,
         UserAdapter $userAdapter
     ) {
+        $this->acl = $acl;
         $this->api = $api;
         $this->authenticationService = $authenticationService;
         $this->authenticationServiceSession = $authenticationServiceSession;
@@ -333,6 +341,11 @@ class GuestApiController extends AbstractActionController
             ]);
         }
 
+        // To create user with admin role, don't use register, but /api/users.
+        // Anyway, there should not be a lot of admins, so they should be
+        // managed manually.
+        $registerRoleDefault = $this->getDefaultRole();
+
         // Unlike api post for creation, the registering creates the user and
         // sends an email with a token.
 
@@ -405,7 +418,7 @@ class GuestApiController extends AbstractActionController
         $userInfo['o:email'] = $data['email'];
         $userInfo['o:name'] = $data['username'];
         // TODO Avoid to set the right to change role (fix core).
-        $userInfo['o:role'] = \Guest\Permissions\Acl::ROLE_GUEST;
+        $userInfo['o:role'] = $registerRoleDefault;
         $userInfo['o:is_active'] = false;
 
         // Before creation, check the email too to manage confirmation, rights
@@ -519,8 +532,7 @@ class GuestApiController extends AbstractActionController
         }
 
         $user->setPassword($data['password']);
-        // To create user with another role, don't use register, but /api/users.
-        $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
+        $user->setRole($registerRoleDefault);
         // The account is active, but not confirmed, so login is not possible.
         // Guest user has no right to set active his account.
         // Except if the option "email is valid" is set.

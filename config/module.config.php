@@ -292,6 +292,8 @@ return [
 
         'settings' => [
             'guest_open' => 'moderate',
+            // Admin roles are not allowed.
+            'guest_register_role_default' => 'guest',
             'guest_notify_register' => [],
             'guest_default_sites' => [],
             'guest_recaptcha' => false,

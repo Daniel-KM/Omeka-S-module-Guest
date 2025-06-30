@@ -26,6 +26,7 @@ class GuestApiControllerFactory implements FactoryInterface
         $authServiceSession = new AuthenticationService($storage, $adapter);
 
         return new GuestApiController(
+            $services->get('Omeka\Acl'),
             $services->get('Omeka\ApiManager'),
             $services->get('Omeka\AuthenticationService'),
             $authServiceSession,

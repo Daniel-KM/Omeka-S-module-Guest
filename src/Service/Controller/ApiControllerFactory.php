@@ -26,6 +26,7 @@ class ApiControllerFactory implements FactoryInterface
         $authServiceSession = new AuthenticationService($storage, $adapter);
 
         return new ApiController(
+            $services->get('Omeka\Acl'),
             $services->get('Omeka\ApiManager'),
             $services->get('Omeka\AuthenticationService'),
             $authServiceSession,

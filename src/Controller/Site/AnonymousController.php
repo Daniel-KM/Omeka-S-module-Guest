@@ -58,8 +58,9 @@ class AnonymousController extends AbstractGuestController
         if ($this->siteSettings()->get('guest_login_with_register')
             && $this->settings()->get('guest_open', 'moderate') !== 'closed'
         ) {
+            $defaultRole = $this->getDefaultRole();
             $user = new User();
-            $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
+            $user->setRole($defaultRole);
             $formRegister = $this->getUserForm($user);
             $urlRegister = $this->url()->fromRoute('site/guest/anonymous', [
                 'site-slug' => $this->currentSite()->slug(),
@@ -204,8 +205,13 @@ class AnonymousController extends AbstractGuestController
 
         $site = $this->currentSite();
 
+        // To create user with admin role, don't use register, but /api/users.
+        // Anyway, there should not be a lot of admins, so they should be
+        // managed manually.
+        $registerRoleDefault = $this->getDefaultRole();
+
         $user = new User();
-        $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
+        $user->setRole($registerRoleDefault);
         $form = $this->getUserForm($user);
 
         $view = new ViewModel([
@@ -237,7 +243,7 @@ class AnonymousController extends AbstractGuestController
 
         $userInfo = $values['user-information'];
         // TODO Avoid to set the right to change role (fix core).
-        $userInfo['o:role'] = \Guest\Permissions\Acl::ROLE_GUEST;
+        $userInfo['o:role'] = $registerRoleDefault;
         $userInfo['o:is_active'] = false;
 
         // Before creation, check the email too to manage confirmation, rights
@@ -340,8 +346,7 @@ class AnonymousController extends AbstractGuestController
         }
 
         $user->setPassword($password);
-        // To create user with another role, don't use register, but /api/users.
-        $user->setRole(\Guest\Permissions\Acl::ROLE_GUEST);
+        $user->setRole($registerRoleDefault);
         // The account is active, but not confirmed, so login is not possible.
         // Guest user has no right to set active his account.
         // Except if the option "email is valid" is set.
