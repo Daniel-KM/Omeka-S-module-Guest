@@ -376,6 +376,10 @@ return [
             'guest_register_text' => 'Register', // @translate
             'guest_login_without_form' => false,
             'guest_login_with_register' => false,
+            'guest_login_html_before' => '',
+            'guest_login_html_after' => '',
+            'guest_register_html_before' => '',
+            'guest_register_html_after' => '',
             'guest_dashboard_label' => 'My dashboard', // @translate
             'guest_capabilities' => '',
             // From Omeka classic, but not used.

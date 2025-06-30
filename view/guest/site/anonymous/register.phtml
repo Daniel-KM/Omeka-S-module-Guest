@@ -3,6 +3,8 @@
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var \Omeka\Api\Representation\SiteRepresentation $site
  * @var \Omeka\Form\UserForm $form
+ * @var string $htmlBeforeRegister
+ * @var string $htmlAfterRegister
  */
 
 // Similar to log in with register.
@@ -21,7 +23,15 @@ $form->prepare();
 
 <?= $pageTitle($siteSetting('guest_register_text') ?: ($setting('guest_register_text') ?: $translate('Register'))) ?>
 
-<div class="guest-anonymous guest-register">
+<div class="block-group guest-anonymous">
+
+<?php if ($htmlBeforeRegister): ?>
+<div class="block-html guest-anonymous">
+	<?= $htmlBeforeRegister ?>
+</div>
+<?php endif; ?>
+
+<div class="block-register guest-anonymous guest-register">
 
     <?= $this->messages() ?>
 
@@ -38,5 +48,13 @@ $form->prepare();
     <?= $this->form()->closeTag() ?>
 
     <?php $trigger('view.add.after'); ?>
+
+</div>
+
+<?php if ($htmlAfterRegister): ?>
+<div class="block-html guest-anonymous">
+	<?= $htmlAfterRegister ?>
+</div>
+<?php endif; ?>
 
 </div>

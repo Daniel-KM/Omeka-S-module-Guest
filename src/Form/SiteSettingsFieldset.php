@@ -91,6 +91,54 @@ class SiteSettingsFieldset extends Fieldset
             ])
 
             ->add([
+                'name' => 'guest_login_html_before',
+                'type' => OmekaElement\CkeditorInline::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Html to display before the login form', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_login_html_before',
+                ],
+            ])
+
+            ->add([
+                'name' => 'guest_login_html_after',
+                'type' => OmekaElement\CkeditorInline::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Text to display after the login form', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_login_html_after',
+                ],
+            ])
+
+            ->add([
+                'name' => 'guest_register_html_before',
+                'type' => OmekaElement\CkeditorInline::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Html to display before the registration form', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_register_html_before',
+                ],
+            ])
+
+            ->add([
+                'name' => 'guest_register_html_after',
+                'type' => OmekaElement\CkeditorInline::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Text to display after the registration form', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_register_html_after',
+                ],
+            ])
+
+            ->add([
                 'name' => 'guest_dashboard_label',
                 'type' => Element\Text::class,
                 'options' => [

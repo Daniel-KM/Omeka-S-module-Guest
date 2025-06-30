@@ -28,13 +28,15 @@ class AnonymousController extends AbstractGuestController
          */
 
         $site = $this->currentSite();
+        $settings = $this->settings();
+        $siteSettings = $this->siteSettings();
 
         // The process is slightly different from module TwoFactorAuth, because
         // there is no route for login-token.
 
         // Further, the ajax for 2fa-login is managed by module TwoFactorAuth.
 
-        $loginWithoutForm = (bool) $this->siteSettings()->get('guest_login_without_form');
+        $loginWithoutForm = (bool) $siteSettings->get('guest_login_without_form');
 
         // The TokenForm returns to the login action, so check it when needed.
         $request = $this->getRequest();
@@ -55,8 +57,9 @@ class AnonymousController extends AbstractGuestController
             ? null
             : $this->getForm($this->hasModuleUserNames() ? \UserNames\Form\LoginForm::class : LoginForm::class);
 
-        if ($this->siteSettings()->get('guest_login_with_register')
-            && $this->settings()->get('guest_open', 'moderate') !== 'closed'
+
+        if ($siteSettings->get('guest_login_with_register')
+            && $settings->get('guest_open', 'moderate') !== 'closed'
         ) {
             // Needed to prepare the form.
             $roleDefault = $this->getDefaultRole();
@@ -76,10 +79,14 @@ class AnonymousController extends AbstractGuestController
             'form' => $form,
             'formRegister' => $formRegister ?? null,
             'formToken' => null,
+            'htmlBeforeLogin' => $siteSettings->get('guest_login_html_before') ?: null,
+            'htmlAfterLogin' => $siteSettings->get('guest_login_html_after') ?: null,
+            'htmlBeforeRegister' => $siteSettings->get('guest_register_html_before') ?: null,
+            'htmlAfterRegister' => $siteSettings->get('guest_register_html_after') ?: null,
         ]);
 
         if (!$loginWithoutForm
-            && $this->settings()->get('twofactorauth_use_dialog')
+            && $settings->get('twofactorauth_use_dialog')
             && $this->getPluginManager()->has('twoFactorLogin')
         ) {
             // For ajax, use standard action.
@@ -205,6 +212,8 @@ class AnonymousController extends AbstractGuestController
         }
 
         $site = $this->currentSite();
+        $settings = $this->settings();
+        $siteSettings = $this->siteSettings();
 
         // To create user with admin role, don't use register, but /api/users.
         // Anyway, there should not be a lot of admins, so they should be
@@ -218,6 +227,8 @@ class AnonymousController extends AbstractGuestController
         $view = new ViewModel([
             'site' => $site,
             'form' => $form,
+            'htmlBeforeRegister' => $siteSettings->get('guest_register_html_before') ?: null,
+            'htmlAfterRegister' => $siteSettings->get('guest_register_html_after') ?: null,
         ]);
 
         if (!$this->checkPostAndValidForm($form)) {
@@ -359,7 +370,7 @@ class AnonymousController extends AbstractGuestController
         $user->setIsActive($isOpenRegister);
 
         // Add guest user to default sites.
-        $defaultSites = $this->settings()->get('guest_default_sites', []);
+        $defaultSites = $settings->get('guest_default_sites', []);
         if ($defaultSites) {
             // A guest user has no rights to manage site users, so use the
             // entity manager.
@@ -428,7 +439,7 @@ class AnonymousController extends AbstractGuestController
             'user_name' => $user->getName(),
             'site' => $site,
         ]);
-        $toEmails = $this->settings()->get('guest_notify_register') ?: null;
+        $toEmails = $settings->get('guest_notify_register') ?: null;
         $result = $this->sendEmail($message['body'], $message['subject'], $toEmails);
 
         $message = $this->isOpenRegister()

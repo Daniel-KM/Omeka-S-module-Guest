@@ -5,6 +5,10 @@
  * @var \Omeka\Form\LoginForm|null $form
  * @var \Omeka\Form\UserForm|null $formRegister
  * @var \TwoFactorAuth\Form\TokenForm $formToken
+ * @var string $htmlBeforeLogin
+ * @var string $htmlAfterLogin
+ * @var string $htmlBeforeRegister
+ * @var string $htmlAfterRegister
  */
 
 $plugins = $this->getHelperPluginManager();
@@ -35,7 +39,15 @@ if ($formToken) {
 
 <?= $pageTitle($siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?: $translate('Log in'))) ?>
 
-<div class="guest-anonymous guest-login">
+<div class="block-group guest-anonymous">
+
+<?php if ($htmlBeforeLogin): ?>
+<div class="block-html guest-anonymous">
+	<?= $htmlBeforeLogin ?>
+</div>
+<?php endif; ?>
+
+<div class="block-login guest-anonymous guest-login">
 
     <?= $this->messages() ?>
 
@@ -51,8 +63,21 @@ if ($formToken) {
 
 </div>
 
+<?php if ($htmlAfterLogin): ?>
+<div class="block-html guest-anonymous">
+	<?= $htmlAfterLogin ?>
+</div>
+<?php endif; ?>
+
 <?php if ($formRegister): ?>
-<div class="guest-anonymous guest-register">
+
+<?php if ($htmlBeforeRegister): ?>
+<div class="block-html guest-anonymous">
+	<?= $htmlBeforeRegister ?>
+</div>
+<?php endif; ?>
+
+<div class="block-register guest-anonymous guest-register">
 
     <?= $this->messages() ?>
 
@@ -71,4 +96,13 @@ if ($formToken) {
     <?php $trigger('view.add.after'); ?>
 
 </div>
+
+<?php if ($htmlAfterRegister): ?>
+<div class="block-html guest-anonymous">
+	<?= $htmlAfterRegister ?>
+</div>
 <?php endif; ?>
+
+<?php endif; ?>
+
+</div>
