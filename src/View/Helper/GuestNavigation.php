@@ -29,18 +29,35 @@ class GuestNavigation extends AbstractHtmlElement
     }
 
     /**
-     * Get the configured navigation for guest.
+     * Get the configured navigation for guest, managing role automatically.
      */
     public function __invoke(?SiteRepresentation $site = null, array $options = []): \Laminas\View\Helper\Navigation
     {
+        /**
+         * @var \Omeka\Entity\User $user
+         */
+
         $view = $this->getView();
 
-        return $this->guestNav(
-            $site ?? $view->currentSite(),
-            // If navigation is empty, use empty array: null means default nav.
-            $view->siteSetting('guest_navigation') ?: [],
-            $options
-        );
+        $site ??= $view->currentSite();
+
+        // Not possible.
+        $user = $view->identity();
+        if (!$user) {
+            return $this->guestNav($site, [], $options);
+        }
+
+        $plugins = $this->view->getHelperPluginManager();
+        $siteSetting = $plugins->get('siteSetting');
+
+        // Check if there are specific menus for roles via module Menu.
+        // If navigation is empty, use empty array: null means default nav.
+        $role = $user->getRole();
+        $menu = $siteSetting('menu_menu:role_' . $role)
+            ?: $siteSetting('guest_navigation')
+            ?: [];
+
+        return $this->guestNav($site, $menu, $options);
     }
 
     /**
