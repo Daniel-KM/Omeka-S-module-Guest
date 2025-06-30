@@ -50,6 +50,14 @@ the module to `Guest`.
 
 Then install it like any other Omeka module and follow the config instructions.
 
+### Issue on upgrade
+
+If you have a guest link in the main menu of the main site and the option to
+redirect the main login page is set, the site won't work and you won't be able
+to login during an upgrade of the module, even with the default login page /login.
+In that case, revert back to the current version of the module, login in the
+web interface, then upgrade the module on the system.
+
 ### Upgrade from module Guest User
 
 The automatic upgrade from module [GuestUser], for data, settings and theme
