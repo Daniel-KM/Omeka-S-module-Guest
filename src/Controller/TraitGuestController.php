@@ -338,8 +338,8 @@ trait TraitGuestController
         }
 
         // The url may be protected by html-purifier.
-        $subject = str_replace('%7Btoken_url%7D', '{token_url}', $subject);
-        $body = str_replace('%7Btoken_url%7D', '{token_url}', $body);
+        $subject = strtr($subject, ['%7Btoken_url%7D' => '{token_url}']);
+        $body = strtr($body, ['%7Btoken_url%7D' => '{token_url}']);
 
         if ($isText) {
             $subject = strip_tags($subject);

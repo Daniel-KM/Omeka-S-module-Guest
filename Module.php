@@ -450,7 +450,7 @@ class Module extends AbstractModule
                         : (!empty($idp['idp_entity_name'])
                             ? $idp['idp_entity_name']
                             : ($idp['entity_id'] ?? $idp['idp_entity_id'] ?? $view->translate('[Unknown idp]'))), // @translate
-                    'class' => str_replace(['.', ':'], '-', $idpName),
+                    'class' => strtr($idpName, ['.' => '-', ':' => '-']),
                 ];
             }
         }

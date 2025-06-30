@@ -39,7 +39,7 @@ class CreateGuestToken extends AbstractPlugin
         $tokenString = $short
             // TODO Improve the quality of the token to avoid repeated number.
             ? fn () => sprintf('%06d', random_int(102030, 989796))
-            : fn () => substr(str_replace(['+', '/', '='], ['', '', ''], base64_encode(random_bytes(128))), 0, 10);
+            : fn () => substr(strtr(base64_encode(random_bytes(128)), ['+' => '', '/' => '', '=' => '']), 0, 10);
 
         // Check if the token is unique (needed only for short code).
         do {
