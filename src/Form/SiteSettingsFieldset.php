@@ -339,14 +339,14 @@ class SiteSettingsFieldset extends Fieldset
             ])
 
             ->add([
-                'name' => 'guest_show_user_bar',
+                'name' => 'guest_show_user_bar_for_guest',
                 'type' => Element\Checkbox::class,
                 'options' => [
                     'element_group' => 'guest',
-                    'label' => 'Display user bar only for admin (require Omeka option)', // @translate
+                    'label' => 'Display user bar for guests (require Omeka option)', // @translate
                 ],
                 'attributes' => [
-                    'id' => 'guest_show_user_bar',
+                    'id' => 'guest_show_user_bar_for_guest',
                 ],
             ])
         ;

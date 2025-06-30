@@ -411,7 +411,7 @@ return [
             'guest_terms_text' => 'I agree the terms and conditions.', // @translate
             'guest_terms_page' => 'terms-and-conditions',
             'guest_redirect' => 'site',
-            'guest_user_bar' => false,
+            'guest_show_user_bar_for_guest' => false,
             // Not managed in settings, but in navigation.
             'guest_navigation' => [],
             'guest_navigation_home' => null,
