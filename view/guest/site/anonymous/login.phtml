@@ -39,15 +39,15 @@ if ($formToken) {
 
 <?= $pageTitle($siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?: $translate('Log in'))) ?>
 
-<div class="block-group guest-anonymous">
+<div class="block block-group guest-anonymous">
 
 <?php if ($htmlBeforeLogin): ?>
-<div class="block-html guest-anonymous">
-	<?= $htmlBeforeLogin ?>
+<div class="block block-html guest-anonymous">
+    <?= $htmlBeforeLogin ?>
 </div>
 <?php endif; ?>
 
-<div class="block-login guest-anonymous guest-login">
+<div class="block block-login guest-anonymous guest-login">
 
     <?= $this->messages() ?>
 
@@ -64,16 +64,16 @@ if ($formToken) {
 </div>
 
 <?php if ($htmlAfterLogin): ?>
-<div class="block-html guest-anonymous">
-	<?= $htmlAfterLogin ?>
+<div class="block block-html guest-anonymous">
+    <?= $htmlAfterLogin ?>
 </div>
 <?php endif; ?>
 
 <?php if ($formRegister): ?>
 
 <?php if ($htmlBeforeRegister): ?>
-<div class="block-html guest-anonymous">
-	<?= $htmlBeforeRegister ?>
+<div class="block block-html guest-anonymous">
+    <?= $htmlBeforeRegister ?>
 </div>
 <?php endif; ?>
 
@@ -98,8 +98,8 @@ if ($formToken) {
 </div>
 
 <?php if ($htmlAfterRegister): ?>
-<div class="block-html guest-anonymous">
-	<?= $htmlAfterRegister ?>
+<div class="block block-html guest-anonymous">
+    <?= $htmlAfterRegister ?>
 </div>
 <?php endif; ?>
 

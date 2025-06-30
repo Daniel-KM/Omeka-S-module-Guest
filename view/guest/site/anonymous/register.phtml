@@ -23,15 +23,15 @@ $form->prepare();
 
 <?= $pageTitle($siteSetting('guest_register_text') ?: ($setting('guest_register_text') ?: $translate('Register'))) ?>
 
-<div class="block-group guest-anonymous">
+<div class="block block-group guest-anonymous">
 
 <?php if ($htmlBeforeRegister): ?>
-<div class="block-html guest-anonymous">
-	<?= $htmlBeforeRegister ?>
+<div class="block block-html guest-anonymous">
+    <?= $htmlBeforeRegister ?>
 </div>
 <?php endif; ?>
 
-<div class="block-register guest-anonymous guest-register">
+<div class="block block-register guest-anonymous guest-register">
 
     <?= $this->messages() ?>
 
@@ -52,8 +52,8 @@ $form->prepare();
 </div>
 
 <?php if ($htmlAfterRegister): ?>
-<div class="block-html guest-anonymous">
-	<?= $htmlAfterRegister ?>
+<div class="block block-html guest-anonymous">
+    <?= $htmlAfterRegister ?>
 </div>
 <?php endif; ?>
 

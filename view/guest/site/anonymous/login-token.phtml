@@ -20,7 +20,7 @@ $htmlElement('body')->appendAttribute('class', 'guest login login-token');
 
 <?= $pageTitle($siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?: $translate('Log in'))) ?>
 
-<div class="guest-anonymous guest-login guest-login-token two-factor-auth-login">
+<div class="block block-anonymous guest-anonymous guest-login guest-login-token two-factor-auth-login">
 
     <?= $this->messages() ?>
 
