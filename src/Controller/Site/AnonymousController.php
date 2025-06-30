@@ -687,7 +687,7 @@ class AnonymousController extends AbstractGuestController
         return $this->settings()->get('guest_open') === 'open';
     }
 
-    protected function checkPostAndValidForm(\Laminas\Form\Form $form)
+    protected function checkPostAndValidForm(\Laminas\Form\Form $form): bool
     {
         if (!$this->getRequest()->isPost()) {
             return false;
@@ -695,12 +695,33 @@ class AnonymousController extends AbstractGuestController
 
         $postData = $this->params()->fromPost();
         $form->setData($postData);
-        if (!$form->isValid()) {
-            empty($this->hasModuleUserName)
-                ? $this->messenger()->addError('Email or password invalid') // @translate
-                : $this->messenger()->addError('User name, email, or password is invalid'); // @translate
-            return false;
+        if ($form->isValid()) {
+            return true;
         }
-        return true;
+
+        // For translations.
+        // TODO Get all laminas messages in omeka.
+        $messages = [
+            "Value is required and can't be empty", // @translate
+        ];
+
+        /** @var \Omeka\Mvc\Controller\Plugin\Messenger $messenger */
+        $messenger = $this->messenger();
+        $messages = $form->getMessages();
+
+        // Check if the issue is password related, in which case simplify
+        // the message for security.
+        if (!empty($messages['change-password'])) {
+            empty($this->hasModuleUserName)
+               ? $this->messenger()->addError('Email or password invalid') // @translate
+                : $this->messenger()->addError('User name, email, or password is invalid'); // @translate
+            unset($messages['change-password']);
+        }
+
+        if (!empty($messages)) {
+            $messenger->addErrors($messages);
+        }
+
+        return false;
     }
 }
