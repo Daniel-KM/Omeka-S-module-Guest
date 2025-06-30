@@ -26,6 +26,7 @@ trait TraitGuestController
      * @return \Laminas\Http\Response
      *
      * Adapted:
+     * @see \Contribute\Controller\Site\ContributionController::redirectAfterSubmit()
      * @see \Guest\Controller\Site\AbstractGuestController::redirectToAdminOrSite()
      * @see \Guest\Site\BlockLayout\TraitGuest::redirectToAdminOrSite()
      * @see \SingleSignOn\Controller\SsoController::redirectToAdminOrSite()
