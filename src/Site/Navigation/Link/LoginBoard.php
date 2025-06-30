@@ -20,14 +20,6 @@ class LoginBoard implements LinkInterface
 
     public function isValid(array $data, ErrorStore $errorStore)
     {
-        if (!isset($data['label-login'])) {
-            $errorStore->addError('o:navigation', 'Invalid navigation: log in link missing label'); // @translate
-            return false;
-        }
-        if (!isset($data['label-board'])) {
-            $errorStore->addError('o:navigation', 'Invalid navigation: user board missing label'); // @translate
-            return false;
-        }
         return true;
     }
 
