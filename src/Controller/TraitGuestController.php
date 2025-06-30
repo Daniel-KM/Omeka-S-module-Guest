@@ -276,7 +276,7 @@ trait TraitGuestController
 
             case 'validate-email':
                 $subject = $getValue('guest_message_confirm_email_subject');
-                $body = $getValue('guest_message_confirm_email_subject');
+                $body = $getValue('guest_message_confirm_email');
                 break;
 
             // Allows to manage derivative modules.
