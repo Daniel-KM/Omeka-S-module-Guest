@@ -194,3 +194,22 @@ if (version_compare($oldVersion, '3.4.33', '<')) {
     );
     $messenger->addSuccess($message);
 }
+
+if (version_compare($oldVersion, '3.4.37', '<')) {
+    $settings->set('guest_register_role_default', 'guest');
+    $settings->set('guest_allowed_roles', ['guest']);
+    $settings->set('guest_allowed_roles_pages', []);
+
+    $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
+    foreach ($siteIds as $siteId) {
+        $siteSettings->setTargetId($siteId);
+        $siteSettings->set('guest_show_user_bar_for_guest', false);
+        $siteSettings->delete('guest_user_bar');
+        $siteSettings->delete('guest_show_user_bar');
+    }
+
+    $message = new PsrMessage(
+        'It is now possible to define the role on registering.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
