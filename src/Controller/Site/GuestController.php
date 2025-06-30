@@ -279,7 +279,7 @@ class GuestController extends AbstractGuestController
             'user_name' => $user->getName(),
             'token' => $guestToken,
         ]);
-        $result = $this->sendEmail($message['subject'], $message['body'], [$email => $user->getName()]);
+        $result = $this->sendEmail($message['body'], $message['subject'], [$email => $user->getName()]);
         if (!$result) {
             $message = new PsrMessage('An error occurred when the email was sent.'); // @translate
             $this->messenger()->addError($message);

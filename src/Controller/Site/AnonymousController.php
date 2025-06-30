@@ -389,7 +389,7 @@ class AnonymousController extends AbstractGuestController
                     'url' => $this->url()->fromRoute('admin/id', ['controller' => 'user', 'id' => $user->getId()], ['force_canonical' => true]),
                 ]
             );
-            $result = $this->sendEmail($this->translate('[Omeka Guest] New registration'), $message, $emails); // @translate
+            $result = $this->sendEmail($message, $this->translate('[Omeka Guest] New registration'), $emails); // @translate
             if (!$result) {
                 $message = new PsrMessage('An error occurred when the notification email was sent.'); // @translate
                 $this->messenger()->addError($message);
@@ -404,7 +404,7 @@ class AnonymousController extends AbstractGuestController
             'user_name' => $user->getName(),
             'token' => $guestToken,
         ]);
-        $result = $this->sendEmail($message['subject'], $message['body'], [$user->getEmail() => $user->getName()]);
+        $result = $this->sendEmail($message['body'], $message['subject'], [$user->getEmail() => $user->getName()]);
         if (!$result) {
             $message = new PsrMessage('An error occurred when the email was sent.'); // @translate
             $this->messenger()->addError($message);
@@ -419,7 +419,7 @@ class AnonymousController extends AbstractGuestController
             'site' => $site,
         ]);
         $toEmails = $this->settings()->get('guest_notify_register') ?: null;
-        $result = $this->sendEmail($message['subject'], $message['body'], $toEmails);
+        $result = $this->sendEmail($message['body'], $message['subject'], $toEmails);
 
         $message = $this->isOpenRegister()
             ? $this->getOption('guest_message_confirm_register_site')
@@ -538,7 +538,7 @@ class AnonymousController extends AbstractGuestController
                         'url' => $this->url()->fromRoute('admin/id', ['controller' => 'user', 'id' => $user->getId()], ['force_canonical' => true]),
                     ]
                 );
-                $result = $this->sendEmail($this->translate('[Omeka Guest] New registration'), $message, $emails); // @translate
+                $result = $this->sendEmail($message, $this->translate('[Omeka Guest] New registration'), $emails); // @translate
                 if (!$result) {
                     $message = new PsrMessage('An error occurred when the notification email was sent.'); // @translate
                     $this->messenger()->addError($message);

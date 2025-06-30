@@ -796,8 +796,9 @@ class Module extends AbstractModule
         $subject = new PsrMessage($subject, $data);
         $body = new PsrMessage($body, $data);
 
+        /** @var \Common\Mvc\Controller\Plugin\SendEmail $sendMail */
         $sendEmail = $services->get('ControllerPluginManager')->get('sendEmail');
-        $result = $sendEmail($subject, $body, [$user->getEmail() => $user->getName()]);
+        $result = $sendEmail((string) $body, $subject, [$user->getEmail() => $user->getName()]);
         if ($result) {
             $isSent = true;
             $message = new PsrMessage('The message of confirmation of the registration has been sent.'); // @translate

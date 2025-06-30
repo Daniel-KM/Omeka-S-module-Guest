@@ -588,7 +588,7 @@ class GuestApiController extends AbstractActionController
             'token' => $guestToken,
             'site' => $site,
         ]);
-        $result = $this->sendEmail($message['subject'], $message['body'], [$user->getEmail() => $user->getName()]);
+        $result = $this->sendEmail($message['body'], $message['subject'], [$user->getEmail() => $user->getName()]);
         if (!$result) {
             return $this->jSend(JSend::ERROR, null,
                 $this->translate('An error occurred when the email was sent.') // @translate
@@ -603,7 +603,7 @@ class GuestApiController extends AbstractActionController
         ]);
 
         $toEmails = $this->settings()->get('guest_notify_register') ?: null;
-        $result = $this->sendEmail($message['subject'], $message['body'], $toEmails);
+        $result = $this->sendEmail($message['body'], $message['subject'], $toEmails);
 
         if ($emailIsAlwaysValid) {
             $message = $this->settings()->get('guest_message_confirm_register_site')
@@ -1144,7 +1144,7 @@ class GuestApiController extends AbstractActionController
             'user_name' => $user->getName(),
             'token' => $guestToken,
         ], $site);
-        $result = $this->sendEmail($message['subject'], $message['body'], [$email => $user->getName()]);
+        $result = $this->sendEmail($message['body'], $message['subject'], [$email => $user->getName()]);
         if (!$result) {
             $this->logger()->err('[GuestApi] An error occurred when the email was sent.'); // @translate
             return $this->jSend(JSend::ERROR, null,
