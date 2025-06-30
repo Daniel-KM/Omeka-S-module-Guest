@@ -15,6 +15,7 @@ $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
 $trigger = $plugins->get('trigger');
 $setting = $plugins->get('setting');
+$escape = $plugins->get('escapeHtml');
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
@@ -23,6 +24,8 @@ $headLink = $plugins->get('headLink');
 $siteSetting = $plugins->get('siteSetting');
 $headScript = $plugins->get('headScript');
 $htmlElement = $plugins->get('htmlElement');
+
+$breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;
 
 $htmlElement('body')->appendAttribute('class', 'guest login' . ($formToken ? ' two-factor-auth-login' : ''));
 
@@ -35,9 +38,24 @@ if ($formToken) {
     $headScript
         ->appendFile($assetUrl('js/two-factor-auth.js', 'TwoFactorAuth'), 'text/javascript', ['defer' => 'defer']);
 }
+
+$pageLabel = $siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?: $translate('Log in'));
 ?>
 
-<?= $pageTitle($siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?: $translate('Log in'))) ?>
+<?php if ($breadcrumbs): ?>
+    <?= $breadcrumbs() ?>
+<?php else: ?>
+<div class="breadcrumbs-parent">
+    <nav id="breadcrumb" class="breadcrumbs" aria-label="<?= $translate('Breadcrumb') ?>">
+        <ol>
+            <li><?= $hyperlink($translate('Home'), $site->siteUrl()) ?></li>
+            <li><span aria-current="page"><?= $escape($pageLabel) ?></span></li>
+        </ol>
+    </nav>
+</div>
+<?php endif; ?>
+
+<?= $pageTitle($pageLabel) ?>
 
 <div class="block block-group guest-anonymous">
 

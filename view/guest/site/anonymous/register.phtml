@@ -12,16 +12,35 @@
 $plugins = $this->getHelperPluginManager();
 $trigger = $plugins->get('trigger');
 $setting = $plugins->get('setting');
+$escape = $plugins->get('escapeHtml');
 $translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
 $pageTitle = $plugins->get('pageTitle');
 $siteSetting = $plugins->get('siteSetting');
 $htmlElement = $plugins->get('htmlElement');
 
-$htmlElement('body')->appendAttribute('class', 'guest register');
+$breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;
+
+$htmlElement('body')->appendAttribute('class', 'guest guest-register');
 $form->prepare();
+
+$pageLabel = $siteSetting('guest_register_text') ?: ($setting('guest_register_text') ?: $translate('Register'));
 ?>
 
-<?= $pageTitle($siteSetting('guest_register_text') ?: ($setting('guest_register_text') ?: $translate('Register'))) ?>
+<?php if ($breadcrumbs): ?>
+    <?= $breadcrumbs() ?>
+<?php else: ?>
+<div class="breadcrumbs-parent">
+    <nav id="breadcrumb" class="breadcrumbs" aria-label="<?= $translate('Breadcrumb') ?>">
+        <ol>
+            <li><?= $hyperlink($translate('Home'), $site->siteUrl()) ?></li>
+            <li><span aria-current="page"><?= $escape($pageLabel) ?></span></li>
+        </ol>
+    </nav>
+</div>
+<?php endif; ?>
+
+<?= $pageTitle($pageLabel) ?>
 
 <div class="block block-group guest-anonymous">
 

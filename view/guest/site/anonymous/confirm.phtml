@@ -4,8 +4,32 @@
  * @var \Omeka\Api\Representation\SiteRepresentation $site
  */
 
-$this->htmlElement('body')->appendAttribute('class', 'guest login');
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+$pageTitle = $plugins->get('pageTitle');
+$hyperlink = $plugins->get('hyperlink');
+$htmlElement = $plugins->get('htmlElement');
+
+$breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;
+
+$htmlElement('body')->appendAttribute('class', 'guest guest-login register');
 ?>
+
+<?php if ($breadcrumbs): ?>
+    <?= $breadcrumbs() ?>
+<?php else: ?>
+<div class="breadcrumbs-parent">
+    <nav id="breadcrumb" class="breadcrumbs" aria-label="<?= $translate('Breadcrumb') ?>">
+        <ol>
+            <li><?= $hyperlink($translate('Home'), $site->siteUrl()) ?></li>
+            <li><span aria-current="page"><?= $escape('Confirmation of registration') ?></span></li>
+        </ol>
+    </nav>
+</div>
+<?php endif; ?>
+
+<?= $pageTitle($translate('Confirmation of registration')) ?>
 
 <div class="block block-anonymous guest-anonymous guest-confirm">
 
