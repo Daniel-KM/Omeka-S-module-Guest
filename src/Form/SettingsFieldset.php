@@ -60,7 +60,40 @@ class SettingsFieldset extends Fieldset
                     'required' => false,
                     'class' => 'chosen-select',
                     'data-placeholder' => 'Select role…', // @translate
-                    'value' => 'guest'
+                    'value' => 'guest',
+                ],
+            ])
+            ->add([
+                'type' => CommonElement\OptionalRoleSelect::class,
+                'name' => 'guest_allowed_roles',
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Allowed roles for guest', // @translate
+                    'info' => 'This option is useful for modules that create derivative roles for guests.', // @translate
+                    'empty_option' => '',
+                ],
+                'attributes' => [
+                    'id' => 'guest_allowed_roles',
+                    'multiple' => true,
+                    'required' => false,
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Select roles…', // @translate
+                ],
+            ])
+            ->add([
+                'type' => CommonElement\OptionalMultiCheckbox::class,
+                'name' => 'guest_allowed_roles_pages',
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Pages where the user may select an allowed role', // @translate
+                    'value_options' => [
+                        'register' => 'Register', // @translate
+                        'update' => 'Update account', // @translate
+                    ],
+                ],
+                'attributes' => [
+                    'id' => 'guest_allowed_roles_pages',
+                    'required' => false,
                 ],
             ])
 

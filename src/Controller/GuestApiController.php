@@ -344,7 +344,7 @@ class GuestApiController extends AbstractActionController
         // To create user with admin role, don't use register, but /api/users.
         // Anyway, there should not be a lot of admins, so they should be
         // managed manually.
-        $registerRoleDefault = $this->getDefaultRole();
+        $roleDefault = $this->getDefaultRole();
 
         // Unlike api post for creation, the registering creates the user and
         // sends an email with a token.
@@ -357,7 +357,7 @@ class GuestApiController extends AbstractActionController
         // When the data come from the user form, it can be checked directly.
         // Furthermore, some data should be reordered.
         if (isset($data['user-information']['o:email'])) {
-            $form = $this->getUserForm();
+            $form = $this->getUserForm(null, 'register');
             $form->setData($data);
             if (!$form->isValid()) {
                 // TODO Add flat messages (common 3.4.65).
@@ -412,13 +412,17 @@ class GuestApiController extends AbstractActionController
             $data['password'] = null;
         }
 
+        $roleUser = $this->isAllowedRole($data['o:role'] ?? null, 'register')
+            ? $data['o:role']
+            : $roleDefault;
+
         $emailIsAlwaysValid = $settings->get('guest_register_email_is_valid');
 
         $userInfo = [];
         $userInfo['o:email'] = $data['email'];
         $userInfo['o:name'] = $data['username'];
         // TODO Avoid to set the right to change role (fix core).
-        $userInfo['o:role'] = $registerRoleDefault;
+        $userInfo['o:role'] = $roleUser;
         $userInfo['o:is_active'] = false;
 
         // Before creation, check the email too to manage confirmation, rights
@@ -531,8 +535,10 @@ class GuestApiController extends AbstractActionController
             // so it is a new user in any case).
         }
 
+        // The user was created. Complete it.
+
         $user->setPassword($data['password']);
-        $user->setRole($registerRoleDefault);
+        $user->setRole($roleUser);
         // The account is active, but not confirmed, so login is not possible.
         // Guest user has no right to set active his account.
         // Except if the option "email is valid" is set.
@@ -850,7 +856,7 @@ class GuestApiController extends AbstractActionController
             ];
             try {
                 $form = $dialog === 'register'
-                    ? $this->getUserForm()
+                    ? $this->getUserForm(null, 'register')
                     : $this->getForm($dialogForms[$dialog]);
             } catch (\Exception $e) {
                 return $this->jSend(JSend::ERROR, null,

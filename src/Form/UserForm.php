@@ -56,6 +56,25 @@ class UserForm extends \Omeka\Form\UserForm
             ],
         ]);
 
+        if ($this->getOption('include_role') && $this->getOption('allowed_roles')) {
+            $excludeAdminRoles = !$this->getOption('include_admin_roles');
+            $roles = $this->getAcl()->getRoleLabels($excludeAdminRoles);
+            $roles = array_intersect_key($roles, array_flip($this->getOption('allowed_roles')));
+            $this->get('user-information')->add([
+                'name' => 'o:role',
+                'type' => 'select',
+                'options' => [
+                    'label' => 'Role', // @translate
+                    'empty_option' => 'Select role…', // @translate
+                    'value_options' => $roles,
+                ],
+                'attributes' => [
+                    'id' => 'role',
+                    'required' => true,
+                ],
+            ]);
+        }
+
         $userId = $this->getOption('user_id');
         $locale = $userId ? $this->userSettings->get('locale', null, $userId) : null;
         if (null === $locale) {

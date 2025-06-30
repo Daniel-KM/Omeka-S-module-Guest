@@ -108,7 +108,7 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
         $user = new User();
         $user->setRole($roleDefault);
 
-        $form = $this->getUserForm($user);
+        $form = $this->getUserForm($user, 'register');
         $form->setAttribute('action', $urlRegister);
 
         $vars = [
@@ -151,15 +151,29 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
      * @see \Guest\Controller\Site\AbstractGuestController::getUserForm()
      * @see \Guest\Site\BlockLayout\Register::getUserForm()
      */
-    protected function getUserForm(?User $user = null): UserForm
+    protected function getUserForm(?User $user = null, ?string $page = null): UserForm
     {
         $hasUser = $user && $user->getId();
+
+        $includeRole = false;
+        $allowedRoles = [];
+        if ($page) {
+            $settings = $this->settings();
+            $allowedRoles = $settings->get('guest_allowed_roles', []);
+            $allowedPages = $settings->get('guest_allowed_roles_pages', []);
+            if (count($allowedRoles) > 1 && in_array($page, $allowedPages)) {
+                $includeRole = true;
+            } else {
+                $allowedRoles = [];
+            }
+        }
 
         $options = [
             'is_public' => true,
             'user_id' => $user ? $user->getId() : 0,
-            'include_role' => false,
+            'include_role' => $includeRole,
             'include_admin_roles' => false,
+            'allowed_roles' => $allowedRoles,
             'include_is_active' => false,
             'current_password' => $hasUser,
             'include_password' => true,

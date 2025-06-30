@@ -107,7 +107,7 @@ class GuestController extends AbstractGuestController
         $userRepr = $this->api()->read('users', $id)->getContent();
         $data = $userRepr->jsonSerialize();
 
-        $form = $this->getUserForm($user);
+        $form = $this->getUserForm($user, 'update');
         if ($form->has('user-information')) {
             $form->get('user-information')->populateValues($data);
         }
@@ -141,11 +141,16 @@ class GuestController extends AbstractGuestController
         $postData = $this->params()->fromPost();
 
         // A security.
+
         unset($postData['user-information']['o:id']);
         unset($postData['user-information']['o:email']);
-        unset($postData['user-information']['o:role']);
         unset($postData['user-information']['o:is_active']);
         unset($postData['edit-keys']);
+        $isAllowedRole = $this->isAllowedRole($postData['user-information']['o:role'] ?? null, 'update');
+        if (!$isAllowedRole) {
+            unset($postData['user-information']['o:role']);
+        }
+
         $postData['user-information'] = array_replace(
             $data,
             array_intersect_key($postData['user-information'], $data)

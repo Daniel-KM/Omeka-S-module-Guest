@@ -98,6 +98,17 @@ trait TraitGuestController
         return $registerRoleDefault;
     }
 
+    protected function isAllowedRole(?string $role, ?string $page): bool
+    {
+        $settings = $this->settings();
+        return $role
+            && $page
+            && in_array($page, $settings->get('guest_allowed_roles_pages', []), true)
+            && in_array($role, $settings->get('guest_allowed_roles', []), true)
+            && !$this->acl->isAdminRole($role)
+        ;
+    }
+
     /**
      * Prepare the user form for public view.
      *
@@ -105,15 +116,29 @@ trait TraitGuestController
      * @see \Guest\Controller\Site\AbstractGuestController::getUserForm()
      * @see \Guest\Site\BlockLayout\Register::getUserForm()
      */
-    protected function getUserForm(?User $user = null): UserForm
+    protected function getUserForm(?User $user = null, ?string $page = null): UserForm
     {
         $hasUser = $user && $user->getId();
+
+        $includeRole = false;
+        $allowedRoles = [];
+        if ($page) {
+            $settings = $this->settings();
+            $allowedRoles = $settings->get('guest_allowed_roles', []);
+            $allowedPages = $settings->get('guest_allowed_roles_pages', []);
+            if (count($allowedRoles) > 1 && in_array($page, $allowedPages)) {
+                $includeRole = true;
+            } else {
+                $allowedRoles = [];
+            }
+        }
 
         $options = [
             'is_public' => true,
             'user_id' => $user ? $user->getId() : 0,
-            'include_role' => false,
+            'include_role' => $includeRole,
             'include_admin_roles' => false,
+            'allowed_roles' => $allowedRoles,
             'include_is_active' => false,
             'current_password' => $hasUser,
             'include_password' => true,

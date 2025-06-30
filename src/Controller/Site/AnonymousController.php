@@ -58,10 +58,11 @@ class AnonymousController extends AbstractGuestController
         if ($this->siteSettings()->get('guest_login_with_register')
             && $this->settings()->get('guest_open', 'moderate') !== 'closed'
         ) {
-            $defaultRole = $this->getDefaultRole();
+            // Needed to prepare the form.
+            $roleDefault = $this->getDefaultRole();
             $user = new User();
-            $user->setRole($defaultRole);
-            $formRegister = $this->getUserForm($user);
+            $user->setRole($roleDefault);
+            $formRegister = $this->getUserForm($user, 'register');
             $urlRegister = $this->url()->fromRoute('site/guest/anonymous', [
                 'site-slug' => $this->currentSite()->slug(),
                 'controller' => \Guest\Controller\Site\AnonymousController::class,
@@ -208,11 +209,11 @@ class AnonymousController extends AbstractGuestController
         // To create user with admin role, don't use register, but /api/users.
         // Anyway, there should not be a lot of admins, so they should be
         // managed manually.
-        $registerRoleDefault = $this->getDefaultRole();
+        $roleDefault = $this->getDefaultRole();
 
         $user = new User();
-        $user->setRole($registerRoleDefault);
-        $form = $this->getUserForm($user);
+        $user->setRole($roleDefault);
+        $form = $this->getUserForm($user, 'register');
 
         $view = new ViewModel([
             'site' => $site,
@@ -241,9 +242,13 @@ class AnonymousController extends AbstractGuestController
             $password = $values['change-password']['password-confirm']['password'];
         }
 
+        $roleUser = $this->isAllowedRole($values['user-information']['o:role'] ?? null, 'register')
+            ? $values['user-information']['o:role']
+            : $roleDefault;
+
         $userInfo = $values['user-information'];
         // TODO Avoid to set the right to change role (fix core).
-        $userInfo['o:role'] = $registerRoleDefault;
+        $userInfo['o:role'] = $roleUser;
         $userInfo['o:is_active'] = false;
 
         // Before creation, check the email too to manage confirmation, rights
@@ -346,7 +351,7 @@ class AnonymousController extends AbstractGuestController
         }
 
         $user->setPassword($password);
-        $user->setRole($registerRoleDefault);
+        $user->setRole($roleUser);
         // The account is active, but not confirmed, so login is not possible.
         // Guest user has no right to set active his account.
         // Except if the option "email is valid" is set.

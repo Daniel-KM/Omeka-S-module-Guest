@@ -85,60 +85,6 @@ class Module extends AbstractModule
         $this->installAuto($services);
     }
 
-    /**
-     * @deprecated See Common 3.4.66.
-     */
-    protected function installAuto(ServiceLocatorInterface $services): void
-    {
-        $this->setServiceLocator($services);
-
-        $this->initTranslations();
-
-        /**@var \Laminas\Mvc\I18n\Translator $translator */
-        $translator = $services->get('MvcTranslator');
-
-        $this->preInstall();
-        if (!$this->checkDependencies()) {
-            if (count($this->dependencies) === 1) {
-                $message = new PsrMessage(
-                    'This module requires the module "{module}".', // @translate
-                    ['module' => reset($this->dependencies)]
-                );
-            } else {
-                $message = new PsrMessage(
-                    'This module requires modules "{modules}".', // @translate
-                    ['modules' => implode('", "', $this->dependencies)]
-                );
-            }
-            throw new ModuleCannotInstallException((string) $message->setTranslator($translator));
-        }
-
-        if (!$this->checkAllResourcesToInstall()) {
-            $message = new PsrMessage(
-                'This module has resources that cannot be installed.' // @translate
-            );
-            throw new ModuleCannotInstallException((string) $message->setTranslator($translator));
-        }
-
-        $sqlFile = $this->modulePath() . '/data/install/schema.sql';
-        if (!$this->checkNewTablesFromFile($sqlFile)) {
-            $message = new PsrMessage(
-                'This module cannot install its tables, because they exist already. Try to remove them first.' // @translate
-            );
-            throw new ModuleCannotInstallException((string) $message->setTranslator($translator));
-        }
-
-        $this->execSqlFromFile($sqlFile);
-
-        $this
-            ->installAllResources()
-            ->manageConfig('install')
-            ->manageMainSettings('install')
-            ->manageSiteSettings('install')
-            ->manageUserSettings('install')
-            ->postInstall();
-    }
-
     protected function preInstall(): void
     {
         $services = $this->getServiceLocator();
@@ -153,12 +99,20 @@ class Module extends AbstractModule
         }
     }
 
+    protected function postInstall(): void
+    {
+        $services = $this->getServiceLocator();
+        $settings = $services->get('Omeka\Settings');
+        $settings->set('guest_allowed_roles', [Acl::ROLE_GUEST]);
+        $settings->set('guest_allowed_roles_pages', []);
+    }
+
     protected function preUninstall(): void
     {
         $this->deactivateGuests();
     }
 
-    protected function preUpgrade(): void
+    protected function preUpgrade(?string $oldVersion, ?string $newVersion): void
     {
         // Required during upgrade because the role is set in config.
         require_once __DIR__ . '/src/Permissions/Acl.php';

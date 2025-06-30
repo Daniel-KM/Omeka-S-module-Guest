@@ -294,6 +294,14 @@ return [
             'guest_open' => 'moderate',
             // Admin roles are not allowed.
             'guest_register_role_default' => 'guest',
+            'guest_allowed_roles' => [
+                // Set during install.
+                // 'guest',
+            ],
+            'guest_allowed_roles_pages' => [
+                // 'register',
+                // 'update',
+            ],
             'guest_notify_register' => [],
             'guest_default_sites' => [],
             'guest_recaptcha' => false,
