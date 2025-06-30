@@ -194,7 +194,7 @@ class GuestController extends AbstractGuestController
         unset($values['user-settings'], $values['o:settings']);
 
         // Only allow default keys (may be added by module like UserProfile).
-        $values['o:setting'] = array_intersect_key($values['o:setting'], $data['o:setting']);
+        $values['o:setting'] = array_intersect_key($values['o:setting'] ?? [], $data['o:setting'] ?? []);
 
         if (!empty($values['o:setting']) && is_array($values['o:setting'])) {
             $userSettings = $this->userSettings();
