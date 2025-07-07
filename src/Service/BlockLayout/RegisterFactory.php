@@ -28,7 +28,9 @@ class RegisterFactory implements FactoryInterface
         return new Register(
             $services->get('Omeka\Acl'),
             $services->get('FormElementManager'),
+            $services->get('Omeka\Logger'),
             $plugins->get('messenger'),
+            $services->get('Omeka\Settings'),
             $hasModuleUserNames
         );
     }

@@ -4,6 +4,7 @@ namespace Guest\Site\BlockLayout;
 
 use Guest\Permissions\Acl as GuestAcl;
 use Laminas\Form\FormElementManager;
+use Laminas\Log\Logger;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
@@ -12,6 +13,7 @@ use Omeka\Entity\User;
 use Omeka\Form\UserForm;
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Permissions\Acl;
+use Omeka\Settings\Settings;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Site\BlockLayout\TemplateableBlockLayoutInterface;
 
@@ -33,9 +35,19 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
     protected $formElementManager;
 
     /**
+     * @var \Laminas\Log\Logger
+     */
+    protected $logger;
+
+    /**
      * @var Messenger
      */
     protected $messenger;
+
+    /**
+     * @var \Omeka\Settings\Settings
+     */
+    protected $settings;
 
     /**
      * @var bool
@@ -45,12 +57,16 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
     public function __construct(
         Acl $acl,
         FormElementManager $formElementManager,
+        Logger $logger,
         Messenger $messenger,
+        Settings $settings,
         bool $hasModuleUserNames
     ) {
         $this->acl = $acl;
         $this->formElementManager = $formElementManager;
+        $this->logger = $logger;
         $this->messenger = $messenger;
+        $this->settings = $settings;
         $this->hasModuleUserNames = $hasModuleUserNames;
     }
 
@@ -126,16 +142,15 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
      */
     protected function getDefaultRole(): string
     {
-        $settings = $this->settings();
-        $registerRoleDefault = $settings->get('guest_register_role_default') ?: GuestAcl::ROLE_GUEST;
+        $registerRoleDefault = $this->settings->get('guest_register_role_default') ?: GuestAcl::ROLE_GUEST;
         if (!in_array($registerRoleDefault, $this->acl->getRoles(), true)) {
-            $this->logger()->warn(
+            $this->logger->warn(
                 'The role {role} is not valid. Role "guest" is used instead.', // @translate
                 ['role' => $registerRoleDefault]
             );
             $registerRoleDefault = GuestAcl::ROLE_GUEST;
         } elseif ($this->acl->isAdminRole($registerRoleDefault)) {
-            $this->logger()->warn(
+            $this->logger->warn(
                 'The role {role} is an admin role and cannot be used for registering. Role "guest" is used instead.', // @translate
                 ['role' => $registerRoleDefault]
             );
@@ -158,9 +173,8 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
         $includeRole = false;
         $allowedRoles = [];
         if ($page) {
-            $settings = $this->settings();
-            $allowedRoles = $settings->get('guest_allowed_roles', []);
-            $allowedPages = $settings->get('guest_allowed_roles_pages', []);
+            $allowedRoles = $this->settings->get('guest_allowed_roles', []);
+            $allowedPages = $this->settings->get('guest_allowed_roles_pages', []);
             if (count($allowedRoles) > 1 && in_array($page, $allowedPages)) {
                 $includeRole = true;
             } else {
