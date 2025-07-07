@@ -7,7 +7,7 @@ use Common\Stdlib\PsrMessage;
 use Doctrine\ORM\EntityManager;
 use Guest\Entity\GuestToken;
 use Laminas\Authentication\AuthenticationService;
-use Laminas\Http\Response;
+use Laminas\Http\Response as HttpResponse;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Laminas\Math\Rand;
 use Laminas\Mvc\Controller\AbstractActionController;
@@ -119,7 +119,7 @@ class GuestApiController extends AbstractActionController
         if (!$user) {
             return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('Unauthorized access.'), // @translate
-            ], null, Response::STATUS_CODE_401);
+            ], null, HttpResponse::STATUS_CODE_401);
         }
         $userRepr = $this->userAdapter->getRepresentation($user);
         return $this->jSend(JSend::SUCCESS, [
@@ -303,7 +303,7 @@ class GuestApiController extends AbstractActionController
         if (!$user) {
             return $this->jSend(JSend::FAIL, [
                 'user' => $this->translate('Unauthorized access.'), // @translate
-            ], null, Response::STATUS_CODE_401);
+            ], null, HttpResponse::STATUS_CODE_401);
         }
         $sessionToken = $this->prepareSessionToken($user);
         return $this->jSend(JSend::SUCCESS, [
@@ -332,7 +332,7 @@ class GuestApiController extends AbstractActionController
         if ($apiOpenRegistration === 'closed') {
             return $this->jSend('fail', [
                 'user' => $this->translate('Access forbidden.'), // @translate
-            ], null, Response::STATUS_CODE_403);
+            ], null, HttpResponse::STATUS_CODE_403);
         }
 
         if ($this->loggedUser()) {
@@ -903,7 +903,7 @@ class GuestApiController extends AbstractActionController
             ) {
                 return $this->jSend(JSend::FAIL, [
                     'user' => $this->translate('Access forbidden.'), // @translate
-                ], null, Response::STATUS_CODE_403);
+                ], null, HttpResponse::STATUS_CODE_403);
             }
         }
 

@@ -921,10 +921,9 @@ class ApiController extends \Omeka\Controller\ApiController
                 || (!is_array($origin) && !in_array($origin, $cors))
                 || (is_array($origin) && !array_intersect($origin, $cors))
             ) {
-                return $this->jSend(JSend::ERROR, null,
-                    $this->translate('Access forbidden.'), // @translate
-                    HttpResponse::STATUS_CODE_403
-                );
+                return $this->jSend(JSend::FAIL, [
+                    'user' => $this->translate('Access forbidden.'), // @translate
+                ], null, HttpResponse::STATUS_CODE_403);
             }
         }
 
