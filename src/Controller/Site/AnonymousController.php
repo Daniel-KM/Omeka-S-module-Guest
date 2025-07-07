@@ -648,7 +648,7 @@ class AnonymousController extends AbstractGuestController
 
         $siteSlug = $this->params('site-slug');
         return $siteSlug && !$this->params('outside')
-            ? $this->redirect()->toRoute('site-slug', ['site-slug' => $siteSlug])
+            ? $this->redirect()->toRoute('site', ['site-slug' => $siteSlug])
             : $this->redirect()->toRoute('top');
     }
 
