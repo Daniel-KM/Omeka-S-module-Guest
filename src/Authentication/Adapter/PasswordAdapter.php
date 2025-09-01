@@ -26,6 +26,14 @@ class PasswordAdapter extends OmekaPasswordAdapter
             );
         }
 
+        if (!$user->verifyPassword($this->credential)) {
+            return new Result(
+                Result::FAILURE_CREDENTIAL_INVALID,
+                null,
+                ['Invalid password.'] // @translate
+            );
+        }
+
         if ($user->getRole() == \Guest\Permissions\Acl::ROLE_GUEST) {
             $guest = $this->guestTokenRepository->findOneBy(['email' => $this->identity]);
             // There is no token if the guest is created directly (the role is
@@ -33,14 +41,6 @@ class PasswordAdapter extends OmekaPasswordAdapter
             if ($guest && !$guest->isConfirmed()) {
                 return new Result(Result::FAILURE, null, ['Your account has not been confirmed: check your email.']); // @translate
             }
-        }
-
-        if (!$user->verifyPassword($this->credential)) {
-            return new Result(
-                Result::FAILURE_CREDENTIAL_INVALID,
-                null,
-                ['Invalid password.'] // @translate
-            );
         }
 
         return new Result(Result::SUCCESS, $user);
