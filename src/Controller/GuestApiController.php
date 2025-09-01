@@ -23,7 +23,7 @@ use Omeka\Stdlib\Paginator;
 use TwoFactorAuth\Form\TokenForm;
 
 /**
- * Allow to manage "me" and auth actions via api.
+ * Allow to manage "me" and auth actions via dialogs.
  *
  * Replace ApiController with right jsend messages and JsonModel.
  * Auth adapter is the standard adapter, not key_identity/key_credential.
@@ -50,11 +50,6 @@ class GuestApiController extends AbstractActionController
      * @var AuthenticationService
      */
     protected $authenticationService;
-
-    /**
-     * @var AuthenticationService
-     */
-    protected $authenticationServiceSession;
 
     /**
      * @var array
@@ -90,7 +85,6 @@ class GuestApiController extends AbstractActionController
         Acl $acl,
         ApiManager $api,
         AuthenticationService $authenticationService,
-        AuthenticationService $authenticationServiceSession,
         array $config,
         EntityManager $entityManager,
         Paginator $paginator,
@@ -101,7 +95,6 @@ class GuestApiController extends AbstractActionController
         $this->acl = $acl;
         $this->api = $api;
         $this->authenticationService = $authenticationService;
-        $this->authenticationServiceSession = $authenticationServiceSession;
         $this->config = $config;
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
@@ -225,6 +218,8 @@ class GuestApiController extends AbstractActionController
             ]);
         } elseif ($result === 1) {
             // Success login in first step in 2FA, so go to second step.
+            // Regenerate cookie in header.
+            $this->checkCors(true);
             return $this->jSend(JSend::SUCCESS, [
                 'login' => null,
                 'token_email' => null,
@@ -239,15 +234,9 @@ class GuestApiController extends AbstractActionController
             ]);
         } else {
             // Here, user can be authenticated since password is right.
-            // Nevertheless, the session is not created.
-            $user = $this->identity();
-            $result = $this->validateLogin($data);
-            if (!$result) {
-                sleep(3);
-                return $this->jSend(JSend::FAIL, [
-                    'login' => $this->translate('Wrong email or password.'), // @translate
-                ]);
-            }
+            // Nevertheless, the headers should be updated.
+            // Regenerate cookie in header.
+            $this->checkCors(true);
             $sessionToken = $this->prepareSessionToken($user);
             return $this->jSend(JSend::SUCCESS, [
                 'login' => true,
@@ -272,20 +261,15 @@ class GuestApiController extends AbstractActionController
         /** @var \Omeka\Entity\User $user */
         $user = $this->authenticationService->getIdentity();
         if (!$user) {
-            $user = $this->authenticationServiceSession->getIdentity();
-            if (!$user) {
-                return $this->jSend(JSend::FAIL, [
-                    'user' => $this->translate('User not logged.'), // @translate
-                ]);
-            }
+            return $this->jSend(JSend::FAIL, [
+                'user' => $this->translate('User not logged.'), // @translate
+            ]);
         }
 
         $this->removeSessionTokens($user);
 
         // TODO Use authentication chain.
-        // In all cases, the logout is done on all authentication services.
         $this->authenticationService->clearIdentity();
-        $this->authenticationServiceSession->clearIdentity();
 
         $sessionManager = SessionContainer::getDefaultManager();
 
@@ -846,7 +830,16 @@ class GuestApiController extends AbstractActionController
 
         $hasForm = true;
         if ($dialog === 'login') {
-            $hasForm = !$this->siteSettings()->get('guest_login_without_form');
+            $siteSlug = $this->params()->fromQuery('site_slug');
+            if ($siteSlug) {
+                try {
+                    $site = $this->api()->read('sites', ['slug' => $siteSlug])->getContent();
+                } catch (\Exception $e) {
+                    $site = null;
+                }
+            }
+            $site ??= $this->currentSite();
+            $hasForm = !$site || !$this->siteSettings()->get('guest_login_without_form', false, $site->id());
         } elseif ($dialog === '2fa-token' && !$this->getPluginManager()->has('twoFactorLogin')) {
             return $this->jSend(JSend::FAIL, [
                 'dialog' => $this->translate('This dialog requires module Two-Factor Authentication.'), // @translate
@@ -892,39 +885,59 @@ class GuestApiController extends AbstractActionController
 
     /**
      * Check cors and prepare the response.
+     *
+     * @return HttpResponse|null Null if ok, else error as response.
      */
-    protected function checkCors()
+    protected function checkCors(bool $updateCookie = false): ?HttpResponse
     {
-        // Check cors if any.
+        // Check cors if any. See $_SESSION if needed.
         $cors = $this->settings()->get('guest_cors') ?: ['*'];
+
+        /** @var \Laminas\Http\Header\Origin|false $origin */
+        $originHeader = $this->getRequest()->getHeader('Origin');
+        $origin = $originHeader ? $originHeader->getFieldValue() : null;
+
         if (in_array('*', $cors)) {
-            $origin = '*';
+            $allowedOrigin = $origin ?: '*';
+        } elseif ($origin && in_array($origin, $cors)) {
+            $allowedOrigin = $origin;
         } else {
-            /** @var \Laminas\Http\Header\Origin|false $origin */
-            $origin = $this->getRequest()->getHeader('Origin');
-            if ($origin) {
-                $origin = $origin->getFieldValue();
-            }
-            if (!$origin
-                || (!is_array($origin) && !in_array($origin, $cors))
-                || (is_array($origin) && !array_intersect($origin, $cors))
-            ) {
-                return $this->jSend(JSend::FAIL, [
-                    'user' => $this->translate('Access forbidden.'), // @translate
-                ], null, HttpResponse::STATUS_CODE_403);
+            return $this->jSend(JSend::FAIL, [
+                'user' => $this->translate('Access forbidden.'), // @translate
+            ], null, \Laminas\Http\Response::STATUS_CODE_403);
+        }
+
+        if (!$updateCookie) {
+            return null;
+        }
+
+        // Remove existing cookies headers for session before adding new one.
+        /**
+         * @var \Laminas\Http\Headers $headers
+         * @var \Laminas\Http\Header\SetCookie[]|false $setCookies
+         */
+        $headers = $this->getResponse()->getHeaders();
+        $setCookies = $headers->get('Set-Cookie');
+        // There should be only one cookie, or expire other ones.
+        // So remove existing cookies first with the same session name.
+        // No need to expire existing one since the session name is the same,
+        // only the session id was updated.
+        if ($setCookies) {
+            foreach ($setCookies as $setCookie) {
+                if (stripos($setCookie->getFieldValue(), session_name() . '=') === 0) {
+                    $headers->removeHeader($setCookie);
+                }
             }
         }
 
-        // Add cors origin.
-        $session = json_decode(json_encode($_SESSION), true);
-        $this->getResponse()->getHeaders()
-            ->addHeaderLine('Access-Control-Allow-Origin', $origin)
-            // @link https://stackoverflow.com/questions/58270663/samesite-warning-chrome-77
+        $headers
+            ->addHeaderLine('Access-Control-Allow-Origin', $allowedOrigin)
+            ->addHeaderLine('Access-Control-Allow-Credentials', 'true')
+            /** @link https://stackoverflow.com/questions/58270663/samesite-warning-chrome-77 */
             ->addHeaderLine('Set-Cookie',
-                session_name() . '='
-                . ($session['__ZF']['_VALID']['Laminas\Session\Validator\Id'] ?? '')
-                . '; Path=/; HttpOnly; Secure; SameSite=None')
-        ;
+                session_name() . '=' . session_id() . '; Path=/; HttpOnly; Secure; SameSite=None'
+            );
+
         return null;
     }
 

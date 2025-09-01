@@ -201,7 +201,7 @@ return [
                         'options' => [
                             'route' => '/guest[/:action]',
                             'contraints' => [
-                                'action' => 'forgot-password|login|logout|me|register|session-token',
+                                'action' => 'dialog|forgot-password|login|logout|me|register|session-token',
                             ],
                             'defaults' => [
                                 '__API__' => false,

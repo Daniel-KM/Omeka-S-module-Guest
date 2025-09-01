@@ -14,8 +14,9 @@ class ApiControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        // The user is automatically authenticated via api, but when an option
-        // is set, the user should be authenticalted vai the local session too.
+        // The user is automatically authenticated via api, but when option
+        // "guest_login_session" is set, the user is authenticalted via the
+        // local session too.
         $entityManager = $services->get('Omeka\EntityManager');
         $userRepository = $entityManager->getRepository('Omeka\Entity\User');
 

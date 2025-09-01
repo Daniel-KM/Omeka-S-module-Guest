@@ -308,6 +308,9 @@ class ApiController extends \Omeka\Controller\ApiController
         }
 
         // TODO Use chain storage.
+        // Add a local session cookie for api access to simplify process with
+        // modules or themes that don't support api credentials, neither
+        // api_local.
         if ($this->settings()->get('guest_login_session')) {
             // Check password.
             $this->authenticationServiceSession->getAdapter()

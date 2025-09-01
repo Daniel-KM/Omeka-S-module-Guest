@@ -188,8 +188,9 @@ class ValidateLogin extends AbstractPlugin
 
         $this->messenger->clear();
 
-        $this->eventManager
-            ->trigger('user.login', $this->authenticationService->getIdentity());
+        $user = $this->authenticationService->getIdentity();
+
+        $this->eventManager->trigger('user.login', $user);
 
         return true;
     }

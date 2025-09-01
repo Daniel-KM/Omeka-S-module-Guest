@@ -122,6 +122,7 @@
                     type: 'POST',
                     url: urlForm,
                     data: form.serialize(),
+                    xhrFields: { withCredentials: true },
                     beforeSend: beforeSpin(submitButton),
                 })
                 .done(function(data) {
@@ -185,6 +186,7 @@
                     type: 'POST',
                     url: urlForm,
                     data: form.serialize(),
+                    xhrFields: { withCredentials: true },
                     beforeSend: beforeSpin(submitButton),
                 })
                 .done(function(data) {
@@ -241,6 +243,7 @@
                 .ajax({
                     type: 'GET',
                     url: urlButton,
+                    xhrFields: { withCredentials: true },
                     beforeSend: beforeSpin(button),
                 })
                 .done(function(data) {
@@ -282,6 +285,7 @@
                 .ajax({
                     type: 'GET',
                     url: urlButton,
+                    xhrFields: { withCredentials: true },
                     beforeSend: beforeSpin(button),
                 })
                 .done(function(data) {
@@ -323,6 +327,7 @@
                 .ajax({
                     type: 'GET',
                     url: urlButton,
+                    xhrFields: { withCredentials: true },
                     beforeSend: beforeSpin(button),
                 })
                 .done(function(data) {
