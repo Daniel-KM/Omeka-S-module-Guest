@@ -238,8 +238,16 @@ class GuestApiController extends AbstractActionController
                 'login' => $result,
             ]);
         } else {
-            // Here, the user is authenticated.
+            // Here, user can be authenticated since password is right.
+            // Nevertheless, the session is not created.
             $user = $this->identity();
+            $result = $this->validateLogin($data);
+            if (!$result) {
+                sleep(3);
+                return $this->jSend(JSend::FAIL, [
+                    'login' => $this->translate('Wrong email or password.'), // @translate
+                ]);
+            }
             $sessionToken = $this->prepareSessionToken($user);
             return $this->jSend(JSend::SUCCESS, [
                 'login' => true,
