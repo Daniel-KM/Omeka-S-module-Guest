@@ -387,14 +387,14 @@ class Module extends AbstractModule
     {
         $view = $event->getTarget();
         $user = $view->resource;
-        $this->viewUserData($view, $user, 'common/admin/guest');
+        $this->viewUserData($view, $user, 'common/user-settings-guest');
     }
 
     public function viewUserShowAfter(Event $event): void
     {
         $view = $event->getTarget();
         $user = $view->vars()->user;
-        $this->viewUserData($view, $user, 'common/admin/guest-list');
+        $this->viewUserData($view, $user, 'common/user-settings-guest-list');
     }
 
     protected function viewUserData(PhpRenderer $view, UserRepresentation $user, $template): void
