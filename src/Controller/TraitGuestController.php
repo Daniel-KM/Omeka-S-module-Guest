@@ -66,12 +66,17 @@ trait TraitGuestController
      *
      * @param string $key
      * @return string|mixed
+     *
+     * @todo Replace with fallbackSetting().
      */
     protected function getOption($key)
     {
-        return $this->siteSettings()->get($key)
+        $value = $this->siteSettings()->get($key)
             ?: $this->settings()->get($key)
             ?: ($this->getConfig()['guest']['settings'][$key] ?? null);
+        return is_string($value)
+            ? strtr($value, ['%7B' => '{', '%7D' => '}'])
+            : $value;
     }
 
     /**
