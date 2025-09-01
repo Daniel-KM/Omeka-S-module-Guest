@@ -107,10 +107,11 @@
         }
 
         /**
-         * Override submit of login form to manage optional login-token form.
+         * Override submit of login form to manage optional login-token form via dialog.
+         *
          * @see TwoFactorAuth to manage the same login form off-site (use stopPropagation()).
          */
-        $(document).on('submit', '#loginform', function(ev) {
+        $(document).on('submit', 'dialog #loginform', function(ev) {
             ev.preventDefault();
             ev.stopImmediatePropagation();
             const form = $(this);
@@ -168,7 +169,7 @@
         /**
          * Register a new user.
          */
-        $(document).on('submit', '#user-form', function(ev) {
+        $(document).on('submit', 'dialog #user-form', function(ev) {
             ev.preventDefault();
             ev.stopImmediatePropagation();
             const form = $(this);
@@ -230,6 +231,9 @@
                 });
         });
 
+        /**
+         * Prepare and display the dialog to log in.
+         */
         $(document).on('click', '.button-login', function(e) {
             const button = $(this);
             const urlButton = button.attr('data-url') ? button.attr('data-url') : button.attr('href');
@@ -268,6 +272,9 @@
                 });
         });
 
+        /**
+         * Prepare and display the dialog to post email for forgot-password.
+         */
         $(document).on('click', '.button-forgot-password', function(e) {
             const button = $(this);
             const urlButton = button.attr('data-url') ? button.attr('data-url') : button.attr('href');
@@ -306,6 +313,9 @@
                 });
         });
 
+        /**
+         * Prepare and display the dialog to register.
+         */
         $(document).on('click', '.button-register', function(e) {
             const button = $(this);
             const urlButton = button.attr('data-url') ? button.attr('data-url') : button.attr('href');
