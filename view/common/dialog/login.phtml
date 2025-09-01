@@ -32,8 +32,8 @@ $htmlAfter = $siteSetting('guest_login_html_after');
                 <?php endif; ?>
                 <?php if ($form): ?>
                 <?= $this->form($form) ?>
-                <p class="forgot-password">
-                    <?= $hyperlink($translate('Forgot password?'), $url('forgot-password')) ?>
+                <p class="dialog-link link-forgot-password">
+                    <?= $hyperlink($translate('Forgot password?'), $url('forgot-password'), ['class' => 'button-forgot-password']) ?>
                 </p>
                 <?php endif; ?>
                 <?php if ($htmlAfter): ?>

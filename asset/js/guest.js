@@ -268,6 +268,44 @@
                 });
         });
 
+        $(document).on('click', '.button-forgot-password', function(e) {
+            const button = $(this);
+            const urlButton = button.attr('data-url') ? button.attr('data-url') : button.attr('href');
+            $
+                .ajax({
+                    type: 'GET',
+                    url: urlButton,
+                    beforeSend: beforeSpin(button),
+                })
+                .done(function(data) {
+                    // Success for loading dialog.
+                    // Use the existing dialog if any, else use the one sent.
+                    let dialog = document.querySelector('dialog.dialog-forgot-password');
+                    if (!dialog) {
+                        dialog = data && data.data ? data.data.dialog : null;
+                        if (dialog) {
+                            $('body').append(dialog);
+                            dialog = document.querySelector('dialog.dialog-forgot-password');
+                        }
+                        if (!dialog) {
+                            let msg = jSendMessage(data);
+                            dialogMessage(msg ? msg : 'Check input', true);
+                            return;
+                        }
+                    }
+                    dialog.showModal();
+                    $(dialog).trigger('o:dialog-opened');
+                })
+                .fail(function (xhr, textStatus, errorThrown) {
+                    const data = xhr.responseJSON;
+                    let msg = jSendMessage(data);
+                    dialogMessage(msg ? msg : 'An error occurred.', true);
+                })
+                .always(function () {
+                    afterSpin(button)
+                });
+        });
+
         $(document).on('click', '.button-register', function(e) {
             const button = $(this);
             const urlButton = button.attr('data-url') ? button.attr('data-url') : button.attr('href');
