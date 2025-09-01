@@ -101,7 +101,6 @@ class SiteSettingsFieldset extends Fieldset
                     'id' => 'guest_login_html_before',
                 ],
             ])
-
             ->add([
                 'name' => 'guest_login_html_after',
                 'type' => OmekaElement\CkeditorInline::class,
@@ -111,6 +110,29 @@ class SiteSettingsFieldset extends Fieldset
                 ],
                 'attributes' => [
                     'id' => 'guest_login_html_after',
+                ],
+            ])
+
+            ->add([
+                'name' => 'guest_forgot_password_html_before',
+                'type' => OmekaElement\CkeditorInline::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Html to display before the forgot-password form', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_forgot_password_html_before',
+                ],
+            ])
+            ->add([
+                'name' => 'guest_forgot_password_html_after',
+                'type' => OmekaElement\CkeditorInline::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'Text to display after the forgot-password form', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_forgot_password_html_after',
                 ],
             ])
 
@@ -125,7 +147,6 @@ class SiteSettingsFieldset extends Fieldset
                     'id' => 'guest_register_html_before',
                 ],
             ])
-
             ->add([
                 'name' => 'guest_register_html_after',
                 'type' => OmekaElement\CkeditorInline::class,

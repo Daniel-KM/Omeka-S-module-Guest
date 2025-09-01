@@ -378,6 +378,8 @@ return [
             'guest_login_with_register' => false,
             'guest_login_html_before' => '',
             'guest_login_html_after' => '',
+            'guest_forgot_password_html_before' => '',
+            'guest_forgot_password_html_after' => '',
             'guest_register_html_before' => '',
             'guest_register_html_after' => '',
             'guest_dashboard_label' => 'My dashboard', // @translate
