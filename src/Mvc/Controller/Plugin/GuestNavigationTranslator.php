@@ -48,14 +48,6 @@ class GuestNavigationTranslator extends AbstractPlugin
     }
 
     /**
-     * @deprecated Since Omeka v3.0 Use toLaminas() instead.
-     */
-    public function toZend(SiteRepresentation $site, ?array $menu = null): array
-    {
-        return $this->toLaminas($site, $menu);
-    }
-
-    /**
      * Translate Omeka site navigation or any other menu to Laminas Navigation format.
      *
      * @param $options
@@ -71,7 +63,7 @@ class GuestNavigationTranslator extends AbstractPlugin
      *
      * @todo Use only the laminas mechanism to manage active url.
      */
-    public function toLaminas(SiteRepresentation $site, ?array $menu = null, array $options = []): array
+    public function toZend(SiteRepresentation $site, ?array $menu = null, array $options = []): array
     {
         $activeUrl = $options['activeUrl'] ?? null;
         if ($activeUrl === true) {
@@ -111,7 +103,7 @@ class GuestNavigationTranslator extends AbstractPlugin
                 }
                 $linkType = $this->linkManager->get($data['type']);
                 $linkData = $data['data'];
-                $linksOut[$key] = method_exists($linkType, 'toLaminas') ? $linkType->toLaminas($linkData, $site) : $linkType->toZend($linkData, $site);
+                $linksOut[$key] = $linkType->toZend($linkData, $site);
                 $linksOut[$key]['label'] = $this->getLinkLabel($linkType, $linkData, $site);
                 if ($activeUrl !== null) {
                     if (is_array($activeUrl)) {
@@ -267,14 +259,14 @@ class GuestNavigationTranslator extends AbstractPlugin
             return $urls[$serial];
         }
 
-        $linkLaminas = method_exists($linkType, 'toLaminas') ? $linkType->toLaminas($data['data'], $site) : $linkType->toZend($data['data'], $site);
-        if (empty($linkLaminas['route'])) {
+        $linkZend = $linkType->toZend($data['data'], $site);
+        if (empty($linkZend['route'])) {
             $urls[$serial] = '';
         } else {
-            $urlRoute = $linkLaminas['route'];
-            $urlParams = empty($linkLaminas['params']) ? [] : $linkLaminas['params'];
+            $urlRoute = $linkZend['route'];
+            $urlParams = empty($linkZend['params']) ? [] : $linkZend['params'];
             $urlParams['site-slug'] = $site->slug();
-            $urlOptions = empty($linkLaminas['query']) ? [] : ['query' => $linkLaminas['query']];
+            $urlOptions = empty($linkZend['query']) ? [] : ['query' => $linkZend['query']];
             $urls[$serial] = $this->urlHelper->__invoke($urlRoute, $urlParams, $urlOptions);
         }
         return $urls[$serial];

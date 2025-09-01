@@ -10,21 +10,28 @@
 
 $plugins = $this->getHelperPluginManager();
 $translate = $plugins->get('translate');
+
+$breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;
 $guestNavigation = $plugins->get('guestNavigation')();
 
 $hasGuestNav = (bool) $guestNavigation->getContainer()->count();
 
 $this->htmlElement('body')->appendAttribute('class', 'guest accept-terms');
+
 $form->prepare();
 ?>
 
-<?= $this->messages() ?>
+<?php if ($breadcrumbs && !$hasGuestNav): ?>
+<?= $breadcrumbs() ?>
+<?php endif; ?>
 
 <?php if ($hasGuestNav): ?>
 <nav class="navigation-guest">
     <?= $guestNavigation->menu()->renderMenu() ?>
 </nav>
 <?php endif; ?>
+
+<?= $this->messages() ?>
 
 <?= $this->pageTitle($translate('Accept terms and conditions')) ?>
 

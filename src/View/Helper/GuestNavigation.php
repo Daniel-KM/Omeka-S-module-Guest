@@ -89,7 +89,7 @@ class GuestNavigation extends AbstractHtmlElement
      */
     protected function getGuestNavContainer(SiteRepresentation $site, ?array $menu = null, array $options = []): \Laminas\Navigation\Navigation
     {
-        $factory = new ConstructedNavigationFactory($this->navigationTranslator->toLaminas($site, $menu, $options));
+        $factory = new ConstructedNavigationFactory($this->navigationTranslator->toZend($site, $menu, $options));
         return $factory($this->services, '');
     }
 }

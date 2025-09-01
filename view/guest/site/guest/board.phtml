@@ -10,8 +10,11 @@
 
 $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
+$setting = $plugins->get('setting');
 $translate = $plugins->get('translate');
 $pageTitle = $plugins->get('pageTitle');
+$siteSetting = $plugins->get('siteSetting');
+
 $breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;
 $guestNavigation = $plugins->get('guestNavigation')();
 
@@ -32,7 +35,7 @@ $this->htmlElement('body')->appendAttribute('class', 'guest account');
 
 <?= $this->messages() ?>
 
-<?= $pageTitle($this->siteSetting('guest_dashboard_label') ?: $this->setting('guest_dashboard_label')) ?>
+<?= $pageTitle($siteSetting('guest_dashboard_label') ?: $setting('guest_dashboard_label')) ?>
 
 <h3><?= $user->getName() ?></h3>
 

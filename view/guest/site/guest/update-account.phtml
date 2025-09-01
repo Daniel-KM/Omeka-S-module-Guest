@@ -10,6 +10,7 @@ $plugins = $this->getHelperPluginManager();
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $pageTitle = $plugins->get('pageTitle');
+
 $breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;
 $guestNavigation = $plugins->get('guestNavigation')();
 
