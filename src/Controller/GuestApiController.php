@@ -969,21 +969,14 @@ class GuestApiController extends AbstractActionController
      * This method simplifies derivative modules that use the same code.
      *
      * @return User|null
+     *
+     * Adapted:
+     * @see \Guest\Controller\ApiController::loggedUser()
+     * @see \Guest\Controller\GuestApiController::loggedUser()
      */
     protected function loggedUser()
     {
-        $user = $this->authenticationService->getIdentity();
-        if ($user && $this->settings()->get('guest_login_session')) {
-            $userPass = $this->authenticationServiceSession->getIdentity();
-            if ($user !== $userPass) {
-                $storage = $this->authenticationServiceSession->getStorage();
-                $storage->clear();
-                $storage->write($user);
-            }
-        } else {
-            $this->authenticationServiceSession->clearIdentity();
-        }
-        return $user;
+        return $this->authenticationService->getIdentity();
     }
 
     /**

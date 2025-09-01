@@ -971,16 +971,22 @@ class ApiController extends \Omeka\Controller\ApiController
      * This method simplifies derivative modules that use the same code.
      *
      * @return User|null
+     *
+     * Adapted:
+     * @see \Guest\Controller\ApiController::loggedUser()
+     * @see \Guest\Controller\GuestApiController::loggedUser()
      */
     protected function loggedUser()
     {
         $user = $this->authenticationService->getIdentity();
-        if ($user && $this->settings()->get('guest_login_session')) {
-            $userPass = $this->authenticationServiceSession->getIdentity();
-            if ($user !== $userPass) {
-                $storage = $this->authenticationServiceSession->getStorage();
-                $storage->clear();
-                $storage->write($user);
+        if ($user) {
+            if ($this->settings()->get('guest_login_session')) {
+                $userPass = $this->authenticationServiceSession->getIdentity();
+                if (!$userPass || $userPass->getId() !== $user->getId()) {
+                    $storage = $this->authenticationServiceSession->getStorage();
+                    $storage->clear();
+                    $storage->write($user);
+                }
             }
         } else {
             $this->authenticationServiceSession->clearIdentity();
