@@ -8,6 +8,10 @@ $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
+$siteSetting = $plugins->get('siteSetting');
+
+$htmlBefore = $siteSetting('guest_login_html_before');
+$htmlAfter = $siteSetting('guest_login_html_after');
 ?>
 
 <dialog id="login" class="popup popup-dialog dialog-login">
@@ -21,11 +25,21 @@ $hyperlink = $plugins->get('hyperlink');
                 </div>
             </div>
             <div class="dialog-contents">
+                <?php if ($htmlBefore): ?>
+                <div class="contents-before">
+                    <?= $htmlBefore ?>
+                </div>
+                <?php endif; ?>
                 <?php if ($form): ?>
                 <?= $this->form($form) ?>
                 <p class="forgot-password">
                     <?= $hyperlink($translate('Forgot password?'), $url('forgot-password')) ?>
                 </p>
+                <?php endif; ?>
+                <?php if ($htmlAfter): ?>
+                <div class="contents-after">
+                    <?= $htmlAfter ?>
+                </div>
                 <?php endif; ?>
             </div>
             <div class="dialog-footer">
