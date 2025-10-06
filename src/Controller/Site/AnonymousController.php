@@ -475,8 +475,10 @@ class AnonymousController extends AbstractGuestController
         $currentSite = $this->currentSite();
         $siteTitle = $currentSite->title();
         if ($isOpenRegister) {
-            $body = new PsrMessage('Thanks for joining {site_title}! You can now log in using the password you chose.', // @translate
-                ['site_title' => $siteTitle]);
+            $body = new PsrMessage(
+                'Thanks for joining {site_title}! You can now log in using the password you chose.', // @translate
+                ['site_title' => $siteTitle]
+            );
             $this->messenger()->addSuccess($body);
             $redirectUrl = $this->url()->fromRoute('site/guest/anonymous', [
                 'site-slug' => $currentSite->slug(),
@@ -485,8 +487,10 @@ class AnonymousController extends AbstractGuestController
             return $this->redirect()->toUrl($redirectUrl);
         }
 
-        $body = new PsrMessage('Thanks for joining {site_title}! Your registration is under moderation. See you soon!', // @translate
-            ['site_title' => $siteTitle]);
+        $body = new PsrMessage(
+            'Thanks for joining {site_title}! Your registration is under moderation. See you soon!', // @translate
+            ['site_title' => $siteTitle]
+        );
         $this->messenger()->addSuccess($body);
         $redirectUrl = $currentSite->url();
         return $this->redirect()->toUrl($redirectUrl);
@@ -511,8 +515,10 @@ class AnonymousController extends AbstractGuestController
 
         $guestToken = $entityManager->getRepository(GuestToken::class)->findOneBy(['token' => $token]);
         if (empty($guestToken)) {
-            $message = new PsrMessage('Invalid token: your email was not confirmed for {site_title}.', // @translate
-                ['site_title' => $siteTitle]);
+            $message = new PsrMessage(
+                'Invalid token: your email was not confirmed for {site_title}.', // @translate
+                ['site_title' => $siteTitle]
+            );
 
             $this->messenger()->addError($message); // @translate
             if ($this->isUserLogged()) {
