@@ -83,6 +83,7 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
 
         $dataClean = [];
         $dataClean['show_login_form'] = $data['show_login_form'] ?? '';
+        $dataClean['disable_trigger'] = !empty($data['disable_trigger']);
         $dataClean['display_form'] = ($data['display_form'] ?? 'login') === 'register' ? 'register' : 'login';
 
         $block->setData($dataClean);
@@ -187,6 +188,7 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         $vars = [
             'site' => $block->page()->site(),
             'block' => $block,
+            'disableTrigger' => (bool) $block->dataValue('disable_trigger', false),
         ];
 
         if ($view->setting('twofactorauth_use_dialog')

@@ -5,6 +5,7 @@
  * @var \Omeka\Api\Representation\SitePageBlockRepresentation $block
  * @var \Omeka\Form\LoginForm|null $form
  * @var \TwoFactorAuth\Form\TokenForm|null $formToken
+ * @var bool $disableTrigger
  */
 
 $plugins = $this->getHelperPluginManager();
@@ -40,6 +41,8 @@ if (!empty($formToken)) {
     <?= isset($formToken) ? $this->partial('common/dialog/2fa-token', ['site' => $site, 'form' => $formToken]) : '' ?>
     <?php endif; ?>
 
+    <?php if (empty($disableTrigger)): ?>
     <?php $trigger('view.login.after'); // Needed as long as other auth modules have no block. ?>
+    <?php endif; ?>
 
 </div>

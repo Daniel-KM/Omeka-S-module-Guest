@@ -3,6 +3,7 @@
 namespace Guest\Form;
 
 use Common\Form\Element as CommonElement;
+use Laminas\Form\Element;
 use Laminas\Form\Fieldset;
 
 class GuestLoginFieldset extends Fieldset
@@ -23,6 +24,16 @@ class GuestLoginFieldset extends Fieldset
                 ],
                 'attributes' => [
                     'id' => 'guest_show_login_form',
+                ],
+            ])
+            ->add([
+                'name' => 'o:block[__blockIndex__][o:data][disable_trigger]',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'label' => 'Disable trigger', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_disable_trigger',
                 ],
             ])
         ;

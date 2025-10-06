@@ -441,6 +441,7 @@ return [
             'forgotPassword' => [],
             'login' => [
                 'show_login_form' => '',
+                'disable_trigger' => false,
             ],
             'register' => [],
         ],
