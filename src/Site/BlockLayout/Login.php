@@ -82,6 +82,7 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         $data = $block->getData();
 
         $dataClean = [];
+        $dataClean['show_login_form'] = $data['show_login_form'] ?? '';
         $dataClean['display_form'] = ($data['display_form'] ?? 'login') === 'register' ? 'register' : 'login';
 
         $block->setData($dataClean);
@@ -93,9 +94,26 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         SitePageRepresentation $page = null,
         SitePageBlockRepresentation $block = null
     ) {
-        return '<p>'
+        // Factory is not used to make rendering simpler.
+        $services = $site->getServiceLocator();
+        $formElementManager = $services->get('FormElementManager');
+        $defaultSettings = $services->get('Config')['guest']['block_settings']['login'];
+        $blockFieldset = \Guest\Form\GuestLoginFieldset::class;
+
+        $data = $block ? ($block->data() ?? []) + $defaultSettings : $defaultSettings;
+
+        $dataForm = [];
+        foreach ($data as $key => $value) {
+            $dataForm['o:block[__blockIndex__][o:data][' . $key . ']'] = $value;
+        }
+        $fieldset = $formElementManager->get($blockFieldset);
+        $fieldset->populateValues($dataForm);
+
+        $html = '<p class="explanation">'
             . $view->translate('Display the login form.') // @translate
             . '</p>';
+        $html .= $view->formCollection($fieldset, false);
+        return $html;
     }
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block, $templateViewScript = self::PARTIAL_NAME)
@@ -126,6 +144,12 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
         }
 
         $loginWithoutForm = $view->siteSetting('guest_login_without_form');
+        $displayLoginForm = $block->dataValue('show_login_form');
+        if ($displayLoginForm === 'yes') {
+            $loginWithoutForm = false;
+        } elseif ($displayLoginForm === 'no') {
+            $loginWithoutForm = true;
+        }
 
         $form = $loginWithoutForm
             ? null

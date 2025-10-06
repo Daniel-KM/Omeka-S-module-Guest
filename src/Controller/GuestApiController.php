@@ -839,6 +839,7 @@ class GuestApiController extends AbstractActionController
                 }
             }
             $site ??= $this->currentSite();
+            // Here, the block with form displayed are not checked.
             $hasForm = !$site || !$this->siteSettings()->get('guest_login_without_form', false, $site->id());
         } elseif ($dialog === '2fa-token' && !$this->getPluginManager()->has('twoFactorLogin')) {
             return $this->jSend(JSend::FAIL, [

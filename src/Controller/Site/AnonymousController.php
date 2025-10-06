@@ -36,7 +36,9 @@ class AnonymousController extends AbstractGuestController
 
         // Further, the ajax for 2fa-login is managed by module TwoFactorAuth.
 
-        $loginWithoutForm = (bool) $siteSettings->get('guest_login_without_form');
+        // The site setting may be overridden with a site block, so check if a
+        // block has such option.
+        $loginWithoutForm = $this->isLoginWIthoutForm();
 
         // The TokenForm returns to the login action, so check it when needed.
         $request = $this->getRequest();

@@ -3,6 +3,7 @@
 namespace Guest\Controller;
 
 use Common\Stdlib\PsrMessage;
+use Doctrine\Common\Collections\Criteria;
 use Guest\Permissions\Acl as GuestAcl;
 use Laminas\Session\Container as SessionContainer;
 use Omeka\Api\Representation\SiteRepresentation;
@@ -361,5 +362,59 @@ trait TraitGuestController
             'subject' => $subject,
             'body' => $body,
         ];
+    }
+
+    protected function isLoginWIthoutForm(): bool
+    {
+        $loginWithoutForm = (bool) $this->siteSettings()->get('guest_login_without_form');
+        if (!$loginWithoutForm) {
+            return false;
+        }
+
+        // Check if in a block "guest login" has option "show_login_form".
+        $site = $this->currentSite();
+        if (!$site) {
+            return true;
+        }
+        $siteId = $site->id();
+
+        /**
+         * @var \Doctrine\DBAL\Connection $connection
+         * @var \Omeka\Entity\SitePageBlock $block
+         */
+        $services = $site->getServiceLocator();
+
+        /* // TODO Use entity manager, but it is not quicker here because search is done in all the sie
+        $entityManager = $services->get('Omeka\EntityManager');
+        $blockRepository = $entityManager->getRepository(\Omeka\Entity\SitePageBlock::class);
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('layout', 'login'));
+        $blocks = $blockRepository->findBy(['site' => $siteId, $criteria]);
+         */
+
+        $connection = $services->get('Omeka\Connection');
+        $qb = $connection->createQueryBuilder();
+        $qb
+            ->select('block.id, block.data')
+            ->from('site_page_block', 'block')
+            ->innerJoin('block', 'site_page', 'site_page', 'site_page.id = block.page_id')
+            ->where('site_page.site_id = :site_id')
+            ->andWhere('block.layout = :layout')
+            ->andWhere('block.data LIKE :key')
+            ->setParameter('site_id', $siteId)
+            ->setParameter('layout', 'login')
+            // Search in json, but json can be indented and spaced.
+            // ->setParameter('key', '%"show_login_form":"yes"%')
+            ->setParameter('key', '%"show_login_form"%')
+        ;
+        $blocks = $qb->execute()->fetchAllAssociative();
+
+        foreach ($blocks as $block) {
+            $data = json_decode($block['data'], true);
+            if (isset($data['show_login_form']) && $data['show_login_form'] === 'yes') {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

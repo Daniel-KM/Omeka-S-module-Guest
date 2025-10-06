@@ -51,6 +51,7 @@ return [
         'invokables' => [
             Form\AcceptTermsForm::class => Form\AcceptTermsForm::class,
             Form\EmailForm::class => Form\EmailForm::class,
+            Form\GuestLoginFieldset::class => Form\GuestLoginFieldset::class,
             Form\SettingsFieldset::class => Form\SettingsFieldset::class,
             Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
         ],
@@ -438,7 +439,9 @@ return [
 
         'block_settings' => [
             'forgotPassword' => [],
-            'login' => [],
+            'login' => [
+                'show_login_form' => '',
+            ],
             'register' => [],
         ],
 
