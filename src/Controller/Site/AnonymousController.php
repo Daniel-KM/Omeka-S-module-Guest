@@ -240,19 +240,11 @@ class AnonymousController extends AbstractGuestController
         // TODO Add password required only for login.
         $values = $form->getData();
 
-        // Manage old and new user forms (Omeka 1.4).
-        if (array_key_exists('password', $values['change-password'])) {
-            if (empty($values['change-password']['password'])) {
-                $this->messenger()->addError('A password must be set.'); // @translate
-                return $view;
-            }
-            $password = $values['change-password']['password'];
-        } else {
-            if (empty($values['change-password']['password-confirm']['password'])) {
-                $this->messenger()->addError('A password must be set.'); // @translate
-                return $view;
-            }
-            $password = $values['change-password']['password-confirm']['password'];
+        // Extract password using helper (handles both old and new form structures).
+        $password = $this->extractPasswordFromFormValues($values);
+        if (empty($password)) {
+            $this->messenger()->addError('A password must be set.'); // @translate
+            return $view;
         }
 
         $roleUser = $this->isAllowedRole($values['user-information']['o:role'] ?? null, 'register')
@@ -372,62 +364,19 @@ class AnonymousController extends AbstractGuestController
         $user->setIsActive($isOpenRegister);
 
         // Add guest user to default sites.
-        $defaultSites = $settings->get('guest_default_sites', []);
-        if ($defaultSites) {
-            // A guest user has no rights to manage site users, so use the
-            // entity manager.
-            foreach ($defaultSites as $defaultSite) {
-                $site = $entityManager->find(Site::class, (int) $defaultSite);
-                if (!$site) {
-                    continue;
-                }
-                $sitePermission = new SitePermission();
-                $sitePermission->setSite($site);
-                $sitePermission->setUser($user);
-                $sitePermission->setRole(SitePermission::ROLE_VIEWER);
-                $entityManager->persist($sitePermission);
-            }
-        }
+        $this->addUserToDefaultSites($user);
 
         $entityManager->flush();
 
-        $id = $user->getId();
-        $userSettings = $this->userSettings();
-        if (!empty($values['user-settings'])) {
-            foreach ($values['user-settings'] as $settingId => $settingValue) {
-                $userSettings->set($settingId, $settingValue, $id);
-            }
-        }
+        // Process user settings from form values.
+        $this->processUserSettings($user, $values);
 
         // Save the site on which the user registered.
-        $userSettings->set('guest_site', $this->currentSite()->id(), $id);
+        $this->userSettings()->set('guest_site', $this->currentSite()->id(), $user->getId());
 
-        // TODO Do not send email of notification before confirming email?
-        $emails = $this->getOption('guest_notify_register') ?: null;
-        if ($emails) {
-            $message = new PsrMessage(
-                'A new user is registering: {user_email} ({url}).', // @translate
-                [
-                    'user_email' => $user->getEmail(),
-                    'url' => $this->url()->fromRoute('admin/id', ['controller' => 'user', 'id' => $user->getId()], ['force_canonical' => true]),
-                ]
-            );
-            $result = $this->sendEmail($message, $this->translate('[Omeka Guest] New registration'), $emails); // @translate
-            if (!$result) {
-                $message = new PsrMessage('An error occurred when the notification email was sent.'); // @translate
-                $this->messenger()->addError($message);
-                $this->logger()->err('[Guest] An error occurred when the notification email was sent.'); // @translate
-                return $view;
-            }
-        }
-
+        // Send confirmation email to user.
         $guestToken = $this->createGuestToken($user);
-        $message = $this->prepareMessage('confirm-email', [
-            'user_email' => $user->getEmail(),
-            'user_name' => $user->getName(),
-            'token' => $guestToken,
-        ]);
-        $result = $this->sendEmail($message['body'], $message['subject'], [$user->getEmail() => $user->getName()]);
+        $result = $this->sendRegistrationConfirmationEmail($user, $guestToken, $site);
         if (!$result) {
             $message = new PsrMessage('An error occurred when the email was sent.'); // @translate
             $this->messenger()->addError($message);
@@ -435,14 +384,14 @@ class AnonymousController extends AbstractGuestController
             return $view;
         }
 
-        // In any case, warn the administrator that a new user is registering.
+        // Send notification to administrators about new registration.
         $message = $this->prepareMessage('notify-registration', [
             'user_email' => $user->getEmail(),
             'user_name' => $user->getName(),
             'site' => $site,
         ]);
         $toEmails = $settings->get('guest_notify_register') ?: null;
-        $result = $this->sendEmail($message['body'], $message['subject'], $toEmails);
+        $this->sendEmail($message['body'], $message['subject'], $toEmails);
 
         $message = $this->isOpenRegister()
             ? $this->getOption('guest_message_confirm_register_site')
@@ -671,28 +620,6 @@ class AnonymousController extends AbstractGuestController
         return new ViewModel([
             'site' => $this->currentSite(),
         ]);
-    }
-
-    /**
-     * Check if a user is logged.
-     *
-     * This method simplifies derivative modules that use the same code.
-     *
-     * @return bool
-     */
-    protected function isUserLogged()
-    {
-        return $this->getAuthenticationService()->hasIdentity();
-    }
-
-    /**
-     * Check if the registering is open or moderated.
-     *
-     *  @return bool True if open, false if moderated (or closed).
-     */
-    protected function isOpenRegister()
-    {
-        return $this->settings()->get('guest_open') === 'open';
     }
 
     protected function checkPostAndValidForm(\Laminas\Form\Form $form): bool

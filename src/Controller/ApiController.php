@@ -633,38 +633,12 @@ class ApiController extends \Omeka\Controller\ApiController
         $isOpenRegister = $this->isOpenRegister();
         $user->setIsActive($isOpenRegister);
 
-        $id = $user->getId();
-        // For compatibility with old version.
-        if (!empty($data['user-settings']) && is_array($data['user-settings'])) {
-            $data['o:settings'] = isset($data['o:settings']) && is_array($data['o:settings'])
-                ? array_merge($data['o:settings'], $data['user-settings'])
-                : $data['user-settings'];
-            $this->logger()->warn('Guest Api: an app uses "user-settings" instead of "o:settings" when registering a user.'); // @translate
-        }
-        if (!empty($data['o:settings']) && is_array($data['o:settings'])) {
-            $userSettings = $this->userSettings();
-            foreach ($data['o:settings'] as $settingId => $settingValue) {
-                $userSettings->set($settingId, $settingValue, $id);
-            }
-        }
+        // Process user settings.
+        $this->processUserSettings($user, $data);
 
         // Add the user as a viewer of the specified site.
-        // TODO Add a check of the site.
         if ($siteEntity) {
-            // A guest user cannot update site, so the entity manager is used.
-            $sitePermission = new SitePermission;
-            $sitePermission->setSite($siteEntity);
-            $sitePermission->setUser($user);
-            $sitePermission->setRole(SitePermission::ROLE_VIEWER);
-            $siteEntity->getSitePermissions()->add($sitePermission);
-            $this->entityManager->persist($siteEntity);
-            $this->entityManager->flush();
-            // $this->api->update('sites', $site->id(), [
-            //     'o:site_permission' => [
-            //         'o:user' => ['o:id' => $user->getId()],
-            //         'o:role' => 'viewer',
-            //     ],
-            // ], [], ['isPartial' => true]);
+            $this->setupUserSitePermission($user, $siteEntity);
         } else {
             // The site may be private.
             $site = $this->viewHelpers()->get('defaultSite')();
@@ -687,13 +661,9 @@ class ApiController extends \Omeka\Controller\ApiController
         } else {
             $guestToken = $this->createGuestToken($user);
         }
-        $message = $this->prepareMessage('confirm-email', [
-            'user_email' => $user->getEmail(),
-            'user_name' => $user->getName(),
-            'token' => $guestToken,
-            'site' => $site,
-        ]);
-        $result = $this->sendEmail($message['body'], $message['subject'], [$user->getEmail() => $user->getName()]);
+
+        // Send confirmation email to user.
+        $result = $this->sendRegistrationConfirmationEmail($user, $guestToken, $site);
         if (!$result) {
             return $this->jSend(JSend::ERROR, null,
                 $this->translate('An error occurred when the email was sent.'), // @translate
@@ -701,14 +671,14 @@ class ApiController extends \Omeka\Controller\ApiController
             );
         }
 
-        // In any case, warn the administrator that a new user is registering.
+        // Send notification to administrators about new registration.
         $message = $this->prepareMessage('notify-registration', [
             'user_email' => $user->getEmail(),
             'user_name' => $user->getName(),
             'site' => $site,
         ]);
         $toEmails = $this->settings()->get('guest_notify_register') ?: null;
-        $result = $this->sendEmail($message['body'], $message['subject'], $toEmails);
+        $this->sendEmail($message['body'], $message['subject'], $toEmails);
 
         if ($emailIsAlwaysValid) {
             $message = $this->settings()->get('guest_message_confirm_register_site')
@@ -941,28 +911,6 @@ class ApiController extends \Omeka\Controller\ApiController
                 . '; Path=/; HttpOnly; Secure; SameSite=None')
         ;
         return null;
-    }
-
-    /**
-     * Check if a user is logged.
-     *
-     * This method simplifies derivative modules that use the same code.
-     *
-     * @return bool
-     */
-    protected function isUserLogged()
-    {
-        return $this->authenticationService->hasIdentity();
-    }
-
-    /**
-     * Check if the registering is open or moderated.
-     *
-     *  @return bool True if open, false if moderated (or closed).
-     */
-    protected function isOpenRegister()
-    {
-        return $this->settings()->get('guest_open') === 'open';
     }
 
     /**

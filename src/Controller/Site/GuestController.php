@@ -184,47 +184,19 @@ class GuestController extends AbstractGuestController
         $successMessages = [];
         $successMessages[] = 'Your modifications have been saved.'; // @translate
 
-        // The values were filtered: no hack is possible with added values.
-        // For compatibility with old version.
-        if (!empty($values['user-settings']) && is_array($values['user-settings'])) {
-            $values['o:setting'] = isset($values['o:setting']) && is_array($values['o:setting'])
-                ? array_merge($values['o:setting'], $values['user-settings'])
-                : $values['user-settings'];
-            // But this is the normal form when not api.
-            // $this->logger()->warn('Guest: an app uses "user-settings" instead of "o:setting" when registering a user.'); // @translate
-        }
-
-        if (!empty($values['o:settings']) && is_array($values['o:settings'])) {
-            $values['o:setting'] = isset($values['o:setting']) && is_array($values['o:setting'])
-                ? array_merge($values['o:setting'], $values['o:settings'])
-                : $values['o:settings'];
-        }
-
-        unset($values['user-settings'], $values['o:settings']);
-
         // Only allow default keys (may be added by module like UserProfile).
-        $values['o:setting'] = array_intersect_key($values['o:setting'] ?? [], $data['o:setting'] ?? []);
-
-        if (!empty($values['o:setting']) && is_array($values['o:setting'])) {
+        $allowedSettings = array_intersect_key($values['o:setting'] ?? [], $data['o:setting'] ?? []);
+        if ($allowedSettings) {
             $userSettings = $this->userSettings();
-            foreach ($values['o:setting'] as $settingId => $settingValue) {
+            foreach ($allowedSettings as $settingId => $settingValue) {
                 $userSettings->set($settingId, $settingValue, $id);
             }
         }
 
-        // Manage old and new user forms (Omeka 1.4).
-        if (array_key_exists('password', $values['change-password'])) {
-            $passwordValues = $values['change-password'];
-        } else {
-            $passwordValues = $values['change-password']['password-confirm'];
-        }
-        if (!empty($passwordValues['password'])) {
-            // TODO Add a current password check when update account. Check is done in Omeka 1.4.
-            // if (!$user->verifyPassword($passwordValues['current-password'])) {
-            //     $this->messenger()->addError('The current password entered was invalid'); // @translate
-            //     return $view;
-            // }
-            $user->setPassword($passwordValues['password']);
+        // Handle password change.
+        $newPassword = $this->extractPasswordFromFormValues($values);
+        if ($newPassword) {
+            $user->setPassword($newPassword);
             $successMessages[] = 'Password successfully changed'; // @translate
         }
 

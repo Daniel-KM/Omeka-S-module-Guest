@@ -359,7 +359,7 @@ class GuestApiController extends AbstractActionController
         }
         $data['email'] ??= $data['user-information']['o:email'] ?? null;
         $data['username'] ??= $data['user-information']['o:name'] ?? null;
-        $data['password'] ??= $data['change-password']['password-confirm']['password'] ?? null;
+        $data['password'] ??= $data['change-password']['password'] ?? null;
 
         $site = null;
         $siteEntity = null;

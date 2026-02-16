@@ -445,4 +445,272 @@ trait TraitGuestController
 
         return $parsedUrl['host'] === $currentHost;
     }
+
+    /**
+     * Validate registration data before user creation.
+     *
+     * @param array $data Registration data with email, username, etc.
+     * @return array Array with 'valid' boolean and 'error' message if invalid.
+     */
+    protected function validateRegistrationData(array $data): array
+    {
+        if (empty($data['email'])) {
+            return [
+                'valid' => false,
+                'error' => $this->translate('Email is required.'), // @translate
+            ];
+        }
+
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return [
+                'valid' => false,
+                'error' => $this->translate('Invalid email.'), // @translate
+            ];
+        }
+
+        // Check for existing user with this email.
+        $existingUser = $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $data['email']]);
+
+        if ($existingUser) {
+            $guestToken = $this->entityManager->getRepository(\Guest\Entity\GuestToken::class)
+                ->findOneBy(['email' => $data['email']], ['id' => 'DESC']);
+
+            if (empty($guestToken) || $guestToken->isConfirmed()) {
+                return [
+                    'valid' => false,
+                    'error' => $this->translate('Already registered.'), // @translate
+                ];
+            }
+
+            // Check if email is always valid option changed.
+            if ($guestToken && $this->settings()->get('guest_register_email_is_valid')) {
+                $guestToken->setConfirmed(true);
+                $this->entityManager->persist($guestToken);
+                $this->entityManager->flush();
+                return [
+                    'valid' => false,
+                    'error' => $this->translate('Already registered.'), // @translate
+                ];
+            }
+
+            return [
+                'valid' => false,
+                'error' => $this->translate('Check your email to confirm your registration.'), // @translate
+            ];
+        }
+
+        // Validate UserNames if module is active.
+        if ($this->hasModuleUserNames()) {
+            $userNameAdapter = $this->api()->read('vocabularies', 1)->getContent()->getServiceLocator()
+                ->get('Omeka\ApiAdapterManager')->get('usernames');
+            $userName = new \UserNames\Entity\UserNames;
+            $userName->setUserName($data['o-module-usernames:username'] ?? '');
+            $errorStore = new \Omeka\Stdlib\ErrorStore;
+            $userNameAdapter->validateEntity($userName, $errorStore);
+            $errors = $errorStore->getErrors();
+            if (!empty($errors['o-module-usernames:username'])) {
+                return [
+                    'valid' => false,
+                    'error' => $this->translate(reset($errors['o-module-usernames:username'])),
+                ];
+            }
+        }
+
+        return ['valid' => true, 'error' => null];
+    }
+
+    /**
+     * Create a guest user from registration data.
+     *
+     * @param array $userInfo User data for API create.
+     * @param array $data Original registration data with password etc.
+     * @return array Array with 'user' entity or 'error' message.
+     */
+    protected function createRegistrationUser(array $userInfo, array $data): array
+    {
+        try {
+            /** @var \Omeka\Entity\User $user */
+            $user = $this->api()->create('users', $userInfo, [], ['responseContent' => 'resource'])->getContent();
+        } catch (\Omeka\Api\Exception\PermissionDeniedException $e) {
+            // This exception may be thrown by module UserNames.
+            $user = $this->entityManager->getRepository(User::class)
+                ->findOneBy(['email' => $userInfo['o:email']]);
+
+            if (!$user) {
+                return [
+                    'user' => null,
+                    'error' => $this->translate('Unknown error before creation of user.'), // @translate
+                ];
+            }
+
+            if ($this->hasModuleUserNames()) {
+                $userNames = $this->api()->search('usernames', ['user' => $user->getId()])->getContent();
+                if (!$userNames && !empty($userInfo['o-module-usernames:username'])) {
+                    $userName = new \UserNames\Entity\UserNames;
+                    $userName->setUser($user);
+                    $userName->setUserName($userInfo['o-module-usernames:username']);
+                    $this->entityManager->persist($userName);
+                    $this->entityManager->flush();
+                }
+            } else {
+                $this->logger()->err(
+                    'An error occurred after creation of the guest user: {exception}', // @translate
+                    ['exception' => $e]
+                );
+            }
+        } catch (\Exception $e) {
+            $this->logger()->err($e);
+            $user = $this->entityManager->getRepository(User::class)
+                ->findOneBy(['email' => $userInfo['o:email']]);
+
+            if (!$user) {
+                return [
+                    'user' => null,
+                    'error' => $this->translate('Unknown error during creation of user.'), // @translate
+                ];
+            }
+        }
+
+        return ['user' => $user, 'error' => null];
+    }
+
+    /**
+     * Add user as viewer to a site.
+     *
+     * @param User $user User entity.
+     * @param \Omeka\Entity\Site $siteEntity Site entity.
+     */
+    protected function setupUserSitePermission(User $user, \Omeka\Entity\Site $siteEntity): void
+    {
+        $sitePermission = new \Omeka\Entity\SitePermission;
+        $sitePermission->setSite($siteEntity);
+        $sitePermission->setUser($user);
+        $sitePermission->setRole(\Omeka\Entity\SitePermission::ROLE_VIEWER);
+        $siteEntity->getSitePermissions()->add($sitePermission);
+        $this->entityManager->persist($siteEntity);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Check if the registering is open or moderated.
+     *
+     * @return bool True if open, false if moderated (or closed).
+     */
+    protected function isOpenRegister(): bool
+    {
+        return $this->settings()->get('guest_open') === 'open';
+    }
+
+    /**
+     * Check if a user is logged.
+     *
+     * @return bool
+     */
+    protected function isUserLogged(): bool
+    {
+        return $this->getAuthenticationService()->hasIdentity();
+    }
+
+    /**
+     * Extract password from form values.
+     *
+     * @param array $values Form values with 'change-password' key.
+     * @return string|null Password or null if empty/not set.
+     */
+    protected function extractPasswordFromFormValues(array $values): ?string
+    {
+        $password = $values['change-password']['password-confirm']['password'] ?? null;
+        return !empty($password) ? $password : null;
+    }
+
+    /**
+     * Add user to default sites configured in settings.
+     *
+     * @param User $user User entity.
+     */
+    protected function addUserToDefaultSites(User $user): void
+    {
+        $settings = $this->settings();
+        $defaultSites = $settings->get('guest_default_sites', []);
+        if (!$defaultSites) {
+            return;
+        }
+
+        $entityManager = $this->entityManager;
+        foreach ($defaultSites as $defaultSite) {
+            $site = $entityManager->find(\Omeka\Entity\Site::class, (int) $defaultSite);
+            if (!$site) {
+                continue;
+            }
+            $sitePermission = new \Omeka\Entity\SitePermission();
+            $sitePermission->setSite($site);
+            $sitePermission->setUser($user);
+            $sitePermission->setRole(\Omeka\Entity\SitePermission::ROLE_VIEWER);
+            $entityManager->persist($sitePermission);
+        }
+    }
+
+    /**
+     * Send registration notification to configured administrators.
+     *
+     * @param User $user The newly registered user.
+     * @return bool True if sent successfully or no notification configured.
+     */
+    protected function sendRegistrationNotification(User $user): bool
+    {
+        $emails = $this->getOption('guest_notify_register') ?: null;
+        if (!$emails) {
+            return true;
+        }
+
+        $message = new PsrMessage(
+            'A new user is registering: {user_email} ({url}).', // @translate
+            [
+                'user_email' => $user->getEmail(),
+                'url' => $this->url()->fromRoute('admin/id', ['controller' => 'user', 'id' => $user->getId()], ['force_canonical' => true]),
+            ]
+        );
+
+        return $this->sendEmail($message, $this->translate('[Omeka Guest] New registration'), $emails); // @translate
+    }
+
+    /**
+     * Send confirmation email to newly registered user.
+     *
+     * @param User $user The newly registered user.
+     * @param \Guest\Entity\GuestToken|null $guestToken Token for confirmation (null if email always valid).
+     * @param \Omeka\Api\Representation\SiteRepresentation|null $site Current site.
+     * @return bool True if sent successfully.
+     */
+    protected function sendRegistrationConfirmationEmail(User $user, $guestToken, $site = null): bool
+    {
+        $message = $this->prepareMessage('confirm-email', [
+            'user_email' => $user->getEmail(),
+            'user_name' => $user->getName(),
+            'token' => $guestToken,
+            'site' => $site,
+        ]);
+
+        return $this->sendEmail($message['body'], $message['subject'], [$user->getEmail() => $user->getName()]);
+    }
+
+    /**
+     * Process user settings from registration data.
+     *
+     * @param User $user The user entity.
+     * @param array $data Registration data containing user settings.
+     */
+    protected function processUserSettings(User $user, array $data): void
+    {
+        if (empty($data['o:settings']) || !is_array($data['o:settings'])) {
+            return;
+        }
+
+        $id = $user->getId();
+        $userSettings = $this->userSettings();
+        foreach ($data['o:settings'] as $settingId => $settingValue) {
+            $userSettings->set($settingId, $settingValue, $id);
+        }
+    }
 }
