@@ -10,6 +10,8 @@ $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $siteSetting = $plugins->get('siteSetting');
 
+$site = $plugins->get('currentSite')();
+
 $htmlBefore = $siteSetting('guest_login_html_before');
 $htmlAfter = $siteSetting('guest_login_html_after');
 ?>
@@ -33,7 +35,7 @@ $htmlAfter = $siteSetting('guest_login_html_after');
                 <?php if ($form): ?>
                 <?= $this->form($form) ?>
                 <p class="dialog-link link-forgot-password">
-                    <?= $hyperlink($translate('Forgot password?'), $url('forgot-password'), ['class' => 'button-forgot-password']) ?>
+                    <?= $hyperlink($translate('Forgot password?'), $site ? $url('site/guest/anonymous', ['site-slug' => $site->slug(), 'action' => 'forgot-password']) : $url('forgot-password'), ['class' => 'button-forgot-password']) ?>
                 </p>
                 <?php endif; ?>
                 <?php if ($htmlAfter): ?>
