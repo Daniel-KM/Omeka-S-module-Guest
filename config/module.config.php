@@ -281,6 +281,7 @@ return [
                 'query' => ['role' => 'guest'],
                 'resource' => 'Omeka\Controller\Admin\User',
                 'privilege' => 'browse',
+                'order' => -100,
             ],
         ],
         'site' => [

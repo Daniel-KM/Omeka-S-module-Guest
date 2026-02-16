@@ -40,6 +40,8 @@ use Guest\Permissions\Acl;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Form\Element;
+use Laminas\ModuleManager\ModuleEvent;
+use Laminas\ModuleManager\ModuleManager;
 use Laminas\Mvc\MvcEvent;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
@@ -64,6 +66,43 @@ class Module extends AbstractModule
     protected $dependencies = [
         'Common',
     ];
+
+    public function init(ModuleManager $moduleManager): void
+    {
+        $moduleManager->getEventManager()->attach(
+            ModuleEvent::EVENT_MERGE_CONFIG,
+            [$this, 'onMergeConfig']
+        );
+    }
+
+    /**
+     * Move navigation entries marked with 'admin_section' => 'users' from
+     * AdminModule to AdminUsers, so they appear in the Users sidebar section.
+     */
+    public function onMergeConfig(ModuleEvent $event): void
+    {
+        /** @var \Laminas\ModuleManager\Listener\ConfigListener $configListener */
+        $configListener = $event->getConfigListener();
+        $config = $configListener->getMergedConfig(false);
+
+        if (empty($config['navigation']['AdminModule'])) {
+            return;
+        }
+
+        $moved = false;
+        foreach ($config['navigation']['AdminModule'] as $key => $page) {
+            if (isset($page['admin_section']) && $page['admin_section'] === 'users') {
+                unset($page['admin_section']);
+                $config['navigation']['AdminUsers'][$key] = $page;
+                unset($config['navigation']['AdminModule'][$key]);
+                $moved = true;
+            }
+        }
+
+        if ($moved) {
+            $configListener->setMergedConfig($config);
+        }
+    }
 
     /**
      * {@inheritDoc}
