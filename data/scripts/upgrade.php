@@ -33,7 +33,8 @@ if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActi
         $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
         'Common', '3.4.79'
     );
-    throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
+    $messenger->addError($message);
+    throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $translate('Missing requirement. Unable to upgrade.')); // @translate
 }
 
 if (version_compare($oldVersion, '3.4.1', '<')) {
@@ -212,4 +213,16 @@ if (version_compare($oldVersion, '3.4.37', '<')) {
         'It is now possible to define the role on registering.' // @translate
     );
     $messenger->addSuccess($message);
+}
+
+if (version_compare($oldVersion, '3.4.41', '<')) {
+    // Add index on email column for better query performance.
+    $sql = <<<'SQL'
+        CREATE INDEX IDX_4AC9362FE7927C74 ON `guest_token` (`email`);
+        SQL;
+    try {
+        $connection->executeStatement($sql);
+    } catch (\Exception $e) {
+        // Index may already exist.
+    }
 }
