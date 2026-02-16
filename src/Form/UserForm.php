@@ -53,6 +53,7 @@ class UserForm extends \Omeka\Form\UserForm
             'attributes' => [
                 'id' => 'name',
                 'required' => true,
+                'maxlength' => 50,
             ],
         ]);
 
@@ -141,6 +142,36 @@ class UserForm extends \Omeka\Form\UserForm
 
         // separate input filter stuff so that the event work right
         $inputFilter = $this->getInputFilter();
+
+        $inputFilter->get('user-information')->add([
+            'name' => 'o:name',
+            'required' => true,
+            'filters' => [
+                ['name' => \Laminas\Filter\StringTrim::class],
+                ['name' => \Laminas\Filter\StripTags::class],
+            ],
+            'validators' => [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'min' => 1,
+                        'max' => 50,
+                        'messages' => [
+                            \Laminas\Validator\StringLength::TOO_LONG => 'The display name must be 50 characters or fewer.', // @translate
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Regex',
+                    'options' => [
+                        'pattern' => '/^\p{L}[\p{L}\p{N} -]*$/u',
+                        'messages' => [
+                            \Laminas\Validator\Regex::NOT_MATCH => 'The display name must contain only letters and numbers.', // @translate
+                        ],
+                    ],
+                ],
+            ],
+        ]);
 
         $inputFilter->get('user-settings')->add([
             'name' => 'locale',
