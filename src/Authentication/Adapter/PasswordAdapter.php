@@ -22,7 +22,7 @@ class PasswordAdapter extends OmekaPasswordAdapter
             return new Result(
                 Result::FAILURE_IDENTITY_NOT_FOUND,
                 null,
-                ['User not found.'] // @translate
+                ['Email or password invalid'] // @translate
             );
         }
 
@@ -30,7 +30,7 @@ class PasswordAdapter extends OmekaPasswordAdapter
             return new Result(
                 Result::FAILURE_CREDENTIAL_INVALID,
                 null,
-                ['Invalid password.'] // @translate
+                ['Email or password invalid'] // @translate
             );
         }
 
