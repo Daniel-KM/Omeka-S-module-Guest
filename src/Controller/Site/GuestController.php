@@ -196,6 +196,11 @@ class GuestController extends AbstractGuestController
         // Handle password change.
         $newPassword = $this->extractPasswordFromFormValues($values);
         if ($newPassword) {
+            $currentPassword = $values['change-password']['current-password'] ?? '';
+            if (!$user->verifyPassword($currentPassword)) {
+                $this->messenger()->addError('The current password entered was invalid'); // @translate
+                return $view;
+            }
             $user->setPassword($newPassword);
             $successMessages[] = 'Password successfully changed'; // @translate
         }

@@ -107,7 +107,7 @@ class UserForm extends \Omeka\Form\UserForm
                     'name' => 'current-password',
                     'type' => 'password',
                     'options' => [
-                        'label' => 'Current password', // @translate
+                        'label' => 'Current password (required to change it)', // @translate
                     ],
                     'attributes' => [
                         'id' => 'current-password',
