@@ -105,6 +105,7 @@ return [
                 'child_routes' => [
                     'guest' => [
                         'type' => \Laminas\Router\Http\Literal::class,
+                        'priority' => 10,
                         'options' => [
                             'route' => '/guest',
                             'defaults' => [
@@ -126,7 +127,6 @@ return [
                                     'defaults' => [
                                         '__NAMESPACE__' => 'Guest\Controller\Site',
                                         'controller' => Controller\Site\AnonymousController::class,
-                                        'controller' => 'AnonymousController',
                                         'action' => 'login',
                                     ],
                                 ],

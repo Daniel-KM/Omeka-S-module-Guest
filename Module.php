@@ -153,8 +153,13 @@ class Module extends AbstractModule
             ->allow(
                 null,
                 [\Guest\Controller\Site\GuestController::class],
-                // Redirected to login in controller.
-                ['me']
+                [
+                    // Redirected to login in controller.
+                    'me',
+                    // Logout is allowed for all users, including custom roles.
+                    // TODO Wait for pr https://github.com/omeka/omeka-s/pull/2241
+                    'logout',
+                ]
             )
         ;
         if ($isOpenRegister !== 'closed') {
