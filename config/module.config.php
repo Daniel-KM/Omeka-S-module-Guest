@@ -99,27 +99,6 @@ return [
             'register' => Site\Navigation\Link\Register::class,
         ],
     ],
-    'navigation' => [
-        // TODO Insert under menu Site Navigation.
-        'site' => [
-            [
-                'label' => 'Navigation Guest', // @translate
-                'route' => 'admin/site/slug/guest-navigation',
-                'action' => 'navigation',
-                'privilege' => 'update',
-                'useRouteMatch' => true,
-                'class' => 'navigation',
-            ],
-            [
-                'label' => 'User information', // @translate
-                'route' => 'site/guest',
-                'controller' => Controller\Site\GuestController::class,
-                'action' => 'me',
-                'useRouteMatch' => true,
-                'visible' => false,
-            ],
-        ],
-    ],
     'router' => [
         'routes' => [
             'site' => [
@@ -286,6 +265,31 @@ return [
                 'base_dir' => dirname(__DIR__) . '/language',
                 'pattern' => '%s.mo',
                 'text_domain' => null,
+            ],
+        ],
+    ],
+    'navigation' => [
+        'site' => [
+            [
+                'label' => 'Navigation Guest', // @translate
+                'route' => 'admin/site/slug/guest-navigation',
+                'action' => 'navigation',
+                'privilege' => 'update',
+                'useRouteMatch' => true,
+                'class' => 'navigation ',
+                // Currently managed by module Common, waiting for core.
+                'parent_route' => 'admin/site/slug/action',
+                'parent_action' => 'navigation',
+            ],
+            [
+                'label' => 'User information', // @translate
+                'route' => 'site/guest',
+                'controller' => Controller\Site\GuestController::class,
+                'action' => 'me',
+                'useRouteMatch' => true,
+                'visible' => false,
+                'parent_route' => 'admin/site/slug/action',
+                'parent_action' => 'navigation',
             ],
         ],
     ],
