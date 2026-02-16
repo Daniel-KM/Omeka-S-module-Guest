@@ -55,6 +55,15 @@ class GuestController extends AbstractGuestController
 
         $home = $this->siteSettings()->get('guest_navigation_home') ?: 'me';
         if (!in_array($home, ['board', 'me'])) {
+            // Check if the value is a known guest navigation route.
+            $knownRoutes = [
+                'selection' => 'site/guest/selection',
+                'search-history' => 'site/guest/search-history',
+                'comment' => 'site/guest/comment',
+            ];
+            if (isset($knownRoutes[$home])) {
+                return $this->redirect()->toRoute($knownRoutes[$home], ['site-slug' => $site->slug()]);
+            }
             try {
                 $page = $this->api()->read('site_pages', $home)->getContent();
             } catch (\Exception $e) {
