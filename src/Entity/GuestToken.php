@@ -40,6 +40,9 @@ use Omeka\Entity\User;
  *     indexes={
  *         @Index(
  *             columns={"token"}
+ *         ),
+ *         @Index(
+ *             columns={"email"}
  *         )
  *     }
  * )
