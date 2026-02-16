@@ -114,7 +114,7 @@ class UserBarDelegator extends UserBar
         /** @var \Omeka\Permissions\Acl $acl */
         $acl = $site->getServiceLocator()->get('Omeka\Acl');
         if (!$acl->isAdminRole($user->getRole())) {
-            return;
+            return $links;
         }
 
         $plugins = $view->getHelperPluginManager();
