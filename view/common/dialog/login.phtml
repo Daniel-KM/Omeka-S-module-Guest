@@ -27,7 +27,7 @@ $linkForRegister = (bool) $siteSetting('guest_register_use_link_in_dialog_login'
     <div class="dialog-background">
         <div class="dialog-panel">
             <div class="dialog-header">
-                <button type="button" class="dialog-header-close-button" title="<?= $translate('Close') ?>" autofocus="autofocus">
+                <button type="button" class="dialog-header-close-button" title="<?= $escapeAttr($translate('Close')) ?>" autofocus="autofocus">
                     <span class="dialog-close">🗙</span>
                 </button>
                 <div class="dialog-messages">

@@ -10,6 +10,7 @@
 
 $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
+$escape = $plugins->get('escapeHtml');
 $setting = $plugins->get('setting');
 $translate = $plugins->get('translate');
 $pageTitle = $plugins->get('pageTitle');
@@ -37,6 +38,6 @@ $this->htmlElement('body')->appendAttribute('class', 'guest account');
 
 <?= $pageTitle($siteSetting('guest_dashboard_label') ?: $setting('guest_dashboard_label')) ?>
 
-<h3><?= $user->getName() ?></h3>
+<h3><?= $escape($user->getName()) ?></h3>
 
 <a class="button" href="<?= $url('site/guest/guest', ['action' => 'logout'], true) ?>"><?= $translate('Log out') ?></a>

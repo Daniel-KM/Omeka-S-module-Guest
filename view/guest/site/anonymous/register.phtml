@@ -13,6 +13,7 @@ $plugins = $this->getHelperPluginManager();
 $trigger = $plugins->get('trigger');
 $setting = $plugins->get('setting');
 $escape = $plugins->get('escapeHtml');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $pageTitle = $plugins->get('pageTitle');
@@ -31,7 +32,7 @@ $pageLabel = $siteSetting('guest_register_text') ?: ($setting('guest_register_te
     <?= $breadcrumbs() ?>
 <?php else: ?>
 <div class="breadcrumbs-parent">
-    <nav id="breadcrumb" class="breadcrumbs" aria-label="<?= $translate('Breadcrumb') ?>">
+    <nav id="breadcrumb" class="breadcrumbs" aria-label="<?= $escapeAttr($translate('Breadcrumb')) ?>">
         <ol>
             <li><?= $hyperlink($translate('Home'), $site->siteUrl()) ?></li>
             <li><span aria-current="page"><?= $escape($pageLabel) ?></span></li>

@@ -16,6 +16,7 @@ $url = $plugins->get('url');
 $trigger = $plugins->get('trigger');
 $setting = $plugins->get('setting');
 $escape = $plugins->get('escapeHtml');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
@@ -46,7 +47,7 @@ $pageLabel = $siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?
     <?= $breadcrumbs() ?>
 <?php else: ?>
 <div class="breadcrumbs-parent">
-    <nav id="breadcrumb" class="breadcrumbs" aria-label="<?= $translate('Breadcrumb') ?>">
+    <nav id="breadcrumb" class="breadcrumbs" aria-label="<?= $escapeAttr($translate('Breadcrumb')) ?>">
         <ol>
             <li><?= $hyperlink($translate('Home'), $site->siteUrl()) ?></li>
             <li><span aria-current="page"><?= $escape($pageLabel) ?></span></li>

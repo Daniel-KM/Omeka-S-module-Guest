@@ -8,6 +8,7 @@ $plugins = $this->getHelperPluginManager();
 $trigger = $plugins->get('trigger');
 $setting = $plugins->get('setting');
 $translate = $plugins->get('translate');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
 $siteSetting = $plugins->get('siteSetting');
 
 $htmlBefore = $siteSetting('guest_register_html_before');
@@ -28,7 +29,7 @@ $form->setAttribute('data-msg-error-password-matching', $translate('The two pass
     <div class="dialog-background">
         <div class="dialog-panel">
             <div class="dialog-header">
-                <button type="button" class="dialog-header-close-button" title="<?= $translate('Close') ?>" autofocus="autofocus">
+                <button type="button" class="dialog-header-close-button" title="<?= $escapeAttr($translate('Close')) ?>" autofocus="autofocus">
                     <span class="dialog-close">🗙</span>
                 </button>
                 <div class="dialog-messages">

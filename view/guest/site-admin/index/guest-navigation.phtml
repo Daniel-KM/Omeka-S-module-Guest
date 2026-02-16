@@ -11,6 +11,7 @@
 $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
 $escape = $plugins->get('escapeHtml');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 
@@ -70,7 +71,7 @@ $form->prepare();
         <div class="field">
             <label><?= $translate('Add a link to a site page') ?></label>
             <?php if ($pages = $site->notLinkedPages()): ?>
-            <input type="text" class="page-selector-filter" placeholder="<?= $translate('Filter pages') ?>" aria-label="<?= $translate('Filter pages') ?>">
+            <input type="text" class="page-selector-filter" placeholder="<?= $escapeAttr($translate('Filter pages')) ?>" aria-label="<?= $escapeAttr($translate('Filter pages')) ?>">
             <div id="nav-page-links">
             <?php foreach ($pages as $page): ?>
                 <button
@@ -83,7 +84,7 @@ $form->prepare();
                     data-is_public="<?= $page->isPublic() ? '1' : '0' ?>">
                     <?= sprintf('%s (%s)', $escape($page->title()), $escape($page->slug())) ?>
                     <?php if ($page->isPublic() == 0): ?>
-                    <span class="o-icon-private" aria-label="<?= $translate('Private') ?>" title="<?= $translate('Private') ?>" role="presentation"></span>
+                    <span class="o-icon-private" aria-label="<?= $escapeAttr($translate('Private')) ?>" title="<?= $escapeAttr($translate('Private')) ?>" role="presentation"></span>
                     <?php endif; ?>
                 </button>
             <?php endforeach; ?>
