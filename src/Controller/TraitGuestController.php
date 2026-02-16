@@ -38,7 +38,7 @@ trait TraitGuestController
         $redirectUrl = $this->params()->fromQuery('redirect_url')
             ?: $this->params()->fromQuery('redirect')
             ?: SessionContainer::getDefaultManager()->getStorage()->offsetGet('redirect_url');
-        if ($redirectUrl) {
+        if ($redirectUrl && $this->isLocalUrl($redirectUrl)) {
             return $this->redirect()->toUrl($redirectUrl);
         }
 
@@ -416,5 +416,33 @@ trait TraitGuestController
         }
 
         return true;
+    }
+
+    /**
+     * Check if a URL is local (relative or same host) to prevent open redirect.
+     */
+    protected function isLocalUrl(?string $url): bool
+    {
+        if ($url === null || $url === '') {
+            return false;
+        }
+
+        // Allow relative URLs starting with /
+        if (strpos($url, '/') === 0 && strpos($url, '//') !== 0) {
+            return true;
+        }
+
+        // Check if URL is on the same host.
+        $parsedUrl = parse_url($url);
+        if (!isset($parsedUrl['host'])) {
+            // Relative URL without leading slash - allow it.
+            return true;
+        }
+
+        // Compare with current host.
+        $request = $this->getRequest();
+        $currentHost = $request->getUri()->getHost();
+
+        return $parsedUrl['host'] === $currentHost;
     }
 }
