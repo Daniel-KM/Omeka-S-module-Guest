@@ -280,7 +280,7 @@ class ApiController extends \Omeka\Controller\ApiController
 
         if (!$user) {
             // Slow down the process to avoid brute force.
-            sleep(3);
+            sleep(1);
             return $this->jSend(JSend::ERROR, null,
                 $this->translate('Wrong email or password.') // @translate
             );
@@ -288,7 +288,7 @@ class ApiController extends \Omeka\Controller\ApiController
 
         if (!$user->verifyPassword($data['password'])) {
             // Slow down the process to avoid brute force.
-            sleep(3);
+            sleep(1);
             return $this->jSend(JSend::ERROR, null,
                 // Same message as above for security.
                 $this->translate('Wrong email or password.') // @translate

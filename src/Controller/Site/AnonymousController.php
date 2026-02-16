@@ -105,7 +105,7 @@ class AnonymousController extends AbstractGuestController
             } elseif ($result === false) {
                 // Email or password error, so retry.
                 // Slow down the process to avoid brute force.
-                sleep(3);
+                sleep(1);
                 return $view;
             } elseif ($result === 0) {
                 // Email or password error in 2FA. Sleep is already processed.

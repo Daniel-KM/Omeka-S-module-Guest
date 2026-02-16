@@ -164,7 +164,7 @@ class Login extends AbstractBlockLayout implements TemplateableBlockLayoutInterf
             } elseif ($result === false) {
                 // Email or password error, so retry below.
                 // Slow down the process to avoid brute force.
-                sleep(3);
+                sleep(1);
             } elseif ($result === 0) {
                 // Email or password error in 2FA, so retry below.
                 // Sleep is already processed.
