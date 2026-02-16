@@ -237,6 +237,7 @@
          * Prepare and display the dialog to log in.
          */
         $(document).on('click', '.button-login', function(e) {
+            e.preventDefault();
             const button = $(this);
             const urlButton = button.attr('data-url') ? button.attr('data-url') : button.attr('href');
             $
@@ -279,6 +280,7 @@
          * Prepare and display the dialog to post email for forgot-password.
          */
         $(document).on('click', '.button-forgot-password', function(e) {
+            e.preventDefault();
             const button = $(this);
             const urlButton = button.attr('data-url') ? button.attr('data-url') : button.attr('href');
             $
@@ -321,6 +323,7 @@
          * Prepare and display the dialog to register.
          */
         $(document).on('click', '.button-register', function(e) {
+            e.preventDefault();
             const button = $(this);
             const urlButton = button.attr('data-url') ? button.attr('data-url') : button.attr('href');
             $
