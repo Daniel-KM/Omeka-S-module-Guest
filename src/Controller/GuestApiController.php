@@ -748,7 +748,15 @@ class GuestApiController extends AbstractActionController
             $message->addTo($user->getEmail(), $user->getName())
                 ->setSubject($subject->setTranslator($this->translator())->translate())
                 ->setBody($body->setTranslator($this->translator())->translate());
-            $mailer->send($message);
+
+            try {
+                $mailer->send($message);
+            } catch (\Exception $e) {
+                $this->logger()->err($e->getMessage(), ['exception' => $e]);
+                return $this->jSend(JSend::ERROR, null,
+                    $this->translate('An error occurred when sending mail. Retry later or contact administrator.') // @translate
+                );
+            }
 
             return $this->jSend(JSend::SUCCESS, [
                 // Of course, don't send anything else here.
