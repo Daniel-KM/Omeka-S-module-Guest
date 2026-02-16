@@ -1,7 +1,40 @@
 {
+    "name": "daniel-km/omeka-s-module-omeka-s-module-guest",
+    "type": "omeka-s-module",
+    "description": "Module for Omeka S: Adds a guest role. Can’t access backend, but allows plugins to use an authenticated user and to manage registration and authentication via api.",
+    "keywords": [
+        "Omeka S",
+        "Omeka S module",
+        "authentication",
+        "front-end"
+    ],
+    "license": "CECILL-2.1",
+    "homepage": "https://gitlab.com/Daniel-KM/omeka-s-module-Guest",
+    "authors": [
+        {
+            "name": "Daniel Berthereau",
+            "email": "Daniel.packagist@Berthereau.net"
+        }
+    ],
+    "support": {
+        "issues": "https://gitlab.com/Daniel-KM/omeka-s-module-Guest/-/issues",
+        "forum": "https://forum.omeka.org/"
+    },
+    "_require (not set until Omeka S merges PR #2412)": {
+        "omeka/omeka-s": "^4.1",
+        "daniel-km/omeka-s-module-common": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Guest\\": "src/"
+        }
+    },
     "autoload-dev": {
         "psr-4": {
-            "GuestTest\\": "test/GuestTest/"
+            "GuestTest\\": "tests/GuestTest/"
         }
+    },
+    "extra": {
+        "installer-name": "Guest"
     }
 }
