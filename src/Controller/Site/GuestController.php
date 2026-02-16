@@ -316,6 +316,16 @@ class GuestController extends AbstractGuestController
         $text = $this->getOption('guest_terms_text');
         $page = $this->getOption('guest_terms_page');
 
+        // Process {link}text{/link} placeholder in text.
+        if ($page && preg_match('/\{link\}(.+?)\{\/link\}/s', $text, $matches)) {
+            $termsUrl = $this->url()->fromRoute('site/page', [
+                'site-slug' => $site->slug(),
+                'page-slug' => $page,
+            ]);
+            $link = sprintf('<a href="%s" target="_blank">%s</a>', $termsUrl, $matches[1]);
+            $text = str_replace($matches[0], $link, $text);
+        }
+
         $view = new ViewModel([
             'site' => $site,
             'user' => $user,

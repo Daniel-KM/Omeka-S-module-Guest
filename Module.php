@@ -614,6 +614,33 @@ class Module extends AbstractModule
                 return;
             }
 
+            // Build label with link to terms page.
+            $routeMatch = $services->get('Application')->getMvcEvent()->getRouteMatch();
+            $siteSlug = $routeMatch ? $routeMatch->getParam('site-slug') : null;
+            $label = $settings->get('guest_terms_text') ?: 'I agree the terms and conditions.'; // @translate
+            if ($siteSlug) {
+                $siteSettings = $services->get('Omeka\Settings\Site');
+                try {
+                    $api = $services->get('Omeka\ApiManager');
+                    $site = $api->read('sites', ['slug' => $siteSlug])->getContent();
+                    $siteSettings->setTargetId($site->id());
+                    $label = $siteSettings->get('guest_terms_text') ?: $label;
+                    $termsPage = $siteSettings->get('guest_terms_page') ?: $settings->get('guest_terms_page');
+                    if ($termsPage) {
+                        $url = $services->get('ViewHelperManager')->get('url');
+                        $termsUrl = $url('site/page', ['site-slug' => $siteSlug, 'page-slug' => $termsPage]);
+                        if (preg_match('/\{link\}(.+?)\{\/link\}/s', $label, $matches)) {
+                            $link = sprintf('<a href="%s" target="_blank">%s</a>', $termsUrl, $matches[1]);
+                            $label = str_replace($matches[0], $link, $label);
+                        } else {
+                            $label = sprintf('%s <a href="%s" target="_blank">%s</a>', rtrim($label, '.'), $termsUrl, $termsPage);
+                        }
+                    }
+                } catch (\Exception $e) {
+                    // Use default label.
+                }
+            }
+
             $fieldset = $form->get('user-settings');
             $fieldset
                 ->add([
@@ -621,7 +648,10 @@ class Module extends AbstractModule
                     'type' => Element\Checkbox::class,
                     'options' => [
                         'element_group' => 'guest',
-                        'label' => 'Agreed terms', // @translate
+                        'label' => $label,
+                        'label_options' => [
+                            'disable_html_escape' => true,
+                        ],
                     ],
                     'attributes' => [
                         'id' => 'guest_agreed_terms',

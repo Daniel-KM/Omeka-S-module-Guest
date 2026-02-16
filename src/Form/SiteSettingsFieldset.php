@@ -399,6 +399,7 @@ class SiteSettingsFieldset extends Fieldset
                 'attributes' => [
                     'id' => 'guest_terms_text',
                     'rows' => 12,
+                    'placeholder' => 'I agree the {link}terms and conditions{/link}.', // @translate
                 ],
             ])
 

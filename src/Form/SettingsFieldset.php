@@ -423,10 +423,11 @@ class SettingsFieldset extends Fieldset
                 'options' => [
                     'element_group' => 'guest',
                     'label' => 'Default text for terms and conditions', // @translate
-                    'info' => 'The text to display to accept condtions.', // @translate
+                    'info' => 'The text to display to accept conditions. When a page is set, use {link}text{/link} to wrap the link text.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'guest_terms_text',
+                    'placeholder' => 'I agree the {link}terms and conditions{/link}.', // @translate
                 ],
             ])
 

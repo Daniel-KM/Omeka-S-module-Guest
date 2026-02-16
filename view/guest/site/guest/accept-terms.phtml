@@ -35,7 +35,19 @@ $form->prepare();
 
 <?= $this->pageTitle($translate('Accept terms and conditions')) ?>
 
-<?= $text ?>
+<?php
+// Build label with link to terms page, same as register form (Module.php).
+$termsLabel = strip_tags(trim($text ?: ''), '<a><strong><em>');
+if (!$termsLabel) {
+    $termsLabel = $translate('I agree with terms and conditions.'); // @translate
+}
+if ($page && strpos($termsLabel, '<a') === false) {
+    $termsUrl = $this->url('site/page', ['page-slug' => $page], [], true);
+    $termsLabel = sprintf('%s <a href="%s" target="_blank">%s</a>', rtrim($termsLabel, '.'), $termsUrl, $page);
+}
+$form->get('guest_agreed_terms')->setOption('label', $termsLabel);
+$form->get('guest_agreed_terms')->setLabelOption('disable_html_escape', true);
+?>
 
 <?= $this->form()->openTag($form) ?>
 <?= $this->formCollection($form, false) ?>
@@ -44,10 +56,5 @@ $form->prepare();
     <button type="submit" class="button"><?= $translate('Accept') ?></button>
 </div>
 <?= $this->form()->closeTag() ?>
-
-<?php if ($page): ?>
-<?= sprintf($translate('The terms and conditions can be read %shere%s.'),
-    '<a href="' . $this->url('site/page', ['page-slug' => $page], [], true) . '">', '</a>') ?>
-<?php endif; ?>
 
 <?php $this->trigger('view.add.after'); ?>
