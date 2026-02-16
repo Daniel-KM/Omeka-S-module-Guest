@@ -1,0 +1,48 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
+ * @var string $label Default to "Log in".
+ * @var string $loginElement May be "link" (default) or "button".
+ *
+ * Display an elemnt to call the login page or dialog.
+ * Can be used in any theme.
+ *
+ * @todo Add option "auto": when there is a dialog for login, use button, else display a link.
+ * @todo Check if there is a login page to get the right url.
+ */
+
+if ($this->identity()) return;
+
+$plugins = $this->getHelperPluginManager();
+$url = $plugins->get('url');
+$site = $plugins->get('currentSite')();
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
+
+$label ??= $translate('Log in');
+$loginElement ??= 'link';
+?>
+
+<div class="login-container">
+
+    <?php if ($loginElement === 'button'):
+        $urlLogin = $site ? $url('site/guest/anonymous', ['site-slug' => $site->slug(), 'action' => 'login'], true) : $url('forgot-password');
+        ?>
+
+        <button type="button" class="button user-login login-button" title="<?= $escapeAttr($label) ?>" data-url="<?= $escapeAttr($urlLogin) ?>">
+            <span class="icon-login"><?= $escape($label) ?></span>
+        </button>
+
+    <?php else:
+        $urlLogin = $site ? $url('site/guest/anonymous', ['site-slug' => $site->slug(), 'action' => 'login'], true) : $url('forgot-password');
+        ?>
+
+        <a href="<?= $escapeAttr($urlLogin) ?>" class="user-login login-link">
+            <span class="icon-login"><?= $escape($label) ?></span>
+        </a>
+
+    <?php endif; ?>
+
+</div>
