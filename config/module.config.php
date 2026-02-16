@@ -382,8 +382,10 @@ return [
             'guest_login_html_after' => '',
             'guest_forgot_password_html_before' => '',
             'guest_forgot_password_html_after' => '',
+            'guest_forgot_password_use_link_in_dialog_login' => false,
             'guest_register_html_before' => '',
             'guest_register_html_after' => '',
+            'guest_register_use_link_in_dialog_login' => false,
             'guest_dashboard_label' => 'My dashboard', // @translate
             'guest_capabilities' => '',
             // From Omeka classic, but not used.

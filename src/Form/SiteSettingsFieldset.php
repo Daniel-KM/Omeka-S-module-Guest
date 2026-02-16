@@ -135,6 +135,17 @@ class SiteSettingsFieldset extends Fieldset
                     'id' => 'guest_forgot_password_html_after',
                 ],
             ])
+            ->add([
+                'name' => 'guest_forgot_password_use_link_in_dialog_login',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'In the dialog Log In, use a link for forgot-password', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_forgot_password_use_link_in_dialog_login',
+                ],
+            ])
 
             ->add([
                 'name' => 'guest_register_html_before',
@@ -156,6 +167,17 @@ class SiteSettingsFieldset extends Fieldset
                 ],
                 'attributes' => [
                     'id' => 'guest_register_html_after',
+                ],
+            ])
+            ->add([
+                'name' => 'guest_register_use_link_in_dialog_login',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => 'guest',
+                    'label' => 'In the dialog Log In, use a link for register', // @translate
+                ],
+                'attributes' => [
+                    'id' => 'guest_register_use_link_in_dialog_login',
                 ],
             ])
 
