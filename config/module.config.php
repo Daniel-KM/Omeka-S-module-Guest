@@ -269,6 +269,20 @@ return [
         ],
     ],
     'navigation' => [
+        // New admin section for user interaction modules (Guest, ContactUs, Contribute, etc.).
+        // Injected into admin sidebar via view.layout event in Module.php.
+        'AdminUsers' => [
+            [
+                'label' => 'Guests', // @translate
+                'class' => 'o-icon- fa-user-circle guests',
+                'route' => 'admin/default',
+                'controller' => 'user',
+                'action' => 'browse',
+                'query' => ['role' => 'guest'],
+                'resource' => 'Omeka\Controller\Admin\User',
+                'privilege' => 'browse',
+            ],
+        ],
         'site' => [
             [
                 'label' => 'Navigation Guest', // @translate

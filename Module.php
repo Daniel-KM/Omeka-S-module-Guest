@@ -258,11 +258,11 @@ class Module extends AbstractModule
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
     {
-        // TODO How to attach all public events only?
+        // Handle layout adjustments for both public (login nav) and admin (Users section).
         $sharedEventManager->attach(
             '*',
             'view.layout',
-            [$this, 'appendLoginNav']
+            [$this, 'handleViewLayout']
         );
 
         $sharedEventManager->attach(
@@ -369,18 +369,85 @@ class Module extends AbstractModule
         return in_array($name, $translatables);
     }
 
-    public function appendLoginNav(Event $event): void
+    /**
+     * Handle view.layout event for both public and admin pages.
+     *
+     * - Public: hide/show login/logout links based on authentication
+     * - Admin: inject the "Users" section in the sidebar
+     */
+    public function handleViewLayout(Event $event): void
     {
-        $view = $event->getTarget();
-        if ($view->params()->fromRoute('__ADMIN__')) {
+        static $processed = false;
+        if ($processed) {
             return;
         }
+        $processed = true;
+
+        $view = $event->getTarget();
+        $isAdmin = $view->params()->fromRoute('__ADMIN__');
+
+        if ($isAdmin) {
+            $this->addAdminUsersSection($view);
+        } else {
+            $this->appendLoginNav($view);
+        }
+    }
+
+    protected function appendLoginNav($view): void
+    {
         $auth = $this->getServiceLocator()->get('Omeka\AuthenticationService');
         if ($auth->hasIdentity()) {
             $view->headStyle()->appendStyle('li a.registerlink, li a.loginlink { display:none; }');
         } else {
             $view->headStyle()->appendStyle('li a.logoutlink { display:none; }');
         }
+    }
+
+    /**
+     * Inject the "Users" section into the admin sidebar.
+     *
+     * This creates a new admin section for user interaction modules like
+     * Guest, ContactUs, Contribute, Selection, 🖒, etc.
+     */
+    protected function addAdminUsersSection($view): void
+    {
+        // Render the AdminUsers navigation.
+        $usersNav = (string) $view->navigation('Laminas\Navigation\AdminUsers')->menu();
+        if (!$usersNav) {
+            return;
+        }
+
+        // Inject JavaScript to add the section after the Resources section.
+        $translate = $view->plugin('translate');
+        $escape = $view->plugin('escapeHtml');
+        $sectionTitle = $escape($translate('Users'));
+        $resourcesTitle = $escape($translate('Resources'));
+        $usersNavHtml = addslashes(strtr($usersNav, ["\r" => '', "\n" => '']));
+
+        $js = <<<JS
+            document.addEventListener('DOMContentLoaded', function() {
+                var nav = document.querySelector('nav#menu');
+                if (!nav) return;
+                var resourcesH5 = null;
+                var h5s = nav.querySelectorAll('h5');
+                for (var i = 0; i < h5s.length; i++) {
+                    if (h5s[i].textContent.trim() === '{$resourcesTitle}') {
+                        resourcesH5 = h5s[i];
+                        break;
+                    }
+                }
+                if (!resourcesH5) return;
+                var resourcesUl = resourcesH5.nextElementSibling;
+                if (!resourcesUl || resourcesUl.tagName !== 'UL') return;
+                var usersH5 = document.createElement('h5');
+                usersH5.textContent = '{$sectionTitle}';
+                var usersUl = document.createElement('div');
+                usersUl.innerHTML = '{$usersNavHtml}';
+                resourcesUl.parentNode.insertBefore(usersH5, resourcesUl.nextSibling);
+                usersH5.parentNode.insertBefore(usersUl.firstChild, usersH5.nextSibling);
+            });
+            JS;
+        $view->headScript()->appendScript($js);
     }
 
     public function viewUserDetails(Event $event): void
