@@ -740,12 +740,28 @@ class Module extends AbstractModule
         $body = $body ?: $configModule['guest_message_confirm_registration_email'];
 
         // TODO Factorize creation of email.
+        // Build token_url for the email confirmation link.
+        $guestToken = $entityManager->getRepository(GuestToken::class)
+            ->findOneBy(['email' => $user->getEmail()], ['id' => 'DESC']);
+        $tokenUrl = null;
+        if ($guestToken) {
+            $urlHelper = $services->get('ViewHelperManager')->get('url');
+            $tokenUrl = $urlHelper('site/guest/anonymous', [
+                'site-slug' => $guestSite->slug(),
+                'action' => 'confirm-email',
+            ], [
+                'force_canonical' => true,
+                'query' => ['token' => $guestToken->getToken()],
+            ]);
+        }
+
         $data = [
             'main_title' => $settings->get('installation_title', 'Omeka S'),
             'site_title' => $guestSite->title(),
             'site_url' => $guestSite->siteUrl(null, true),
             'user_email' => $user->getEmail(),
             'user_name' => $user->getName(),
+            'token_url' => $tokenUrl,
         ];
         $subject = new PsrMessage($subject, $data);
         $body = new PsrMessage($body, $data);
