@@ -252,11 +252,17 @@ class GuestController extends AbstractGuestController
             return $view;
         }
 
+        // Prevent timing attacks: always delay response to avoid revealing
+        // whether the email exists in database.
+        $startTime = microtime(true);
         $existUser = $this->getEntityManager()->getRepository(User::class)
             ->findOneBy(['email' => $email]);
+        $elapsedMs = (microtime(true) - $startTime) * 1000;
+        $delayMs = max(0, 500 - $elapsedMs);
+        if ($delayMs > 0) {
+            usleep((int) ($delayMs * 1000));
+        }
         if ($existUser) {
-            // Avoid a hack of the database.
-            sleep(2);
             $this->messenger()->addError(new PsrMessage(
                 'The email "{user_email}" is not yours.', // @translate
                 ['user_email' => $email]
@@ -360,7 +366,7 @@ class GuestController extends AbstractGuestController
             return $this->redirect()->toRoute('site/guest/guest', ['action' => 'logout'], [], true);
         }
 
-        $message = new PsrMessage('Thanks for accepting the terms and condtions.'); // @translate
+        $message = new PsrMessage('Thanks for accepting the terms and conditions.'); // @translate
         $this->messenger()->addSuccess($message);
         return $this->redirectToAdminOrSite();
     }

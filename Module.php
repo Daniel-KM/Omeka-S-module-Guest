@@ -228,6 +228,7 @@ class Module extends AbstractModule
         // Rules for guest.
         $roles = $acl->getRoles();
         $acl
+            // Any authenticated users has access to all action of the guest controller.
             ->allow(
                 $roles,
                 [\Guest\Controller\Site\GuestController::class]

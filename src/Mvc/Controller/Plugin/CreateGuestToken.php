@@ -31,7 +31,7 @@ class CreateGuestToken extends AbstractPlugin
      * (for email confirmation, default).
      * @return \Guest\Entity\GuestToken
      */
-    public function __invoke(User $user, $identifier = null, $short = false)
+    public function __invoke(User $user, ?string $identifier = null, bool $short = false): GuestToken
     {
         $entityManager = $this->getEntityManager();
         $repository = $entityManager->getRepository(GuestToken::class);
@@ -67,7 +67,7 @@ class CreateGuestToken extends AbstractPlugin
         return $guestToken;
     }
 
-    protected function getEntityManager()
+    protected function getEntityManager(): EntityManager
     {
         return $this->entityManager;
     }

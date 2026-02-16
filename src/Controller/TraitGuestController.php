@@ -32,7 +32,7 @@ trait TraitGuestController
      * @see \Guest\Site\BlockLayout\TraitGuest::redirectToAdminOrSite()
      * @see \SingleSignOn\Controller\SsoController::redirectToAdminOrSite()
      */
-    protected function redirectToAdminOrSite()
+    protected function redirectToAdminOrSite(): \Laminas\Http\Response
     {
         // Bypass settings if set in url query.
         $redirectUrl = $this->params()->fromQuery('redirect_url')
@@ -70,7 +70,7 @@ trait TraitGuestController
      *
      * @todo Replace with fallbackSetting().
      */
-    protected function getOption($key)
+    protected function getOption(string $key): mixed
     {
         $value = $this->siteSettings()->get($key)
             ?: $this->settings()->get($key)
@@ -243,7 +243,7 @@ trait TraitGuestController
      * @return array Filled subject and body as PsrMessage, from templates
      * formatted with moustache style.
      */
-    protected function prepareMessage($template, array $data, ?SiteRepresentation $site = null)
+    protected function prepareMessage(string $template, array $data, ?SiteRepresentation $site = null): array
     {
         $settings = $this->settings();
 
@@ -349,8 +349,8 @@ trait TraitGuestController
         $body = strtr($body, ['%7Btoken_url%7D' => '{token_url}']);
 
         if ($isText) {
-            $subject = strip_tags($subject);
-            $body = strip_tags($body);
+            $subject = html_entity_decode(strip_tags($subject), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $body = html_entity_decode(strip_tags($body), ENT_QUOTES | ENT_HTML5, 'UTF-8');
         }
 
         unset($data['subject']);
@@ -364,8 +364,10 @@ trait TraitGuestController
         ];
     }
 
-    protected function isLoginWIthoutForm(): bool
+    protected function isLoginWithoutForm(): bool
     {
+        static $cache = [];
+
         $loginWithoutForm = (bool) $this->siteSettings()->get('guest_login_without_form');
         if (!$loginWithoutForm) {
             return false;
@@ -378,8 +380,14 @@ trait TraitGuestController
         }
         $siteId = $site->id();
 
+        // Use cached result for this site during current request.
+        if (array_key_exists($siteId, $cache)) {
+            return $cache[$siteId];
+        }
+
         /**
          * @var \Doctrine\DBAL\Connection $connection
+         * @var \Doctrine\DBAL\Query\QueryBuilder $qb
          * @var \Omeka\Entity\SitePageBlock $block
          */
         $services = $site->getServiceLocator();
@@ -394,7 +402,7 @@ trait TraitGuestController
         $connection = $services->get('Omeka\Connection');
         $qb = $connection->createQueryBuilder();
         $qb
-            ->select('block.id, block.data')
+            ->select('block.data')
             ->from('site_page_block', 'block')
             ->innerJoin('block', 'site_page', 'site_page', 'site_page.id = block.page_id')
             ->where('site_page.site_id = :site_id')
@@ -406,15 +414,17 @@ trait TraitGuestController
             // ->setParameter('key', '%"show_login_form":"yes"%')
             ->setParameter('key', '%"show_login_form"%')
         ;
-        $blocks = $qb->execute()->fetchAllAssociative();
+        $blocks = $qb->execute()->fetchFirstColumn();
 
         foreach ($blocks as $block) {
             $data = json_decode($block['data'], true);
             if (isset($data['show_login_form']) && $data['show_login_form'] === 'yes') {
+                $cache[$siteId] = false;
                 return false;
             }
         }
 
+        $cache[$siteId] = true;
         return true;
     }
 

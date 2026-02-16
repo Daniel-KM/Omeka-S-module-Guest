@@ -38,7 +38,7 @@ class AnonymousController extends AbstractGuestController
 
         // The site setting may be overridden with a site block, so check if a
         // block has such option.
-        $loginWithoutForm = $this->isLoginWIthoutForm();
+        $loginWithoutForm = $this->isLoginWithoutForm();
 
         // The TokenForm returns to the login action, so check it when needed.
         $request = $this->getRequest();
@@ -341,8 +341,18 @@ class AnonymousController extends AbstractGuestController
                 );
             }
             // TODO Check for another exception at the same time…
+        } catch (\Omeka\Api\Exception\ValidationException $e) {
+            $this->logger()->err(
+                'Validation error during creation of guest user: {exception}', // @translate
+                ['exception' => $e]
+            );
+            $this->messenger()->addError('Validation error during creation of user. Please check your input.'); // @translate
+            return $view;
         } catch (\Exception $e) {
-            $this->logger()->err($e);
+            $this->logger()->err(
+                'Unexpected error during creation of guest user: {exception}', // @translate
+                ['exception' => $e]
+            );
             $user = $entityManager->getRepository(User::class)->findOneBy([
                 'email' => $userInfo['o:email'],
             ]);

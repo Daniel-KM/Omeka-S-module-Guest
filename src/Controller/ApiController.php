@@ -299,7 +299,7 @@ class ApiController extends \Omeka\Controller\ApiController
         $loginRoles = $this->settings()->get('guest_login_roles', []);
         if (!in_array('all', $loginRoles) && !in_array($role, $loginRoles)) {
             $message = new PsrMessage(
-                'Role "{role]" is not allowed to login via api.', // @translate
+                'Role "{role}" is not allowed to login via api.', // @translate
                 ['role' => $role]
             );
             return $this->jSend(JSend::ERROR, null,

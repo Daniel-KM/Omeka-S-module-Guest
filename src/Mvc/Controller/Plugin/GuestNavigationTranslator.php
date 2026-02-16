@@ -69,7 +69,7 @@ class GuestNavigationTranslator extends AbstractPlugin
         if ($activeUrl === true) {
             // The request uri is a relative url.
             // Same as `substr($serverUrl(true), strlen($serverUrl(false)))`.
-            $activeUrl = $_SERVER['REQUEST_URI'];
+            $activeUrl = $this->getController()->getRequest()->getRequestUri();
         } elseif (!is_string($activeUrl) && !is_array($activeUrl) && !is_bool($activeUrl)) {
             $activeUrl = null;
         }
@@ -254,21 +254,21 @@ class GuestNavigationTranslator extends AbstractPlugin
             return (string) $data['uri'];
         }
 
-        $serial = serialize($data);
-        if (isset($urls[$serial])) {
-            return $urls[$serial];
+        $cacheKey = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        if (isset($urls[$cacheKey])) {
+            return $urls[$cacheKey];
         }
 
         $linkZend = $linkType->toZend($data['data'], $site);
         if (empty($linkZend['route'])) {
-            $urls[$serial] = '';
+            $urls[$cacheKey] = '';
         } else {
             $urlRoute = $linkZend['route'];
             $urlParams = empty($linkZend['params']) ? [] : $linkZend['params'];
             $urlParams['site-slug'] = $site->slug();
             $urlOptions = empty($linkZend['query']) ? [] : ['query' => $linkZend['query']];
-            $urls[$serial] = $this->urlHelper->__invoke($urlRoute, $urlParams, $urlOptions);
+            $urls[$cacheKey] = $this->urlHelper->__invoke($urlRoute, $urlParams, $urlOptions);
         }
-        return $urls[$serial];
+        return $urls[$cacheKey];
     }
 }

@@ -394,7 +394,7 @@ class SiteSettingsFieldset extends Fieldset
                 'options' => [
                     'element_group' => 'guest',
                     'label' => 'Text for terms and conditions', // @translate
-                    'info' => 'The text to display to accept condtions.', // @translate
+                    'info' => 'The text to display to accept conditions.', // @translate
                 ],
                 'attributes' => [
                     'id' => 'guest_terms_text',
