@@ -66,6 +66,15 @@ installed, it is recommended to upgrade it first to version 3.3.5.1 or higher,
 or to disable it. See [more information to upgrade templates] and code in other
 files of [version 3.4.20].
 
+* For test
+
+The module includes a comprehensive test suite with unit and functional tests.
+Run them from the root of Omeka:
+
+```sh
+vendor/bin/phpunit -c modules/Guest/phpunit.xml --testdox
+```
+
 
 Usage
 -----
