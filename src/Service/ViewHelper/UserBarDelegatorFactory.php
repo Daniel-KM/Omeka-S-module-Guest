@@ -3,7 +3,7 @@
 namespace Guest\Service\ViewHelper;
 
 use Guest\View\Helper\UserBarDelegator;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 
 class UserBarDelegatorFactory implements DelegatorFactoryInterface

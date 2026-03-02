@@ -3,7 +3,7 @@
 namespace Guest\Service\Controller\SiteAdmin;
 
 use Guest\Controller\SiteAdmin\IndexController;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class IndexControllerFactory implements FactoryInterface

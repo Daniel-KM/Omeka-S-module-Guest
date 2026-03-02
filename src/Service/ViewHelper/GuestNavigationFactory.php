@@ -3,7 +3,7 @@
 namespace Guest\Service\ViewHelper;
 
 use Guest\View\Helper\GuestNavigation;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class GuestNavigationFactory implements FactoryInterface

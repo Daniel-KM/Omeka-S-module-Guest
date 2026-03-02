@@ -3,7 +3,7 @@
 namespace Guest\Service\ControllerPlugin;
 
 use Guest\Mvc\Controller\Plugin\GuestNavigationTranslator;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class GuestNavigationTranslatorFactory implements FactoryInterface

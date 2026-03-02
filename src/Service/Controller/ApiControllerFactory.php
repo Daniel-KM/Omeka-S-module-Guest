@@ -3,7 +3,7 @@
 namespace Guest\Service\Controller;
 
 use Guest\Controller\ApiController;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Authentication\Storage\Session;
 use Laminas\ServiceManager\Factory\FactoryInterface;

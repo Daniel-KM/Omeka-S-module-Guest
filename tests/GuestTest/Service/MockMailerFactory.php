@@ -2,7 +2,7 @@
 
 namespace GuestTest\Service;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\Mail\Transport\Factory as TransportFactory;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 

@@ -3,7 +3,7 @@
 namespace Guest\Service\BlockLayout;
 
 use Guest\Site\BlockLayout\Login;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Omeka\Module\Manager as ModuleManager;
 

@@ -3,7 +3,7 @@
 namespace Guest\Service\Form;
 
 use Guest\Form\UserForm;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class UserFormFactory implements FactoryInterface
