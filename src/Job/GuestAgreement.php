@@ -14,6 +14,9 @@ class GuestAgreement extends AbstractJob
          */
         $services = $this->getServiceLocator();
         $logger = $services->get('Omeka\Logger');
+        $referenceIdProcessor = new \Laminas\Log\Processor\ReferenceId();
+        $referenceIdProcessor->setReferenceId('guest/guest-agreement/job_' . $this->job->getId());
+        $logger->addProcessor($referenceIdProcessor);
 
         $agreement = $this->getArg('agreement');
 
