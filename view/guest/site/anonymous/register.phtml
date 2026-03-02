@@ -63,7 +63,7 @@ $pageLabel = $siteSetting('guest_register_text') ?: ($setting('guest_register_te
         <?= $this->formCollection($form, false) ?>
         <?php $trigger('view.add.form.after'); ?>
         <div id="page-actions">
-            <button type="submit" class="button"><?= $translate('Register') ?></button>
+            <button type="submit" class="button"><?= $translate('Create the account') // @translate ?></button>
         </div>
     <?= $this->form()->closeTag() ?>
 
