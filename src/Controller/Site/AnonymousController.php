@@ -6,7 +6,6 @@ use Common\Stdlib\PsrMessage;
 use Guest\Entity\GuestToken;
 use Laminas\View\Model\ViewModel;
 use Omeka\Entity\Site;
-use Omeka\Entity\SitePermission;
 use Omeka\Entity\User;
 use Omeka\Form\ForgotPasswordForm;
 use Omeka\Form\LoginForm;
@@ -58,7 +57,6 @@ class AnonymousController extends AbstractGuestController
         $form = $loginWithoutForm
             ? null
             : $this->getForm($this->hasModuleUserNames() ? \UserNames\Form\LoginForm::class : LoginForm::class);
-
 
         if ($siteSettings->get('guest_login_with_register')
             && $settings->get('guest_open', 'moderate') !== 'closed'

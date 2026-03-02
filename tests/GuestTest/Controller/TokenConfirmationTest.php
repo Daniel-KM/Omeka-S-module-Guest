@@ -2,8 +2,6 @@
 
 namespace GuestTest\Controller;
 
-use Guest\Entity\GuestToken;
-
 /**
  * Tests for guest token confirmation flow.
  */

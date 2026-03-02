@@ -235,7 +235,7 @@ class GuestTokenTest extends AbstractHttpControllerTestCase
         // Remove from tracking since it will be cascade-deleted.
         $this->createdTokens = array_filter(
             $this->createdTokens,
-            fn($id) => $id !== $tokenId
+            fn ($id) => $id !== $tokenId
         );
 
         // Delete user.
@@ -245,7 +245,7 @@ class GuestTokenTest extends AbstractHttpControllerTestCase
         // Remove from tracking since we just deleted it.
         $this->createdUsers = array_filter(
             $this->createdUsers,
-            fn($id) => $id !== $userId
+            fn ($id) => $id !== $userId
         );
 
         // Verify token is also deleted.

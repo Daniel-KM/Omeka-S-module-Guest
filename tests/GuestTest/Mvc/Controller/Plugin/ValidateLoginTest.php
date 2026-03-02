@@ -5,9 +5,7 @@ namespace GuestTest\Mvc\Controller\Plugin;
 use Guest\Entity\GuestToken;
 use Guest\Mvc\Controller\Plugin\ValidateLogin;
 use GuestTest\GuestTestTrait;
-use Laminas\Authentication\AuthenticationService;
 use Laminas\EventManager\EventManager;
-use Laminas\Form\Element\Csrf;
 use Laminas\Form\Form;
 use Laminas\Http\Request;
 use Omeka\Mvc\Controller\Plugin\Messenger;
@@ -243,7 +241,7 @@ class ValidateLoginTest extends AbstractHttpControllerTestCase
         $request = new Request();
         $settings = $services->get('Omeka\Settings');
 
-        $eventManager->attach('user.login', function ($e) use (&$eventTriggered) {
+        $eventManager->attach('user.login', function ($e) use (&$eventTriggered): void {
             $eventTriggered = true;
         });
 

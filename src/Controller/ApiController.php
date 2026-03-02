@@ -15,7 +15,6 @@ use Omeka\Api\Adapter\SiteAdapter;
 use Omeka\Api\Adapter\UserAdapter;
 use Omeka\Api\Manager as ApiManager;
 use Omeka\Entity\Site;
-use Omeka\Entity\SitePermission;
 use Omeka\Entity\User;
 use Omeka\Permissions\Acl;
 use Omeka\Stdlib\Paginator;
