@@ -354,8 +354,12 @@ trait TraitGuestController
 
         unset($data['subject']);
         unset($data['body']);
-        $subject = new PsrMessage($subject, $data);
-        $body = new PsrMessage($body, $data);
+        $translator = $this->getEvent()->getApplication()->getServiceManager()
+            ->get('MvcTranslator');
+        $subject = (new PsrMessage($subject, $data))
+            ->setTranslator($translator);
+        $body = (new PsrMessage($body, $data))
+            ->setTranslator($translator);
 
         return [
             'subject' => $subject,
