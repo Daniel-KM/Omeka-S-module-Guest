@@ -7,6 +7,7 @@ use Guest\Entity\GuestToken;
 use Laminas\View\Model\ViewModel;
 use Omeka\Entity\Site;
 use Omeka\Entity\User;
+use Omeka\Form\ActivateForm;
 use Omeka\Form\ForgotPasswordForm;
 use Omeka\Form\LoginForm;
 use TwoFactorAuth\Form\TokenForm;
@@ -600,7 +601,7 @@ class AnonymousController extends AbstractGuestController
                 $entityManager->remove($passwordCreation);
                 $entityManager->flush();
             }
-            $this->mailer()->sendResetPassword($user);
+            $this->sendResetPasswordSiteAware($user, $site);
         }
 
         $this->messenger()->addSuccess('Check your email for instructions on how to reset your password'); // @translate
@@ -615,6 +616,129 @@ class AnonymousController extends AbstractGuestController
         return $siteSlug && !$this->params('outside')
             ? $this->redirect()->toRoute('site', ['site-slug' => $siteSlug])
             : $this->redirect()->toRoute('top');
+    }
+
+    /**
+     * Handle password creation/reset from site context.
+     *
+     * @see \Omeka\Controller\LoginController::createPasswordAction()
+     */
+    public function createPasswordAction()
+    {
+        if ($this->isUserLogged()) {
+            return $this->redirectToAdminOrSite();
+        }
+
+        $site = $this->currentSite();
+        $siteSlug = $site ? $site->slug() : null;
+
+        $entityManager = $this->getEntityManager();
+
+        $key = $this->params()->fromQuery('key');
+        $passwordCreation = $key
+            ? $entityManager->find(\Omeka\Entity\PasswordCreation::class, $key)
+            : null;
+
+        if (!$passwordCreation) {
+            $this->messenger()->addError('Invalid password creation key.'); // @translate
+            return $siteSlug
+                ? $this->redirect()->toRoute('site/guest/anonymous', ['site-slug' => $siteSlug, 'action' => 'login'])
+                : $this->redirect()->toRoute('login');
+        }
+
+        $user = $passwordCreation->getUser();
+
+        if (new \DateTime() > $passwordCreation->getExpiration()) {
+            $user->setIsActive(false);
+            $entityManager->remove($passwordCreation);
+            $entityManager->flush();
+            $this->messenger()->addError('Password creation key expired.'); // @translate
+            return $siteSlug
+                ? $this->redirect()->toRoute('site/guest/anonymous', ['site-slug' => $siteSlug, 'action' => 'forgot-password'])
+                : $this->redirect()->toRoute('login');
+        }
+
+        $form = $this->getForm(ActivateForm::class);
+
+        if ($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost();
+            $form->setData($data);
+            if ($form->isValid()) {
+                $user->setPassword($data['password-confirm']['password']);
+                if ($passwordCreation->activate()) {
+                    $user->setIsActive(true);
+                }
+                $entityManager->remove($passwordCreation);
+                $entityManager->flush();
+                $this->messenger()->addSuccess('Successfully created your password. Please log in.'); // @translate
+                return $siteSlug
+                    ? $this->redirect()->toRoute('site/guest/anonymous', ['site-slug' => $siteSlug, 'action' => 'login'])
+                    : $this->redirect()->toRoute('login');
+            }
+            $this->messenger()->addError('Password creation unsuccessful'); // @translate
+        }
+
+        $view = new ViewModel([
+            'form' => $form,
+            'site' => $site,
+        ]);
+        $view->setTemplate('omeka/login/create-password');
+        return $view;
+    }
+
+    /**
+     * Send reset password email with a site-aware URL.
+     *
+     * @see \Omeka\Stdlib\Mailer::sendResetPassword()
+     */
+    protected function sendResetPasswordSiteAware(
+        User $user,
+        ?\Omeka\Api\Representation\SiteRepresentation $site
+    ): void {
+        $mailer = $this->mailer();
+        $translate = $this->viewHelpers()->get('translate');
+        $installationTitle = $mailer->getInstallationTitle();
+
+        $passwordCreation = $mailer->getPasswordCreation($user, false);
+
+        if ($site) {
+            $createPasswordUrl = $this->url()->fromRoute(
+                'site/guest/anonymous',
+                ['site-slug' => $site->slug(), 'action' => 'create-password'],
+                ['force_canonical' => true, 'query' => ['key' => $passwordCreation->getId()]]
+            );
+            $siteUrl = $site->siteUrl(null, true);
+        } else {
+            $createPasswordUrl = $mailer->getCreatePasswordUrl($passwordCreation);
+            $siteUrl = $mailer->getSiteUrl();
+        }
+
+        $template = $translate('Greetings, %1$s!
+
+It seems you have forgotten your password for %5$s at %2$s
+
+To reset your password, click this link:
+%3$s
+
+Your reset link will expire on %4$s.');
+
+        $body = sprintf(
+            $template,
+            $user->getName(),
+            $siteUrl,
+            $createPasswordUrl,
+            $mailer->getExpiration($passwordCreation),
+            $installationTitle
+        );
+
+        $message = $mailer->createMessage();
+        $message->addTo($user->getEmail(), $user->getName())
+            ->setSubject(sprintf(
+                $translate('Reset your password for %s'),
+                $installationTitle
+            ))
+            ->setBody($body);
+        $mailer->send($message);
     }
 
     public function staleTokenAction(): void
