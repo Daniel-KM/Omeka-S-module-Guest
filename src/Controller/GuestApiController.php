@@ -512,7 +512,7 @@ class GuestApiController extends AbstractActionController
                 );
             }
             // TODO Check for another exception at the same time…
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger()->err($e);
             $user = $this->entityManager->getRepository(User::class)->findOneBy([
                 'email' => $userInfo['o:email'],
@@ -751,7 +751,7 @@ class GuestApiController extends AbstractActionController
 
             try {
                 $mailer->send($message);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->logger()->err($e->getMessage(), ['exception' => $e]);
                 return $this->jSend(JSend::ERROR, null,
                     $this->translate('An error occurred when sending mail. Retry later or contact administrator.') // @translate
@@ -842,7 +842,7 @@ class GuestApiController extends AbstractActionController
             if ($siteSlug) {
                 try {
                     $site = $this->api()->read('sites', ['slug' => $siteSlug])->getContent();
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     $site = null;
                 }
             }
@@ -868,7 +868,7 @@ class GuestApiController extends AbstractActionController
                 $form = $dialog === 'register'
                     ? $this->getUserForm(null, 'register')
                     : $this->getForm($dialogForms[$dialog]);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 return $this->jSend(JSend::ERROR, null,
                     $this->translate('An error occurred when loading dialog.'), // @translate
                 );
@@ -1137,7 +1137,7 @@ class GuestApiController extends AbstractActionController
 
         try {
             $existUser = $this->api()->read('users', ['email' => $email])->getContent();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $existUser = null;
         }
         if ($existUser) {

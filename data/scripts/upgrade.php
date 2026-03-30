@@ -71,7 +71,7 @@ if (version_compare($oldVersion, '3.4.19', '<')) {
     foreach (explode(";\n", $sqls) as $sql) {
         try {
             $connection->executeStatement($sql);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
         }
     }
 }
@@ -110,7 +110,7 @@ if (version_compare($oldVersion, '3.4.22', '<')) {
     foreach (explode(";\n", $sqls) as $sql) {
         try {
             $connection->executeStatement($sql);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
         }
     }
 
@@ -222,7 +222,7 @@ if (version_compare($oldVersion, '3.4.41', '<')) {
         SQL;
     try {
         $connection->executeStatement($sql);
-    } catch (\Exception $e) {
+    } catch (\Throwable $e) {
         // Index may already exist.
     }
 }

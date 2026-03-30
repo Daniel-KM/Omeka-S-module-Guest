@@ -634,7 +634,7 @@ class Module extends AbstractModule
                             $label = sprintf('%s <a href="%s" target="_blank">%s</a>', rtrim($label, '.'), $termsUrl, $termsPage);
                         }
                     }
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     // Use default label.
                 }
             }

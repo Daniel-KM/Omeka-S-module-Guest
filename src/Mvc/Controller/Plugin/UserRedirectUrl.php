@@ -89,7 +89,7 @@ class UserRedirectUrl extends AbstractPlugin
                     /** @var \Omeka\Api\Representation\SiteRepresentation $site */
                     $site = $this->api->read('sites', ['id' => $defaultSite])->getContent();
                     $redirectUrl = $site->siteUrl();
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     $redirectUrl = $this->url->fromRoute('top');
                 }
             } else {

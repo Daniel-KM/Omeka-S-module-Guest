@@ -227,7 +227,7 @@ trait TraitGuestController
             try {
                 $this->api()->search('usernames', ['limit' => 0])->getTotalResults();
                 $hasModule = true;
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $hasModule = false;
             }
         }
@@ -609,7 +609,7 @@ trait TraitGuestController
                     ['exception' => $e]
                 );
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger()->err($e);
             $user = $this->entityManager->getRepository(User::class)
                 ->findOneBy(['email' => $userInfo['o:email']]);

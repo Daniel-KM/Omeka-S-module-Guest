@@ -608,7 +608,7 @@ class ApiController extends \Omeka\Controller\ApiController
                 );
             }
             // TODO Check for another exception at the same time…
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger()->err($e);
             $user = $this->entityManager->getRepository(User::class)->findOneBy([
                 'email' => $userInfo['o:email'],
@@ -1110,7 +1110,7 @@ class ApiController extends \Omeka\Controller\ApiController
 
         try {
             $existUser = $this->api()->read('users', ['email' => $email])->getContent();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $existUser = null;
         }
         if ($existUser) {

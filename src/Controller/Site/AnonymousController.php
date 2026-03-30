@@ -347,7 +347,7 @@ class AnonymousController extends AbstractGuestController
             );
             $this->messenger()->addError('Validation error during creation of user. Please check your input.'); // @translate
             return $view;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->logger()->err(
                 'Unexpected error during creation of guest user: {exception}', // @translate
                 ['exception' => $e]

@@ -56,7 +56,7 @@ class MvcListeners extends AbstractListenerAggregate
             $siteSlug = $routeMatch->getParam('site-slug');
             try {
                 $siteId = $api->read('sites', ['slug' => $siteSlug], [], ['responseContent' => 'resource'])->getContent()->getId();
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // Nothing.
             }
         }

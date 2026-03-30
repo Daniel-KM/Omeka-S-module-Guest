@@ -66,7 +66,7 @@ class GuestController extends AbstractGuestController
             }
             try {
                 $page = $this->api()->read('site_pages', $home)->getContent();
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 return $this->notFoundAction();
             }
             return $this->forward()->dispatch('Omeka\Controller\Site\Page', [
