@@ -14,7 +14,7 @@ class ForgotPasswordFactory implements FactoryInterface
      * @param ContainerInterface $services
      * @return ForgotPassword
      */
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         $plugins = $services->get('ControllerPluginManager');
 

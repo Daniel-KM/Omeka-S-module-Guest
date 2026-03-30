@@ -12,7 +12,7 @@ use Omeka\Authentication\Storage\DoctrineWrapper;
 
 class ApiControllerFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         // The user is automatically authenticated via api, but when option
         // "guest_login_session" is set, the user is authenticalted via the

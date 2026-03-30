@@ -78,8 +78,8 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
     public function form(
         PhpRenderer $view,
         SiteRepresentation $site,
-        SitePageRepresentation $page = null,
-        SitePageBlockRepresentation $block = null
+        ?SitePageRepresentation $page = null,
+        ?SitePageBlockRepresentation $block = null
     ) {
         return '<p>'
             . $view->translate('Display the register form. The options are set in site settings.') // @translate

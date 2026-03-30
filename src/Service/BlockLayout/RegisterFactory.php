@@ -15,7 +15,7 @@ class RegisterFactory implements FactoryInterface
      * @param ContainerInterface $services
      * @return Register
      */
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         /** @var \Omeka\Module\Manager $moduleManager */
         $moduleManager = $services->get('Omeka\ModuleManager');

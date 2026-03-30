@@ -46,8 +46,8 @@ class ForgotPassword extends AbstractBlockLayout implements TemplateableBlockLay
     public function form(
         PhpRenderer $view,
         SiteRepresentation $site,
-        SitePageRepresentation $page = null,
-        SitePageBlockRepresentation $block = null
+        ?SitePageRepresentation $page = null,
+        ?SitePageBlockRepresentation $block = null
     ) {
         return '<p>'
             . $view->translate('Display the form to recover the password.') // @translate

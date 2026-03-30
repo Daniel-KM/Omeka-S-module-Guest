@@ -15,7 +15,7 @@ class LoginFactory implements FactoryInterface
      * @param ContainerInterface $services
      * @return Login
      */
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         /** @var \Omeka\Module\Manager $moduleManager */
         $moduleManager = $services->get('Omeka\ModuleManager');

@@ -26,7 +26,7 @@ class AuthenticationServiceFactory implements FactoryInterface
      * @return AuthenticationService
      * @see \Omeka\Service\AuthenticationServiceFactory
      */
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         // Copy of the Omeka service, with a Guest password adapter and one
         // line to set the token repository.
