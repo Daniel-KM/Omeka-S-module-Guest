@@ -548,7 +548,7 @@ trait TraitGuestController
 
         // Validate UserNames if module is active.
         if ($this->hasModuleUserNames()) {
-            $userNameAdapter = $this->api()->read('vocabularies', 1)->getContent()->getServiceLocator()
+            $userNameAdapter = $this->getEvent()->getApplication()->getServiceManager()
                 ->get('Omeka\ApiAdapterManager')->get('usernames');
             $userName = new \UserNames\Entity\UserNames;
             $userName->setUserName($data['o-module-usernames:username'] ?? '');

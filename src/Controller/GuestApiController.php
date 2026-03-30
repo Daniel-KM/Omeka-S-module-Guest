@@ -454,7 +454,7 @@ class GuestApiController extends AbstractActionController
         if ($this->hasModuleUserNames()) {
             // The username is a required data and it must be valid.
             // Get the adapter through the services.
-            $userNameAdapter = $this->api()->read('vocabularies', 1)->getContent()->getServiceLocator()
+            $userNameAdapter = $this->getEvent()->getApplication()->getServiceManager()
                 ->get('Omeka\ApiAdapterManager')->get('usernames');
             $userName = new \UserNames\Entity\UserNames;
             $userName->setUserName($data['o-module-usernames:username'] ?? '');
