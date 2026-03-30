@@ -13,11 +13,11 @@ $plugins = $this->getHelperPluginManager();
 $trigger = $plugins->get('trigger');
 $setting = $plugins->get('setting');
 $escape = $plugins->get('escapeHtml');
-$escapeAttr = $plugins->get('escapeHtmlAttr');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $pageTitle = $plugins->get('pageTitle');
 $siteSetting = $plugins->get('siteSetting');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
 $htmlElement = $plugins->get('htmlElement');
 
 $breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;

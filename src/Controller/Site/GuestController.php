@@ -363,7 +363,7 @@ class GuestController extends AbstractGuestController
                 $this->messenger()->addError($message);
                 return $view;
             }
-            return $this->redirect()->toRoute('site/guest/guest', ['action' => 'logout'], [], true);
+            return $this->redirect()->toUrl($this->siteGuestUrl('guest', 'logout'));
         }
 
         $message = new PsrMessage('Thanks for accepting the terms and conditions.'); // @translate

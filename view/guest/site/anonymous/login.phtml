@@ -12,17 +12,17 @@
  */
 
 $plugins = $this->getHelperPluginManager();
-$url = $plugins->get('url');
 $trigger = $plugins->get('trigger');
 $setting = $plugins->get('setting');
 $escape = $plugins->get('escapeHtml');
-$escapeAttr = $plugins->get('escapeHtmlAttr');
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $pageTitle = $plugins->get('pageTitle');
 $headLink = $plugins->get('headLink');
+$basePath = $plugins->get('basePath');
 $siteSetting = $plugins->get('siteSetting');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
 $headScript = $plugins->get('headScript');
 $htmlElement = $plugins->get('htmlElement');
 
@@ -73,7 +73,7 @@ $pageLabel = $siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?
     <?php if ($form): ?>
     <?= $this->form($form) ?>
     <p class="forgot-password">
-        <?= $hyperlink($translate('Forgot password?'), $url('site/guest/anonymous', ['action' => 'forgot-password'], true)) ?>
+        <?= $hyperlink($translate('Forgot password?'), $basePath() . '/s/' . $site->slug() . '/guest/forgot-password') ?>
     </p>
     <?= isset($formToken) ? $this->partial('common/dialog/2fa-token', ['site' => $site, 'form' => $formToken]) : '' ?>
     <?php endif; ?>

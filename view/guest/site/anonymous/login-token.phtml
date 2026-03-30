@@ -7,14 +7,14 @@
  */
 
 $plugins = $this->getHelperPluginManager();
-$url = $plugins->get('url');
 $setting = $plugins->get('setting');
 $escape = $plugins->get('escapeHtml');
-$escapeAttr = $plugins->get('escapeHtmlAttr');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $pageTitle = $plugins->get('pageTitle');
+$basePath = $plugins->get('basePath');
 $siteSetting = $plugins->get('siteSetting');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
 $htmlElement = $plugins->get('htmlElement');
 
 $breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;
@@ -46,7 +46,7 @@ $pageLabel = $siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?
     <?= $this->form($formToken) ?>
 
     <p class="resend-token">
-        <?= $hyperlink($translate('Resend a code'), $url('site/guest/anonymous', ['action' => 'login'], ['query' => ['resend_token' => 1]], true), ['class' => 'resend-code']) ?>
+        <?= $hyperlink($translate('Resend a code'), $basePath() . '/s/' . $site->slug() . '/guest/login?resend_token=1', ['class' => 'resend-code']) ?>
     </p>
 
 </div>

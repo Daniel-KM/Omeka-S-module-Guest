@@ -6,10 +6,10 @@
 
 $plugins = $this->getHelperPluginManager();
 $escape = $plugins->get('escapeHtml');
-$escapeAttr = $plugins->get('escapeHtmlAttr');
 $translate = $plugins->get('translate');
 $pageTitle = $plugins->get('pageTitle');
 $hyperlink = $plugins->get('hyperlink');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
 $htmlElement = $plugins->get('htmlElement');
 
 $breadcrumbs = $plugins->has('breadcrumbs') ? $plugins->get('breadcrumbs') : null;

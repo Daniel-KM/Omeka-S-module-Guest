@@ -11,9 +11,9 @@
 $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
 $escape = $plugins->get('escapeHtml');
-$escapeAttr = $plugins->get('escapeHtmlAttr');
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
 
 $this->htmlElement('body')->appendAttribute('class', 'sites guest edit');
 

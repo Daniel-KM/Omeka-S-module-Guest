@@ -9,12 +9,12 @@
  */
 
 $plugins = $this->getHelperPluginManager();
-$url = $plugins->get('url');
 $trigger = $plugins->get('trigger');
 $assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $headLink = $plugins->get('headLink');
+$basePath = $plugins->get('basePath');
 $headScript = $plugins->get('headScript');
 
 if ($form) $form->prepare();
@@ -36,7 +36,7 @@ if (!empty($formToken)) {
         <?= $this->form($form) ?>
     </div>
     <p class="forgot-password">
-        <?= $hyperlink($translate('Forgot password?'), $url('site/guest/anonymous', ['action' => 'forgot-password'], true)) ?>
+        <?= $hyperlink($translate('Forgot password?'), $basePath() . '/s/' . $site->slug() . '/guest/forgot-password') ?>
     </p>
     <?= isset($formToken) ? $this->partial('common/dialog/2fa-token', ['site' => $site, 'form' => $formToken]) : '' ?>
     <?php endif; ?>

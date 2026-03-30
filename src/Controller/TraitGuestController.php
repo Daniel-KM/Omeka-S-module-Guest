@@ -282,10 +282,9 @@ trait TraitGuestController
             $urlOptions = ['force_canonical' => true];
             $urlOptions['query']['token'] = $data['token'];
             if ($site) {
-                $data['token_url'] = $this->url()->fromRoute(
-                    'site/guest/anonymous',
-                    ['site-slug' => $site->slug(),  'action' => $action],
-                    $urlOptions
+                $data['token_url'] = $this->siteGuestUrl(
+                    'anonymous', $action, $site->slug(),
+                    ['token' => $data['token']], true
                 );
             } else {
                 // TODO Add an url to validate email by token (an url is not possible to fix issue in phone).
@@ -454,6 +453,43 @@ trait TraitGuestController
         $currentHost = $request->getUri()->getHost();
 
         return $parsedUrl['host'] === $currentHost;
+    }
+
+    /**
+     * Build a canonical site guest URL that always includes /s/slug/.
+     *
+     * The standard router may strip the /s/slug/ prefix when CleanUrl is active
+     * and it redirect to admin user routes.
+     * This method should be used only for /login, /logout, /create-password,
+     * and /forgot-password.
+     *
+     * @param string $routeType "anonymous" or "guest"
+     * @param string $action Action name (login, logout, etc.)
+     * @param string|null $siteSlug Site slug (current if null)
+     * @param array $query Query parameters
+     * @param bool $canonical Include scheme + host
+     */
+    protected function siteGuestUrl(
+        string $routeType,
+        string $action,
+        ?string $siteSlug = null,
+        array $query = [],
+        bool $canonical = false
+    ): string {
+        $siteSlug = $siteSlug
+            ?: $this->params('site-slug')
+            ?: ($this->currentSite() ? $this->currentSite()->slug() : '');
+        $helpers = $this->viewHelpers();
+        $basePath = $helpers->get('basePath')();
+        $path = $basePath . '/s/' . $siteSlug
+            . '/guest/' . $action;
+        if ($query) {
+            $path .= '?' . http_build_query($query);
+        }
+        if ($canonical) {
+            $path = $helpers->get('serverUrl')() . $path;
+        }
+        return $path;
     }
 
     /**

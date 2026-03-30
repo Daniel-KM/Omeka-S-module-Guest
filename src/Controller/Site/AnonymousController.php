@@ -100,7 +100,7 @@ class AnonymousController extends AbstractGuestController
             $result = $this->validateLogin($form);
             if ($result === null) {
                 // Internal error (no mail sent).
-                return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
+                return $this->redirect()->toUrl($this->siteGuestUrl('anonymous', 'login'));
             } elseif ($result === false) {
                 // Email or password error, so retry.
                 // Slow down the process to avoid brute force.
@@ -155,7 +155,7 @@ class AnonymousController extends AbstractGuestController
                 $result = $twoFactorLogin->validateLoginStep2($validatedData['token_email']);
                 if ($result === null) {
                     // Internal error (no mail sent).
-                    return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
+                    return $this->redirect()->toUrl($this->siteGuestUrl('anonymous', 'login'));
                 } elseif ($result) {
                     return $this->redirectToAdminOrSite();
                 }
@@ -271,7 +271,7 @@ class AnonymousController extends AbstractGuestController
                 // TODO Check if the token is expired to ask a new one.
                 $this->messenger()->addError('Check your email to confirm your registration.'); // @translate
             }
-            return $this->redirect()->toRoute('site/guest/anonymous', ['action' => 'login'], true);
+            return $this->redirect()->toUrl($this->siteGuestUrl('anonymous', 'login'));
         }
 
         // Because creation of a username (module UserNames) by an anonymous
@@ -438,11 +438,7 @@ class AnonymousController extends AbstractGuestController
                 ['site_title' => $siteTitle]
             );
             $this->messenger()->addSuccess($body);
-            $redirectUrl = $this->url()->fromRoute('site/guest/anonymous', [
-                'site-slug' => $currentSite->slug(),
-                'action' => 'login',
-            ]);
-            return $this->redirect()->toUrl($redirectUrl);
+            return $this->redirect()->toUrl($this->siteGuestUrl('anonymous', 'login', $currentSite->slug()));
         }
 
         $body = new PsrMessage(
@@ -479,17 +475,9 @@ class AnonymousController extends AbstractGuestController
             );
 
             $this->messenger()->addError($message); // @translate
-            if ($this->isUserLogged()) {
-                $redirectUrl = $this->url()->fromRoute('site/guest/guest', [
-                    'site-slug' => $this->currentSite()->slug(),
-                    'action' => 'update-email',
-                ]);
-            } else {
-                $redirectUrl = $this->url()->fromRoute('site/guest/anonymous', [
-                    'site-slug' => $this->currentSite()->slug(),
-                    'action' => 'login',
-                ]);
-            }
+            $redirectUrl = $this->isUserLogged()
+                ? $this->url()->fromRoute('site/guest/guest', ['action' => 'update-email'], [], true)
+                : $this->siteGuestUrl('anonymous', 'login');
             return $this->redirect()->toUrl($redirectUrl);
         }
 
@@ -552,10 +540,7 @@ class AnonymousController extends AbstractGuestController
                 'action' => 'me',
             ]);
         } else {
-            $redirectUrl = $this->url()->fromRoute('site/guest/anonymous', [
-                'site-slug' => $this->currentSite()->slug(),
-                'action' => 'login',
-            ]);
+            $redirectUrl = $this->siteGuestUrl('anonymous', 'login');
         }
         return $this->redirect()->toUrl($redirectUrl);
     }
@@ -642,7 +627,7 @@ class AnonymousController extends AbstractGuestController
         if (!$passwordCreation) {
             $this->messenger()->addError('Invalid password creation key.'); // @translate
             return $siteSlug
-                ? $this->redirect()->toRoute('site/guest/anonymous', ['site-slug' => $siteSlug, 'action' => 'login'])
+                ? $this->redirect()->toUrl($this->siteGuestUrl('anonymous', 'login', $siteSlug))
                 : $this->redirect()->toRoute('login');
         }
 
@@ -654,7 +639,7 @@ class AnonymousController extends AbstractGuestController
             $entityManager->flush();
             $this->messenger()->addError('Password creation key expired.'); // @translate
             return $siteSlug
-                ? $this->redirect()->toRoute('site/guest/anonymous', ['site-slug' => $siteSlug, 'action' => 'forgot-password'])
+                ? $this->redirect()->toUrl($this->siteGuestUrl('anonymous', 'forgot-password', $siteSlug))
                 : $this->redirect()->toRoute('login');
         }
 
@@ -672,7 +657,7 @@ class AnonymousController extends AbstractGuestController
                 $entityManager->flush();
                 $this->messenger()->addSuccess('Successfully created your password. Please log in.'); // @translate
                 return $siteSlug
-                    ? $this->redirect()->toRoute('site/guest/anonymous', ['site-slug' => $siteSlug, 'action' => 'login'])
+                    ? $this->redirect()->toUrl($this->siteGuestUrl('anonymous', 'login', $siteSlug))
                     : $this->redirect()->toRoute('login');
             }
             $this->messenger()->addError('Password creation unsuccessful'); // @translate
@@ -702,10 +687,12 @@ class AnonymousController extends AbstractGuestController
         $passwordCreation = $mailer->getPasswordCreation($user, false);
 
         if ($site) {
-            $createPasswordUrl = $this->url()->fromRoute(
-                'site/guest/anonymous',
-                ['site-slug' => $site->slug(), 'action' => 'create-password'],
-                ['force_canonical' => true, 'query' => ['key' => $passwordCreation->getId()]]
+            $createPasswordUrl = $this->siteGuestUrl(
+                'anonymous',
+                'create-password',
+                $site->slug(),
+                ['key' => $passwordCreation->getId()],
+                true
             );
             $siteUrl = $site->siteUrl(null, true);
         } else {

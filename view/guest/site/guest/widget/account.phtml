@@ -7,6 +7,9 @@ $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
+$basePath = $plugins->get('basePath');
+
+$site = $plugins->get('currentSite')();
 ?>
 
 <ul>
@@ -19,7 +22,7 @@ $hyperlink = $plugins->get('hyperlink');
         <?= $hyperlink($translate('Update email'), $href) ?>
     </li>
     <li>
-        <?php $href = $url('site/guest/guest', ['action' => 'logout'], [], true); ?>
+        <?php $href = $basePath() . '/s/' . $site->slug() . '/guest/logout'; ?>
         <?= $hyperlink($translate('Logout'), $href) ?>
     </li>
 </ul>
