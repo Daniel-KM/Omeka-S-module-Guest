@@ -7,30 +7,48 @@
          * @see ContactUs, Guest, Selection, TwoFactorAuth.
          */
 
+        // Spans that own their own visual (icons) must not be reused as spinner
+        // targets, otherwise the spinner overlaps the icon.
+        const hasOwnVisual = function (span) {
+            return span.length && /(?:^|\s)[\w-]+-icon(?:\s|$)/.test(span.attr('class') || '');
+        };
+
         const beforeSpin = function (element) {
-            var span = $(element).find('span');
-            if (!span.length) {
-                span = $(element).next('span.appended');
-                if (!span.length) {
-                    $('<span class="appended"></span>').insertAfter($(element));
-                    span = $(element).next('span');
-                }
+            var $el = $(element);
+            // Keep the element visible but disabled; append a sibling spinner.
+            if ($el.is('button, input')) {
+                $el.prop('disabled', true);
+            } else {
+                $el.attr('aria-disabled', 'true').addClass('is-disabled');
             }
-            element.hide();
+            var span = $el.find('span').first();
+            if (span.length && !hasOwnVisual(span)) {
+                span.addClass('fas fa-sync fa-spin');
+                return;
+            }
+            span = $el.next('span.appended');
+            if (!span.length) {
+                span = $('<span class="appended"></span>').insertAfter($el);
+            }
             span.addClass('fas fa-sync fa-spin');
         };
 
         const afterSpin = function (element) {
-            var span = $(element).find('span');
-            if (!span.length) {
-                span = $(element).next('span.appended');
-                if (span.length) {
-                    span.remove();
-                }
+            var $el = $(element);
+            if ($el.is('button, input')) {
+                $el.prop('disabled', false);
             } else {
-                span.removeClass('fas fa-sync fa-spin');
+                $el.removeAttr('aria-disabled').removeClass('is-disabled');
             }
-            element.show();
+            var span = $el.find('span').first();
+            if (span.length && !hasOwnVisual(span) && span.hasClass('fa-spin')) {
+                span.removeClass('fas fa-sync fa-spin');
+                return;
+            }
+            span = $el.next('span.appended');
+            if (span.length) {
+                span.remove();
+            }
         };
 
         /**
