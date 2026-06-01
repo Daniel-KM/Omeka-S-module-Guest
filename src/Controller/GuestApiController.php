@@ -352,8 +352,7 @@ class GuestApiController extends AbstractActionController
             $form = $this->getUserForm(null, 'register');
             $form->setData($data);
             if (!$form->isValid()) {
-                // TODO Add flat messages (common 3.4.65).
-                return $this->jSend(JSend::FAIL, $form->getMessages());
+                return $this->jSend(JSend::FAIL, $this->jSend()->flattenFormMessages($form, true));
             }
             $data = $form->getData();
         }
