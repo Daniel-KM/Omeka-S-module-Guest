@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 #, fuzzy
 msgid ""
@@ -10,29 +10,35 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-01 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
+"Language: br\n"
+"Language-Team: br <LL@li.org>\n"
+"Plural-Forms: nplurals=6; plural=(n==1 ? 0 : n%10==1 && n%100!=11 && "
+"n%100!=71 && n%100!=91 ? 1 : n%10==2 && n%100!=12 && n%100!=72 && n%100!=92 ?"
+" 2 : (n%10==3 || n%10==4 || n%10==9) && n%100!=13 && n%100!=14 && n%100!=19 "
+"&& n%100!=73 && n%100!=74 && n%100!=79 && n%100!=93 && n%100!=94 && n%100!=99"
+" ? 3 : n%1000000==0 ? 4 : 5);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: data/scripts/upgrade.php:33 Module.php:131
+#: Module.php:131 data/scripts/upgrade.php:33
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
-msgstr ""
+msgstr "Ar modul %1$s a zlefe bezañ hizivaet d'ar stumm %2$s pe unan nevesoc'h."
 
 #: data/scripts/upgrade.php:37
 msgid "Missing requirement. Unable to upgrade."
-msgstr ""
+msgstr "Rekizadenn a vank. N'haller ket hizivaat."
 
 #: Module.php:544
 msgid "CAS Login"
-msgstr ""
+msgstr "Kevreañ CAS"
 
 #: Module.php:561
 msgid "[Unknown idp]"
-msgstr ""
+msgstr "[idp dianav]"
 
 #: src/Controller/ApiController.php:116 src/Controller/ApiController.php:148
 #: src/Controller/ApiController.php:168 src/Controller/ApiController.php:409
@@ -40,27 +46,26 @@ msgstr ""
 #: src/Controller/GuestApiController.php:326
 #: src/Controller/GuestApiController.php:957
 msgid "Access forbidden."
-msgstr ""
+msgstr "Moned difennet."
 
 #: src/Controller/ApiController.php:130 src/Controller/ApiController.php:138
 #: src/Controller/ApiController.php:158 src/Controller/ApiController.php:178
 #: src/Controller/ApiController.php:186 src/Controller/ApiController.php:194
 #: src/Controller/ApiController.php:202 src/Controller/ApiController.php:210
 msgid "Method Not Allowed"
-msgstr ""
+msgstr "Hentenn n'eo ket aotreet"
 
 #: src/Controller/ApiController.php:241
 msgid "User cannot login: already logged."
-msgstr ""
+msgstr "N'hall ket an implijer kevreañ : kevreet eo dija."
 
 #: src/Controller/ApiController.php:257 src/Controller/ApiController.php:488
-#: src/Controller/ApiController.php:719
-#: src/Controller/GuestApiController.php:147
+#: src/Controller/ApiController.php:719 src/Controller/GuestApiController.php:147
 #: src/Controller/GuestApiController.php:388
 #: src/Controller/GuestApiController.php:652
 #: src/Controller/TraitGuestController.php:510
 msgid "Email is required."
-msgstr ""
+msgstr "Ret eo kaout ur postel."
 
 #: src/Controller/ApiController.php:263 src/Controller/ApiController.php:494
 #: src/Controller/ApiController.php:724 src/Controller/ApiController.php:735
@@ -70,13 +75,13 @@ msgstr ""
 #: src/Controller/GuestApiController.php:670
 #: src/Controller/TraitGuestController.php:517
 msgid "Invalid email."
-msgstr ""
+msgstr "Postel direizh."
 
 #: src/Controller/ApiController.php:269 src/Controller/ApiController.php:851
 #: src/Controller/GuestApiController.php:159
 #: src/Controller/GuestApiController.php:799
 msgid "Password is required."
-msgstr ""
+msgstr "Ret eo kaout ur ger-tremen."
 
 #: src/Controller/ApiController.php:284 src/Controller/ApiController.php:293
 #: src/Controller/GuestApiController.php:174
@@ -84,42 +89,37 @@ msgstr ""
 #: src/Controller/GuestApiController.php:212
 #: src/Controller/GuestApiController.php:217
 msgid "Wrong email or password."
-msgstr ""
+msgstr "Postel pe ger-tremen faziek."
 
 #: src/Controller/ApiController.php:333
 msgid "Your account is under moderation for opening."
-msgstr ""
+msgstr "Ho kont a zo o vezañ gwiriet a-raok bezañ digoret."
 
 #: src/Controller/ApiController.php:338 src/Controller/ApiController.php:542
 #: src/Controller/GuestApiController.php:446
 #: src/Controller/TraitGuestController.php:549
 msgid "Check your email to confirm your registration."
-msgstr ""
+msgstr "Sellit ouzh ho postel evit kadarnaat hoc'h enskrivadur."
 
-#: src/Controller/ApiController.php:376
-#: src/Controller/GuestApiController.php:265
+#: src/Controller/ApiController.php:376 src/Controller/GuestApiController.php:265
 msgid "User not logged."
-msgstr ""
+msgstr "N'eo ket kevreet an implijer."
 
-#: src/Controller/ApiController.php:395
-#: src/Controller/GuestApiController.php:281
+#: src/Controller/ApiController.php:395 src/Controller/GuestApiController.php:281
 msgid "Successfully logged out."
-msgstr ""
+msgstr "Diloget gant berzh."
 
-#: src/Controller/ApiController.php:440
-#: src/Controller/GuestApiController.php:332
+#: src/Controller/ApiController.php:440 src/Controller/GuestApiController.php:332
 msgid "User cannot register: already logged."
-msgstr ""
+msgstr "N'hall ket an implijer en em enskrivañ : kevreet dija."
 
-#: src/Controller/ApiController.php:469
-#: src/Controller/GuestApiController.php:369
+#: src/Controller/ApiController.php:469 src/Controller/GuestApiController.php:369
 msgid "A site is required to register."
-msgstr ""
+msgstr "Ret eo en em enskrivañ evit kaout ur gont."
 
-#: src/Controller/ApiController.php:480
-#: src/Controller/GuestApiController.php:380
+#: src/Controller/ApiController.php:480 src/Controller/GuestApiController.php:380
 msgid "The site doesn’t exist."
-msgstr ""
+msgstr "N'eus ket eus al lec'hienn."
 
 #: src/Controller/ApiController.php:525 src/Controller/ApiController.php:536
 #: src/Controller/GuestApiController.php:429
@@ -127,274 +127,266 @@ msgstr ""
 #: src/Controller/TraitGuestController.php:532
 #: src/Controller/TraitGuestController.php:543
 msgid "Already registered."
-msgstr ""
+msgstr "Enrollet dija."
 
-#: src/Controller/ApiController.php:584
-#: src/Controller/GuestApiController.php:488
+#: src/Controller/ApiController.php:584 src/Controller/GuestApiController.php:488
 #: src/Controller/TraitGuestController.php:593
 msgid "Unknown error before creation of user."
-msgstr ""
+msgstr "Fazi dianav a-raok krouidigezh an implijer."
 
-#: src/Controller/ApiController.php:618
-#: src/Controller/GuestApiController.php:521
+#: src/Controller/ApiController.php:618 src/Controller/GuestApiController.php:521
 #: src/Controller/TraitGuestController.php:620
 msgid "Unknown error during creation of user."
-msgstr ""
+msgstr "Fazi dianav e-pad krouidigezh an implijer."
 
-#: src/Controller/ApiController.php:668
-#: src/Controller/GuestApiController.php:603
+#: src/Controller/ApiController.php:668 src/Controller/GuestApiController.php:603
 #: src/Controller/GuestApiController.php:1234
 msgid "An error occurred when the email was sent."
-msgstr ""
+msgstr "Ur fazi zo c'hoarvezet pa'z eo bet kaset ar postel."
 
-#: src/Controller/ApiController.php:684
-#: src/Controller/GuestApiController.php:619
+#: src/Controller/ApiController.php:684 src/Controller/GuestApiController.php:619
 msgid "Thank you for registering. You can now log in and use the library."
 msgstr ""
+"Trugarez deoc'h da vezañ enskrivet. Gallout a rit bremañ kevreañ ha ober gant"
+" al levraoueg."
 
-#: src/Controller/ApiController.php:687
-#: src/Controller/GuestApiController.php:622
+#: src/Controller/ApiController.php:687 src/Controller/GuestApiController.php:622
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request, you will be able to log in."
 msgstr ""
+"Trugarez deoc'h da vezañ enskrivet. Gwiriit ho postel, mar plij, evit ur "
+"gemennadenn gadarnaat. Ur wech m'ho po kadarnaet ho koulenn e c'hallot "
+"kevreañ."
 
-#: src/Controller/ApiController.php:690
-#: src/Controller/GuestApiController.php:625
+#: src/Controller/ApiController.php:690 src/Controller/GuestApiController.php:625
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request, a moderator will confirm "
 "registration."
 msgstr ""
+"Trugarez deoc'h da vezañ enskrivet. Gwiriit ho postel, mar plij, evit ur "
+"gemennadenn gadarnaat. Ur wech m'ho po kadarnaet ho koulenn, e vo kadarnaet "
+"hoc'h enskrivadur gant ur moderator."
 
-#: src/Controller/ApiController.php:705
-#: src/Controller/GuestApiController.php:644
+#: src/Controller/ApiController.php:705 src/Controller/GuestApiController.php:644
 msgid "A logged user cannot change the password with this method."
-msgstr ""
+msgstr "Ne c'hall ket un implijer kevreet cheñch ar ger-tremen gant an hentenn-mañ."
 
-#: src/Controller/ApiController.php:740
-#: src/Controller/GuestApiController.php:676
+#: src/Controller/ApiController.php:740 src/Controller/GuestApiController.php:676
 msgid "User is not active and cannot update password."
-msgstr ""
+msgstr "N'eo ket oberiant an implijer ha ne c'hall ket cheñch e c'her-tremen."
 
-#: src/Controller/ApiController.php:831
-#: src/Controller/GuestApiController.php:776
+#: src/Controller/ApiController.php:831 src/Controller/GuestApiController.php:776
 msgid "Invalid token."
-msgstr ""
+msgstr "Token direizh."
 
-#: src/Controller/ApiController.php:837
-#: src/Controller/GuestApiController.php:783
+#: src/Controller/ApiController.php:837 src/Controller/GuestApiController.php:783
 msgid "This token is invalid. Check your email."
-msgstr ""
+msgstr "An unanenn-mañ n'eo ket reizh. Gwiriit ho postel."
 
-#: src/Controller/ApiController.php:846
-#: src/Controller/GuestApiController.php:793
+#: src/Controller/ApiController.php:846 src/Controller/GuestApiController.php:793
 msgid "Password token expired."
-msgstr ""
+msgstr "Divezet eo ar jeton ger-tremen."
 
 #: src/Controller/ApiController.php:857 src/Controller/ApiController.php:1044
 #: src/Controller/GuestApiController.php:806
 #: src/Controller/GuestApiController.php:1125
 msgid "New password should have 6 characters or more."
-msgstr ""
+msgstr "Ar ger-tremen nevez a rank kaout 6 arouezenn pe ouzhpenn."
 
-#: src/Controller/ApiController.php:956
-#: src/Controller/GuestApiController.php:1042
+#: src/Controller/ApiController.php:956 src/Controller/GuestApiController.php:1042
 msgid "Request is empty."
-msgstr ""
+msgstr "Goulenn goullo."
 
-#: src/Controller/ApiController.php:981
-#: src/Controller/GuestApiController.php:1066
+#: src/Controller/ApiController.php:981 src/Controller/GuestApiController.php:1066
 msgid "Email cannot be updated: the user is not related to a site."
 msgstr ""
+"N'haller ket hizivaat ar postel : n'eo ket liammet an implijer ouzh ul "
+"lec'hienn."
 
-#: src/Controller/ApiController.php:1003
-#: src/Controller/GuestApiController.php:1087
+#: src/Controller/ApiController.php:1003 src/Controller/GuestApiController.php:1087
 msgid "Your request contains metadata that cannot be updated."
-msgstr ""
+msgstr "En ho koulenn ez eus metaroadennoù na c'hallont ket bezañ hizivaet."
 
-#: src/Controller/ApiController.php:1010
-#: src/Controller/GuestApiController.php:1093
+#: src/Controller/ApiController.php:1010 src/Controller/GuestApiController.php:1093
 msgid "The new name is empty."
-msgstr ""
+msgstr "An anv nevez zo goullo."
 
-#: src/Controller/ApiController.php:1025
-#: src/Controller/GuestApiController.php:1109
+#: src/Controller/ApiController.php:1025 src/Controller/GuestApiController.php:1109
 msgid "You cannot update password and another data in the same time."
-msgstr ""
+msgstr "N'hallit ket hizivaat ar ger-tremen hag an roadennoù all war un dro."
 
-#: src/Controller/ApiController.php:1031
-#: src/Controller/GuestApiController.php:1114
+#: src/Controller/ApiController.php:1031 src/Controller/GuestApiController.php:1114
 msgid "Existing password empty."
-msgstr ""
+msgstr "Goude ar c'hemenn-mañ e vo goullo ar ger-tremen."
 
-#: src/Controller/ApiController.php:1037
-#: src/Controller/GuestApiController.php:1119
+#: src/Controller/ApiController.php:1037 src/Controller/GuestApiController.php:1119
 msgid "New password empty."
-msgstr ""
+msgstr "Gouzhvarn nevez goullo."
 
-#: src/Controller/ApiController.php:1052
-#: src/Controller/GuestApiController.php:1132
+#: src/Controller/ApiController.php:1052 src/Controller/GuestApiController.php:1132
 msgid "Wrong password."
-msgstr ""
+msgstr "Gec'h fall."
 
-#: src/Controller/ApiController.php:1081
-#: src/Controller/GuestApiController.php:1155
+#: src/Controller/ApiController.php:1081 src/Controller/GuestApiController.php:1155
 msgid "You cannot update email and another data in the same time."
-msgstr ""
+msgstr "N'hallit ket hizivaat ur postel ha roadennoù all war un dro."
 
-#: src/Controller/ApiController.php:1087
-#: src/Controller/GuestApiController.php:1160
+#: src/Controller/ApiController.php:1087 src/Controller/GuestApiController.php:1160
 msgid "New email empty."
-msgstr ""
+msgstr "Postel nevez goullo."
 
 #: src/Controller/ApiController.php:1172
+#, python-brace-format
 msgid "Check your email \"{email}\" to confirm the change."
-msgstr ""
+msgstr "Sellit ouzh ho postel \"{email}\" evit kadarnaat ar cheñchamant."
 
 #: src/Controller/GuestApiController.php:114
 #: src/Controller/GuestApiController.php:297
 msgid "Unauthorized access."
-msgstr ""
+msgstr "Moned hep aotre."
 
 #: src/Controller/GuestApiController.php:138
 msgid "User cannot log in: already logged."
-msgstr ""
+msgstr "N'hall ket an implijer kevreañ : kevreet eo dija."
 
 #: src/Controller/GuestApiController.php:756
-msgid ""
-"An error occurred when sending mail. Retry later or contact administrator."
+msgid "An error occurred when sending mail. Retry later or contact administrator."
 msgstr ""
+"Ur fazi zo c'hoarvezet pa oa kaset ar postel. Adkredit diwezhatoc'h pe kit e "
+"darempred gant ar merour."
 
 #: src/Controller/GuestApiController.php:834
 msgid "This dialog is not managed."
-msgstr ""
+msgstr "Ne vez ket meret ar voest diviz-mañ."
 
 #: src/Controller/GuestApiController.php:853
 msgid "This dialog requires module Two-Factor Authentication."
-msgstr ""
+msgstr "Goulenn a ra ar voest diviz-mañ ar modul \"Two-Factor Authentication\"."
 
 #: src/Controller/GuestApiController.php:872
 msgid "An error occurred when loading dialog."
-msgstr ""
+msgstr "Ur fazi zo c'hoarvezet pa oue karget ar voest diviz."
 
 #: src/Controller/GuestApiController.php:1176
 msgid "The new email is the same than the current one."
-msgstr ""
+msgstr "Ar postel nevez a zo heñvel ouzh an hini a-vremañ."
 
 #: src/Controller/Site/AnonymousController.php:418
 msgid "Invalid token stop"
-msgstr ""
+msgstr "Paouez ar jeton direizh"
 
 #: src/Controller/Site/AnonymousController.php:516
 #: src/Controller/TraitGuestController.php:725
 msgid "[Omeka Guest] New registration"
-msgstr ""
+msgstr "[Omeka Kouvidiad] Enskrivadur nevez"
 
 #: src/Controller/Site/GuestController.php:87
 msgid "My Account"
-msgstr ""
+msgstr "Ma c'hont"
 
 #: src/Controller/Site/GuestController.php:114
 msgid "My account"
-msgstr ""
+msgstr "Ma c'hont"
 
 #: src/Site/BlockLayout/ForgotPassword.php:53
 msgid "Display the form to recover the password."
-msgstr ""
+msgstr "Diskouez ar furmskrid evit adtapout ar ger-tremen."
 
 #: src/Site/BlockLayout/Login.php:114
 msgid "Display the login form."
-msgstr ""
+msgstr "Diskouez ar furmskrid kevreañ."
 
 #: src/Site/BlockLayout/Register.php:85
 msgid "Display the register form. The options are set in site settings."
 msgstr ""
+"Diskouez furmskrid ar marilh. Ar penndibaboù a zo kefluniet e kefluniadurioù "
+"al lec'hienn."
 
 #: src/View/Helper/UserBarDelegator.php:129
 msgid "Search manager"
-msgstr ""
+msgstr "Meraer klask"
 
 #: src/View/Helper/UserBarDelegator.php:136
 msgid "Search config"
-msgstr ""
+msgstr "Klask kefluniadur"
 
 #: view/common/block-layout/guest-register.phtml:30
 #: view/common/dialog/login.phtml:60 view/common/dialog/login.phtml:63
-#: view/common/dialog/register.phtml:43
-#: view/guest/site/anonymous/login.phtml:111
+#: view/common/dialog/register.phtml:43 view/guest/site/anonymous/login.phtml:111
 #: view/guest/site/anonymous/register.phtml:28
 msgid "Register"
-msgstr ""
+msgstr "En em enskrivañ"
 
 #: view/common/block-template/guest-login-token.phtml:22
 #: view/guest/site/anonymous/login-token.phtml:49
 msgid "Resend a code"
-msgstr ""
+msgstr "Adkas ur c'hod"
 
 #: view/common/dialog/register.phtml:25
 msgid "The two passwords do not match."
-msgstr ""
+msgstr "Ne glot ket an div c'homadenn."
 
 #: view/common/guest-login-links.phtml:40
 msgid "Select your identity provider…"
-msgstr ""
+msgstr "Diuzit ho pourvezer identelezh…"
 
 #: view/common/navigation-link-form/login-board.phtml:21
 msgid "Label Log in"
-msgstr ""
+msgstr "Etikedenn Kevrediñ"
 
 #: view/common/navigation-link-form/login-board.phtml:22
 msgid "Label My board"
-msgstr ""
+msgstr "Etikediñ ma daolenn"
 
 #: view/common/navigation-link-form/login-board.phtml:24
 msgid "Use name when connected"
-msgstr ""
+msgstr "Implijout anv pa vezer kevreet"
 
 #: view/common/navigation-link-form/login-board.phtml:28
 #: view/common/navigation-link-form/login-board.phtml:32
 msgid "Display label My board"
-msgstr ""
+msgstr "Diskouez etiketenn Ma foñs"
 
 #: view/common/navigation-link-form/login-board.phtml:29
 #: view/common/navigation-link-form/login-board.phtml:31
 msgid "Display user name"
-msgstr ""
+msgstr "Diskouez anv an implijer"
 
 #: view/common/navigation-link-form/login-logout.phtml:19
 msgid "Label log in"
-msgstr ""
+msgstr "Etikedenn kevreañ"
 
 #: view/common/navigation-link-form/login-logout.phtml:20
 msgid "Label log out"
-msgstr ""
+msgstr "Kouezhañ er-maez eus an etikedenn"
 
 #: view/common/user-settings-guest-list.phtml:14
 #: view/common/user-settings-guest.phtml:13
 msgid "Guest account"
-msgstr ""
+msgstr "Konto kouviad"
 
 #: view/common/user-settings-guest-list.phtml:18
 #: view/common/user-settings-guest.phtml:16
-#, php-format
+#, php-format, python-format
 msgid "Site: %s"
-msgstr ""
+msgstr "Lec'hienn: %s"
 
 #: view/common/user-settings-guest-list.phtml:18
 #: view/common/user-settings-guest.phtml:16
 msgid "none"
-msgstr ""
+msgstr "hini ebet"
 
 #: view/common/user-settings-guest-list.phtml:21
 #: view/common/user-settings-guest.phtml:19
-#, php-format
+#, php-format, python-format
 msgid "Agreed terms: %s"
-msgstr ""
+msgstr "Termenoù divizet : %s"
 
 #: view/guest/site-admin/index/guest-navigation.phtml:34
 msgid "Guest navigation"
-msgstr ""
+msgstr "Merdeiñ an dud pedet"
 
 #: view/guest/site/anonymous/auth-error.phtml:24
 #: view/guest/site/anonymous/confirm.phtml:24
@@ -404,100 +396,115 @@ msgstr ""
 #: view/guest/site/anonymous/login.phtml:50
 #: view/guest/site/anonymous/register.phtml:35
 msgid "Breadcrumb"
-msgstr ""
+msgstr "Hentad"
 
 #: view/guest/site/anonymous/auth-error.phtml:33
 msgid "Authentication error"
-msgstr ""
+msgstr "Fazi an testeniekaat"
 
 #: view/guest/site/anonymous/auth-error.phtml:40
-msgid ""
-"An error occurred during the authentication via a third party authenticator."
+msgid "An error occurred during the authentication via a third party authenticator."
 msgstr ""
+"Ur fazi zo c'hoarvezet e-pad an testeniekaat dre un testenier gant un trede "
+"pal."
 
 #: view/guest/site/anonymous/auth-error.phtml:43
 msgid "Contact your administrator for more information."
-msgstr ""
+msgstr "Darempredit ho merour evit kaout muioc'h a ditouroù."
 
 #: view/guest/site/anonymous/confirm.phtml:33
 msgid "Confirmation of registration"
-msgstr ""
+msgstr "Kadarnadenn an enskrivadur"
 
 #: view/guest/site/anonymous/create-password.phtml:44
 msgid "Submit new password"
-msgstr ""
+msgstr "Kas ur ger-tremen nevez"
 
 #: view/guest/site/anonymous/forgot-password.phtml:44
 msgid "Send an email to reset the password"
-msgstr ""
+msgstr "Kas ur postel evit adlañsañ ar ger-tremen"
 
 #: view/guest/site/anonymous/register.phtml:66
 msgid "Create the account"
-msgstr ""
+msgstr "Krouiñ ar gont"
 
 #: view/guest/site/guest/accept-terms.phtml:36
 msgid "Accept terms and conditions"
-msgstr ""
+msgstr "Degemer an termenoù hag an divizoù"
 
 #: view/guest/site/guest/accept-terms.phtml:42
 msgid "I agree with terms and conditions."
-msgstr ""
+msgstr "A-du on gant an termenoù hag an divizoù."
 
 #: view/guest/site/guest/accept-terms.phtml:56
 msgid "Accept"
-msgstr ""
+msgstr "Degemerout"
 
 #: view/guest/site/guest/board.phtml:43
 msgid "Log out"
-msgstr ""
+msgstr "Kouezhañ"
 
 #: view/guest/site/guest/update-email.phtml:35
 msgid "My email"
-msgstr ""
+msgstr "Ma postel"
 
 #: view/guest/site/guest/widget/account.phtml:18
 msgid "Update account info and password"
-msgstr ""
+msgstr "Hizivaat titouroù ar gont hag ar ger-tremen"
 
 #: view/guest/site/guest/widget/account.phtml:22
 msgid "Update email"
-msgstr ""
+msgstr "Hizivaat postel"
 
 #: data/scripts/upgrade.php:92
+#, python-brace-format
 msgid ""
 "This module integrates the features from module GuestApi, that is no longer "
 "needed. The config were merged (texts of messages) so you should check them "
-"in {link_url}main settings{link_end}. The module was disabled, but you "
-"should uninstall the module once params are checked."
+"in {link_url}main settings{link_end}. The module was disabled, but you should"
+" uninstall the module once params are checked."
 msgstr ""
+"En ur modul-mañ e kaver perzhioù modul GuestApi, ha n'eus ket ezhomm anezhañ "
+"ken. Bodet eo bet ar c'hemennadurioù (testenn ar c'hemennadoù), neuze e "
+"rankit o gwiriañ e {link_url}arventennoù pennañ{link_end}. Diweredekaet eo "
+"bet ar modul, met rankout a rafit e zizstaliañ ur wech gwiriet ar parametroù."
 
 #: data/scripts/upgrade.php:141
-msgid ""
-"A new option allows to display the list of external accounts on login page."
+msgid "A new option allows to display the list of external accounts on login page."
 msgstr ""
+"Un dibab nevez a ro an tu da ziskouez roll ar c'hontoù diavaez war bajenn an "
+"kevrediñ."
 
 #: data/scripts/upgrade.php:150
+#, python-brace-format
 msgid ""
 "The form to reset agreement status was moved to a task of module {link}Easy "
 "Admin{link_end}."
 msgstr ""
+"Ar furmskrid evit adlañsañ statud an emglev a zo bet dilec'hiet d'ur gefridi "
+"er modul {link}Easy Admin{link_end}."
 
 #: data/scripts/upgrade.php:163
 msgid ""
 "An option allows to define the type of display for the list of external "
 "connection (cas/sso) as a list of links or a select."
 msgstr ""
+"Un dibab a ro an tu da dermeniñ ar seurt diskwel evit roll ar c'hevreadennoù "
+"diavaez (cas/sso), evel ur roll liammoù pe ur choaz."
 
 #: data/scripts/upgrade.php:170
 msgid ""
 "It is now possible to show the register form beside the login form. Page "
 "blocks Login and Register are available too."
 msgstr ""
+"Bremañ eo posupl diskouez ar furmskrid enskrivañ e-kichen ar furmskrid "
+"kevreañ. Ar bloc'hoù pajenn Kevreañ hag Enskrivañ a zo hegerz ivez."
 
 #: data/scripts/upgrade.php:182
-msgid ""
-"It is now possible to hide the user bar for guests separately from admins."
+msgid "It is now possible to hide the user bar for guests separately from admins."
 msgstr ""
+"Bremañ e c'haller kuzhat barrenn an implijerien evit ar weladennerien "
+"a-zisrann diouzh an administrerien."
 
 #: data/scripts/upgrade.php:187
 msgid ""
@@ -505,76 +512,89 @@ msgid ""
 "page for guest via the site sub-menu \"Navigation for guest\" and in site "
 "settings."
 msgstr ""
+"Bremañ e c'haller kefluniañ ur merdeiñ ispisial hag ur bajenn-zegemer "
+"ispisial evit ar weladennerien dre is-lañser al lec'hienn \"Merdeiñ evit ar "
+"weladennerien\" hag e reizhadennoù al lec'hienn."
 
 #: data/scripts/upgrade.php:194
 msgid ""
 "It is now possible to theme the default login page with the default site "
 "theme."
 msgstr ""
+"Bremañ e c'haller temañ pajenn-enskrivañ dre ziouer gant tem dre ziouer al "
+"lec'hienn."
 
 #: data/scripts/upgrade.php:213
 msgid "It is now possible to define the role on registering."
-msgstr ""
+msgstr "Posupl eo bremañ termeniñ ar roll en ur enskrivañ."
 
-#: Module.php:178 Module.php:603 src/Form/SiteSettingsFieldset.php:14
-#: src/Form/SiteSettingsFieldset.php:17 src/Form/SettingsFieldset.php:15
-#: src/Form/SettingsFieldset.php:18 config/module.config.php:11
+#: Module.php:178 Module.php:603 config/module.config.php:11
+#: src/Form/SettingsFieldset.php:15 src/Form/SettingsFieldset.php:18
+#: src/Form/SiteSettingsFieldset.php:14 src/Form/SiteSettingsFieldset.php:17
 msgid "Guest"
-msgstr ""
+msgstr "Kouviad"
 
 #: Module.php:618 config/module.config.php:377 config/module.config.php:450
 msgid "I agree the terms and conditions."
-msgstr ""
+msgstr "A-du on gant an termenoù hag an divizoù."
 
 #: Module.php:693
 msgid ""
 "Send an email to confirm registration after moderation (user should be "
 "activated first)"
 msgstr ""
+"Kas ur postel da gadarnaat an enskrivadur goude ar moderadur (ret eo "
+"gweredekaat an implijer da gentañ)"
 
 #: Module.php:708
 msgid "Guest site"
-msgstr ""
+msgstr "Lec'hienn an arvalien"
 
 #: Module.php:709
 msgid ""
 "This parameter is used to manage some site related features, in particular "
 "messages."
 msgstr ""
+"Implijet e vez ar arventenn-mañ evit merañ perzhioù zo liammet ouzh al "
+"lec'hienn, dreist-holl ar c'hemennadoù."
 
 #: Module.php:726
 msgid "Agreed terms"
-msgstr ""
+msgstr "Termenoù emglevet"
 
 #: Module.php:753
 msgid "Clear registration token"
-msgstr ""
+msgstr "Dilemel ar jeton enskrivañ"
 
 #: Module.php:847
 msgid "You cannot send a message to confirm registration: user is not active."
 msgstr ""
+"N'haller ket kas ur gemennadenn evit kadarnaat an enskrivadur : n'eo ket "
+"oberiant an implijer."
 
 #: Module.php:864
 msgid ""
 "A default site should be set or the user should have a site in order to "
 "confirm registration."
 msgstr ""
+"Ret e vefe termeniñ ul lec'hienn dre ziouer, pe e rankfe an implijer kaout ul"
+" lec'hienn evit kadarnaat e enskrivadur."
 
 #: Module.php:913
 msgid "The message of confirmation of the registration has been sent."
-msgstr ""
+msgstr "Kaset eo bet kemennadenn kadarnaat an enskrivadur."
 
 #: Module.php:1011
 msgid "Guest: Reset terms agreement for all guests"
-msgstr ""
+msgstr "Kouviad: Adlañsañ an emglev termenoù evit an holl gouvidi"
 
 #: Module.php:1018
 msgid "Options to reset agreement terms"
-msgstr ""
+msgstr "Dibaboù evit adlañsañ termenoù an emglev"
 
 #: Module.php:1029
 msgid "Reset terms agreement for all guests"
-msgstr ""
+msgstr "Adlañsañ divizoù an emglev evit an holl gouvidi"
 
 #: Module.php:1030
 msgid ""
@@ -582,183 +602,204 @@ msgid ""
 "more time. Warning: to set false will impact all guests. So warn them some "
 "time before."
 msgstr ""
+"Pa vez hizivaet an termenoù hag an divizoù, e c'hall bezañ mat goulenn digant"
+" an dud pedet o asantiñ adarre. Diwallit : ma vez lakaet \"false\", e vo "
+"levezonet an holl dud pedet. Gwell eo neuze kelaouiñ anezho en a-raok."
 
 #: Module.php:1032
 msgid "No change"
-msgstr ""
+msgstr "Ne cheñch netra"
 
 #: Module.php:1033
 msgid "Set false"
-msgstr ""
+msgstr "Lakaat faos"
 
 #: Module.php:1034
 msgid "Set true"
-msgstr ""
+msgstr "Gwiriañ"
 
-#: src/Mvc/Controller/Plugin/ValidateLogin.php:213
 #: src/Controller/Site/AnonymousController.php:771
+#: src/Mvc/Controller/Plugin/ValidateLogin.php:213
 msgid "User name, email, or password is invalid"
-msgstr ""
+msgstr "Anv an implijer, ar chomlec'h postel, pe ar ger-tremen n'int ket reizh"
 
-#: src/Mvc/Controller/Plugin/ValidateLogin.php:214
 #: src/Authentication/Adapter/PasswordAdapter.php:25
 #: src/Authentication/Adapter/PasswordAdapter.php:33
 #: src/Controller/Site/AnonymousController.php:770
+#: src/Mvc/Controller/Plugin/ValidateLogin.php:214
 msgid "Email or password invalid"
-msgstr ""
+msgstr "Postel pe ger-tremen direizh"
 
 #: src/Job/GuestAgreement.php:27
 msgid "All guests must agreed the terms one more time."
-msgstr ""
+msgstr "An holl gouvidi a rank asantiñ d'an termenoù ur wech ouzhpenn."
 
 #: src/Job/GuestAgreement.php:33
 msgid "All guests agreed the terms."
-msgstr ""
+msgstr "An holl gouvidi a saveteas an termenoù."
 
 #: src/Job/GuestAgreement.php:38
 msgid "No process can be done without settings."
-msgstr ""
+msgstr "N'haller ober argerzh ebet hep arventennoù."
 
 #: src/Authentication/Adapter/PasswordAdapter.php:42
 msgid "Your account has not been confirmed: check your email."
-msgstr ""
+msgstr "N'eo ket bet kadarnaet ho kont : gwiriekait ho postel."
 
 #: src/Form/SiteSettingsFieldset.php:30
 msgid "Emails to notify registrations"
-msgstr ""
+msgstr "Posteloù evit kelaouiñ an enskrivadurioù"
 
-#: src/Form/SiteSettingsFieldset.php:31 src/Form/SettingsFieldset.php:106
+#: src/Form/SettingsFieldset.php:106 src/Form/SiteSettingsFieldset.php:31
 msgid "The list of emails to notify when a user registers, one by row."
 msgstr ""
+"Al listenn a bosteloù da gemenn pa en em enskriv un implijer, a renkennad da "
+"renkennad."
 
 #: src/Form/SiteSettingsFieldset.php:47
 msgid "Log in Text"
-msgstr ""
+msgstr "Enklozañ"
 
-#: src/Form/SiteSettingsFieldset.php:48 src/Form/SettingsFieldset.php:193
+#: src/Form/SettingsFieldset.php:193 src/Form/SiteSettingsFieldset.php:48
 msgid "The text to use for the \"Log in\" link in the user bar"
-msgstr ""
+msgstr "An destenn da implijout evit al liamm \"Kevrediñ\" er varrenn implijer"
 
 #: src/Form/SiteSettingsFieldset.php:60
 msgid "Register Text"
-msgstr ""
+msgstr "Enskrivañ an destenn"
 
-#: src/Form/SiteSettingsFieldset.php:61 src/Form/SettingsFieldset.php:206
+#: src/Form/SettingsFieldset.php:206 src/Form/SiteSettingsFieldset.php:61
 msgid "The text to use for the \"Register\" link in the user bar"
 msgstr ""
+"An destenn da implijout evit al liamm \"En em enskrivañ\" e barrenn an "
+"implijer"
 
 #: src/Form/SiteSettingsFieldset.php:73
 msgid "Hide the login form (for sso)"
-msgstr ""
+msgstr "Kuzhat ar furmskrid kevreañ (evit an SSO)"
 
 #: src/Form/SiteSettingsFieldset.php:74
 msgid ""
 "This option allows to display only the links for the other modules, like "
 "Single Sign-On."
 msgstr ""
+"Gant an dibab-mañ e c'haller diskouez liammoù ar moduloù all hepken, evel an "
+"Enrollañ Unel."
 
 #: src/Form/SiteSettingsFieldset.php:86
 msgid "Display register form on login page"
-msgstr ""
+msgstr "Diskouez furmskrid ar marilh war bajenn an kevrediñ"
 
 #: src/Form/SiteSettingsFieldset.php:98
 msgid "Html to display before the login form"
-msgstr ""
+msgstr "HTML da ziskouez a-raok ar furmskrid kevreañ"
 
 #: src/Form/SiteSettingsFieldset.php:109
 msgid "Text to display after the login form"
-msgstr ""
+msgstr "Testenn da ziskouez goude ar furmskrid kevreañ"
 
 #: src/Form/SiteSettingsFieldset.php:121
 msgid "Html to display before the forgot-password form"
-msgstr ""
+msgstr "HTML da ziskouez a-raok ar furmskrid \"ankouaet ar ger-tremen\""
 
 #: src/Form/SiteSettingsFieldset.php:132
 msgid "Text to display after the forgot-password form"
-msgstr ""
+msgstr "Testenn da ziskouez goude ar furmskrid \"ankouaet ar ger-tremen\""
 
 #: src/Form/SiteSettingsFieldset.php:143
 msgid "In the dialog Log In, use a link for forgot-password"
-msgstr ""
+msgstr "Er voest diviz Kevrediñ, implijit ul liamm evit 'ankouaet ar ger-tremen'"
 
 #: src/Form/SiteSettingsFieldset.php:155
 msgid "Html to display before the registration form"
-msgstr ""
+msgstr "HTML da ziskouez a-raok ar furmskrid enskrivañ"
 
 #: src/Form/SiteSettingsFieldset.php:166
 msgid "Text to display after the registration form"
-msgstr ""
+msgstr "Testenn da ziskouez goude ar furmskrid enskrivañ"
 
 #: src/Form/SiteSettingsFieldset.php:177
 msgid "In the dialog Log In, use a link for register"
-msgstr ""
+msgstr "Er voest diviz Kerkediñ, implijit ul liamm evit en em enskrivañ"
 
 #: src/Form/SiteSettingsFieldset.php:189
 msgid "Dashboard Label"
-msgstr ""
+msgstr "Etikedenn an daolenn-vourzh"
 
-#: src/Form/SiteSettingsFieldset.php:190 src/Form/SettingsFieldset.php:219
+#: src/Form/SettingsFieldset.php:219 src/Form/SiteSettingsFieldset.php:190
 msgid "The text to use for the label on the user’s dashboard"
-msgstr ""
+msgstr "An destenn da implijout evit an dikedenn war daolenn-vourzh an implijer"
 
 #: src/Form/SiteSettingsFieldset.php:202
 msgid "Registration Features"
-msgstr ""
+msgstr "Perzhioù an enskrivadur"
 
-#: src/Form/SiteSettingsFieldset.php:203 src/Form/SettingsFieldset.php:232
+#: src/Form/SettingsFieldset.php:232 src/Form/SiteSettingsFieldset.php:203
 msgid ""
 "Add some text to the registration screen so people will know what they get "
 "for registering. As you enable and configure plugins that make use of the "
 "guest, please give them guidance about what they can and cannot do."
 msgstr ""
+"Ouzhpennit un tamm testenn war skramm an enskrivañ evit ma ouezo an dud petra"
+" a c'hounezont en ur enskrivañ. Pa weredekait ha kefluniat pluginoù a ra gant"
+" ar gouvidi, roit dezho heñchadurioù diwar-benn ar pezh a c'hallont hag ar "
+"pezh na c'hallont ket ober."
 
-#: src/Form/SiteSettingsFieldset.php:206 src/Form/SettingsFieldset.php:235
+#: src/Form/SettingsFieldset.php:235 src/Form/SiteSettingsFieldset.php:206
 msgid "guest_capabilities"
-msgstr ""
+msgstr "barregezhioù ar c'houviad"
 
-#: src/Form/SiteSettingsFieldset.php:230 src/Form/SettingsFieldset.php:259
+#: src/Form/SettingsFieldset.php:259 src/Form/SiteSettingsFieldset.php:230
 msgid "Subject of the email sent to administrator to notify about a new user"
-msgstr ""
+msgstr "Danvez ar postel kaset d'ar merour evit kelaouiñ diwar-benn un implijer nevez"
 
-#: src/Form/SiteSettingsFieldset.php:234 src/Form/SettingsFieldset.php:263
-#: config/module.config.php:414
+#: config/module.config.php:414 src/Form/SettingsFieldset.php:263
+#: src/Form/SiteSettingsFieldset.php:234
+#, python-brace-format
 msgid "[{site_title}] A user is registering"
-msgstr ""
+msgstr "[{site_title}] Un implijer zo o enskrivañ"
 
-#: src/Form/SiteSettingsFieldset.php:242 src/Form/SettingsFieldset.php:271
+#: src/Form/SettingsFieldset.php:271 src/Form/SiteSettingsFieldset.php:242
 msgid "Email sent to administrator to notify about a new user"
-msgstr ""
+msgstr "Postel kaset d'ar merour evit kelaouiñ diwar-benn un implijer nevez"
 
-#: src/Form/SiteSettingsFieldset.php:246 src/Form/SettingsFieldset.php:275
+#: src/Form/SettingsFieldset.php:275 src/Form/SiteSettingsFieldset.php:246
+#, python-brace-format
 msgid ""
 "Hi,\n"
-"A new user, {user_name}, is registering on <a href=\"{site_url}"
-"\">{site_title}</a> ({main_title}).\n"
+"A new user, {user_name}, is registering on <a "
+"href=\"{site_url}\">{site_title}</a> ({main_title}).\n"
 "You may moderate this email: {user_email}.\n"
 "This is an automatic message."
 msgstr ""
+"Demat,\n"
+"Un implijer nevez, {user_name}, zo o'n em enskrivañ war <a "
+"href=\"{site_url}\">{site_title} ({main_title}).\n"
+"Gallout a rit moderañ ar postel-mañ: {user_email}.\n"
+"Ur gemennadenn emgefre eo."
 
 #: src/Form/SiteSettingsFieldset.php:260
 msgid "Subject of the email sent to confirm email"
-msgstr ""
+msgstr "Danvez ar postel kaset da gadarnaat ar postel"
 
-#: src/Form/SiteSettingsFieldset.php:264 src/Form/SiteSettingsFieldset.php:325
-#: src/Form/SettingsFieldset.php:293 src/Form/SettingsFieldset.php:354
 #: config/module.config.php:349 config/module.config.php:365
 #: config/module.config.php:422 config/module.config.php:438
+#: src/Form/SettingsFieldset.php:293 src/Form/SettingsFieldset.php:354
+#: src/Form/SiteSettingsFieldset.php:264 src/Form/SiteSettingsFieldset.php:325
+#, python-brace-format
 msgid "[{site_title}] Confirm email"
-msgstr ""
+msgstr "[{site_title}] Kadarnaat ar postel"
 
 #: src/Form/SiteSettingsFieldset.php:272
 msgid "Email sent to confirm registration"
-msgstr ""
+msgstr "Postel kaset evit kadarnaat an enskrivadur"
 
-#: src/Form/SiteSettingsFieldset.php:273 src/Form/SettingsFieldset.php:302
-msgid ""
-"The text of the email to confirm the registration and to send the token."
-msgstr ""
+#: src/Form/SettingsFieldset.php:302 src/Form/SiteSettingsFieldset.php:273
+msgid "The text of the email to confirm the registration and to send the token."
+msgstr "Testenn ar postel evit kadarnaat an enskrivadur ha kas an toкен."
 
-#: src/Form/SiteSettingsFieldset.php:277 src/Form/SettingsFieldset.php:306
+#: src/Form/SettingsFieldset.php:306 src/Form/SiteSettingsFieldset.php:277
+#, python-brace-format
 msgid ""
 "Hi {user_name},\n"
 "You have registered for an account on {main_title} / {site_title} "
@@ -766,192 +807,226 @@ msgid ""
 "Please confirm your registration by following this link: {token_url}.\n"
 "If you did not request to join {main_title} please disregard this email."
 msgstr ""
+"Demat {user_name},\n"
+"En em enskrivet oc'h evit ur gont war {main_title} / {site_title} "
+"({site_url}).\n"
+"Kadarnait hoc'h enskrivadur mar plij en ur heuliañ al liamm-mañ : "
+"{token_url}.\n"
+"Ma n'hoc'h eus ket goulennet dont e-barzh {main_title}, na rit ket van ouzh "
+"ar postel-mañ."
 
 #: src/Form/SiteSettingsFieldset.php:291
 msgid "Subject of the email sent to confirm registration after moderation"
-msgstr ""
+msgstr "Danvez ar postel kaset da gadarnaat an enskrivadur goude ar moderadur"
 
-#: src/Form/SiteSettingsFieldset.php:295 src/Form/SettingsFieldset.php:324
 #: config/module.config.php:341 config/module.config.php:357
-#: config/module.config.php:430
+#: config/module.config.php:430 src/Form/SettingsFieldset.php:324
+#: src/Form/SiteSettingsFieldset.php:295
+#, python-brace-format
 msgid "[{site_title}] Account open"
-msgstr ""
+msgstr "[{site_title}] Konto digor"
 
 #: src/Form/SiteSettingsFieldset.php:303
 msgid "Email sent to confirm registration after moderation"
-msgstr ""
+msgstr "Postel kaset da gadarnaat an enskrivadur goude ar moderadur"
 
-#: src/Form/SiteSettingsFieldset.php:304 src/Form/SettingsFieldset.php:333
+#: src/Form/SettingsFieldset.php:333 src/Form/SiteSettingsFieldset.php:304
 msgid ""
 "When the moderation is set, the user may be informed automatically when the "
 "admin activates account (check box in second user tab)."
 msgstr ""
+"Pa vez kefluniet ar modererezh, e c'hall an implijer bezañ kelaouet ent "
+"emgefre pa vez gweredekaet e gont gant an admin (kased da askañ en eil "
+"ivinell an implijer)."
 
-#: src/Form/SiteSettingsFieldset.php:308 src/Form/SettingsFieldset.php:337
+#: src/Form/SettingsFieldset.php:337 src/Form/SiteSettingsFieldset.php:308
+#, python-brace-format
 msgid ""
 "Hi {user_name},\n"
 "We are happy to open your account on {main_title} / {site_title} "
 "({site_url}).\n"
 "You can now log in and discover the site."
 msgstr ""
+"Demat {user_name},\n"
+"Laouen omp o tigeriñ ho kont war {main_title} / {site_title} ({site_url}).\n"
+"Gallout a rit bremañ kevreañ ha dizoleiñ al lec'hienn."
 
 #: src/Form/SiteSettingsFieldset.php:321
 msgid "Subject of email sent to update email"
-msgstr ""
+msgstr "Danvez postel kaset da hizivaat ar postel"
 
 #: src/Form/SiteSettingsFieldset.php:333
 msgid "Email sent to update email"
-msgstr ""
+msgstr "Postel kaset da hizivaat ar postel"
 
-#: src/Form/SiteSettingsFieldset.php:334 src/Form/SettingsFieldset.php:363
+#: src/Form/SettingsFieldset.php:363 src/Form/SiteSettingsFieldset.php:334
 msgid "The text of the email sent when the user wants to update it."
-msgstr ""
+msgstr "Testenn ar postel kaset pa fell d'an implijer he hizivaat."
 
-#: src/Form/SiteSettingsFieldset.php:338 src/Form/SettingsFieldset.php:367
+#: src/Form/SettingsFieldset.php:367 src/Form/SiteSettingsFieldset.php:338
+#, python-brace-format
 msgid ""
 "Hi {user_name},\n"
 "You have requested to update email on {main_title} / {site_title} "
 "({site_url}).\n"
 "Please confirm your email by following this link: {token_url}.\n"
-"If you did not request to update your email on {main_title}, please "
-"disregard this email."
+"If you did not request to update your email on {main_title}, please disregard"
+" this email."
 msgstr ""
+"Demat {user_name},\n"
+"Goulennet hoc'h eus hizivaat ho postel war {main_title} / {site_title} "
+"({site_url}).\n"
+"Kadarnait ho postel mar plij en ur heuliañ al liamm-mañ : {token_url}.\n"
+"Ma n'hoc'h eus ket goulennet hizivaat ho postel war {main_title}, na rit ket "
+"van ouzh ar postel-mañ."
 
 #: src/Form/SiteSettingsFieldset.php:352
 msgid "Message to confirm email on the page"
-msgstr ""
+msgstr "Kemenadenn evit kadarnaat ar postel war ar bajenn"
 
-#: src/Form/SiteSettingsFieldset.php:353 src/Form/SettingsFieldset.php:382
+#: src/Form/SettingsFieldset.php:382 src/Form/SiteSettingsFieldset.php:353
 msgid "The message to  display after confirmation of a mail."
-msgstr ""
+msgstr "Ar gemennadenn da ziskouez goude kadarnaat ur postel."
 
-#: src/Form/SiteSettingsFieldset.php:358 src/Form/SettingsFieldset.php:387
-#: src/Controller/Site/AnonymousController.php:531 config/module.config.php:373
-#: config/module.config.php:446
+#: config/module.config.php:373 config/module.config.php:446
+#: src/Controller/Site/AnonymousController.php:531
+#: src/Form/SettingsFieldset.php:387 src/Form/SiteSettingsFieldset.php:358
+#, python-brace-format
 msgid "Your email \"{user_email}\" is confirmed for {site_title}."
-msgstr ""
+msgstr "Kadarnaet eo ho postel \"{user_email}\" evit {site_title}."
 
 #: src/Form/SiteSettingsFieldset.php:367
 msgid "Message to confirm registration on the page"
-msgstr ""
+msgstr "Kemenadenn evit kadarnaat an enskrivadur war ar bajenn"
 
 #: src/Form/SiteSettingsFieldset.php:381
 msgid "Message to confirm registration and moderation on the page"
-msgstr ""
+msgstr "Kemenadenn evit kadarnaat an enskrivadur hag ar moderadur war ar bajenn"
 
-#: src/Form/SiteSettingsFieldset.php:386 src/Form/SettingsFieldset.php:415
 #: config/module.config.php:375 config/module.config.php:448
+#: src/Form/SettingsFieldset.php:415 src/Form/SiteSettingsFieldset.php:386
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request and we have confirmed it, you "
 "will be able to log in."
 msgstr ""
+"Trugarez deoc'h da vezañ enskrivet. Gwiriit ho postel, mar plij, evit ur "
+"gemennadenn gadarnaat. Ur wech m'ho po kadarnaet ho koulenn ha m'hor bo "
+"kadarnaet hon-unan, e c'hallot kevreañ."
 
 #: src/Form/SiteSettingsFieldset.php:396
 msgid "Text for terms and conditions"
-msgstr ""
+msgstr "Testenn evit an termenoù hag an divizoù"
 
 #: src/Form/SiteSettingsFieldset.php:397
 msgid "The text to display to accept conditions."
-msgstr ""
+msgstr "An destenn da ziskouez evit asantiñ d'an divizoù."
 
-#: src/Form/SiteSettingsFieldset.php:402 src/Form/SettingsFieldset.php:430
+#: src/Form/SettingsFieldset.php:430 src/Form/SiteSettingsFieldset.php:402
+#, python-brace-format
 msgid "I agree the {link}terms and conditions{/link}."
-msgstr ""
+msgstr "A-du on gant an {link}termenoù hag an divizoù{/link}."
 
 #: src/Form/SiteSettingsFieldset.php:411
 msgid "Page slug of the terms and conditions"
-msgstr ""
+msgstr "Stumm berr ar pajenn evit an termenoù hag an divizoù"
 
-#: src/Form/SiteSettingsFieldset.php:412 src/Form/SettingsFieldset.php:440
+#: src/Form/SettingsFieldset.php:440 src/Form/SiteSettingsFieldset.php:412
 msgid "If the text is on a specific page, or for other usage."
-msgstr ""
+msgstr "Ma emañ an destenn war ur bajenn resis, pe evit un implij all."
 
 #: src/Form/SiteSettingsFieldset.php:424
 msgid "Redirect page after logging in"
-msgstr ""
+msgstr "Adheñchañ ar bajenn goude bezañ kevreet"
 
-#: src/Form/SiteSettingsFieldset.php:425 src/Form/SettingsFieldset.php:453
+#: src/Form/SettingsFieldset.php:453 src/Form/SiteSettingsFieldset.php:425
 msgid ""
 "Set \"home\" for home page (admin or public), \"site\" for the current site "
 "home, \"top\" for main public page, \"me\" for guest account, or any path "
 "starting with \"/\", including \"/\" itself for main home page."
 msgstr ""
+"Termenit \"home\" evit ar bajenn degemer (merour pe foran), \"site\" evit "
+"pajenn degemer al lec'hienn red, \"top\" evit ar bajenn foran bennañ, \"me\" "
+"evit kont ar c'houvidi, pe forzh peseurt hentad a grog gant \"/\", en ur "
+"gontañ \"/\" e-unan evit ar bajenn degemer bennañ."
 
 #: src/Form/SiteSettingsFieldset.php:438
 msgid "Display user bar for guests (require Omeka option)"
-msgstr ""
+msgstr "Diskouez barrenn an implijerien d'ar weladennerien (ret kaout an dibab Omeka)"
 
 #: src/Form/SettingsFieldset.php:33
 msgid "Registration"
-msgstr ""
+msgstr "Enskrivadur"
 
 #: src/Form/SettingsFieldset.php:34
 msgid ""
 "Allow guest registration without administrator approval. The link to use is "
 "\"/s/my-site/guest/register\"."
 msgstr ""
+"Aotren an enskrivadurioù gant ar weladenner hep asant an merour. Al liamm da "
+"implijout eo \"/s/my-site/guest/register\"."
 
 #: src/Form/SettingsFieldset.php:36
 msgid "Open to everyone"
-msgstr ""
+msgstr "Digor d'an holl"
 
 #: src/Form/SettingsFieldset.php:37
 msgid "Open with moderation"
-msgstr ""
+msgstr "Digoriñ gant moder"
 
 #: src/Form/SettingsFieldset.php:38
 msgid "Closed to visitors"
-msgstr ""
+msgstr "Serret d'ar weladennerien"
 
 #: src/Form/SettingsFieldset.php:54
 msgid "Default role on register"
-msgstr ""
+msgstr "Rol dre ziouer en ur enrollañ"
 
 #: src/Form/SettingsFieldset.php:55 src/Form/SettingsFieldset.php:72
-msgid ""
-"This option is useful for modules that create derivative roles for guests."
+msgid "This option is useful for modules that create derivative roles for guests."
 msgstr ""
+"Talvoudus eo an dibab-mañ evit ar moduloù a grou rolioù deveret evit ar "
+"gouvidi."
 
 #: src/Form/SettingsFieldset.php:71
 msgid "Allowed roles for guest"
-msgstr ""
+msgstr "Roloù aotreet evit ar gouvidi"
 
 #: src/Form/SettingsFieldset.php:80 src/Form/SettingsFieldset.php:525
 msgid "Select roles…"
-msgstr ""
+msgstr "Diuzit rolioù…"
 
 #: src/Form/SettingsFieldset.php:88
 msgid "Pages where the user may select an allowed role"
-msgstr ""
+msgstr "Pajennoù ma c'hall an implijer dibab ur roll aotreet"
 
 #: src/Form/SettingsFieldset.php:91
 msgid "Update account"
-msgstr ""
+msgstr "Hizivaat ar gont"
 
 #: src/Form/SettingsFieldset.php:105
 msgid "Default emails to notify registrations"
-msgstr ""
+msgstr "Posteloù dre ziouer evit kelaouiñ an enskrivadurioù"
 
 #: src/Form/SettingsFieldset.php:122
 msgid "Add new users to sites"
-msgstr ""
+msgstr "Ouzhpennañ implijerien nevez d'al lec'hiennoù"
 
 #: src/Form/SettingsFieldset.php:139
 msgid "Require ReCaptcha"
-msgstr ""
+msgstr "Goulenn ReCaptcha"
 
 #: src/Form/SettingsFieldset.php:140
 msgid "Check this to require passing a ReCaptcha test when registering"
-msgstr ""
+msgstr "Gwiriañ an dra-mañ evit rediañ tremen un test ReCaptcha pa en em enskriver"
 
 #: src/Form/SettingsFieldset.php:152
 msgid "Skip terms agreement"
-msgstr ""
+msgstr "Lammat an emglev termenoù"
 
 #: src/Form/SettingsFieldset.php:164
 msgid "Pages not to redirect"
-msgstr ""
+msgstr "Pajennoù na adkaset ket"
 
 #: src/Form/SettingsFieldset.php:165
 msgid ""
@@ -959,488 +1034,566 @@ msgid ""
 "pages are included (logout, terms page…). This is a regex, with \"~\" "
 "delimiter, checked against the end of the url."
 msgstr ""
+"Aotren a ra da lezel pajennoù zo hegerz pa ne vez ket asantet c'hoazh war an "
+"termenoù. Ennañ e kaver ar pajennoù dre ziouer (pajenn dizemeziñ, pajenn an "
+"termenoù...). Ur regex eo, gant an dispeller \"~\", gwiriet e dibenn an URL."
 
 #: src/Form/SettingsFieldset.php:177
 msgid "Force terms agreement"
-msgstr ""
+msgstr "Rediañ da asantiñ"
 
 #: src/Form/SettingsFieldset.php:178
 msgid "If unchecked, the user will be logged out if terms are not accepted."
-msgstr ""
+msgstr "Ma ne vez ket degemeret an termenoù, e vo dizkenket an implijer."
 
 #: src/Form/SettingsFieldset.php:192
 msgid "Default log in text"
-msgstr ""
+msgstr "Testenn dre ziouer evit an kevrediñ"
 
 #: src/Form/SettingsFieldset.php:205
 msgid "Default register text"
-msgstr ""
+msgstr "Testenn dre ziouer ar marilh"
 
 #: src/Form/SettingsFieldset.php:218
 msgid "Default dashboard label"
-msgstr ""
+msgstr "Banniel dre ziouer"
 
 #: src/Form/SettingsFieldset.php:231
 msgid "Default registration features"
-msgstr ""
+msgstr "Perzhioù enskrivañ dre ziouer"
 
 #: src/Form/SettingsFieldset.php:289
 msgid "Default subject of the email sent to confirm email"
-msgstr ""
+msgstr "Danvez dre ziouer ar postel kaset da gadarnaat ar postel"
 
 #: src/Form/SettingsFieldset.php:301
 msgid "Default email sent to confirm registration"
-msgstr ""
+msgstr "Postel dre ziouer kaset evit kadarnaat an enskrivadur"
 
 #: src/Form/SettingsFieldset.php:320
-msgid ""
-"Default subject of the email sent to confirm registration after moderation"
+msgid "Default subject of the email sent to confirm registration after moderation"
 msgstr ""
+"Danvez dre ziouer ar postel kaset da gadarnaat an enskrivadur goude ar "
+"moderadur"
 
 #: src/Form/SettingsFieldset.php:332
 msgid "Default email sent to confirm registration after moderation"
-msgstr ""
+msgstr "Postel kaset dre ziouer da gadarnaat an enskrivadur goude ar moderadur"
 
 #: src/Form/SettingsFieldset.php:350
 msgid "Default subject of email sent to update email"
-msgstr ""
+msgstr "Danvez dre ziouer eus ar postel kaset da hizivaat ar postel"
 
 #: src/Form/SettingsFieldset.php:362
 msgid "Default email sent to update email"
-msgstr ""
+msgstr "Postel dre ziouer kaset da hizivaat ar postel"
 
 #: src/Form/SettingsFieldset.php:381
 msgid "Default message to confirm email on the page"
-msgstr ""
+msgstr "Kemenadenn dre ziouer evit kadarnaat ar postel war ar bajenn"
 
 #: src/Form/SettingsFieldset.php:396
 msgid "Default message to confirm registration on the page"
-msgstr ""
+msgstr "Kemenadenn dre ziouer evit kadarnaat an enskrivadur war ar bajenn"
 
 #: src/Form/SettingsFieldset.php:410
 msgid "Default message to confirm registration and moderation on the page"
 msgstr ""
+"Kemenadenn dre ziouer evit kadarnaat an enskrivadur hag ar moderadur war ar "
+"bajenn"
 
 #: src/Form/SettingsFieldset.php:425
 msgid "Default text for terms and conditions"
-msgstr ""
+msgstr "Testenn dre ziouer evit an termenoù hag an divizoù"
 
 #: src/Form/SettingsFieldset.php:426
+#, python-brace-format
 msgid ""
-"The text to display to accept conditions. When a page is set, use {link}"
-"text{/link} to wrap the link text."
+"The text to display to accept conditions. When a page is set, use "
+"{link}text{/link} to wrap the link text."
 msgstr ""
+"An destenn da ziskouez evit asantiñ d'an divizoù. Pa vez lakaet ur bajenn, "
+"implijit {link}text{/link} evit enklozañ testenn al liamm."
 
 #: src/Form/SettingsFieldset.php:439
 msgid "Default page slug of the terms and conditions"
-msgstr ""
+msgstr "Slug dre ziouer ar bajenn termenoù ha divizoù"
 
 #: src/Form/SettingsFieldset.php:452
 msgid "Default redirect page after login"
-msgstr ""
+msgstr "Pajenn adkas dre ziouer goude an kevreadenn"
 
 #: src/Form/SettingsFieldset.php:466
 msgid "Append cas/sso login links to login page"
-msgstr ""
+msgstr "Ouzhpennañ liammoù kevreañ cas/sso d'ar bajenn gevreañ"
 
 #: src/Form/SettingsFieldset.php:469
 msgid "Links"
-msgstr ""
+msgstr "Liammoù"
 
 #: src/Form/SettingsFieldset.php:470
 msgid "Buttons"
-msgstr ""
+msgstr "Boutonoù"
 
 #: src/Form/SettingsFieldset.php:472
 msgid "Select "
-msgstr ""
+msgstr "Diuzit"
 
 #: src/Form/SettingsFieldset.php:487
 msgid "Requires a site to register via api"
-msgstr ""
+msgstr "Goulenn a ra digant ul lec'hienn en em enskrivañ dre un API"
 
 #: src/Form/SettingsFieldset.php:488
 msgid ""
 "If checked, a site id or slug will be required when registering via api. "
 "Note: when this setting is set, all previous users must be added to a site."
 msgstr ""
+"Ma vez diuzet, e vo ret kaout un ID lec'hienn pe ur slug pa en em enskriver "
+"dre an API. Notenn : pa vez lakaet an arventenn-mañ, e rank an holl "
+"implijerien kentañ bezañ ouzhpennet d'ul lec'hienn."
 
 #: src/Form/SettingsFieldset.php:500
 msgid "Skip email validation on register"
-msgstr ""
+msgstr "Lammat gwiriekadur ar postel en ur en em enskrivañ"
 
 #: src/Form/SettingsFieldset.php:501
 msgid ""
 "If checked, the user won’t have to validate his email, so he will be able to "
 "log in directly."
 msgstr ""
+"Ma vez dibaret, n'en do ket ezhomm an implijer da wiriañ e chomlec'h postel, "
+"ha gallout a raio en em gevreañ war-eeun."
 
 #: src/Form/SettingsFieldset.php:512
 msgid "Roles that can log in via api"
-msgstr ""
+msgstr "Roloù a c'hall kevreañ dre an API"
 
 #: src/Form/SettingsFieldset.php:513
 msgid "To allow full access via api increases risks of intrusion."
-msgstr ""
+msgstr "Aotren un digoradur klok dre an API a gresk ar riskloù enbroañ."
 
 #: src/Form/SettingsFieldset.php:516
 msgid "All roles"
-msgstr ""
+msgstr "An holl rolioù"
 
 #: src/Form/SettingsFieldset.php:533
 msgid "Create a local session cookie for api"
-msgstr ""
+msgstr "Krouiñ ur c'hokig dalc'h-sezon lec'hel evit an API"
 
 #: src/Form/SettingsFieldset.php:534
 msgid ""
-"If checked, a session cookie will be created, so the user will be able to "
-"log in in Omeka from an other web app."
+"If checked, a session cookie will be created, so the user will be able to log"
+" in in Omeka from an other web app."
 msgstr ""
+"Ma vez merket, e vo krouet ur c'hokig dalc'h, e doare ma c'hallo an implijer "
+"en em gevreañ en Omeka adalek un arload web all."
 
 #: src/Form/SettingsFieldset.php:545
 msgid "Limit access to api to these domains (cors)"
-msgstr ""
+msgstr "Bevennit an digor d'an API d'an domanioù-mañ (CORS)"
 
 #: src/Form/UserForm.php:110
 msgid "Current password (required to change it)"
-msgstr ""
+msgstr "Ger-tremen a-vremañ (ret evit e cheñch)"
 
 #: src/Form/UserForm.php:160
 msgid "The display name must be 50 characters or fewer."
-msgstr ""
+msgstr "An anv da ziskouez a rank bezañ 50 arouezenn d'ar muiañ."
 
 #: src/Form/UserForm.php:169
 msgid "The display name must contain only letters and numbers."
-msgstr ""
+msgstr "Ne rank anv an diskouezadenn enderc'hel nemet lizherennoù ha sifroù."
 
 #: src/Form/GuestLoginFieldset.php:18
 msgid "Display login form"
-msgstr ""
+msgstr "Diskouez ar furmskrid kevreañ"
 
 #: src/Form/GuestLoginFieldset.php:20
 msgid "Use site setttings"
-msgstr ""
+msgstr "Implijit arventennoù al lec'hienn"
 
 #: src/Form/GuestLoginFieldset.php:33
 msgid "Disable trigger"
-msgstr ""
+msgstr "Dizgweredekaat an draen"
 
 #: src/Controller/SiteAdmin/IndexController.php:46
 msgid "Default page for account"
-msgstr ""
+msgstr "Pajenn dre ziouer evit ar gont"
 
 #: src/Controller/SiteAdmin/IndexController.php:49
 #: src/Controller/SiteAdmin/IndexController.php:60
 msgid "Classical board (pages of modules)"
-msgstr ""
+msgstr "Taolenn glasel (pajennoù modul)"
 
 #: src/Controller/SiteAdmin/IndexController.php:50
 msgid "Guest board (this menu)"
-msgstr ""
+msgstr "Taolenn ar gouvidi (ar roll-mañ)"
 
 #: src/Controller/SiteAdmin/IndexController.php:51
 msgid "Selections"
-msgstr ""
+msgstr "Diuzadennoù"
 
 #: src/Controller/SiteAdmin/IndexController.php:52
 msgid "Search history"
-msgstr ""
+msgstr "Istor ar c'hlask"
 
 #: src/Controller/SiteAdmin/IndexController.php:53
 msgid "Comments"
-msgstr ""
+msgstr "Evezhiadennoù"
 
-#: src/Controller/TraitGuestController.php:94
-#: src/Site/BlockLayout/Register.php:148
+#: src/Controller/TraitGuestController.php:94 src/Site/BlockLayout/Register.php:148
+#, python-brace-format
 msgid "The role {role} is not valid. Role \"guest\" is used instead."
-msgstr ""
+msgstr "N'eo ket reizh ar roll {role}. Implijet e vez ar roll \"guest\" e-lec'h."
 
 #: src/Controller/TraitGuestController.php:100
 #: src/Site/BlockLayout/Register.php:154
+#, python-brace-format
 msgid ""
 "The role {role} is an admin role and cannot be used for registering. Role "
 "\"guest\" is used instead."
 msgstr ""
+"Ar roll {role} zo ur roll merour ha ne c'haller ket en ober evit en em "
+"enskrivañ. Implijet e vez ar roll \"guest\" en e lec'h."
 
 #: src/Controller/TraitGuestController.php:252
 msgid "Missing site."
-msgstr ""
+msgstr "Lec'hienn a vank."
 
 #: src/Controller/TraitGuestController.php:295
 msgid ""
 "It is currently not possible to send a token for a private site. Set option "
 "to skip email validation."
 msgstr ""
+"Evit ar poent n'haller ket kas un token evit ul lec'hienn brevez. Rannit an "
+"dibab evit tremen hep gwiriañ ar postel."
 
 #: src/Controller/TraitGuestController.php:341
 msgid "[No subject]"
-msgstr ""
+msgstr "[Temat nann]"
 
 #: src/Controller/TraitGuestController.php:342
 msgid "[No message]"
-msgstr ""
+msgstr "[N'eus ket a gemennadenn]"
 
-#: src/Controller/TraitGuestController.php:608
-#: src/Controller/GuestApiController.php:509
-#: src/Controller/ApiController.php:606
+#: src/Controller/ApiController.php:606 src/Controller/GuestApiController.php:509
 #: src/Controller/Site/AnonymousController.php:338
+#: src/Controller/TraitGuestController.php:608
+#, python-brace-format
 msgid "An error occurred after creation of the guest user: {exception}"
-msgstr ""
+msgstr "Ur fazi zo c'hoarvezet goude krouidigezh an implijer pedet : {exception}"
 
 #: src/Controller/TraitGuestController.php:718
+#, python-brace-format
 msgid "A new user is registering: {user_email} ({url})."
-msgstr ""
+msgstr "Un implijer nevez zo o'n em enskrivañ : {user_email} ({url})."
 
 #: src/Controller/GuestApiController.php:191
 msgid "Role \"{role]\" is not allowed to log in via api."
-msgstr ""
+msgstr "N'eo ket aotreet d'ar roll \"{role]\" kevreañ dre an API."
 
-#: src/Controller/GuestApiController.php:722
-#: src/Controller/ApiController.php:786
+#: src/Controller/ApiController.php:786 src/Controller/GuestApiController.php:722
+#, python-brace-format
 msgid "User token for {site_title}"
-msgstr ""
+msgstr "Token an implijer evit {site_title}"
 
-#: src/Controller/GuestApiController.php:725
-#: src/Controller/ApiController.php:789
+#: src/Controller/ApiController.php:789 src/Controller/GuestApiController.php:725
+#, python-brace-format
 msgid ""
 "Greetings!\n"
 "\n"
-"To reset your password on {site_title}, fill this token in the app: "
-"{token}.\n"
+"To reset your password on {site_title}, fill this token in the app: {token}.\n"
 "\n"
 "Your activation link will expire on {date}."
 msgstr ""
+"Degemer mat!\n"
+"\n"
+"Evit adsevel ho ker-tremen war {site_title}, leugnit an token-mañ en arload :"
+" {token}.\n"
+"\n"
+"Ho liamm gweredekaat a yelo da get d'an {date}."
 
-#: src/Controller/GuestApiController.php:1166
-#: src/Controller/ApiController.php:1095
+#: src/Controller/ApiController.php:1095 src/Controller/GuestApiController.php:1166
+#, python-brace-format
 msgid "\"{email}\" is not an email."
-msgstr ""
+msgstr "\"{email}\" n'eo ket ur postel."
 
-#: src/Controller/GuestApiController.php:1189
-#: src/Controller/ApiController.php:1120
+#: src/Controller/ApiController.php:1120 src/Controller/GuestApiController.php:1189
+#, python-brace-format
 msgid ""
-"User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", "
-"used by user #{user_id_2}."
+"User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", used"
+" by user #{user_id_2}."
 msgstr ""
+"Ar implijer #{user_id} a fell dezhañ cheñch e bostel eus \"{email}\" da "
+"\"{email_2}\", implijet gant an implijer #{user_id_2}."
 
+#: src/Controller/ApiController.php:1125 src/Controller/ApiController.php:1146
 #: src/Controller/GuestApiController.php:1193
 #: src/Controller/GuestApiController.php:1214
-#: src/Controller/ApiController.php:1125 src/Controller/ApiController.php:1146
+#, python-brace-format
 msgid "The email \"{email}\" is not yours."
-msgstr ""
+msgstr "N'eo ket deoc'h ar postel \"{email}\"."
 
-#: src/Controller/GuestApiController.php:1210
-#: src/Controller/ApiController.php:1141
+#: src/Controller/ApiController.php:1141 src/Controller/GuestApiController.php:1210
+#, python-brace-format
 msgid ""
-"User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", "
-"used by user #{user_id_2} (second check)."
+"User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", used"
+" by user #{user_id_2} (second check)."
 msgstr ""
+"Ar implijer #{user_id} a fell dezhañ cheñch e chomlec'h postel eus "
+"\"{email}\" da \"{email_2}\", implijet gant an implijer #{user_id_2} "
+"(gwiriekadenn eil)."
 
-#: src/Controller/GuestApiController.php:1232
-#: src/Controller/ApiController.php:1163
+#: src/Controller/ApiController.php:1163 src/Controller/GuestApiController.php:1232
 msgid "[GuestApi] An error occurred when the email was sent."
-msgstr ""
+msgstr "[GuestApi] Ur fazi zo c'hoarvezet pa'z eo bet kaset ar postel."
 
 #: src/Controller/GuestApiController.php:1299
+#, python-brace-format
 msgid "[Guest] Site #{site_slug} is not available."
-msgstr ""
+msgstr "[Kouviad] N'eo ket hegerz al lec'hienn #{site_slug}."
 
 #: src/Controller/ApiController.php:301
+#, python-brace-format
 msgid "Role \"{role}\" is not allowed to login via api."
-msgstr ""
+msgstr "N'eo ket aotreet d'ar roll \"{role}\" kevreañ dre an API."
 
 #: src/Controller/Site/AnonymousController.php:197
 #: src/Site/BlockLayout/Login.php:275
 msgid "A new code was resent."
-msgstr ""
+msgstr "Ur c'hod nevez a zo bet adkaset."
 
 #: src/Controller/Site/AnonymousController.php:198
 #: src/Site/BlockLayout/Login.php:276
 msgid "Unable to send email."
-msgstr ""
+msgstr "N'haller ket kas postel."
 
 #: src/Controller/Site/AnonymousController.php:245
 msgid "A password must be set."
-msgstr ""
+msgstr "Ret eo termeniñ ur ger-tremen."
 
 #: src/Controller/Site/AnonymousController.php:345
+#, python-brace-format
 msgid "Validation error during creation of guest user: {exception}"
-msgstr ""
+msgstr "Fazi gwiriekadur e-pad krouidigezh an implijer pedet : {exception}"
 
 #: src/Controller/Site/AnonymousController.php:348
 msgid "Validation error during creation of user. Please check your input."
-msgstr ""
+msgstr "Fazi gwiriekadur e-pad krouidigezh an implijer. Gwiriit ho roadoù, mar plij."
 
 #: src/Controller/Site/AnonymousController.php:352
+#, python-brace-format
 msgid "Unexpected error during creation of guest user: {exception}"
-msgstr ""
+msgstr "Fazi dic'hortoz e-pad krouidigezh an implijer pedet : {exception}"
 
 #: src/Controller/Site/AnonymousController.php:392
 #: src/Controller/Site/GuestController.php:283
 msgid "[Guest] An error occurred when the email was sent."
-msgstr ""
+msgstr "[Kouviad] Ur fazi zo c'hoarvezet pa'z eo bet kaset ar postel."
 
 #: src/Controller/Site/AnonymousController.php:437
+#, python-brace-format
 msgid ""
 "Thanks for joining {site_title}! You can now log in using the password you "
 "chose."
 msgstr ""
+"Trugarez da vezañ enskrivet war {site_title}! Bremañ e c'hallit kevreañ gant "
+"ar ger-tremen hoc'h eus dibabet."
 
 #: src/Controller/Site/AnonymousController.php:445
+#, python-brace-format
 msgid ""
 "Thanks for joining {site_title}! Your registration is under moderation. See "
 "you soon!"
 msgstr ""
+"Trugarez deoc'h da vezañ enskrivet war {site_title}! Ho koumanant a zo o "
+"vezañ gwiriet. Ken ar c'hentañ!"
 
 #: src/Controller/Site/AnonymousController.php:473
+#, python-brace-format
 msgid "Invalid token: your email was not confirmed for {site_title}."
-msgstr ""
+msgstr "Token direizh : n'eo ket bet kadarnaet ho postel evit {site_title}."
 
 #: src/Controller/Site/AnonymousController.php:474
 msgid "site_title"
 msgstr ""
 
 #: src/Controller/Site/AnonymousController.php:510
-msgid ""
-"A new user is registering and has confirmed email: {user_email} ({url})."
+#, python-brace-format
+msgid "A new user is registering and has confirmed email: {user_email} ({url})."
 msgstr ""
+"Un implijer nevez zo o'n em enskrivañ hag en deus kadarnaet e bostel : "
+"{user_email} ({url})."
 
 #: src/Controller/Site/AnonymousController.php:518
 msgid "An error occurred when the notification email was sent."
-msgstr ""
+msgstr "Ur fazi zo c'hoarvezet pa'z eo bet kaset ar postel kemenn."
 
 #: src/Controller/Site/AnonymousController.php:520
 msgid "[Guest] An error occurred when the notification email was sent."
-msgstr ""
+msgstr "[Kouviad] Ur fazi zo c'hoarvezet pa'z eo bet kaset ar postel kemenn."
 
 #: src/Controller/Site/AnonymousController.php:759
 msgid "Value is required and can't be empty"
-msgstr ""
+msgstr "Ret eo un talvoud ha ne c'hall ket bezañ goullo"
 
 #: src/Controller/Site/GuestController.php:170
 msgid "Password invalid"
-msgstr ""
+msgstr "Gouzañv fall"
 
 #: src/Controller/Site/GuestController.php:185
 msgid "Your modifications have been saved."
-msgstr ""
+msgstr "Enrollet eo bet ho kemmoù."
 
 #: src/Controller/Site/GuestController.php:241
 msgid "Email invalid"
-msgstr ""
+msgstr "Postel direizh"
 
 #: src/Controller/Site/GuestController.php:267
+#, python-brace-format
 msgid "The email \"{user_email}\" is not yours."
-msgstr ""
+msgstr "N'eo ket deoc'h ar postel \"{user_email}\"."
 
 #: src/Controller/Site/GuestController.php:288
+#, python-brace-format
 msgid "Check your email \"{user_email}\" to confirm the change."
-msgstr ""
+msgstr "Gwiriit ho postel \"{user_email}\" evit kadarnaat ar cheñchamant."
 
 #: src/Controller/Site/GuestController.php:306
 msgid "You already agreed the terms and conditions."
-msgstr ""
+msgstr "A-du oc'h bet dija gant an termenoù hag an divizoù."
 
 #: src/Controller/Site/GuestController.php:352
 msgid "Form invalid"
-msgstr ""
+msgstr "Stumm direizh"
 
 #: src/Controller/Site/GuestController.php:362
 msgid ""
 "The access to this website requires you accept the current terms and "
 "conditions."
 msgstr ""
+"Evit kaout moned d'al lec'hienn-mañ e rankit asantiñ d'an termenoù ha divizoù"
+" a-vremañ."
 
 #: src/Controller/Site/GuestController.php:369
 msgid "Thanks for accepting the terms and conditions."
-msgstr ""
+msgstr "Trugarez deoc'h da vezañ asantet d'an termenoù ha d'an divizoù."
 
 #: src/Site/Navigation/Link/Login.php:13
 msgid "Guest: Log in"
-msgstr ""
+msgstr "Kouviad : Kevrediñ"
 
 #: src/Site/Navigation/Link/Logout.php:13
 msgid "Guest: Log out"
-msgstr ""
+msgstr "Kouviad: Dont er-maez"
 
 #: src/Site/Navigation/Link/LoginLogout.php:13
 msgid "Guest: Log in / Log out"
-msgstr ""
+msgstr "Kouviad: Kevrediñ / Dizevrediñ"
 
 #: src/Site/Navigation/Link/LoginBoard.php:13
 msgid "Guest: Log in / My board"
-msgstr ""
+msgstr "Kouviad: Kevrediñ / Ma daolenn"
 
 #: src/Site/Navigation/Link/LoginBoard.php:34
 msgid "My board"
-msgstr ""
+msgstr "Ma c'huzul"
 
-#: src/Site/Navigation/Link/Register.php:13
-#: src/Site/BlockLayout/Register.php:75
+#: src/Site/BlockLayout/Register.php:75 src/Site/Navigation/Link/Register.php:13
 msgid "Guest: Register"
-msgstr ""
+msgstr "Kouviad : Enskrivañ"
 
 #: src/Site/BlockLayout/Login.php:77
 msgid "Guest: Login"
-msgstr ""
+msgstr "Kouviad: Kevrediñ"
 
 #: src/Site/BlockLayout/ForgotPassword.php:43
 msgid "Guest: Forgot password"
-msgstr ""
+msgstr "Kouviad: Ankouaet ar ger-tremen"
 
 #: src/Site/BlockLayout/ForgotPassword.php:72
 msgid "You cannot change your password here."
-msgstr ""
+msgstr "N'hallit ket cheñch ho ker-tremen amañ."
 
 #: config/module.config.php:276
 msgid "Guests"
-msgstr ""
+msgstr "Kouvidi"
 
 #: config/module.config.php:289
 msgid "Navigation Guest"
-msgstr ""
+msgstr "Merdeiñ Kouvidiad"
 
 #: config/module.config.php:335 config/module.config.php:408
 msgid "My dashboard"
-msgstr ""
+msgstr "Ma daolenn-vourzh"
 
 #: config/module.config.php:342 config/module.config.php:415
+#, python-brace-format
 msgid ""
 "<p>Hi,</p>\n"
-"<p>A new user, {user_name}, is registering on <a href=\"{site_url}"
-"\">{site_title}</a> ({main_title}).</p>\n"
+"<p>A new user, {user_name}, is registering on <a "
+"href=\"{site_url}\">{site_title}</a> ({main_title}).</p>\n"
 "<p>You may moderate this email: {user_email}.</p>\n"
 "<p>This is an automatic message.</p>"
 msgstr ""
+"Demat,\n"
+"Un implijer nevez, {user_name}, zo o'n em enskrivañ war <a "
+"href=\"{site_url}\">{site_title} ({main_title}).\n"
+"Gallout a rit moderañ ar postel-mañ : {user_email}.\n"
+"Ur gemennadenn emgefre eo hemañ"
 
 #: config/module.config.php:350 config/module.config.php:423
+#, python-brace-format
 msgid ""
 "<p>Hi {user_name},</p>\n"
-"<p>You have registered for an account on <a href=\"{site_url}\">{site_title}"
-"</a> ({main_title}).</p>\n"
+"<p>You have registered for an account on <a "
+"href=\"{site_url}\">{site_title}</a> ({main_title}).</p>\n"
 "<p>Please confirm your registration by following this link: <a "
 "href=\"{token_url}\"> {token_url}</a></p>\n"
 "<p>If you did not request to join {main_title} / {site_title}, please "
 "disregard this email.</p>"
 msgstr ""
+"Demat {user_name},\n"
+"En em enskrivet oc'h evit ur gont war <a href=\"{site_url}\">{site_title} "
+"({main_title}).\n"
+"Kadarnait hoc'h enskrivadur mar plij en ur heuliañ al liamm-mañ : <a "
+"href=\"{token_url}\"> {token_url}\n"
+"Ma n'hoc'h eus ket goulennet dont e-barzh {main_title} / {site_title}, mar "
+"plij, lezit a-gostez ar postel-mañ"
 
 #: config/module.config.php:358 config/module.config.php:431
+#, python-brace-format
 msgid ""
 "<p>Hi {user_name},</p>\n"
-"<p>We are happy to open your account on <a href=\"{site_url}\">{site_title}</"
-"a> ({main_title}).</p>\n"
-"<p>Please confirm your email by following this link: <a href=\"{token_url}"
-"\">{token_url}</a>.</p>\n"
+"<p>We are happy to open your account on <a "
+"href=\"{site_url}\">{site_title}</a> ({main_title}).</p>\n"
+"<p>Please confirm your email by following this link: <a "
+"href=\"{token_url}\">{token_url}</a>.</p>\n"
 "<p>You can now log in and discover the site.</p>"
 msgstr ""
+"Demat {user_name},\n"
+"Laouen omp o tigeriñ ho kont war <a href=\"{site_url}\">{site_title} "
+"({main_title}).\n"
+"Kadarnait ho postel mar plij en ur heuliañ al liamm-mañ : <a "
+"href=\"{token_url}\">{token_url}.\n"
+"Gallout a rit bremañ kevreañ ha dizoleiñ al lec'hienn"
 
 #: config/module.config.php:366 config/module.config.php:439
+#, python-brace-format
 msgid ""
 "<p>Hi {user_name},</p>\n"
-"<p>You have requested to update email on <a href=\"{site_url}\">{site_title}"
-"</a> ({main_title}).</p>\n"
-"<p>Please confirm your email by following this link: <a href=\"{token_url}"
-"\">{token_url}</a>.</p>\n"
+"<p>You have requested to update email on <a "
+"href=\"{site_url}\">{site_title}</a> ({main_title}).</p>\n"
+"<p>Please confirm your email by following this link: <a "
+"href=\"{token_url}\">{token_url}</a>.</p>\n"
 "<p>If you did not request to update your email on {main_title}, please "
 "disregard this email.</p>"
 msgstr ""
+"Demat {user_name},\n"
+"Goulennet hoc'h eus hizivaat ho postel war <a "
+"href=\"{site_url}\">{site_title} ({main_title}).\n"
+"Kadarnait ho postel mar plij en ur heuliañ al liamm-mañ : <a "
+"href=\"{token_url}\">{token_url}.\n"
+"Ma n'hoc'h eus ket goulennet hizivaat ho postel war {main_title}, mar plij, "
+"na rit ket van ouzh ar postel-mañ"
+
