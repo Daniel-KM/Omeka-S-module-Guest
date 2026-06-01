@@ -628,10 +628,10 @@ class Module extends AbstractModule
                         $url = $services->get('ViewHelperManager')->get('url');
                         $termsUrl = $url('site/page', ['site-slug' => $siteSlug, 'page-slug' => $termsPage]);
                         if (preg_match('/\{link\}(.+?)\{\/link\}/s', $label, $matches)) {
-                            $link = sprintf('<a href="%s" target="_blank">%s</a>', $termsUrl, $matches[1]);
+                            $link = sprintf('<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', htmlspecialchars($termsUrl), htmlspecialchars($matches[1]));
                             $label = str_replace($matches[0], $link, $label);
                         } else {
-                            $label = sprintf('%s <a href="%s" target="_blank">%s</a>', rtrim($label, '.'), $termsUrl, $termsPage);
+                            $label = sprintf('%s <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', rtrim($label, '.'), htmlspecialchars($termsUrl), htmlspecialchars($termsPage));
                         }
                     }
                 } catch (\Throwable $e) {

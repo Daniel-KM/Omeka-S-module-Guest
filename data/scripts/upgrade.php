@@ -91,7 +91,7 @@ if (version_compare($oldVersion, '3.4.21', '<')) {
         $message = new PsrMessage(
             'This module integrates the features from module GuestApi, that is no longer needed. The config were merged (texts of messages) so you should check them in {link_url}main settings{link_end}. The module was disabled, but you should uninstall the module once params are checked.', // @translate
             [
-                'link_url' => sprintf('<a href="%s">', $urlPlugin->fromRoute('admin') . '/setting#guest'),
+                'link_url' => sprintf('<a href="%s">', htmlspecialchars($urlPlugin->fromRoute('admin') . '/setting#guest')),
                 'link_end' => '</a>',
             ]
         );

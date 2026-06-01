@@ -328,7 +328,7 @@ class GuestController extends AbstractGuestController
                 'site-slug' => $site->slug(),
                 'page-slug' => $page,
             ]);
-            $link = sprintf('<a href="%s" target="_blank">%s</a>', $termsUrl, $matches[1]);
+            $link = sprintf('<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', htmlspecialchars($termsUrl), htmlspecialchars($matches[1]));
             $text = str_replace($matches[0], $link, $text);
         }
 
