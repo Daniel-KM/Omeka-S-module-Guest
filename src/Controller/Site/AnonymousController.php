@@ -2,6 +2,7 @@
 
 namespace Guest\Controller\Site;
 
+use Common\Mvc\Controller\Plugin\JSend;
 use Common\Stdlib\PsrMessage;
 use Guest\Entity\GuestToken;
 use Laminas\View\Model\ViewModel;
@@ -19,6 +20,10 @@ class AnonymousController extends AbstractGuestController
 {
     public function loginAction()
     {
+        if ($this->getRequest()->isXmlHttpRequest() && !$this->getRequest()->isPost()) {
+            return $this->prepareDialog('login');
+        }
+
         if ($this->isUserLogged()) {
             return $this->redirectToAdminOrSite();
         }
@@ -208,6 +213,10 @@ class AnonymousController extends AbstractGuestController
 
     public function registerAction()
     {
+        if ($this->getRequest()->isXmlHttpRequest() && !$this->getRequest()->isPost()) {
+            return $this->prepareDialog('register');
+        }
+
         if ($this->isUserLogged()) {
             return $this->redirectToAdminOrSite();
         }
@@ -547,6 +556,10 @@ class AnonymousController extends AbstractGuestController
 
     public function forgotPasswordAction()
     {
+        if ($this->getRequest()->isXmlHttpRequest() && !$this->getRequest()->isPost()) {
+            return $this->prepareDialog('forgot-password');
+        }
+
         if ($this->isUserLogged()) {
             return $this->redirectToAdminOrSite();
         }
@@ -777,5 +790,60 @@ Your reset link will expire on %4$s.');
         }
 
         return false;
+    }
+
+    /**
+     * Build the json response with the html of a dialog (login, register or
+     * forgot-password) for an ajax request.
+     *
+     * Rendered through the site route, so the public site (theme, locale and
+     * translations) is already prepared by the core MvcListeners at routing
+     * time: no manual i18n setup is needed. The form posts to the api route,
+     * that is in charge of the submission.
+     */
+    protected function prepareDialog(string $name)
+    {
+        $dialogTemplates = [
+            'login' => 'common/dialog/login',
+            'register' => 'common/dialog/register',
+            'forgot-password' => 'common/dialog/forgot-password',
+        ];
+
+        if (!isset($dialogTemplates[$name])) {
+            return $this->jSend(JSend::FAIL, [
+                'dialog' => $this->translate('This dialog is not managed.'), // @translate
+            ]);
+        }
+
+        $hasForm = true;
+        if ($name === 'login') {
+            $site = $this->currentSite();
+            $hasForm = !$site || !$this->siteSettings()->get('guest_login_without_form', false, $site->id());
+        }
+
+        $form = null;
+        if ($hasForm) {
+            $dialogForms = [
+                'login' => $this->hasModuleUserNames()
+                    ? \UserNames\Form\LoginForm::class
+                    : \Omeka\Form\LoginForm::class,
+                'register' => null,
+                'forgot-password' => \Omeka\Form\ForgotPasswordForm::class,
+            ];
+            try {
+                $form = $name === 'register'
+                    ? $this->getUserForm(null, 'register')
+                    : $this->getForm($dialogForms[$name]);
+            } catch (\Throwable $e) {
+                return $this->jSend(JSend::ERROR, null,
+                    $this->translate('An error occurred when loading dialog.') // @translate
+                );
+            }
+            $form->setAttribute('action', $this->url()->fromRoute('api/guest', ['action' => $name]));
+        }
+
+        return $this->jSend(JSend::SUCCESS, [
+            'dialog' => $this->viewHelpers()->get('partial')($dialogTemplates[$name], ['form' => $form]),
+        ]);
     }
 }
