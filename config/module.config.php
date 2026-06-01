@@ -145,6 +145,23 @@ return [
                                     ],
                                 ],
                             ],
+                            // Site route to render dialogs (login, register,
+                            // forgot-password) via ajax. A site route is used,
+                            // not an api one, so the core MvcListeners prepare
+                            // the public site (theme, locale and theme
+                            // translations) at routing time, before any string
+                            // is translated. So no manual i18n setup is needed.
+                            'dialog' => [
+                                'type' => \Laminas\Router\Http\Literal::class,
+                                'options' => [
+                                    'route' => '/dialog',
+                                    'defaults' => [
+                                        '__NAMESPACE__' => '',
+                                        'controller' => Controller\GuestApiController::class,
+                                        'action' => 'dialog',
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],

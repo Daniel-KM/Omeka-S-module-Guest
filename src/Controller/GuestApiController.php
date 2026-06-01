@@ -881,7 +881,59 @@ class GuestApiController extends AbstractActionController
             'form' => $form ?? null,
         ];
 
-        $this->prepareSiteTemplates();
+        // On the site route (site/guest/dialog), the core MvcListeners already
+        // prepared the public site at routing time (theme, locale and theme
+        // translations), so nothing more is needed. On the legacy api route
+        // (api/guest/dialog), still used by some modules and themes, the site
+        // context is missing, so it is prepared here for backward
+        // compatibility.
+        if (!$this->currentSite()) {
+            $this->prepareSiteTemplates();
+
+            // Force le chargement du .mo du thème courant :
+            // prepareSiteTemplates simule un site request mais l'attachement de
+            // la pattern de traduction du thème (effectué via
+            // preparePublicSite) n'est pas toujours pris en compte par le
+            // translator pour les chaînes ajoutées au render time. On le
+            // réinjecte explicitement ici.
+            $siteSlug = $this->params()->fromQuery('site_slug')
+                ?: $this->viewHelpers()->get('defaultSite')('slug');
+            if ($siteSlug) {
+                try {
+                    $site = $this->api()->read('sites', ['slug' => $siteSlug])->getContent();
+                    $themeName = $site->theme();
+                    $themeLanguagePath = OMEKA_PATH . '/themes/' . $themeName . '/language';
+                    if (!is_dir($themeLanguagePath)) {
+                        $themeLanguagePath = OMEKA_PATH . '/composer-addons/themes/' . $themeName . '/language';
+                    }
+                    if (is_dir($themeLanguagePath)) {
+                        $translator = $this->getEvent()->getApplication()->getServiceManager()
+                            ->get(\Laminas\I18n\Translator\TranslatorInterface::class)
+                            ->getDelegatedTranslator();
+                        $locale = $this->siteSettings()->get('locale', null, $site->id());
+                        if ($locale) {
+                            $translator->setLocale($locale);
+                        }
+                        $translator->addTranslationFilePattern('gettext', $themeLanguagePath, '%s.mo');
+                        // Force le translator à oublier le cache des messages
+                        // déjà chargés pour cette locale, afin que le pattern
+                        // du thème ajouté ci-dessus soit pris en compte au
+                        // prochain appel à translate().
+                        if (method_exists($translator, 'clearCache')) {
+                            $translator->clearCache('default', $locale);
+                        }
+                        $reflection = new \ReflectionClass($translator);
+                        if ($reflection->hasProperty('messages')) {
+                            $prop = $reflection->getProperty('messages');
+                            $prop->setAccessible(true);
+                            $prop->setValue($translator, []);
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    error_log('[Guest dialog] translator load fail: ' . $e->getMessage());
+                }
+            }
+        }
 
         $template = $dialogTemplates[$dialog];
         return $this->jSend(JSend::SUCCESS, [
@@ -1237,7 +1289,9 @@ class GuestApiController extends AbstractActionController
     }
 
     /**
-     * Get the site to prepare theme of the site for the dialog template.
+     * Prepare the public site (theme, locale, translations) for the dialog
+     * template when the controller is reached through the legacy api route,
+     * that is not a site one.
      *
      * @see \Omeka\Mvc\MvcListeners::preparePublicSite()
      */
@@ -1259,7 +1313,6 @@ class GuestApiController extends AbstractActionController
             return;
         }
 
-        // TODO It may be simpler if the route is a site one.
         /** @var \Laminas\Mvc\MvcEvent $mvcEvent */
         $mvcEvent = $site->getServiceLocator()->get('Application')->getMvcEvent();
         $routeMatch = $mvcEvent->getRouteMatch();

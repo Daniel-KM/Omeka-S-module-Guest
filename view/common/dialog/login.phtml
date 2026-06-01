@@ -46,7 +46,7 @@ $linkForRegister = (bool) $siteSetting('guest_register_use_link_in_dialog_login'
                     <?php if ($linkForForgotPassword): ?>
                         <?= $hyperlink($translate('Forgot password?'), $site ? $basePath() . '/s/' . $site->slug() . '/guest/forgot-password' : $url('forgot-password'), ['class' => 'forgot-password']) ?>
                     <?php else: ?>
-                        <button type="button" class="button-forgot-password" data-url="<?= $escapeAttr($url('api/guest', ['action' => 'dialog'], ['query' => ['name' => 'forgot-password'] + ($site ? ['site_slug' => $site->slug()] : [])], true)) ?>">
+                        <button type="button" class="button-forgot-password" data-url="<?= $escapeAttr($site ? $basePath() . '/s/' . $site->slug() . '/guest/dialog?name=forgot-password' : $url('api/guest', ['action' => 'dialog'], ['query' => ['name' => 'forgot-password']], true)) ?>">
                             <span><?= $escape($translate('Forgot password?')) ?></span>
                         </button>
                     <?php endif; ?>
@@ -57,7 +57,7 @@ $linkForRegister = (bool) $siteSetting('guest_register_use_link_in_dialog_login'
                     <?php if ($linkForRegister): ?>
                         <?= $hyperlink($translate('Register'), $url('site/guest/anonymous', ['site-slug' => $site->slug(), 'action' => 'register']), ['class' => 'register']) ?>
                     <?php else: ?>
-                        <button type="button" class="button-register" data-url="<?= $escapeAttr($url('api/guest', ['action' => 'dialog'], ['query' => ['site_slug' => $site->slug(), 'name' => 'register']], true)) ?>">
+                        <button type="button" class="button-register" data-url="<?= $escapeAttr($basePath() . '/s/' . $site->slug() . '/guest/dialog?name=register') ?>">
                             <span><?= $escape($translate('Register')) ?></span>
                         </button>
                     <?php endif; ?>
