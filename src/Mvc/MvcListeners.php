@@ -14,6 +14,56 @@ class MvcListeners extends AbstractListenerAggregate
             MvcEvent::EVENT_ROUTE,
             [$this, 'redirectToAcceptTerms']
         );
+
+        // Priority above the core authorizeUserAgainstController (1000).
+        $this->listeners[] = $events->attach(
+            MvcEvent::EVENT_DISPATCH,
+            [$this, 'redirectForbiddenAdminToTop'],
+            10000
+        );
+    }
+
+    /**
+     * Redirect a logged-in but unauthorized user from an admin route to top.
+     *
+     * The core MvcListeners redirect only anonymous users to the login page.
+     * Without this fix, a logged-in user without admin rights (guest and
+     * similar roles) gets a raw PermissionDeniedException.
+     */
+    public function redirectForbiddenAdminToTop(MvcEvent $event): ?\Laminas\Http\PhpEnvironment\Response
+    {
+        $services = $event->getApplication()->getServiceManager();
+        $auth = $services->get('Omeka\AuthenticationService');
+        if (!$auth->hasIdentity()) {
+            // Anonymous users are handled by the core redirectToLogin listener.
+            return null;
+        }
+
+        $routeMatch = $event->getRouteMatch();
+        if (!$routeMatch || !$routeMatch->getParam('__ADMIN__')) {
+            return null;
+        }
+
+        /** @var \Omeka\Permissions\Acl $acl */
+        $acl = $services->get('Omeka\Acl');
+        try {
+            $allowed = $acl->userIsAllowed($routeMatch->getParam('controller'), $routeMatch->getParam('action'));
+        } catch (\Laminas\Permissions\Acl\Exception\InvalidArgumentException $e) {
+            // Unknown controller: let the core handle it (404, not 403).
+            return null;
+        }
+
+        if ($allowed) {
+            return null;
+        }
+
+        $url = $event->getRouter()->assemble([], ['name' => 'top']);
+        /** @var \Laminas\Http\PhpEnvironment\Response $response */
+        $response = $event->getResponse();
+        $response->getHeaders()->addHeaderLine('Location', $url);
+        $response->setStatusCode(302);
+        $response->sendHeaders();
+        return $response;
     }
 
     public function redirectToAcceptTerms(MvcEvent $event)
