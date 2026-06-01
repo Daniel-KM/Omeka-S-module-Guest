@@ -234,6 +234,30 @@
         });
 
         /**
+         * Preload the login dialog once the page is idle, so a click on any
+         * .button-login is instantaneous (no AJAX wait). Skipped if a dialog is
+         * already present or no login button exists.
+         */
+        const preloadLoginDialog = function () {
+            if (document.querySelector('dialog.dialog-login')) return;
+            const button = document.querySelector('.button-login[data-url], .button-login[href]');
+            if (!button) return;
+            const url = button.getAttribute('data-url') || button.getAttribute('href');
+            if (!url) return;
+            $.ajax({ type: 'GET', url: url, xhrFields: { withCredentials: true } })
+                .done(function (data) {
+                    if (document.querySelector('dialog.dialog-login')) return;
+                    const dialog = data && data.data ? data.data.dialog : null;
+                    if (dialog) $('body').append(dialog);
+                });
+        };
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(preloadLoginDialog, { timeout: 2000 });
+        } else {
+            setTimeout(preloadLoginDialog, 800);
+        }
+
+        /**
          * Prepare and display the dialog to log in.
          */
         $(document).on('click', '.button-login', function(e) {
