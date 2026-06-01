@@ -24,17 +24,19 @@ $linkForForgotPassword = (bool) $siteSetting('guest_forgot_password_use_link_in_
 $linkForRegister = (bool) $siteSetting('guest_register_use_link_in_dialog_login');
 ?>
 
-<dialog id="login" class="popup popup-dialog dialog-login">
+<dialog id="login" class="popup popup-dialog dialog-login" aria-labelledby="dialog-login-heading">
     <div class="dialog-background">
         <div class="dialog-panel">
             <div class="dialog-header">
-                <button type="button" class="dialog-header-close-button" title="<?= $escapeAttr($translate('Close')) ?>" autofocus="autofocus">
-                    <span class="dialog-close">🗙</span>
+                <button type="button" class="dialog-header-close-button">
+                    <span class="dialog-close" aria-hidden="true">🗙</span>
+                    <span class="dialog-close-label"><?= $this->translate('Close') ?></span>
                 </button>
-                <div class="dialog-messages">
+                <div class="dialog-messages" role="status" aria-live="polite">
                 </div>
             </div>
             <div class="dialog-contents">
+                <h2 id="dialog-login-heading" class="dialog-heading"><?= $translate('Log in') ?></h2>
                 <?php if ($htmlBefore): ?>
                 <div class="contents-before">
                     <?= $htmlBefore ?>
