@@ -196,6 +196,7 @@ TODO
 - [x] Move pages to a standard page, in particular register page (see module [ContactUs]).
 - [x] Normalize all api routes and json for rest api (register, login, logout, session-token, forgot-password, dialog).
 - [ ] Add an option to use key_identity/key_credential with GuestApiController and deprecate ApiController?
+- [ ] No flatten jsend for public side?
 
 
 Warning
