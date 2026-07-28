@@ -1,246 +1,1392 @@
 # Translation for the Simple Pages plugin for Omeka.
 # Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
 # This file is distributed under the same license as the Omeka package.
-# 
+#
 # Translators:
-# Matti Lassila <matti.lassila@gmail.com>, 2013
+# Matti Lassila [matti.lassila@gmail.com](mailto:matti.lassila@gmail.com), 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
-"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Guest/issues\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-01 00:00+0000\n"
-"PO-Revision-Date: 2013-10-13 19:11+0000\n"
+"PO-Revision-Date: 2026-07-28 13:58+0300\n"
 "Last-Translator: Matti Lassila <matti.lassila@gmail.com>\n"
-"Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/omeka/language/fi_FI/)\n"
+"Language-Team: Finnish (Finland) ([http://www.transifex.com/projects/p/omeka/](http://www.transifex.com/projects/p/omeka/)language/fi_FI/)\n"
+"Language: fi_FI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fi_FI\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.9\n"
 
-msgid "Guest"
-msgstr "Vieras"
+#: data/scripts/upgrade.php:33 Module.php:131
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr "Moduuli %1$s on päivitettävä versioon %2$s tai uudempaan."
 
-#: GuestPlugin.php:75 GuestPlugin.php:184
-msgid "Login"
-msgstr "Kirjaudu"
+#: data/scripts/upgrade.php:37
+msgid "Missing requirement. Unable to upgrade."
+msgstr "Vaatimus puuttuu. Päivitystä ei voi suorittaa."
 
-#: GuestPlugin.php:76 GuestPlugin.php:185
-#: controllers/UserController.php:225 views/public/user/register.php:6
-msgid "Register"
-msgstr "Rekistöröidy"
+#: Module.php:544
+msgid "CAS Login"
+msgstr "CAS-kirjautuminen"
 
-#: GuestPlugin.php:208
+#: Module.php:561
+msgid "[Unknown idp]"
+msgstr "[Tuntematon identiteetintarjoaja]"
+
+#: src/Controller/ApiController.php:116 src/Controller/ApiController.php:148
+#: src/Controller/ApiController.php:168 src/Controller/ApiController.php:409
+#: src/Controller/ApiController.php:433 src/Controller/ApiController.php:897
+#: src/Controller/GuestApiController.php:326
+#: src/Controller/GuestApiController.php:957
+msgid "Access forbidden."
+msgstr "Pääsy estetty."
+
+#: src/Controller/ApiController.php:130 src/Controller/ApiController.php:138
+#: src/Controller/ApiController.php:158 src/Controller/ApiController.php:178
+#: src/Controller/ApiController.php:186 src/Controller/ApiController.php:194
+#: src/Controller/ApiController.php:202 src/Controller/ApiController.php:210
+msgid "Method Not Allowed"
+msgstr "Menetelmä ei ole sallittu"
+
+#: src/Controller/ApiController.php:241
+msgid "User cannot login: already logged."
+msgstr "Käyttäjä ei voi kirjautua sisään: käyttäjä on jo kirjautunut."
+
+#: src/Controller/ApiController.php:257 src/Controller/ApiController.php:488
+#: src/Controller/ApiController.php:719
+#: src/Controller/GuestApiController.php:147
+#: src/Controller/GuestApiController.php:388
+#: src/Controller/GuestApiController.php:652
+#: src/Controller/TraitGuestController.php:510
+msgid "Email is required."
+msgstr "Sähköpostiosoite vaaditaan."
+
+#: src/Controller/ApiController.php:263 src/Controller/ApiController.php:494
+#: src/Controller/ApiController.php:724 src/Controller/ApiController.php:735
+#: src/Controller/GuestApiController.php:153
+#: src/Controller/GuestApiController.php:394
+#: src/Controller/GuestApiController.php:658
+#: src/Controller/GuestApiController.php:670
+#: src/Controller/TraitGuestController.php:517
+msgid "Invalid email."
+msgstr "Virheellinen sähköpostiosoite"
+
+#: src/Controller/ApiController.php:269 src/Controller/ApiController.php:851
+#: src/Controller/GuestApiController.php:159
+#: src/Controller/GuestApiController.php:799
+msgid "Password is required."
+msgstr "Salasana vaaditaan."
+
+#: src/Controller/ApiController.php:284 src/Controller/ApiController.php:293
+#: src/Controller/GuestApiController.php:174
+#: src/Controller/GuestApiController.php:183
+#: src/Controller/GuestApiController.php:212
+#: src/Controller/GuestApiController.php:217
+msgid "Wrong email or password."
+msgstr "Virheellinen sähköpostiosoite tai salasana."
+
+#: src/Controller/ApiController.php:333
+msgid "Your account is under moderation for opening."
+msgstr "Käyttäjätilisi avaaminen odottaa ylläpidon hyväksyntää."
+
+#: src/Controller/ApiController.php:338 src/Controller/ApiController.php:542
+#: src/Controller/GuestApiController.php:446
+#: src/Controller/TraitGuestController.php:549
+msgid "Check your email to confirm your registration."
+msgstr "Tarkista sähköpostisi vahvistaaksesi rekisteröitymisesi."
+
+#: src/Controller/ApiController.php:376
+#: src/Controller/GuestApiController.php:265
+msgid "User not logged."
+msgstr "Käyttäjä ei ole kirjautunut."
+
+#: src/Controller/ApiController.php:395
+#: src/Controller/GuestApiController.php:281
+msgid "Successfully logged out."
+msgstr "Uloskirjautuminen onnistui."
+
+#: src/Controller/ApiController.php:440
+#: src/Controller/GuestApiController.php:332
+msgid "User cannot register: already logged."
+msgstr "Käyttäjä ei voi rekisteröityä: käyttäjä on jo kirjautunut."
+
+#: src/Controller/ApiController.php:469
+#: src/Controller/GuestApiController.php:369
+msgid "A site is required to register."
+msgstr "Rekisteröityminen edellyttää sivustoa."
+
+#: src/Controller/ApiController.php:480
+#: src/Controller/GuestApiController.php:380
+msgid "The site doesn’t exist."
+msgstr "Sivustoa ei ole olemassa."
+
+#: src/Controller/ApiController.php:525 src/Controller/ApiController.php:536
+#: src/Controller/GuestApiController.php:429
+#: src/Controller/GuestApiController.php:440
+#: src/Controller/TraitGuestController.php:532
+#: src/Controller/TraitGuestController.php:543
+msgid "Already registered."
+msgstr "Olet jo rekisteröitynyt."
+
+#: src/Controller/ApiController.php:584
+#: src/Controller/GuestApiController.php:488
+#: src/Controller/TraitGuestController.php:593
+msgid "Unknown error before creation of user."
+msgstr "Tuntematon virhe ennen käyttäjän luomista."
+
+#: src/Controller/ApiController.php:618
+#: src/Controller/GuestApiController.php:521
+#: src/Controller/TraitGuestController.php:620
+msgid "Unknown error during creation of user."
+msgstr "Tuntematon virhe käyttäjää luotaessa."
+
+#: src/Controller/ApiController.php:668
+#: src/Controller/GuestApiController.php:603
+#: src/Controller/GuestApiController.php:1234
+msgid "An error occurred when the email was sent."
+msgstr "Sähköpostia lähetettäessä tapahtui virhe."
+
+#: src/Controller/ApiController.php:684
+#: src/Controller/GuestApiController.php:619
+msgid "Thank you for registering. You can now log in and use the library."
+msgstr "Kiitos rekisteröitymisestä. Voit nyt kirjautua ja käyttää kirjastoa."
+
+#: src/Controller/ApiController.php:687
+#: src/Controller/GuestApiController.php:622
+msgid "Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, you will be able to log in."
+msgstr "Kiitos rekisteröitymisestä. Tarkista sähköpostistasi vahvistusviesti. Kun olet vahvistanut pyyntösi, voit kirjautua."
+
+#: src/Controller/ApiController.php:690
+#: src/Controller/GuestApiController.php:625
+msgid "Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request, a moderator will confirm registration."
+msgstr "Kiitos rekisteröitymisestä. Tarkista sähköpostistasi vahvistusviesti. Kun olet vahvistanut pyyntösi, ylläpitäjä vahvistaa rekisteröitymisesi."
+
+#: src/Controller/ApiController.php:705
+#: src/Controller/GuestApiController.php:644
+msgid "A logged user cannot change the password with this method."
+msgstr "Kirjautunut käyttäjä ei voi vaihtaa salasanaa tällä menetelmällä."
+
+#: src/Controller/ApiController.php:740
+#: src/Controller/GuestApiController.php:676
+msgid "User is not active and cannot update password."
+msgstr "Käyttäjä ei ole aktiivinen eikä voi päivittää salasanaa."
+
+#: src/Controller/ApiController.php:831
+#: src/Controller/GuestApiController.php:776
+msgid "Invalid token."
+msgstr "Virheellinen avain"
+
+#: src/Controller/ApiController.php:837
+#: src/Controller/GuestApiController.php:783
+msgid "This token is invalid. Check your email."
+msgstr "Tämä avain on virheellinen. Tarkista sähköpostisi."
+
+#: src/Controller/ApiController.php:846
+#: src/Controller/GuestApiController.php:793
+msgid "Password token expired."
+msgstr "Salasanan palautusavain on vanhentunut."
+
+#: src/Controller/ApiController.php:857 src/Controller/ApiController.php:1044
+#: src/Controller/GuestApiController.php:806
+#: src/Controller/GuestApiController.php:1125
+msgid "New password should have 6 characters or more."
+msgstr "Uudessa salasanassa on oltava vähintään 6 merkkiä."
+
+#: src/Controller/ApiController.php:956
+#: src/Controller/GuestApiController.php:1042
+msgid "Request is empty."
+msgstr "Pyyntö on tyhjä."
+
+#: src/Controller/ApiController.php:981
+#: src/Controller/GuestApiController.php:1066
+msgid "Email cannot be updated: the user is not related to a site."
+msgstr "Sähköpostiosoitetta ei voi päivittää: käyttäjää ei ole liitetty sivustoon."
+
+#: src/Controller/ApiController.php:1003
+#: src/Controller/GuestApiController.php:1087
+msgid "Your request contains metadata that cannot be updated."
+msgstr "Pyyntösi sisältää metatietoja, joita ei voi päivittää."
+
+#: src/Controller/ApiController.php:1010
+#: src/Controller/GuestApiController.php:1093
+msgid "The new name is empty."
+msgstr "Uusi nimi on tyhjä."
+
+#: src/Controller/ApiController.php:1025
+#: src/Controller/GuestApiController.php:1109
+msgid "You cannot update password and another data in the same time."
+msgstr "Et voi päivittää salasanaa ja muita tietoja samanaikaisesti."
+
+#: src/Controller/ApiController.php:1031
+#: src/Controller/GuestApiController.php:1114
+msgid "Existing password empty."
+msgstr "Nykyinen salasana on tyhjä."
+
+#: src/Controller/ApiController.php:1037
+#: src/Controller/GuestApiController.php:1119
+msgid "New password empty."
+msgstr "Uusi salasana on tyhjä."
+
+#: src/Controller/ApiController.php:1052
+#: src/Controller/GuestApiController.php:1132
+msgid "Wrong password."
+msgstr "Virheellinen salasana"
+
+#: src/Controller/ApiController.php:1081
+#: src/Controller/GuestApiController.php:1155
+msgid "You cannot update email and another data in the same time."
+msgstr "Et voi päivittää sähköpostiosoitetta ja muita tietoja samanaikaisesti."
+
+#: src/Controller/ApiController.php:1087
+#: src/Controller/GuestApiController.php:1160
+msgid "New email empty."
+msgstr "Uusi sähköpostiosoite on tyhjä."
+
+#: src/Controller/ApiController.php:1172
+msgid "Check your email \"{email}\" to confirm the change."
+msgstr "Tarkista sähköpostiosoitteeseen \"{email}\" lähetetty viesti vahvistaaksesi muutoksen."
+
+#: src/Controller/GuestApiController.php:114
+#: src/Controller/GuestApiController.php:297
+msgid "Unauthorized access."
+msgstr "Luvaton pääsy."
+
+#: src/Controller/GuestApiController.php:138
+msgid "User cannot log in: already logged."
+msgstr "Käyttäjä ei voi kirjautua sisään: käyttäjä on jo kirjautunut."
+
+#: src/Controller/GuestApiController.php:756
+msgid "An error occurred when sending mail. Retry later or contact administrator."
+msgstr "Sähköpostia lähetettäessä tapahtui virhe. Yritä myöhemmin uudelleen tai ota yhteyttä ylläpitäjään."
+
+#: src/Controller/GuestApiController.php:834
+msgid "This dialog is not managed."
+msgstr "Tätä valintaikkunaa ei käsitellä."
+
+#: src/Controller/GuestApiController.php:853
+msgid "This dialog requires module Two-Factor Authentication."
+msgstr "Tämä valintaikkuna edellyttää Two-Factor Authentication -moduulia."
+
+#: src/Controller/GuestApiController.php:872
+msgid "An error occurred when loading dialog."
+msgstr "Valintaikkunaa ladattaessa tapahtui virhe."
+
+#: src/Controller/GuestApiController.php:1176
+msgid "The new email is the same than the current one."
+msgstr "Uusi sähköpostiosoite on sama kuin nykyinen."
+
+#: src/Controller/Site/AnonymousController.php:418
+msgid "Invalid token stop"
+msgstr "Virheellinen avain, käsittely keskeytetty"
+
+#: src/Controller/Site/AnonymousController.php:516
+#: src/Controller/TraitGuestController.php:725
+msgid "[Omeka Guest] New registration"
+msgstr "[Omeka] Uusi rekisteröityminen"
+
+#: src/Controller/Site/GuestController.php:87
 msgid "My Account"
 msgstr "Käyttäjätili"
 
-#: GuestPlugin.php:212
+#: src/Controller/Site/GuestController.php:114
+msgid "My account"
+msgstr "Käyttäjätili"
+
+#: src/Site/BlockLayout/ForgotPassword.php:53
+msgid "Display the form to recover the password."
+msgstr "Näytä salasanan palautuslomake."
+
+#: src/Site/BlockLayout/Login.php:114
+msgid "Display the login form."
+msgstr "Näytä kirjautumislomake."
+
+#: src/Site/BlockLayout/Register.php:85
+msgid "Display the register form. The options are set in site settings."
+msgstr "Näytä rekisteröitymislomake. Asetukset määritetään sivuston asetuksissa."
+
+#: src/View/Helper/UserBarDelegator.php:129
+msgid "Search manager"
+msgstr "Hakujen hallinta"
+
+#: src/View/Helper/UserBarDelegator.php:136
+msgid "Search config"
+msgstr "Hakuasetukset"
+
+#: view/common/block-layout/guest-register.phtml:30
+#: view/common/dialog/login.phtml:60 view/common/dialog/login.phtml:63
+#: view/common/dialog/register.phtml:43
+#: view/guest/site/anonymous/login.phtml:111
+#: view/guest/site/anonymous/register.phtml:28
+msgid "Register"
+msgstr "Rekisteröidy"
+
+#: view/common/block-template/guest-login-token.phtml:22
+#: view/guest/site/anonymous/login-token.phtml:49
+msgid "Resend a code"
+msgstr "Lähetä koodi uudelleen"
+
+#: view/common/dialog/register.phtml:25
+msgid "The two passwords do not match."
+msgstr "Salasanat eivät täsmää"
+
+#: view/common/guest-login-links.phtml:40
+msgid "Select your identity provider…"
+msgstr "Valitse identiteetintarjoaja…"
+
+#: view/common/navigation-link-form/login-board.phtml:21
+msgid "Label Log in"
+msgstr "Kirjautumislinkin teksti"
+
+#: view/common/navigation-link-form/login-board.phtml:22
+msgid "Label My board"
+msgstr "Ohjausnäkymälinkin teksti"
+
+#: view/common/navigation-link-form/login-board.phtml:24
+msgid "Use name when connected"
+msgstr "Käytä käyttäjän nimeä kirjautuneena"
+
+#: view/common/navigation-link-form/login-board.phtml:28
+#: view/common/navigation-link-form/login-board.phtml:32
+msgid "Display label My board"
+msgstr "Näytä Oma ohjausnäkymä -teksti"
+
+#: view/common/navigation-link-form/login-board.phtml:29
+#: view/common/navigation-link-form/login-board.phtml:31
+msgid "Display user name"
+msgstr "Näytä käyttäjän nimi"
+
+#: view/common/navigation-link-form/login-logout.phtml:19
+msgid "Label log in"
+msgstr "Kirjautumislinkin teksti"
+
+#: view/common/navigation-link-form/login-logout.phtml:20
+msgid "Label log out"
+msgstr "Uloskirjautumislinkin teksti"
+
+#: view/common/user-settings-guest-list.phtml:14
+#: view/common/user-settings-guest.phtml:13
+msgid "Guest account"
+msgstr "Käyttäjätili"
+
+#: view/common/user-settings-guest-list.phtml:18
+#: view/common/user-settings-guest.phtml:16
+#, php-format
+msgid "Site: %s"
+msgstr "Sivusto: %s"
+
+#: view/common/user-settings-guest-list.phtml:18
+#: view/common/user-settings-guest.phtml:16
+msgid "none"
+msgstr "ei mitään"
+
+#: view/common/user-settings-guest-list.phtml:21
+#: view/common/user-settings-guest.phtml:19
+#, php-format
+msgid "Agreed terms: %s"
+msgstr "Hyväksytyt käyttöehdot: %s"
+
+#: view/guest/site-admin/index/guest-navigation.phtml:34
+msgid "Guest navigation"
+msgstr "Vieraan navigointi"
+
+#: view/guest/site/anonymous/auth-error.phtml:24
+#: view/guest/site/anonymous/confirm.phtml:24
+#: view/guest/site/anonymous/create-password.phtml:27
+#: view/guest/site/anonymous/forgot-password.phtml:27
+#: view/guest/site/anonymous/login-token.phtml:31
+#: view/guest/site/anonymous/login.phtml:50
+#: view/guest/site/anonymous/register.phtml:35
+msgid "Breadcrumb"
+msgstr "Murupolku"
+
+#: view/guest/site/anonymous/auth-error.phtml:33
+msgid "Authentication error"
+msgstr "Vahvistusvirhe"
+
+#: view/guest/site/anonymous/auth-error.phtml:40
+msgid "An error occurred during the authentication via a third party authenticator."
+msgstr "Kolmannen osapuolen tunnistautumispalvelun kautta tunnistauduttaessa tapahtui virhe."
+
+#: view/guest/site/anonymous/auth-error.phtml:43
+msgid "Contact your administrator for more information."
+msgstr "Ota yhteyttä ylläpitäjään saadaksesi lisätietoja."
+
+#: view/guest/site/anonymous/confirm.phtml:33
+msgid "Confirmation of registration"
+msgstr "Rekisteröitymisvahvistus"
+
+#: view/guest/site/anonymous/create-password.phtml:44
+msgid "Submit new password"
+msgstr "Tallenna uusi salasana"
+
+#: view/guest/site/anonymous/forgot-password.phtml:44
+msgid "Send an email to reset the password"
+msgstr "Lähetä sähköposti salasanan palauttamista varten"
+
+#: view/guest/site/anonymous/register.phtml:66
+msgid "Create the account"
+msgstr "Luo käyttäjätili"
+
+#: view/guest/site/guest/accept-terms.phtml:36
+msgid "Accept terms and conditions"
+msgstr "Hyväksy käyttöehdot"
+
+#: view/guest/site/guest/accept-terms.phtml:42
+msgid "I agree with terms and conditions."
+msgstr "Hyväksyn käyttöehdot."
+
+#: view/guest/site/guest/accept-terms.phtml:56
+msgid "Accept"
+msgstr "Hyväksy"
+
+#: view/guest/site/guest/board.phtml:43
+msgid "Log out"
+msgstr "Kirjaudu ulos"
+
+#: view/guest/site/guest/update-email.phtml:35
+msgid "My email"
+msgstr "Sähköpostiosoitteeni"
+
+#: view/guest/site/guest/widget/account.phtml:18
 msgid "Update account info and password"
 msgstr "Päivitä käyttäjätilin tiedot ja salasana"
 
-#: GuestPlugin.php:225
-#, php-format
-msgid "Your %s account"
-msgstr "Käyttäjätilisi %s -sivustolla"
+#: view/guest/site/guest/widget/account.phtml:22
+msgid "Update email"
+msgstr "Päivitä sähköpostiosoite"
 
-#: GuestPlugin.php:226
-msgid ""
-"An admin has made your account active. You can now log in with your password"
-msgstr "Sivuston ylläpito on aktivoinut käyttäjätilisi. Voit nyt kirjautua salasanallasi."
+#: data/scripts/upgrade.php:92
+msgid "This module integrates the features from module GuestApi, that is no longer needed. The config were merged (texts of messages) so you should check them in {link_url}main settings{link_end}. The module was disabled, but you should uninstall the module once params are checked."
+msgstr "Tämä moduuli sisältää nyt GuestApi-moduulin ominaisuudet, joten GuestApi-moduulia ei enää tarvita. Asetukset yhdistettiin (viestitekstit), joten tarkista ne kohdasta {link_url}pääasetukset{link_end}. Moduuli poistettiin käytöstä, mutta sen asennus kannattaa poistaa, kun asetukset on tarkistettu."
 
-#: config_form.php:5
-msgid "Registration Features"
-msgstr "Rekisteröitymisen hyödyt"
+#: data/scripts/upgrade.php:141
+msgid "A new option allows to display the list of external accounts on login page."
+msgstr "Uuden asetuksen avulla ulkoisten käyttäjätilien luettelo voidaan näyttää kirjautumissivulla."
 
-#: config_form.php:8
-msgid ""
-"Add some text to the registration screen so people will know what they get for registering.\n"
-"        As you enable and configure plugins that make use of the guest, please give them guidance\n"
-"        about what they can and cannot do."
-msgstr ""
+#: data/scripts/upgrade.php:150
+msgid "The form to reset agreement status was moved to a task of module {link}Easy Admin{link_end}."
+msgstr "Käyttöehtojen hyväksymistilan nollauslomake siirrettiin {link}Easy Admin{link_end} -moduulin tehtäväksi."
 
-#: config_form.php:21
-msgid "Short Registration Features"
-msgstr "Rekisteröitymisen hyödyt lyhyesti"
+#: data/scripts/upgrade.php:163
+msgid "An option allows to define the type of display for the list of external connection (cas/sso) as a list of links or a select."
+msgstr "Asetuksella voidaan määrittää ulkoisten yhteyksien (CAS/SSO) luettelon näyttötavaksi linkkiluettelo tai valintaluettelo."
 
-#: config_form.php:24
-msgid ""
-"Add a shorter version to use as a dropdown from the user bar. If empty, no "
-"dropdown will appear."
-msgstr ""
+#: data/scripts/upgrade.php:170
+msgid "It is now possible to show the register form beside the login form. Page blocks Login and Register are available too."
+msgstr "Rekisteröitymislomake voidaan nyt näyttää kirjautumislomakkeen vieressä. Myös sivulohkot Kirjautuminen ja Rekisteröityminen ovat käytettävissä."
 
-#: config_form.php:34
-msgid "Dashboard Label"
-msgstr "Käyttöliittymäteksti ohjausnäkymässä"
+#: data/scripts/upgrade.php:182
+msgid "It is now possible to hide the user bar for guests separately from admins."
+msgstr "Vierailta voidaan nyt piilottaa käyttäjäpalkki erikseen ylläpitäjistä."
 
-#: config_form.php:37
-msgid "The text to use for the label on the user's dashboard"
-msgstr ""
+#: data/scripts/upgrade.php:187
+msgid "It is now possible to configure a specific navigation and a specific home page for guest via the site sub-menu \"Navigation for guest\" and in site settings."
+msgstr "Vieraille voidaan nyt määrittää oma navigointi ja aloitussivu sivuston alavalikossa \"Vieraan navigointi\" ja sivuston asetuksissa."
 
-#: config_form.php:46
-msgid "Login Text"
+#: data/scripts/upgrade.php:194
+msgid "It is now possible to theme the default login page with the default site theme."
+msgstr "Oletuskirjautumissivulle voidaan nyt käyttää sivuston oletusteemaa."
+
+#: data/scripts/upgrade.php:213
+msgid "It is now possible to define the role on registering."
+msgstr "Rekisteröitymisen yhteydessä käytettävä rooli voidaan nyt määrittää."
+
+#: Module.php:178 Module.php:603 src/Form/SiteSettingsFieldset.php:14
+#: src/Form/SiteSettingsFieldset.php:17 src/Form/SettingsFieldset.php:15
+#: src/Form/SettingsFieldset.php:18 config/module.config.php:11
+msgid "Guest"
+msgstr "Vierastunnukset"
+
+#: Module.php:618 config/module.config.php:377 config/module.config.php:450
+msgid "I agree the terms and conditions."
+msgstr "Hyväksyn käyttöehdot."
+
+#: Module.php:693
+msgid "Send an email to confirm registration after moderation (user should be activated first)"
+msgstr "Lähetä rekisteröitymisen vahvistusviesti ylläpidon hyväksynnän jälkeen (käyttäjä on ensin aktivoitava)"
+
+#: Module.php:708
+msgid "Guest site"
+msgstr "Vierassivusto"
+
+#: Module.php:709
+msgid "This parameter is used to manage some site related features, in particular messages."
+msgstr "Tätä asetusta käytetään joidenkin sivustokohtaisten ominaisuuksien, erityisesti viestien, hallintaan."
+
+#: Module.php:726
+msgid "Agreed terms"
+msgstr "Hyväksytyt käyttöehdot"
+
+#: Module.php:753
+msgid "Clear registration token"
+msgstr "Tyhjennä rekisteröintiavain"
+
+#: Module.php:847
+msgid "You cannot send a message to confirm registration: user is not active."
+msgstr "Rekisteröitymisen vahvistusviestiä ei voi lähettää: käyttäjä ei ole aktiivinen."
+
+#: Module.php:864
+msgid "A default site should be set or the user should have a site in order to confirm registration."
+msgstr "Rekisteröitymisen vahvistaminen edellyttää oletussivustoa tai käyttäjään liitettyä sivustoa."
+
+#: Module.php:913
+msgid "The message of confirmation of the registration has been sent."
+msgstr "Rekisteröitymisen vahvistusviesti on lähetetty."
+
+#: Module.php:1011
+msgid "Guest: Reset terms agreement for all guests"
+msgstr "Vieras: Nollaa kaikkien vieraiden käyttöehtojen hyväksyntä"
+
+#: Module.php:1018
+msgid "Options to reset agreement terms"
+msgstr "Käyttöehtojen hyväksynnän nollausasetukset"
+
+#: Module.php:1029
+msgid "Reset terms agreement for all guests"
+msgstr "Nollaa kaikkien vieraiden käyttöehtojen hyväksyntä"
+
+#: Module.php:1030
+msgid "When terms and conditions are updated, you may want guests agree them one more time. Warning: to set false will impact all guests. So warn them some time before."
+msgstr "Kun käyttöehdot päivitetään, voit edellyttää vieraita hyväksymään ne uudelleen. Varoitus: arvon epätosi asettaminen vaikuttaa kaikkiin vieraisiin. Ilmoita heille siksi asiasta hyvissä ajoin."
+
+#: Module.php:1032
+msgid "No change"
+msgstr "Ei muutosta"
+
+#: Module.php:1033
+msgid "Set false"
+msgstr "Aseta epätodeksi"
+
+#: Module.php:1034
+msgid "Set true"
+msgstr "Aseta todeksi"
+
+#: src/Mvc/Controller/Plugin/ValidateLogin.php:213
+#: src/Controller/Site/AnonymousController.php:771
+msgid "User name, email, or password is invalid"
+msgstr "Käyttäjänimi, sähköpostiosoite tai salasana on virheellinen"
+
+#: src/Mvc/Controller/Plugin/ValidateLogin.php:214
+#: src/Authentication/Adapter/PasswordAdapter.php:25
+#: src/Authentication/Adapter/PasswordAdapter.php:33
+#: src/Controller/Site/AnonymousController.php:770
+msgid "Email or password invalid"
+msgstr "Sähköpostiosoite tai salasana on virheellinen"
+
+#: src/Job/GuestAgreement.php:27
+msgid "All guests must agreed the terms one more time."
+msgstr "Kaikkien vieraiden on hyväksyttävä käyttöehdot uudelleen."
+
+#: src/Job/GuestAgreement.php:33
+msgid "All guests agreed the terms."
+msgstr "Kaikki vieraat hyväksyivät käyttöehdot."
+
+#: src/Job/GuestAgreement.php:38
+msgid "No process can be done without settings."
+msgstr "Toimintoa ei voi suorittaa ilman asetuksia."
+
+#: src/Authentication/Adapter/PasswordAdapter.php:42
+msgid "Your account has not been confirmed: check your email."
+msgstr "Käyttäjätiliäsi ei ole vahvistettu: tarkista sähköpostisi."
+
+#: src/Form/SiteSettingsFieldset.php:30
+msgid "Emails to notify registrations"
+msgstr "Rekisteröitymisilmoitusten sähköpostiosoitteet"
+
+#: src/Form/SiteSettingsFieldset.php:31 src/Form/SettingsFieldset.php:106
+msgid "The list of emails to notify when a user registers, one by row."
+msgstr "Luettelo sähköpostiosoitteista, joihin ilmoitetaan käyttäjän rekisteröityessä, yksi osoite riville."
+
+#: src/Form/SiteSettingsFieldset.php:47
+msgid "Log in Text"
 msgstr "Kirjautumislinkin käyttöliittymäteksti"
 
-#: config_form.php:49
-msgid "The text to use for the 'Login' link in the user bar"
-msgstr ""
+#: src/Form/SiteSettingsFieldset.php:48 src/Form/SettingsFieldset.php:193
+msgid "The text to use for the \"Log in\" link in the user bar"
+msgstr "Käyttäjäpalkin \"Kirjaudu sisään\" -linkin teksti"
 
-#: config_form.php:58
+#: src/Form/SiteSettingsFieldset.php:60
 msgid "Register Text"
 msgstr "Rekisteröitymislinkin käyttöliittymäteksti"
 
-#: config_form.php:61
-msgid "The text to use for the 'Register' link in the user bar."
+#: src/Form/SiteSettingsFieldset.php:61 src/Form/SettingsFieldset.php:206
+msgid "The text to use for the \"Register\" link in the user bar"
+msgstr "Käyttäjäpalkin \"Rekisteröidy\" -linkin teksti"
+
+#: src/Form/SiteSettingsFieldset.php:73
+msgid "Hide the login form (for sso)"
+msgstr "Piilota kirjautumislomake (SSO:ta varten)"
+
+#: src/Form/SiteSettingsFieldset.php:74
+msgid "This option allows to display only the links for the other modules, like Single Sign-On."
+msgstr "Tällä asetuksella näytetään vain muiden moduulien, kuten Single Sign-Onin, linkit."
+
+#: src/Form/SiteSettingsFieldset.php:86
+msgid "Display register form on login page"
+msgstr "Näytä rekisteröitymislomake kirjautumissivulla"
+
+#: src/Form/SiteSettingsFieldset.php:98
+msgid "Html to display before the login form"
+msgstr "Ennen kirjautumislomaketta näytettävä HTML"
+
+#: src/Form/SiteSettingsFieldset.php:109
+msgid "Text to display after the login form"
+msgstr "Kirjautumislomakkeen jälkeen näytettävä teksti"
+
+#: src/Form/SiteSettingsFieldset.php:121
+msgid "Html to display before the forgot-password form"
+msgstr "Ennen unohtuneen salasanan lomaketta näytettävä HTML"
+
+#: src/Form/SiteSettingsFieldset.php:132
+msgid "Text to display after the forgot-password form"
+msgstr "Unohtuneen salasanan lomakkeen jälkeen näytettävä teksti"
+
+#: src/Form/SiteSettingsFieldset.php:143
+msgid "In the dialog Log In, use a link for forgot-password"
+msgstr "Käytä Kirjaudu sisään -valintaikkunassa unohtuneen salasanan linkkiä"
+
+#: src/Form/SiteSettingsFieldset.php:155
+msgid "Html to display before the registration form"
+msgstr "Ennen rekisteröitymislomaketta näytettävä HTML"
+
+#: src/Form/SiteSettingsFieldset.php:166
+msgid "Text to display after the registration form"
+msgstr "Rekisteröitymislomakkeen jälkeen näytettävä teksti"
+
+#: src/Form/SiteSettingsFieldset.php:177
+msgid "In the dialog Log In, use a link for register"
+msgstr "Käytä Kirjaudu sisään -valintaikkunassa rekisteröitymislinkkiä"
+
+#: src/Form/SiteSettingsFieldset.php:189
+msgid "Dashboard Label"
+msgstr "Käyttöliittymäteksti ohjausnäkymässä"
+
+#: src/Form/SiteSettingsFieldset.php:190 src/Form/SettingsFieldset.php:219
+msgid "The text to use for the label on the user’s dashboard"
+msgstr "Käyttäjän ohjausnäkymän otsikkona käytettävä teksti"
+
+#: src/Form/SiteSettingsFieldset.php:202
+msgid "Registration Features"
+msgstr "Rekisteröitymisen hyödyt"
+
+#: src/Form/SiteSettingsFieldset.php:203 src/Form/SettingsFieldset.php:232
+msgid "Add some text to the registration screen so people will know what they get for registering. As you enable and configure plugins that make use of the guest, please give them guidance about what they can and cannot do."
+msgstr "Lisää rekisteröitymisnäkymään tekstiä, jotta käyttäjät tietävät, mitä he saavat rekisteröitymällä. Kun otat käyttöön ja määrität vieraskäyttäjiä hyödyntäviä lisäosia, kerro käyttäjille, mitä he voivat ja eivät voi tehdä."
+
+#: src/Form/SiteSettingsFieldset.php:206 src/Form/SettingsFieldset.php:235
+msgid "guest_capabilities"
 msgstr ""
 
-#: config_form.php:71
-msgid "Allow open registration?"
-msgstr "Vapaa rekisteröityminen"
+#: src/Form/SiteSettingsFieldset.php:230 src/Form/SettingsFieldset.php:259
+msgid "Subject of the email sent to administrator to notify about a new user"
+msgstr "Ylläpitäjälle uudesta käyttäjästä ilmoittavan sähköpostin aihe"
 
-#: config_form.php:74
-msgid "Allow guest registration without administrator approval?"
+#: src/Form/SiteSettingsFieldset.php:234 src/Form/SettingsFieldset.php:263
+#: config/module.config.php:414
+msgid "[{site_title}] A user is registering"
+msgstr "[{site_title}] Käyttäjä rekisteröityy"
+
+#: src/Form/SiteSettingsFieldset.php:242 src/Form/SettingsFieldset.php:271
+msgid "Email sent to administrator to notify about a new user"
+msgstr "Ylläpitäjälle uudesta käyttäjästä ilmoittava sähköposti"
+
+#: src/Form/SiteSettingsFieldset.php:246 src/Form/SettingsFieldset.php:275
+msgid ""
+"Hi,\n"
+"A new user, {user_name}, is registering on <a href=\"{site_url}\">{site_title}</a> ({main_title}).\n"
+"You may moderate this email: {user_email}.\n"
+"This is an automatic message."
 msgstr ""
+"Hei,\n"
+"Uusi käyttäjä, {user_name}, rekisteröityy sivustolle <a href=\"{site_url}\">{site_title}</a> ({main_title}).\n"
+"Voit moderoida tämän käyttäjän: {user_email}.\n"
+"Tämä on automaattinen viesti."
 
-#: config_form.php:92
-msgid "Allow instant access?"
-msgstr "Myönnä välitön pääsy"
+#: src/Form/SiteSettingsFieldset.php:260
+msgid "Subject of the email sent to confirm email"
+msgstr "Sähköpostiosoitteen vahvistusviestin aihe"
 
-#: config_form.php:95
-msgid "Allow instant access for 20 minutes for new users"
+#: src/Form/SiteSettingsFieldset.php:264 src/Form/SiteSettingsFieldset.php:325
+#: src/Form/SettingsFieldset.php:293 src/Form/SettingsFieldset.php:354
+#: config/module.config.php:349 config/module.config.php:365
+#: config/module.config.php:422 config/module.config.php:438
+msgid "[{site_title}] Confirm email"
+msgstr "[{site_title}] Vahvista sähköpostiosoite"
+
+#: src/Form/SiteSettingsFieldset.php:272
+msgid "Email sent to confirm registration"
+msgstr "Rekisteröitymisen vahvistussähköposti"
+
+#: src/Form/SiteSettingsFieldset.php:273 src/Form/SettingsFieldset.php:302
+msgid "The text of the email to confirm the registration and to send the token."
+msgstr "Rekisteröitymisen vahvistamiseen ja avaimen lähettämiseen käytettävän sähköpostin teksti."
+
+#: src/Form/SiteSettingsFieldset.php:277 src/Form/SettingsFieldset.php:306
+msgid ""
+"Hi {user_name},\n"
+"You have registered for an account on {main_title} / {site_title} ({site_url}).\n"
+"Please confirm your registration by following this link: {token_url}.\n"
+"If you did not request to join {main_title} please disregard this email."
 msgstr ""
+"Hei {user_name},\n"
+"Olet rekisteröinyt käyttäjätilin palveluun {main_title} / {site_title} ({site_url}).\n"
+"Vahvista rekisteröitymisesi seuraamalla tätä linkkiä: {token_url}.\n"
+"Jos et pyytänyt liittymistä palveluun {main_title}, jätä tämä viesti huomiotta."
 
-#: config_form.php:113
-msgid "Require ReCaptcha?"
+#: src/Form/SiteSettingsFieldset.php:291
+msgid "Subject of the email sent to confirm registration after moderation"
+msgstr "Ylläpidon hyväksynnän jälkeen lähetettävän rekisteröitymisen vahvistussähköpostin aihe"
+
+#: src/Form/SiteSettingsFieldset.php:295 src/Form/SettingsFieldset.php:324
+#: config/module.config.php:341 config/module.config.php:357
+#: config/module.config.php:430
+msgid "[{site_title}] Account open"
+msgstr "[{site_title}] Käyttäjätili avattu"
+
+#: src/Form/SiteSettingsFieldset.php:303
+msgid "Email sent to confirm registration after moderation"
+msgstr "Ylläpidon hyväksynnän jälkeen lähetettävä rekisteröitymisen vahvistussähköposti"
+
+#: src/Form/SiteSettingsFieldset.php:304 src/Form/SettingsFieldset.php:333
+msgid "When the moderation is set, the user may be informed automatically when the admin activates account (check box in second user tab)."
+msgstr "Kun moderointi on käytössä, käyttäjälle voidaan ilmoittaa automaattisesti ylläpitäjän aktivoidessa käyttäjätilin (valintaruutu käyttäjän toisella välilehdellä)."
+
+#: src/Form/SiteSettingsFieldset.php:308 src/Form/SettingsFieldset.php:337
+msgid ""
+"Hi {user_name},\n"
+"We are happy to open your account on {main_title} / {site_title} ({site_url}).\n"
+"You can now log in and discover the site."
+msgstr ""
+"Hei {user_name},\n"
+"Käyttäjätilisi palvelussa {main_title} / {site_title} ({site_url}) on nyt avattu.\n"
+"Voit nyt kirjautua ja tutustua sivustoon."
+
+#: src/Form/SiteSettingsFieldset.php:321
+msgid "Subject of email sent to update email"
+msgstr "Sähköpostiosoitteen päivitysviestin aihe"
+
+#: src/Form/SiteSettingsFieldset.php:333
+msgid "Email sent to update email"
+msgstr "Sähköpostiosoitteen päivitysviesti"
+
+#: src/Form/SiteSettingsFieldset.php:334 src/Form/SettingsFieldset.php:363
+msgid "The text of the email sent when the user wants to update it."
+msgstr "Sen sähköpostiviestin teksti, joka lähetetään käyttäjän halutessa päivittää sähköpostiosoitteensa."
+
+#: src/Form/SiteSettingsFieldset.php:338 src/Form/SettingsFieldset.php:367
+msgid ""
+"Hi {user_name},\n"
+"You have requested to update email on {main_title} / {site_title} ({site_url}).\n"
+"Please confirm your email by following this link: {token_url}.\n"
+"If you did not request to update your email on {main_title}, please disregard this email."
+msgstr ""
+"Hei {user_name},\n"
+"Olet pyytänyt sähköpostiosoitteesi päivittämistä palvelussa {main_title} / {site_title} ({site_url}).\n"
+"Vahvista sähköpostiosoitteesi seuraamalla tätä linkkiä: {token_url}.\n"
+"Jos et pyytänyt sähköpostiosoitteesi päivittämistä palvelussa {main_title}, jätä tämä viesti huomiotta."
+
+#: src/Form/SiteSettingsFieldset.php:352
+msgid "Message to confirm email on the page"
+msgstr "Sivulla näytettävä sähköpostiosoitteen vahvistusviesti"
+
+#: src/Form/SiteSettingsFieldset.php:353 src/Form/SettingsFieldset.php:382
+msgid "The message to  display after confirmation of a mail."
+msgstr "Sähköpostiosoitteen vahvistamisen jälkeen näytettävä viesti."
+
+#: src/Form/SiteSettingsFieldset.php:358 src/Form/SettingsFieldset.php:387
+#: src/Controller/Site/AnonymousController.php:531 config/module.config.php:373
+#: config/module.config.php:446
+msgid "Your email \"{user_email}\" is confirmed for {site_title}."
+msgstr "Sähköpostiosoitteesi \"{user_email}\" on vahvistettu sivustolle {site_title}."
+
+#: src/Form/SiteSettingsFieldset.php:367
+msgid "Message to confirm registration on the page"
+msgstr "Sivulla näytettävä rekisteröitymisen vahvistusviesti"
+
+#: src/Form/SiteSettingsFieldset.php:381
+msgid "Message to confirm registration and moderation on the page"
+msgstr "Sivulla näytettävä rekisteröitymisen ja moderoinnin vahvistusviesti"
+
+#: src/Form/SiteSettingsFieldset.php:386 src/Form/SettingsFieldset.php:415
+#: config/module.config.php:375 config/module.config.php:448
+msgid "Thank you for registering. Please check your email for a confirmation message. Once you have confirmed your request and we have confirmed it, you will be able to log in."
+msgstr "Kiitos rekisteröitymisestä. Tarkista sähköpostistasi vahvistusviesti. Kun olet vahvistanut pyyntösi ja me olemme vahvistaneet sen, voit kirjautua."
+
+#: src/Form/SiteSettingsFieldset.php:396
+msgid "Text for terms and conditions"
+msgstr "Käyttöehtojen teksti"
+
+#: src/Form/SiteSettingsFieldset.php:397
+msgid "The text to display to accept conditions."
+msgstr "Käyttöehtojen hyväksymistä varten näytettävä teksti."
+
+#: src/Form/SiteSettingsFieldset.php:402 src/Form/SettingsFieldset.php:430
+msgid "I agree the {link}terms and conditions{/link}."
+msgstr "Hyväksyn {link}käyttöehdot{/link}."
+
+#: src/Form/SiteSettingsFieldset.php:411
+msgid "Page slug of the terms and conditions"
+msgstr "Käyttöehtosivun polkutunnus"
+
+#: src/Form/SiteSettingsFieldset.php:412 src/Form/SettingsFieldset.php:440
+msgid "If the text is on a specific page, or for other usage."
+msgstr "Jos teksti on tietyllä sivulla tai muuta käyttöä varten."
+
+#: src/Form/SiteSettingsFieldset.php:424
+msgid "Redirect page after logging in"
+msgstr "Kirjautumisen jälkeinen uudelleenohjaussivu"
+
+#: src/Form/SiteSettingsFieldset.php:425 src/Form/SettingsFieldset.php:453
+msgid "Set \"home\" for home page (admin or public), \"site\" for the current site home, \"top\" for main public page, \"me\" for guest account, or any path starting with \"/\", including \"/\" itself for main home page."
+msgstr "Aseta arvoksi \"home\" aloitussivua (ylläpito tai julkinen) varten, \"site\" nykyisen sivuston aloitussivua varten, \"top\" julkista pääsivua varten, \"me\" vieraan käyttäjätiliä varten tai mikä tahansa merkillä \"/\" alkava polku, myös pelkkä \"/\" pääaloitussivua varten."
+
+#: src/Form/SiteSettingsFieldset.php:438
+msgid "Display user bar for guests (require Omeka option)"
+msgstr "Näytä käyttäjäpalkki vieraille (edellyttää Omekan asetusta)"
+
+#: src/Form/SettingsFieldset.php:33
+msgid "Registration"
+msgstr "Rekisteröityminen"
+
+#: src/Form/SettingsFieldset.php:34
+msgid "Allow guest registration without administrator approval. The link to use is \"/s/my-site/guest/register\"."
+msgstr "Salli vieraiden rekisteröityminen ilman ylläpitäjän hyväksyntää. Käytettävä linkki on \"/s/my-site/guest/register\"."
+
+#: src/Form/SettingsFieldset.php:36
+msgid "Open to everyone"
+msgstr "Avoin kaikille"
+
+#: src/Form/SettingsFieldset.php:37
+msgid "Open with moderation"
+msgstr "Avoin ylläpidon hyväksynnällä"
+
+#: src/Form/SettingsFieldset.php:38
+msgid "Closed to visitors"
+msgstr "Suljettu vierailta"
+
+#: src/Form/SettingsFieldset.php:54
+msgid "Default role on register"
+msgstr "Rekisteröitymisen oletusrooli"
+
+#: src/Form/SettingsFieldset.php:55 src/Form/SettingsFieldset.php:72
+msgid "This option is useful for modules that create derivative roles for guests."
+msgstr "Tämä asetus on hyödyllinen moduuleille, jotka luovat vieraille johdannaisrooleja."
+
+#: src/Form/SettingsFieldset.php:71
+msgid "Allowed roles for guest"
+msgstr "Vieraille sallitut roolit"
+
+#: src/Form/SettingsFieldset.php:80 src/Form/SettingsFieldset.php:525
+msgid "Select roles…"
+msgstr "Valitse roolit…"
+
+#: src/Form/SettingsFieldset.php:88
+msgid "Pages where the user may select an allowed role"
+msgstr "Sivut, joilla käyttäjä voi valita sallitun roolin"
+
+#: src/Form/SettingsFieldset.php:91
+msgid "Update account"
+msgstr "Päivitä käyttäjätili"
+
+#: src/Form/SettingsFieldset.php:105
+msgid "Default emails to notify registrations"
+msgstr "Rekisteröitymisilmoitusten oletussähköpostiosoitteet"
+
+#: src/Form/SettingsFieldset.php:122
+msgid "Add new users to sites"
+msgstr "Lisää uudet käyttäjät sivustoille"
+
+#: src/Form/SettingsFieldset.php:139
+msgid "Require ReCaptcha"
 msgstr "Vaadi ReCaptcha"
 
-#: config_form.php:116
+#: src/Form/SettingsFieldset.php:140
 msgid "Check this to require passing a ReCaptcha test when registering"
 msgstr "Vaadi ReCaptcha rekisteröitymislomakkeella"
 
-#: controllers/UserController.php:55
-#, php-format
-msgid "Failed login attempt from %s"
-msgstr "Epäonnistunut kirjautumisyritys %s -sivustolla"
+#: src/Form/SettingsFieldset.php:152
+msgid "Skip terms agreement"
+msgstr "Ohita käyttöehtojen hyväksyntä"
 
-#: controllers/UserController.php:62
+#: src/Form/SettingsFieldset.php:164
+msgid "Pages not to redirect"
+msgstr "Sivut, joille ei uudelleenohjata"
+
+#: src/Form/SettingsFieldset.php:165
+msgid "Allows to keep some pages available when terms are not yet agreed. Default pages are included (logout, terms page…). This is a regex, with \"~\" delimiter, checked against the end of the url."
+msgstr "Mahdollistaa joidenkin sivujen käytön, kun käyttöehtoja ei ole vielä hyväksytty. Oletussivut sisältyvät tähän (uloskirjautuminen, käyttöehtosivu…). Tämä on säännöllinen lauseke, jonka erottimena on \"~\" ja jota verrataan URL-osoitteen loppuun."
+
+#: src/Form/SettingsFieldset.php:177
+msgid "Force terms agreement"
+msgstr "Pakota käyttöehtojen hyväksyntä"
+
+#: src/Form/SettingsFieldset.php:178
+msgid "If unchecked, the user will be logged out if terms are not accepted."
+msgstr "Jos valinta poistetaan, käyttäjä kirjataan ulos, jos käyttöehtoja ei hyväksytä."
+
+#: src/Form/SettingsFieldset.php:192
+msgid "Default log in text"
+msgstr "Kirjautumislinkin oletusteksti"
+
+#: src/Form/SettingsFieldset.php:205
+msgid "Default register text"
+msgstr "Rekisteröitymislinkin käyttöliittymäteksti"
+
+#: src/Form/SettingsFieldset.php:218
+msgid "Default dashboard label"
+msgstr "Käyttöliittymäteksti ohjausnäkymässä"
+
+#: src/Form/SettingsFieldset.php:231
+msgid "Default registration features"
+msgstr "Rekisteröitymisen hyödyt"
+
+#: src/Form/SettingsFieldset.php:289
+msgid "Default subject of the email sent to confirm email"
+msgstr "Sähköpostiosoitteen vahvistusviestin oletusaihe"
+
+#: src/Form/SettingsFieldset.php:301
+msgid "Default email sent to confirm registration"
+msgstr "Rekisteröitymisen vahvistussähköpostin oletusteksti"
+
+#: src/Form/SettingsFieldset.php:320
+msgid "Default subject of the email sent to confirm registration after moderation"
+msgstr "Ylläpidon hyväksynnän jälkeen lähetettävän rekisteröitymisen vahvistussähköpostin oletusaihe"
+
+#: src/Form/SettingsFieldset.php:332
+msgid "Default email sent to confirm registration after moderation"
+msgstr "Ylläpidon hyväksynnän jälkeen lähetettävän rekisteröitymisen vahvistussähköpostin oletusteksti"
+
+#: src/Form/SettingsFieldset.php:350
+msgid "Default subject of email sent to update email"
+msgstr "Sähköpostiosoitteen päivitysviestin oletusaihe"
+
+#: src/Form/SettingsFieldset.php:362
+msgid "Default email sent to update email"
+msgstr "Sähköpostiosoitteen päivitysviestin oletusteksti"
+
+#: src/Form/SettingsFieldset.php:381
+msgid "Default message to confirm email on the page"
+msgstr "Sivulla näytettävä sähköpostiosoitteen oletusvahvistusviesti"
+
+#: src/Form/SettingsFieldset.php:396
+msgid "Default message to confirm registration on the page"
+msgstr "Sivulla näytettävä rekisteröitymisen oletusvahvistusviesti"
+
+#: src/Form/SettingsFieldset.php:410
+msgid "Default message to confirm registration and moderation on the page"
+msgstr "Sivulla näytettävä rekisteröitymisen ja moderoinnin oletusvahvistusviesti"
+
+#: src/Form/SettingsFieldset.php:425
+msgid "Default text for terms and conditions"
+msgstr "Käyttöehtojen oletusteksti"
+
+#: src/Form/SettingsFieldset.php:426
+msgid "The text to display to accept conditions. When a page is set, use {link}text{/link} to wrap the link text."
+msgstr "Käyttöehtojen hyväksymistä varten näytettävä teksti. Kun sivu on määritetty, ympäröi linkin teksti merkinnällä {link}teksti{/link}."
+
+#: src/Form/SettingsFieldset.php:439
+msgid "Default page slug of the terms and conditions"
+msgstr "Käyttöehtosivun oletuspolkutunnus"
+
+#: src/Form/SettingsFieldset.php:452
+msgid "Default redirect page after login"
+msgstr "Kirjautumisen jälkeinen oletusuudelleenohjaussivu"
+
+#: src/Form/SettingsFieldset.php:466
+msgid "Append cas/sso login links to login page"
+msgstr "Lisää CAS-/SSO-kirjautumislinkit kirjautumissivulle"
+
+#: src/Form/SettingsFieldset.php:469
+msgid "Links"
+msgstr "Linkit"
+
+#: src/Form/SettingsFieldset.php:470
+msgid "Buttons"
+msgstr "Painikkeet"
+
+#: src/Form/SettingsFieldset.php:472
+msgid "Select "
+msgstr "Valitse "
+
+#: src/Form/SettingsFieldset.php:487
+msgid "Requires a site to register via api"
+msgstr "Edellytä sivustoa API:n kautta rekisteröitymiseen"
+
+#: src/Form/SettingsFieldset.php:488
+msgid "If checked, a site id or slug will be required when registering via api. Note: when this setting is set, all previous users must be added to a site."
+msgstr "Jos valittu, API:n kautta rekisteröityminen edellyttää sivuston tunnusta tai polkutunnusta. Huomautus: kun tämä asetus otetaan käyttöön, kaikki aiemmat käyttäjät on lisättävä sivustolle."
+
+#: src/Form/SettingsFieldset.php:500
+msgid "Skip email validation on register"
+msgstr "Ohita sähköpostiosoitteen vahvistus rekisteröitymisen yhteydessä"
+
+#: src/Form/SettingsFieldset.php:501
+msgid "If checked, the user won’t have to validate his email, so he will be able to log in directly."
+msgstr "Jos valittu, käyttäjän ei tarvitse vahvistaa sähköpostiosoitettaan, joten hän voi kirjautua suoraan."
+
+#: src/Form/SettingsFieldset.php:512
+msgid "Roles that can log in via api"
+msgstr "Roolit, jotka voivat kirjautua API:n kautta"
+
+#: src/Form/SettingsFieldset.php:513
+msgid "To allow full access via api increases risks of intrusion."
+msgstr "Täyden käyttöoikeuden salliminen API:n kautta on tietoturvariski."
+
+#: src/Form/SettingsFieldset.php:516
+msgid "All roles"
+msgstr "Kaikki roolit"
+
+#: src/Form/SettingsFieldset.php:533
+msgid "Create a local session cookie for api"
+msgstr "Luo paikallinen istuntoeväste API-käyttöä varten"
+
+#: src/Form/SettingsFieldset.php:534
+msgid "If checked, a session cookie will be created, so the user will be able to log in in Omeka from an other web app."
+msgstr "Jos valittu, luodaan istuntoeväste, jonka avulla käyttäjä voi kirjautua Omekaan toisesta verkkosovelluksesta."
+
+#: src/Form/SettingsFieldset.php:545
+msgid "Limit access to api to these domains (cors)"
+msgstr "Rajoita API-käyttö näihin verkkotunnuksiin (CORS)"
+
+#: src/Form/UserForm.php:110
+msgid "Current password (required to change it)"
+msgstr "Nykyinen salasana (vaaditaan vaihtamiseen)"
+
+#: src/Form/UserForm.php:160
+msgid "The display name must be 50 characters or fewer."
+msgstr "Näyttönimessä saa olla enintään 50 merkkiä."
+
+#: src/Form/UserForm.php:169
+msgid "The display name must contain only letters and numbers."
+msgstr "Näyttönimessä saa olla vain kirjaimia ja numeroita."
+
+#: src/Form/GuestLoginFieldset.php:18
+msgid "Display login form"
+msgstr "Näytä kirjautumislomake"
+
+#: src/Form/GuestLoginFieldset.php:20
+msgid "Use site setttings"
+msgstr "Käytä sivuston asetuksia"
+
+#: src/Form/GuestLoginFieldset.php:33
+msgid "Disable trigger"
+msgstr "Poista käynnistin käytöstä"
+
+#: src/Controller/SiteAdmin/IndexController.php:46
+msgid "Default page for account"
+msgstr "Käyttäjätilin oletussivu"
+
+#: src/Controller/SiteAdmin/IndexController.php:49
+#: src/Controller/SiteAdmin/IndexController.php:60
+msgid "Classical board (pages of modules)"
+msgstr "Perinteinen ohjausnäkymä (moduulien sivut)"
+
+#: src/Controller/SiteAdmin/IndexController.php:50
+msgid "Guest board (this menu)"
+msgstr "Vieraan ohjausnäkymä (tämä valikko)"
+
+#: src/Controller/SiteAdmin/IndexController.php:51
+msgid "Selections"
+msgstr "Valinnat"
+
+#: src/Controller/SiteAdmin/IndexController.php:52
+msgid "Search history"
+msgstr "Hakuhistoria"
+
+#: src/Controller/SiteAdmin/IndexController.php:53
+msgid "Comments"
+msgstr "Kommentit"
+
+#: src/Controller/TraitGuestController.php:94
+#: src/Site/BlockLayout/Register.php:148
+msgid "The role {role} is not valid. Role \"guest\" is used instead."
+msgstr "Rooli {role} ei ole kelvollinen. Sen sijaan käytetään roolia \"guest\"."
+
+#: src/Controller/TraitGuestController.php:100
+#: src/Site/BlockLayout/Register.php:154
+msgid "The role {role} is an admin role and cannot be used for registering. Role \"guest\" is used instead."
+msgstr "Rooli {role} on ylläpitäjän rooli, eikä sitä voi käyttää rekisteröitymiseen. Sen sijaan käytetään roolia \"guest\"."
+
+#: src/Controller/TraitGuestController.php:252
+msgid "Missing site."
+msgstr "Sivusto puuttuu."
+
+#: src/Controller/TraitGuestController.php:295
+msgid "It is currently not possible to send a token for a private site. Set option to skip email validation."
+msgstr "Yksityiselle sivustolle ei tällä hetkellä voi lähettää avainta. Ota sähköpostiosoitteen vahvistuksen ohittava asetus käyttöön."
+
+#: src/Controller/TraitGuestController.php:341
+msgid "[No subject]"
+msgstr "[Ei aihetta]"
+
+#: src/Controller/TraitGuestController.php:342
+msgid "[No message]"
+msgstr "[Ei viestiä]"
+
+#: src/Controller/TraitGuestController.php:608
+#: src/Controller/GuestApiController.php:509
+#: src/Controller/ApiController.php:606
+#: src/Controller/Site/AnonymousController.php:338
+msgid "An error occurred after creation of the guest user: {exception}"
+msgstr "Vieraskäyttäjän luomisen jälkeen tapahtui virhe: {exception}"
+
+#: src/Controller/TraitGuestController.php:718
+msgid "A new user is registering: {user_email} ({url})."
+msgstr "Uusi käyttäjä rekisteröityy: {user_email} ({url})."
+
+#: src/Controller/GuestApiController.php:191
+msgid "Role \"{role]\" is not allowed to log in via api."
+msgstr "Roolilla \"{role]\" ei ole oikeutta kirjautua API:n kautta."
+
+#: src/Controller/GuestApiController.php:722
+#: src/Controller/ApiController.php:786
+msgid "User token for {site_title}"
+msgstr "Käyttäjän avain sivustolle {site_title}"
+
+#: src/Controller/GuestApiController.php:725
+#: src/Controller/ApiController.php:789
 msgid ""
-"You are logged in temporarily. Please check your email for a confirmation "
-"message. Once you have confirmed your request, you can log in without time "
-"limits."
+"Greetings!\n"
+"\n"
+"To reset your password on {site_title}, fill this token in the app: {token}.\n"
+"\n"
+"Your activation link will expire on {date}."
 msgstr ""
+"Tervehdys!\n"
+"\n"
+"Palauta salasanasi sivustolla {site_title} syöttämällä tämä avain: {token}.\n"
+"\n"
+"Aktivointilinkkisi vanhenee {date}."
 
-#: controllers/UserController.php:70
-msgid ""
-"Thank you for registering. Please check your email for a confirmation "
-"message. Once you have confirmed your request, you will be able to log in."
-msgstr ""
+#: src/Controller/GuestApiController.php:1166
+#: src/Controller/ApiController.php:1095
+msgid "\"{email}\" is not an email."
+msgstr "\"{email}\" ei ole kelvollinen sähköpostiosoite."
 
-#: controllers/UserController.php:76
-msgid ""
-"Thank you for registering. Please check your email for a confirmation "
-"message. Once you have confirmed your request and an administrator activates"
-" your account, you will be able to log in."
-msgstr ""
+#: src/Controller/GuestApiController.php:1189
+#: src/Controller/ApiController.php:1120
+msgid "User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", used by user #{user_id_2}."
+msgstr "Käyttäjä #{user_id} haluaa vaihtaa sähköpostiosoitteen \"{email}\" osoitteeksi \"{email_2}\", joka on käyttäjän #{user_id_2} käytössä."
 
-#: controllers/UserController.php:115
-msgid "Incorrect password"
-msgstr "Virheellinen salasana"
+#: src/Controller/GuestApiController.php:1193
+#: src/Controller/GuestApiController.php:1214
+#: src/Controller/ApiController.php:1125 src/Controller/ApiController.php:1146
+msgid "The email \"{email}\" is not yours."
+msgstr "Sähköpostiosoite \"{email}\" ei ole sinun."
 
-#: controllers/UserController.php:161
-msgid ""
-"Please check the email we just sent you for the next steps! You're almost "
-"there!"
-msgstr ""
+#: src/Controller/GuestApiController.php:1210
+#: src/Controller/ApiController.php:1141
+msgid "User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", used by user #{user_id_2} (second check)."
+msgstr "Käyttäjä #{user_id} haluaa vaihtaa sähköpostiosoitteen \"{email}\" osoitteeksi \"{email_2}\", joka on käyttäjän #{user_id_2} käytössä (toinen tarkistus)."
 
-#: controllers/UserController.php:165
-msgid "Invalid token"
-msgstr "Virheellinen avain"
+#: src/Controller/GuestApiController.php:1232
+#: src/Controller/ApiController.php:1163
+msgid "[GuestApi] An error occurred when the email was sent."
+msgstr "[GuestApi] Sähköpostia lähetettäessä tapahtui virhe."
 
-#: controllers/UserController.php:210 views/public/user/update-account.php:4
-msgid "Password again for match"
-msgstr "Salasana uudelleen"
+#: src/Controller/GuestApiController.php:1299
+msgid "[Guest] Site #{site_slug} is not available."
+msgstr "[Guest] Sivusto #{site_slug} ei ole käytettävissä."
 
-#: controllers/UserController.php:220
-msgid "Please verify you're a human"
-msgstr "Roskapostituksen esto"
+#: src/Controller/ApiController.php:301
+msgid "Role \"{role}\" is not allowed to login via api."
+msgstr "Roolilla \"{role}\" ei ole oikeutta kirjautua API:n kautta."
 
-#: controllers/UserController.php:232
-#, php-format
-msgid "Thanks for joining %s!"
-msgstr "Kiitos rekisteröitymisestä %s -sivustolle!"
+#: src/Controller/Site/AnonymousController.php:197
+#: src/Site/BlockLayout/Login.php:275
+msgid "A new code was resent."
+msgstr "Uusi koodi lähetettiin uudelleen."
 
-#: controllers/UserController.php:234
-msgid "You can now log in using the password you chose."
+#: src/Controller/Site/AnonymousController.php:198
+#: src/Site/BlockLayout/Login.php:276
+msgid "Unable to send email."
+msgstr "Sähköpostia ei voitu lähettää."
+
+#: src/Controller/Site/AnonymousController.php:245
+msgid "A password must be set."
+msgstr "Salasana on asetettava."
+
+#: src/Controller/Site/AnonymousController.php:345
+msgid "Validation error during creation of guest user: {exception}"
+msgstr "Vieraskäyttäjää luotaessa tapahtui validointivirhe: {exception}"
+
+#: src/Controller/Site/AnonymousController.php:348
+msgid "Validation error during creation of user. Please check your input."
+msgstr "Käyttäjää luotaessa tapahtui validointivirhe. Tarkista syöttämäsi tiedot."
+
+#: src/Controller/Site/AnonymousController.php:352
+msgid "Unexpected error during creation of guest user: {exception}"
+msgstr "Vieraskäyttäjää luotaessa tapahtui odottamaton virhe: {exception}"
+
+#: src/Controller/Site/AnonymousController.php:392
+#: src/Controller/Site/GuestController.php:283
+msgid "[Guest] An error occurred when the email was sent."
+msgstr "[Guest] Sähköpostia lähetettäessä tapahtui virhe."
+
+#: src/Controller/Site/AnonymousController.php:437
+msgid "Thanks for joining {site_title}! You can now log in using the password you chose."
 msgstr "Voit nyt kirjautua käyttäen valitsemaasi salasanaa."
 
-#: controllers/UserController.php:236
-msgid ""
-"When an administrator approves your account, you will receive another "
-"message that you can use to log in with the password you chose."
+#: src/Controller/Site/AnonymousController.php:445
+msgid "Thanks for joining {site_title}! Your registration is under moderation. See you soon!"
+msgstr "Kiitos rekisteröitymisestä {site_title} -sivustolle! Rekisteröitymisesi odottaa ylläpidon hyväksyntää. Nähdään pian!"
+
+#: src/Controller/Site/AnonymousController.php:473
+msgid "Invalid token: your email was not confirmed for {site_title}."
+msgstr "Virheellinen avain: sähköpostiosoitettasi ei vahvistettu {site_title} -sivustolle."
+
+#: src/Controller/Site/AnonymousController.php:474
+msgid "site_title"
 msgstr ""
 
-#: controllers/UserController.php:238
-#, php-format
-msgid "Registration for %s"
-msgstr "Rekisteröityminen %s -sivustolle"
+#: src/Controller/Site/AnonymousController.php:510
+msgid "A new user is registering and has confirmed email: {user_email} ({url})."
+msgstr "Uusi käyttäjä on rekisteriytymässä ja on vahvistanut sähköpostiosoitteensa: {user_email} ({url})."
 
-#: controllers/UserController.php:252
-#, php-format
-msgid "Your request to join %s"
-msgstr "Pyyntösi rekisteröityä %s sivustolle"
+#: src/Controller/Site/AnonymousController.php:518
+msgid "An error occurred when the notification email was sent."
+msgstr "Ilmoitussähköpostia lähetettäessä tapahtui virhe."
 
-#: controllers/UserController.php:253
-msgid "this link"
-msgstr "tätä linkkiä"
+#: src/Controller/Site/AnonymousController.php:520
+msgid "[Guest] An error occurred when the notification email was sent."
+msgstr "[Guest] Ilmoitussähköpostia lähetettäessä tapahtui virhe."
 
-#: controllers/UserController.php:253
-#, php-format
-msgid ""
-"You have registered for an account on %s. Please confirm your registration "
-"by following %s.  If you did not request to join %s please disregard this "
-"email."
-msgstr "Olet lähettänyt rekisteröitymispyynnön %s -sivustolle. Vahvista rekisteröitymisesi seuraamalla %s.  Jos et mielestäsi ole lähettänyt rekisteröitymispyyntöä %s -sivustolle, voit poistaa tämän viestin."
+#: src/Controller/Site/AnonymousController.php:759
+msgid "Value is required and can't be empty"
+msgstr "Tieto vaaditaan, eikä se voi olla tyhjä"
 
-#: controllers/UserController.php:266
-#, php-format
-msgid "New request to join %s"
-msgstr "Uusi sivuston %s rekisteröitymispyyntö"
-
-#: controllers/UserController.php:267
-#, php-format
-msgid "A new user has confirmed that they want to join %s : %s"
-msgstr "Uusi käyttäjä on vahvistanut rekisteröitymisen %s : %s"
-
-#: views/public/user/confirm.php:2
-msgid "Confirmation Error"
-msgstr "Vahvistusvirhe"
-
-#: views/public/user/me.php:10
-msgid "Browse and manage your work here."
-msgstr "Selaa"
-
-#: views/public/user/stale-token.php:2
-msgid "Stale Token"
-msgstr "Käyttämätön avain"
-
-#: views/public/user/stale-token.php:9
-msgid ""
-"Your temporary access to the site has expired. Please check your email for "
-"the link to follow to confirm your registration."
-msgstr "Väliaikainen käyttöoikeutesi on päättynyt. Ole hyvä ja vie rekisteröityminen päätökseen klikkaamalla linkkiä sähköpostiosoitteeseesi lähetetyssä rekisteröintiviestissä."
-
-#: views/public/user/stale-token.php:11
-msgid "You have been logged out, but can continue browsing the site."
-msgstr "Sinut on kirjattu ulos. Voit kuitenkin jatkaa sivuston selailua."
-
-#: views/public/user/update-account.php:5
-msgid "Passwords match!"
-msgstr "Salasanat täsmäävät"
-
-#: views/public/user/update-account.php:6
-msgid "Passwords do not match!"
+#: src/Controller/Site/GuestController.php:170
+msgid "Password invalid"
 msgstr "Salasanat eivät täsmää"
 
-#: views/public/user/update-account.php:13
-msgid "Update Account"
-msgstr "Päivitä käyttäjätili"
+#: src/Controller/Site/GuestController.php:185
+msgid "Your modifications have been saved."
+msgstr "Muutoksesi on tallennettu."
+
+#: src/Controller/Site/GuestController.php:241
+msgid "Email invalid"
+msgstr "Virheellinen sähköpostiosoite"
+
+#: src/Controller/Site/GuestController.php:267
+msgid "The email \"{user_email}\" is not yours."
+msgstr "Sähköpostiosoite \"{user_email}\" ei kuulu sinulle."
+
+#: src/Controller/Site/GuestController.php:288
+msgid "Check your email \"{user_email}\" to confirm the change."
+msgstr "Tarkista sähköpostiosoitteeseen \"{user_email}\" lähetetty viesti vahvistaaksesi muutoksen."
+
+#: src/Controller/Site/GuestController.php:306
+msgid "You already agreed the terms and conditions."
+msgstr "Olet jo hyväksynyt käyttöehdot."
+
+#: src/Controller/Site/GuestController.php:352
+msgid "Form invalid"
+msgstr "Virheellinen lomake"
+
+#: src/Controller/Site/GuestController.php:362
+msgid "The access to this website requires you accept the current terms and conditions."
+msgstr "Tämän verkkosivuston käyttö edellyttää nykyisten käyttöehtojen hyväksymistä."
+
+#: src/Controller/Site/GuestController.php:369
+msgid "Thanks for accepting the terms and conditions."
+msgstr "Kiitos käyttöehtojen hyväksymisestä."
+
+#: src/Site/Navigation/Link/Login.php:13
+msgid "Guest: Log in"
+msgstr "Vieras: Kirjaudu sisään"
+
+#: src/Site/Navigation/Link/Logout.php:13
+msgid "Guest: Log out"
+msgstr "Vieras: Kirjaudu ulos"
+
+#: src/Site/Navigation/Link/LoginLogout.php:13
+msgid "Guest: Log in / Log out"
+msgstr "Vieras: Kirjaudu sisään / Kirjaudu ulos"
+
+#: src/Site/Navigation/Link/LoginBoard.php:13
+msgid "Guest: Log in / My board"
+msgstr "Vieras: Kirjaudu sisään / Oma ohjausnäkymä"
+
+#: src/Site/Navigation/Link/LoginBoard.php:34
+msgid "My board"
+msgstr "Oma ohjausnäkymä"
+
+#: src/Site/Navigation/Link/Register.php:13
+#: src/Site/BlockLayout/Register.php:75
+msgid "Guest: Register"
+msgstr "Vieras: Rekisteröidy"
+
+#: src/Site/BlockLayout/Login.php:77
+msgid "Guest: Login"
+msgstr "Vieras: Kirjaudu"
+
+#: src/Site/BlockLayout/ForgotPassword.php:43
+msgid "Guest: Forgot password"
+msgstr "Vieras: Unohdin salasanan"
+
+#: src/Site/BlockLayout/ForgotPassword.php:72
+msgid "You cannot change your password here."
+msgstr "Salasanaa ei voida vaihtaa täällä"
+
+#: config/module.config.php:276
+msgid "Guests"
+msgstr "Vieras"
+
+#: config/module.config.php:289
+msgid "Navigation Guest"
+msgstr "Vieraan navigointi"
+
+#: config/module.config.php:335 config/module.config.php:408
+msgid "My dashboard"
+msgstr "Ohjausnäkymä"
+
+#: config/module.config.php:342 config/module.config.php:415
+msgid ""
+"<p>Hi,</p>\n"
+"<p>A new user, {user_name}, is registering on <a href=\"{site_url}\">{site_title}</a> ({main_title}).</p>\n"
+"<p>You may moderate this email: {user_email}.</p>\n"
+"<p>This is an automatic message.</p>"
+msgstr ""
+"<p>Hei,</p>\n"
+"<p>Uusi käyttäjä, {user_name}, rekisteröityy sivustolle <a href=\"{site_url}\">{site_title}</a> ({main_title}).</p>\n"
+"<p>Voit moderoida tämän käyttäjän: {user_email}.</p>\n"
+"<p>Tämä on automaattinen viesti.</p>"
+
+#: config/module.config.php:350 config/module.config.php:423
+msgid ""
+"<p>Hi {user_name},</p>\n"
+"<p>You have registered for an account on <a href=\"{site_url}\">{site_title}</a> ({main_title}).</p>\n"
+"<p>Please confirm your registration by following this link: <a href=\"{token_url}\"> {token_url}</a></p>\n"
+"<p>If you did not request to join {main_title} / {site_title}, please disregard this email.</p>"
+msgstr ""
+"<p>Hei {user_name},</p>\n"
+"<p>Olet rekisteröinyt käyttäjätilin sivustolle <a href=\"{site_url}\">{site_title}</a> ({main_title}).</p>\n"
+"<p>Vahvista rekisteröitymisesi seuraamalla tätä linkkiä: <a href=\"{token_url}\"> {token_url}</a></p>\n"
+"<p>Jos et pyytänyt liittymistä palveluun {main_title} / {site_title}, jätä tämä viesti huomiotta.</p>"
+
+#: config/module.config.php:358 config/module.config.php:431
+msgid ""
+"<p>Hi {user_name},</p>\n"
+"<p>We are happy to open your account on <a href=\"{site_url}\">{site_title}</a> ({main_title}).</p>\n"
+"<p>Please confirm your email by following this link: <a href=\"{token_url}\">{token_url}</a>.</p>\n"
+"<p>You can now log in and discover the site.</p>"
+msgstr ""
+"<p>Hei {user_name},</p>\n"
+"<p>Käyttäjätilisi sivustolla <a href=\"{site_url}\">{site_title}</a> ({main_title}) on nyt avattu.</p>\n"
+"<p>Vahvista sähköpostiosoitteesi seuraamalla tätä linkkiä: <a href=\"{token_url}\">{token_url}</a>.</p>\n"
+"<p>Voit nyt kirjautua ja tutustua sivustoon.</p>"
+
+#: config/module.config.php:366 config/module.config.php:439
+msgid ""
+"<p>Hi {user_name},</p>\n"
+"<p>You have requested to update email on <a href=\"{site_url}\">{site_title}</a> ({main_title}).</p>\n"
+"<p>Please confirm your email by following this link: <a href=\"{token_url}\">{token_url}</a>.</p>\n"
+"<p>If you did not request to update your email on {main_title}, please disregard this email.</p>"
+msgstr ""
+"<p>Hei {user_name},</p>\n"
+"<p>Olet pyytänyt sähköpostiosoitteesi päivittämistä sivustolla <a href=\"{site_url}\">{site_title}</a> ({main_title}).</p>\n"
+"<p>Vahvista sähköpostiosoitteesi seuraamalla tätä linkkiä: <a href=\"{token_url}\">{token_url}</a>.</p>\n"
+"<p>Jos et pyytänyt sähköpostiosoitteesi päivittämistä palvelussa {main_title}, jätä tämä viesti huomiotta.</p>"
