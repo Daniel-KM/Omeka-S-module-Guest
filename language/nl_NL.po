@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 00:00+0000\n"
-"PO-Revision-Date: 2026-06-01 00:00+0000\n"
+"POT-Creation-Date: 2026-10-14 11:54+0000\n"
+"PO-Revision-Date: 2026-10-05 00:00+0000\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/"
 "omeka/language/nl_NL/)\n"
@@ -20,22 +20,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.6\n"
 
-#: data/scripts/upgrade.php:33 Module.php:131
+#: data/scripts/upgrade.php:35 Module.php:148
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr ""
 
-#: data/scripts/upgrade.php:37
+#: data/scripts/upgrade.php:39
 msgid "Missing requirement. Unable to upgrade."
 msgstr ""
 
-#: Module.php:544
+#: Module.php:561
 #, fuzzy
-#| msgid "Login"
 msgid "CAS Login"
 msgstr "Inloggen"
 
-#: Module.php:561
+#: Module.php:578
 msgid "[Unknown idp]"
 msgstr ""
 
@@ -43,7 +42,7 @@ msgstr ""
 #: src/Controller/ApiController.php:168 src/Controller/ApiController.php:409
 #: src/Controller/ApiController.php:433 src/Controller/ApiController.php:897
 #: src/Controller/GuestApiController.php:326
-#: src/Controller/GuestApiController.php:957
+#: src/Controller/GuestApiController.php:844
 msgid "Access forbidden."
 msgstr ""
 
@@ -63,7 +62,7 @@ msgstr ""
 #: src/Controller/GuestApiController.php:147
 #: src/Controller/GuestApiController.php:388
 #: src/Controller/GuestApiController.php:652
-#: src/Controller/TraitGuestController.php:510
+#: src/Controller/TraitGuestController.php:517
 msgid "Email is required."
 msgstr ""
 
@@ -73,9 +72,8 @@ msgstr ""
 #: src/Controller/GuestApiController.php:394
 #: src/Controller/GuestApiController.php:658
 #: src/Controller/GuestApiController.php:670
-#: src/Controller/TraitGuestController.php:517
+#: src/Controller/TraitGuestController.php:524
 #, fuzzy
-#| msgid "Invalid token"
 msgid "Invalid email."
 msgstr "Foutief token"
 
@@ -99,7 +97,7 @@ msgstr ""
 
 #: src/Controller/ApiController.php:338 src/Controller/ApiController.php:542
 #: src/Controller/GuestApiController.php:446
-#: src/Controller/TraitGuestController.php:549
+#: src/Controller/TraitGuestController.php:556
 msgid "Check your email to confirm your registration."
 msgstr ""
 
@@ -131,26 +129,26 @@ msgstr ""
 #: src/Controller/ApiController.php:525 src/Controller/ApiController.php:536
 #: src/Controller/GuestApiController.php:429
 #: src/Controller/GuestApiController.php:440
-#: src/Controller/TraitGuestController.php:532
-#: src/Controller/TraitGuestController.php:543
+#: src/Controller/TraitGuestController.php:539
+#: src/Controller/TraitGuestController.php:550
 msgid "Already registered."
 msgstr ""
 
 #: src/Controller/ApiController.php:584
 #: src/Controller/GuestApiController.php:488
-#: src/Controller/TraitGuestController.php:593
+#: src/Controller/TraitGuestController.php:600
 msgid "Unknown error before creation of user."
 msgstr ""
 
 #: src/Controller/ApiController.php:618
 #: src/Controller/GuestApiController.php:521
-#: src/Controller/TraitGuestController.php:620
+#: src/Controller/TraitGuestController.php:627
 msgid "Unknown error during creation of user."
 msgstr ""
 
 #: src/Controller/ApiController.php:668
 #: src/Controller/GuestApiController.php:603
-#: src/Controller/GuestApiController.php:1234
+#: src/Controller/GuestApiController.php:1121
 msgid "An error occurred when the email was sent."
 msgstr ""
 
@@ -171,9 +169,6 @@ msgstr ""
 #: src/Controller/ApiController.php:690
 #: src/Controller/GuestApiController.php:625
 #, fuzzy
-#| msgid ""
-#| "Thank you for registering. Please check your email for a confirmation "
-#| "message. Once you have confirmed your request, you will be able to log in."
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request, a moderator will confirm "
@@ -195,7 +190,6 @@ msgstr ""
 #: src/Controller/ApiController.php:831
 #: src/Controller/GuestApiController.php:776
 #, fuzzy
-#| msgid "Invalid token"
 msgid "Invalid token."
 msgstr "Foutief token"
 
@@ -211,59 +205,58 @@ msgstr ""
 
 #: src/Controller/ApiController.php:857 src/Controller/ApiController.php:1044
 #: src/Controller/GuestApiController.php:806
-#: src/Controller/GuestApiController.php:1125
+#: src/Controller/GuestApiController.php:1012
 msgid "New password should have 6 characters or more."
 msgstr ""
 
 #: src/Controller/ApiController.php:956
-#: src/Controller/GuestApiController.php:1042
+#: src/Controller/GuestApiController.php:929
 msgid "Request is empty."
 msgstr ""
 
 #: src/Controller/ApiController.php:981
-#: src/Controller/GuestApiController.php:1066
+#: src/Controller/GuestApiController.php:953
 msgid "Email cannot be updated: the user is not related to a site."
 msgstr ""
 
 #: src/Controller/ApiController.php:1003
-#: src/Controller/GuestApiController.php:1087
+#: src/Controller/GuestApiController.php:974
 msgid "Your request contains metadata that cannot be updated."
 msgstr ""
 
 #: src/Controller/ApiController.php:1010
-#: src/Controller/GuestApiController.php:1093
+#: src/Controller/GuestApiController.php:980
 msgid "The new name is empty."
 msgstr ""
 
 #: src/Controller/ApiController.php:1025
-#: src/Controller/GuestApiController.php:1109
+#: src/Controller/GuestApiController.php:996
 msgid "You cannot update password and another data in the same time."
 msgstr ""
 
 #: src/Controller/ApiController.php:1031
-#: src/Controller/GuestApiController.php:1114
+#: src/Controller/GuestApiController.php:1001
 msgid "Existing password empty."
 msgstr ""
 
 #: src/Controller/ApiController.php:1037
-#: src/Controller/GuestApiController.php:1119
+#: src/Controller/GuestApiController.php:1006
 msgid "New password empty."
 msgstr ""
 
 #: src/Controller/ApiController.php:1052
-#: src/Controller/GuestApiController.php:1132
+#: src/Controller/GuestApiController.php:1019
 #, fuzzy
-#| msgid "Incorrect password"
 msgid "Wrong password."
 msgstr "Foutief wachtwoord"
 
 #: src/Controller/ApiController.php:1081
-#: src/Controller/GuestApiController.php:1155
+#: src/Controller/GuestApiController.php:1042
 msgid "You cannot update email and another data in the same time."
 msgstr ""
 
 #: src/Controller/ApiController.php:1087
-#: src/Controller/GuestApiController.php:1160
+#: src/Controller/GuestApiController.php:1047
 msgid "New email empty."
 msgstr ""
 
@@ -285,31 +278,26 @@ msgid ""
 "An error occurred when sending mail. Retry later or contact administrator."
 msgstr ""
 
-#: src/Controller/GuestApiController.php:834
-msgid "This dialog is not managed."
-msgstr ""
-
-#: src/Controller/GuestApiController.php:853
-msgid "This dialog requires module Two-Factor Authentication."
-msgstr ""
-
-#: src/Controller/GuestApiController.php:872
-msgid "An error occurred when loading dialog."
-msgstr ""
-
-#: src/Controller/GuestApiController.php:1176
+#: src/Controller/GuestApiController.php:1063
 msgid "The new email is the same than the current one."
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:418
+#: src/Controller/Site/AnonymousController.php:427
 #, fuzzy
-#| msgid "Invalid token"
 msgid "Invalid token stop"
 msgstr "Foutief token"
 
-#: src/Controller/Site/AnonymousController.php:516
-#: src/Controller/TraitGuestController.php:725
+#: src/Controller/Site/AnonymousController.php:525
+#: src/Controller/TraitGuestController.php:732
 msgid "[Omeka Guest] New registration"
+msgstr ""
+
+#: src/Controller/Site/AnonymousController.php:814
+msgid "This dialog is not managed."
+msgstr ""
+
+#: src/Controller/Site/AnonymousController.php:839
+msgid "An error occurred when loading dialog."
 msgstr ""
 
 #: src/Controller/Site/GuestController.php:87
@@ -318,7 +306,6 @@ msgstr "Mijn account"
 
 #: src/Controller/Site/GuestController.php:114
 #, fuzzy
-#| msgid "My Account"
 msgid "My account"
 msgstr "Mijn account"
 
@@ -396,7 +383,6 @@ msgstr ""
 #: view/common/user-settings-guest-list.phtml:14
 #: view/common/user-settings-guest.phtml:13
 #, fuzzy
-#| msgid "Your %s account"
 msgid "Guest account"
 msgstr "Uw %s account"
 
@@ -446,7 +432,6 @@ msgstr ""
 
 #: view/guest/site/anonymous/confirm.phtml:33
 #, fuzzy
-#| msgid "Allow open registration?"
 msgid "Confirmation of registration"
 msgstr "Sta open registratie toe?"
 
@@ -460,7 +445,6 @@ msgstr ""
 
 #: view/guest/site/anonymous/register.phtml:66
 #, fuzzy
-#| msgid "Your %s account"
 msgid "Create the account"
 msgstr "Uw %s account"
 
@@ -492,7 +476,7 @@ msgstr "Account info en wachtwoord aapassen"
 msgid "Update email"
 msgstr ""
 
-#: data/scripts/upgrade.php:92
+#: data/scripts/upgrade.php:94
 msgid ""
 "This module integrates the features from module GuestApi, that is no longer "
 "needed. The config were merged (texts of messages) so you should check them "
@@ -500,144 +484,150 @@ msgid ""
 "should uninstall the module once params are checked."
 msgstr ""
 
-#: data/scripts/upgrade.php:141
+#: data/scripts/upgrade.php:143
 msgid ""
 "A new option allows to display the list of external accounts on login page."
 msgstr ""
 
-#: data/scripts/upgrade.php:150
+#: data/scripts/upgrade.php:152
 msgid ""
 "The form to reset agreement status was moved to a task of module {link}Easy "
 "Admin{link_end}."
 msgstr ""
 
-#: data/scripts/upgrade.php:163
+#: data/scripts/upgrade.php:165
 msgid ""
 "An option allows to define the type of display for the list of external "
 "connection (cas/sso) as a list of links or a select."
 msgstr ""
 
-#: data/scripts/upgrade.php:170
+#: data/scripts/upgrade.php:172
 msgid ""
 "It is now possible to show the register form beside the login form. Page "
 "blocks Login and Register are available too."
 msgstr ""
 
-#: data/scripts/upgrade.php:182
+#: data/scripts/upgrade.php:184
 msgid ""
 "It is now possible to hide the user bar for guests separately from admins."
 msgstr ""
 
-#: data/scripts/upgrade.php:187
+#: data/scripts/upgrade.php:189
 msgid ""
 "It is now possible to configure a specific navigation and a specific home "
 "page for guest via the site sub-menu \"Navigation for guest\" and in site "
 "settings."
 msgstr ""
 
-#: data/scripts/upgrade.php:194
+#: data/scripts/upgrade.php:196
 msgid ""
 "It is now possible to theme the default login page with the default site "
 "theme."
 msgstr ""
 
-#: data/scripts/upgrade.php:213
+#: data/scripts/upgrade.php:215
 msgid "It is now possible to define the role on registering."
 msgstr ""
 
-#: Module.php:178 Module.php:603 src/Form/SiteSettingsFieldset.php:14
+#: Module.php:195 Module.php:620 src/Form/SiteSettingsFieldset.php:14
 #: src/Form/SiteSettingsFieldset.php:17 src/Form/SettingsFieldset.php:15
 #: src/Form/SettingsFieldset.php:18 config/module.config.php:11
 msgid "Guest"
 msgstr "Gast"
 
-#: Module.php:618 config/module.config.php:377 config/module.config.php:450
+#: Module.php:635 config/module.config.php:377 config/module.config.php:450
 msgid "I agree the terms and conditions."
 msgstr ""
 
-#: Module.php:693
+#: Module.php:710
 msgid ""
 "Send an email to confirm registration after moderation (user should be "
 "activated first)"
 msgstr ""
 
-#: Module.php:708
+#: Module.php:725
 #, fuzzy
-#| msgid "Guest"
 msgid "Guest site"
 msgstr "Gast"
 
-#: Module.php:709
+#: Module.php:726
 msgid ""
 "This parameter is used to manage some site related features, in particular "
 "messages."
 msgstr ""
 
-#: Module.php:726
+#: Module.php:743
 msgid "Agreed terms"
 msgstr ""
 
-#: Module.php:753
+#: Module.php:770
 #, fuzzy
-#| msgid "Short Registration Features"
 msgid "Clear registration token"
 msgstr "Korte registratiefuncties"
 
-#: Module.php:847
+#: Module.php:864
 msgid "You cannot send a message to confirm registration: user is not active."
 msgstr ""
 
-#: Module.php:864
+#: Module.php:881
 msgid ""
 "A default site should be set or the user should have a site in order to "
 "confirm registration."
 msgstr ""
 
-#: Module.php:913
+#: Module.php:930
 msgid "The message of confirmation of the registration has been sent."
 msgstr ""
 
-#: Module.php:1011
+#: Module.php:1028
 msgid "Guest: Reset terms agreement for all guests"
 msgstr ""
 
-#: Module.php:1018
+#: Module.php:1034
+msgid "Guest: Terms agreement"
+msgstr ""
+
+#: Module.php:1035
+msgid "Reset the terms of use agreement for all guest users."
+msgstr ""
+
+#: Module.php:1047
 msgid "Options to reset agreement terms"
 msgstr ""
 
-#: Module.php:1029
+#: Module.php:1058
 msgid "Reset terms agreement for all guests"
 msgstr ""
 
-#: Module.php:1030
+#: Module.php:1059
 msgid ""
 "When terms and conditions are updated, you may want guests agree them one "
 "more time. Warning: to set false will impact all guests. So warn them some "
 "time before."
 msgstr ""
 
-#: Module.php:1032
+#: Module.php:1061
 #, fuzzy
 msgid "No change"
 msgstr "Instellingen aanpassen"
 
-#: Module.php:1033
+#: Module.php:1062
 msgid "Set false"
 msgstr ""
 
-#: Module.php:1034
+#: Module.php:1063
 msgid "Set true"
 msgstr ""
 
 #: src/Mvc/Controller/Plugin/ValidateLogin.php:213
-#: src/Controller/Site/AnonymousController.php:771
+#: src/Controller/Site/AnonymousController.php:784
 msgid "User name, email, or password is invalid"
 msgstr ""
 
 #: src/Mvc/Controller/Plugin/ValidateLogin.php:214
 #: src/Authentication/Adapter/PasswordAdapter.php:25
 #: src/Authentication/Adapter/PasswordAdapter.php:33
-#: src/Controller/Site/AnonymousController.php:770
+#: src/Controller/Site/AnonymousController.php:783
 msgid "Email or password invalid"
 msgstr ""
 
@@ -659,7 +649,6 @@ msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:30
 #, fuzzy
-#| msgid "Allow open registration?"
 msgid "Emails to notify registrations"
 msgstr "Sta open registratie toe?"
 
@@ -669,13 +658,11 @@ msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:47
 #, fuzzy
-#| msgid "Login Text"
 msgid "Log in Text"
 msgstr "Logintekst"
 
 #: src/Form/SiteSettingsFieldset.php:48 src/Form/SettingsFieldset.php:193
 #, fuzzy
-#| msgid "The text to use for the 'Login' link in the user bar"
 msgid "The text to use for the \"Log in\" link in the user bar"
 msgstr "De tekst om te gebruiken voor de 'Login' link in de gebruikersbalk"
 
@@ -685,7 +672,6 @@ msgstr "Registratietekst"
 
 #: src/Form/SiteSettingsFieldset.php:61 src/Form/SettingsFieldset.php:206
 #, fuzzy
-#| msgid "The text to use for the 'Register' link in the user bar."
 msgid "The text to use for the \"Register\" link in the user bar"
 msgstr ""
 "De tekst om te gebruiken voor de 'Registreer'-link in de gebuikersbalk."
@@ -742,7 +728,6 @@ msgstr "Dashboard Label"
 
 #: src/Form/SiteSettingsFieldset.php:190 src/Form/SettingsFieldset.php:219
 #, fuzzy
-#| msgid "The text to use for the label on the user's dashboard"
 msgid "The text to use for the label on the user’s dashboard"
 msgstr ""
 "De tekst om te gebruiken voor het label op het dashboard van de gebruiker"
@@ -753,12 +738,6 @@ msgstr "Registratiefuncties"
 
 #: src/Form/SiteSettingsFieldset.php:203 src/Form/SettingsFieldset.php:232
 #, fuzzy
-#| msgid ""
-#| "Add some text to the registration screen so people will know what they "
-#| "get for registering.\n"
-#| "        As you enable and configure plugins that make use of the guest, "
-#| "please give them guidance\n"
-#| "        about what they can and cannot do."
 msgid ""
 "Add some text to the registration screen so people will know what they get "
 "for registering. As you enable and configure plugins that make use of the "
@@ -809,7 +788,6 @@ msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:272
 #, fuzzy
-#| msgid "Allow open registration?"
 msgid "Email sent to confirm registration"
 msgstr "Sta open registratie toe?"
 
@@ -865,7 +843,6 @@ msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:334 src/Form/SettingsFieldset.php:363
 #, fuzzy
-#| msgid "The text to use for the 'Register' link in the user bar."
 msgid "The text of the email sent when the user wants to update it."
 msgstr ""
 "De tekst om te gebruiken voor de 'Registreer'-link in de gebuikersbalk."
@@ -889,7 +866,7 @@ msgid "The message to  display after confirmation of a mail."
 msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:358 src/Form/SettingsFieldset.php:387
-#: src/Controller/Site/AnonymousController.php:531 config/module.config.php:373
+#: src/Controller/Site/AnonymousController.php:540 config/module.config.php:373
 #: config/module.config.php:446
 msgid "Your email \"{user_email}\" is confirmed for {site_title}."
 msgstr ""
@@ -905,9 +882,6 @@ msgstr ""
 #: src/Form/SiteSettingsFieldset.php:386 src/Form/SettingsFieldset.php:415
 #: config/module.config.php:375 config/module.config.php:448
 #, fuzzy
-#| msgid ""
-#| "Thank you for registering. Please check your email for a confirmation "
-#| "message. Once you have confirmed your request, you will be able to log in."
 msgid ""
 "Thank you for registering. Please check your email for a confirmation "
 "message. Once you have confirmed your request and we have confirmed it, you "
@@ -953,13 +927,11 @@ msgstr ""
 
 #: src/Form/SettingsFieldset.php:33
 #, fuzzy
-#| msgid "Registration for %s"
 msgid "Registration"
 msgstr "Registratie voor %s"
 
 #: src/Form/SettingsFieldset.php:34
 #, fuzzy
-#| msgid "Allow guest registration without administrator approval?"
 msgid ""
 "Allow guest registration without administrator approval. The link to use is "
 "\"/s/my-site/guest/register\"."
@@ -1002,7 +974,6 @@ msgstr ""
 
 #: src/Form/SettingsFieldset.php:91
 #, fuzzy
-#| msgid "Update account info and password"
 msgid "Update account"
 msgstr "Account info en wachtwoord aapassen"
 
@@ -1016,7 +987,6 @@ msgstr ""
 
 #: src/Form/SettingsFieldset.php:139
 #, fuzzy
-#| msgid "Require ReCaptcha?"
 msgid "Require ReCaptcha"
 msgstr "ReCaptcha verplichten?"
 
@@ -1053,19 +1023,16 @@ msgstr ""
 
 #: src/Form/SettingsFieldset.php:205
 #, fuzzy
-#| msgid "Register Text"
 msgid "Default register text"
 msgstr "Registratietekst"
 
 #: src/Form/SettingsFieldset.php:218
 #, fuzzy
-#| msgid "Dashboard Label"
 msgid "Default dashboard label"
 msgstr "Dashboard Label"
 
 #: src/Form/SettingsFieldset.php:231
 #, fuzzy
-#| msgid "Registration Features"
 msgid "Default registration features"
 msgstr "Registratiefuncties"
 
@@ -1267,19 +1234,19 @@ msgstr ""
 msgid "[No message]"
 msgstr ""
 
-#: src/Controller/TraitGuestController.php:608
+#: src/Controller/TraitGuestController.php:615
 #: src/Controller/GuestApiController.php:509
 #: src/Controller/ApiController.php:606
-#: src/Controller/Site/AnonymousController.php:338
+#: src/Controller/Site/AnonymousController.php:347
 msgid "An error occurred after creation of the guest user: {exception}"
 msgstr ""
 
-#: src/Controller/TraitGuestController.php:718
+#: src/Controller/TraitGuestController.php:725
 msgid "A new user is registering: {user_email} ({url})."
 msgstr ""
 
 #: src/Controller/GuestApiController.php:191
-msgid "Role \"{role]\" is not allowed to log in via api."
+msgid "Role \"{role}\" is not allowed to log in via api."
 msgstr ""
 
 #: src/Controller/GuestApiController.php:722
@@ -1298,117 +1265,111 @@ msgid ""
 "Your activation link will expire on {date}."
 msgstr ""
 
-#: src/Controller/GuestApiController.php:1166
+#: src/Controller/GuestApiController.php:1053
 #: src/Controller/ApiController.php:1095
 msgid "\"{email}\" is not an email."
 msgstr ""
 
-#: src/Controller/GuestApiController.php:1189
+#: src/Controller/GuestApiController.php:1076
 #: src/Controller/ApiController.php:1120
 msgid ""
 "User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", "
 "used by user #{user_id_2}."
 msgstr ""
 
-#: src/Controller/GuestApiController.php:1193
-#: src/Controller/GuestApiController.php:1214
+#: src/Controller/GuestApiController.php:1080
+#: src/Controller/GuestApiController.php:1101
 #: src/Controller/ApiController.php:1125 src/Controller/ApiController.php:1146
 msgid "The email \"{email}\" is not yours."
 msgstr ""
 
-#: src/Controller/GuestApiController.php:1210
+#: src/Controller/GuestApiController.php:1097
 #: src/Controller/ApiController.php:1141
 msgid ""
 "User #{user_id} wants to change email from \"{email}\" to \"{email_2}\", "
 "used by user #{user_id_2} (second check)."
 msgstr ""
 
-#: src/Controller/GuestApiController.php:1232
+#: src/Controller/GuestApiController.php:1119
 #: src/Controller/ApiController.php:1163
 msgid "[GuestApi] An error occurred when the email was sent."
-msgstr ""
-
-#: src/Controller/GuestApiController.php:1299
-msgid "[Guest] Site #{site_slug} is not available."
 msgstr ""
 
 #: src/Controller/ApiController.php:301
 msgid "Role \"{role}\" is not allowed to login via api."
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:197
+#: src/Controller/Site/AnonymousController.php:202
 #: src/Site/BlockLayout/Login.php:275
 msgid "A new code was resent."
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:198
+#: src/Controller/Site/AnonymousController.php:203
 #: src/Site/BlockLayout/Login.php:276
 msgid "Unable to send email."
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:245
+#: src/Controller/Site/AnonymousController.php:254
 msgid "A password must be set."
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:345
+#: src/Controller/Site/AnonymousController.php:354
 msgid "Validation error during creation of guest user: {exception}"
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:348
+#: src/Controller/Site/AnonymousController.php:357
 msgid "Validation error during creation of user. Please check your input."
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:352
+#: src/Controller/Site/AnonymousController.php:361
 msgid "Unexpected error during creation of guest user: {exception}"
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:392
+#: src/Controller/Site/AnonymousController.php:401
 #: src/Controller/Site/GuestController.php:283
 msgid "[Guest] An error occurred when the email was sent."
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:437
+#: src/Controller/Site/AnonymousController.php:446
 #, fuzzy
-#| msgid "You can now log in using the password you chose."
 msgid ""
 "Thanks for joining {site_title}! You can now log in using the password you "
 "chose."
 msgstr "U kunt nu inloggen met het wachtwoord dat u gekozen heeft."
 
-#: src/Controller/Site/AnonymousController.php:445
+#: src/Controller/Site/AnonymousController.php:454
 msgid ""
 "Thanks for joining {site_title}! Your registration is under moderation. See "
 "you soon!"
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:473
+#: src/Controller/Site/AnonymousController.php:482
 msgid "Invalid token: your email was not confirmed for {site_title}."
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:474
+#: src/Controller/Site/AnonymousController.php:483
 msgid "site_title"
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:510
+#: src/Controller/Site/AnonymousController.php:519
 msgid ""
 "A new user is registering and has confirmed email: {user_email} ({url})."
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:518
+#: src/Controller/Site/AnonymousController.php:527
 msgid "An error occurred when the notification email was sent."
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:520
+#: src/Controller/Site/AnonymousController.php:529
 msgid "[Guest] An error occurred when the notification email was sent."
 msgstr ""
 
-#: src/Controller/Site/AnonymousController.php:759
+#: src/Controller/Site/AnonymousController.php:772
 msgid "Value is required and can't be empty"
 msgstr ""
 
 #: src/Controller/Site/GuestController.php:170
 #, fuzzy
-#| msgid "Password again for match"
 msgid "Password invalid"
 msgstr "Nogmaals uw wachtwoord"
 
@@ -1469,7 +1430,6 @@ msgstr ""
 #: src/Site/Navigation/Link/Register.php:13
 #: src/Site/BlockLayout/Register.php:75
 #, fuzzy
-#| msgid "Register"
 msgid "Guest: Register"
 msgstr "Registreren"
 
@@ -1479,19 +1439,16 @@ msgstr ""
 
 #: src/Site/BlockLayout/ForgotPassword.php:43
 #, fuzzy
-#| msgid "Incorrect password"
 msgid "Guest: Forgot password"
 msgstr "Foutief wachtwoord"
 
 #: src/Site/BlockLayout/ForgotPassword.php:72
 #, fuzzy
-#| msgid "You can now log in using the password you chose."
 msgid "You cannot change your password here."
 msgstr "U kunt nu inloggen met het wachtwoord dat u gekozen heeft."
 
 #: config/module.config.php:276
 #, fuzzy
-#| msgid "Guest"
 msgid "Guests"
 msgstr "Gast"
 
