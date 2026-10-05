@@ -2,6 +2,7 @@
 
 namespace GuestTest\Mvc\Controller\Plugin;
 
+use CommonTest\AbstractHttpControllerTestCase;
 use Guest\Entity\GuestToken;
 use Guest\Mvc\Controller\Plugin\ValidateLogin;
 use GuestTest\GuestTestTrait;
@@ -10,7 +11,6 @@ use Laminas\Form\Form;
 use Laminas\Http\Request;
 use Omeka\Mvc\Controller\Plugin\Messenger;
 use Omeka\Settings\Settings;
-use Omeka\Test\AbstractHttpControllerTestCase;
 
 /**
  * Unit tests for the ValidateLogin controller plugin.
@@ -18,6 +18,11 @@ use Omeka\Test\AbstractHttpControllerTestCase;
 class ValidateLoginTest extends AbstractHttpControllerTestCase
 {
     use GuestTestTrait;
+
+    /**
+     * Authentication is managed by each test.
+     */
+    protected bool $requiresLogin = false;
 
     public function setUp(): void
     {

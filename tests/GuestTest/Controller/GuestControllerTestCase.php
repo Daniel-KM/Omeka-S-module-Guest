@@ -2,8 +2,8 @@
 
 namespace GuestTest\Controller;
 
+use CommonTest\AbstractHttpControllerTestCase;
 use GuestTest\GuestTestTrait;
-use Omeka\Test\AbstractHttpControllerTestCase;
 
 /**
  * Base test case for Guest module controller tests.
@@ -13,6 +13,11 @@ use Omeka\Test\AbstractHttpControllerTestCase;
 abstract class GuestControllerTestCase extends AbstractHttpControllerTestCase
 {
     use GuestTestTrait;
+
+    /**
+     * Authentication is managed by each test.
+     */
+    protected bool $requiresLogin = false;
 
     /**
      * @var \Omeka\Api\Representation\SiteRepresentation

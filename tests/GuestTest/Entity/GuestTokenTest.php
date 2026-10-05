@@ -2,11 +2,11 @@
 
 namespace GuestTest\Entity;
 
+use CommonTest\AbstractHttpControllerTestCase;
 use DateTime;
 use Guest\Entity\GuestToken;
 use GuestTest\GuestTestTrait;
 use Omeka\Entity\User;
-use Omeka\Test\AbstractHttpControllerTestCase;
 
 /**
  * Unit tests for the GuestToken entity.
@@ -14,6 +14,11 @@ use Omeka\Test\AbstractHttpControllerTestCase;
 class GuestTokenTest extends AbstractHttpControllerTestCase
 {
     use GuestTestTrait;
+
+    /**
+     * Authentication is managed by each test.
+     */
+    protected bool $requiresLogin = false;
 
     public function setUp(): void
     {

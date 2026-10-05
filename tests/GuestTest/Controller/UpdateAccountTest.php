@@ -179,7 +179,7 @@ class UpdateAccountTest extends GuestControllerTestCase
         $this->dispatch('/s/test/guest/update-account');
 
         // Reload user to verify role wasn't changed.
-        $this->getEntityManager()->refresh($guestEntity);
+        $guestEntity = $this->reloadEntity($guestEntity);
         $this->assertEquals('guest', $guestEntity->getRole());
     }
 
@@ -208,7 +208,7 @@ class UpdateAccountTest extends GuestControllerTestCase
         $this->dispatch('/s/test/guest/update-account');
 
         // User should still be active.
-        $this->getEntityManager()->refresh($guestEntity);
+        $guestEntity = $this->reloadEntity($guestEntity);
         $this->assertTrue($guestEntity->isActive());
     }
 
@@ -296,7 +296,7 @@ class UpdateAccountTest extends GuestControllerTestCase
         $this->dispatch('/s/test/guest/update-email');
 
         // Should not update to taken email.
-        $this->getEntityManager()->refresh($guest1Entity);
+        $guest1Entity = $this->reloadEntity($guest1Entity);
         $this->assertEquals('email_change1@example.com', $guest1Entity->getEmail());
     }
 
@@ -322,7 +322,7 @@ class UpdateAccountTest extends GuestControllerTestCase
         $this->dispatch('/s/test/guest/update-email');
 
         // Email should not have changed.
-        $this->getEntityManager()->refresh($guestEntity);
+        $guestEntity = $this->reloadEntity($guestEntity);
         $this->assertEquals('valid_email@example.com', $guestEntity->getEmail());
     }
 

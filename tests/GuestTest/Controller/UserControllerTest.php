@@ -95,7 +95,7 @@ class UserControllerTest extends GuestControllerTestCase
         $this->dispatch('/s/test/guest/confirm?token=' . $token->getToken());
 
         // Reload token.
-        $this->getEntityManager()->refresh($token);
+        $token = $this->reloadEntity($token);
         $this->assertTrue($token->isConfirmed());
     }
 
@@ -110,7 +110,7 @@ class UserControllerTest extends GuestControllerTestCase
         $this->dispatch('/s/test/guest/confirm?token=invalid_token_12345');
 
         // Reload token.
-        $this->getEntityManager()->refresh($token);
+        $token = $this->reloadEntity($token);
         $this->assertFalse($token->isConfirmed());
     }
 

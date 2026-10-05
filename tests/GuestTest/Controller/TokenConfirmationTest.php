@@ -37,7 +37,7 @@ class TokenConfirmationTest extends GuestControllerTestCase
         $this->dispatch('/s/test/guest/confirm?token=' . $token->getToken());
 
         // Reload token.
-        $this->getEntityManager()->refresh($token);
+        $token = $this->reloadEntity($token);
         $this->assertTrue($token->isConfirmed());
     }
 
@@ -58,7 +58,7 @@ class TokenConfirmationTest extends GuestControllerTestCase
         $this->dispatch('/s/test/guest/confirm?token=invalid_token_12345');
 
         // Reload token - should still be unconfirmed.
-        $this->getEntityManager()->refresh($token);
+        $token = $this->reloadEntity($token);
         $this->assertFalse($token->isConfirmed());
     }
 
@@ -96,7 +96,7 @@ class TokenConfirmationTest extends GuestControllerTestCase
         $this->dispatch('/s/test/guest/confirm?token=' . $token->getToken());
 
         // Reload user entity.
-        $this->getEntityManager()->refresh($guestEntity);
+        $guestEntity = $this->reloadEntity($guestEntity);
 
         // In open mode, user should be activated after confirmation.
         // Note: This depends on controller logic.
@@ -123,7 +123,7 @@ class TokenConfirmationTest extends GuestControllerTestCase
         $this->dispatch('/s/test/guest/confirm?token=' . $token->getToken());
 
         // Reload user entity.
-        $this->getEntityManager()->refresh($guestEntity);
+        $guestEntity = $this->reloadEntity($guestEntity);
 
         // Token should be confirmed.
         $this->assertTrue($this->getGuestToken('confirm_moderate@example.com')->isConfirmed());

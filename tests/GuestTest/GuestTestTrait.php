@@ -43,6 +43,15 @@ trait GuestTestTrait
     }
 
     /**
+     * Drop the cached services with the application reset by each dispatch.
+     */
+    public function reset($keepPersistence = false)
+    {
+        $this->services = null;
+        return parent::reset($keepPersistence);
+    }
+
+    /**
      * Get the service locator.
      */
     protected function getServiceLocator(): ServiceLocatorInterface
@@ -62,6 +71,19 @@ trait GuestTestTrait
     }
 
     /**
+     * Reload an entity from the database.
+     *
+     * The application, so the entity manager, is reset by each dispatch, so an
+     * entity fetched before cannot be refreshed.
+     */
+    protected function reloadEntity(object $entity): ?object
+    {
+        $em = $this->getEntityManager();
+        $class = $em->getClassMetadata(get_class($entity))->getName();
+        return $em->find($class, $entity->getId());
+    }
+
+    /**
      * Login as admin user.
      */
     protected function loginAdmin(): void
@@ -71,6 +93,8 @@ trait GuestTestTrait
         $adapter->setIdentity('admin@example.com');
         $adapter->setCredential('root');
         $auth->authenticate();
+        // Keep the identity across the reset done by each dispatch.
+        $this->dispatchUserId = $auth->getIdentity()->getId();
     }
 
     /**
@@ -87,6 +111,7 @@ trait GuestTestTrait
         $adapter->setIdentity($email);
         $adapter->setCredential($password);
         $result = $auth->authenticate();
+        $this->dispatchUserId = $result->isValid() ? $auth->getIdentity()->getId() : null;
         return $result->isValid();
     }
 
@@ -97,6 +122,7 @@ trait GuestTestTrait
     {
         $auth = $this->getServiceLocator()->get('Omeka\AuthenticationService');
         $auth->clearIdentity();
+        $this->dispatchUserId = null;
     }
 
     /**

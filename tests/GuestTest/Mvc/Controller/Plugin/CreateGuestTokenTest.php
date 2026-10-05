@@ -2,10 +2,10 @@
 
 namespace GuestTest\Mvc\Controller\Plugin;
 
+use CommonTest\AbstractHttpControllerTestCase;
 use Guest\Entity\GuestToken;
 use Guest\Mvc\Controller\Plugin\CreateGuestToken;
 use GuestTest\GuestTestTrait;
-use Omeka\Test\AbstractHttpControllerTestCase;
 
 /**
  * Unit tests for the CreateGuestToken controller plugin.
@@ -13,6 +13,11 @@ use Omeka\Test\AbstractHttpControllerTestCase;
 class CreateGuestTokenTest extends AbstractHttpControllerTestCase
 {
     use GuestTestTrait;
+
+    /**
+     * Authentication is managed by each test.
+     */
+    protected bool $requiresLogin = false;
 
     /**
      * @var CreateGuestToken

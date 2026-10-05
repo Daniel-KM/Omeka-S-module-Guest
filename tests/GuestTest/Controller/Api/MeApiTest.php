@@ -162,13 +162,19 @@ class MeApiTest extends GuestControllerTestCase
      */
     public function testMeEndpointPasswordChange(): void
     {
-        // Use admin user which is already logged in.
-        // Test password change request structure.
+        // Use a dedicated guest: the change must not affect the admin used by
+        // the other tests.
+        $guest = $this->createGuest('me_password@example.com', 'Me Password', 'password123', true);
+        $this->getServiceLocator()->get('Omeka\Settings\User')
+            ->set('guest_agreed_terms', true, $guest->id());
+        $this->logout();
+        $this->assertTrue($this->login('me_password@example.com', 'password123'));
+
         $this->getRequest()
             ->setMethod('PATCH')
             ->setContent(json_encode([
-                'password' => 'root', // Current admin password.
-                'new_password' => 'newadminpassword123',
+                'password' => 'password123',
+                'new_password' => 'newpassword123',
             ]));
         $this->getRequest()->getHeaders()
             ->addHeaderLine('Content-Type', 'application/json');
@@ -177,7 +183,7 @@ class MeApiTest extends GuestControllerTestCase
 
         $response = json_decode($this->getResponse()->getContent(), true);
         $this->assertIsArray($response);
-        $this->assertArrayHasKey('status', $response);
+        $this->assertSame('success', $response['status'] ?? null);
     }
 
     /**
