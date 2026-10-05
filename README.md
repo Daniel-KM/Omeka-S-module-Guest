@@ -95,8 +95,9 @@ Site page blocks "Login" and "Register" are available too and can be added on an
 
 A check box allows to force guests to accept terms agreement.
 
-A button in the config forms allows to set or unset all guests acceptation,
-in order to allow update of terms.
+When the terms are updated, the agreement of all guests can be reset via the
+task "Guest: Terms agreement" of module [Easy Admin], so they will have to
+accept them one more time.
 
 ### Option redirect after log in
 
@@ -250,6 +251,9 @@ for [Omeka Classic] by [BibLibre].
 [Guest]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest
 [Guest User]: https://gitlab.com/omeka/plugin-GuestUser
 [Omeka S]: https://www.omeka.org/s
+[Common]: https://gitlab.com/Daniel-KM/Omeka-S-module-Common
+[Easy Admin]: https://gitlab.com/Daniel-KM/Omeka-S-module-EasyAdmin
+[Guest.zip]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/releases
 [GitLab]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest
 [Guest Private]: https://gitlab.com/Daniel-KM/Omeka-S-module-GuestPrivate
 [User Names]: https://github.com/ManOnDaMoon/omeka-s-module-UserNames
@@ -261,8 +265,7 @@ for [Omeka Classic] by [BibLibre].
 [more information to upgrade templates]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/blob/9964d30a65505975c4dd1af42eccbc001a02a4b9/Upgrade_from_GuestUser.md
 [version 3.4.20]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/tree/3.4.20
 [installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
-[modules/Guest/data/scripts/convert_guest_user_templates.sh]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/blob/master/data/scripts/convert_guest_user_templates.sh
-[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/issues
+[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/work_items
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
