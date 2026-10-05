@@ -134,7 +134,12 @@ class UserBarDelegator extends UserBar
             'resource' => 'advanced-search-config',
             'action' => 'browse',
             'text' => $translate('Search config', null, $locale), // @translate
-            'url' => $url('admin/search-manager/config-id', ['id' => $params['id'], 'action' => 'configure']),
+            // The page "configure" was merged into "edit" in AdvancedSearch
+            // 3.4.61.
+            'url' => $url('admin/search-manager/config-id', [
+                'id' => $params['id'],
+                'action' => method_exists(\AdvancedSearch\Controller\Admin\SearchConfigController::class, 'configureAction') ? 'configure' : 'edit',
+            ]),
         ];
 
         return $links;
