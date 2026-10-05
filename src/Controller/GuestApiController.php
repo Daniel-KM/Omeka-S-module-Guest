@@ -188,7 +188,7 @@ class GuestApiController extends AbstractActionController
         $loginRoles = $this->settings()->get('guest_login_roles', []);
         if (!in_array('all', $loginRoles) && !in_array($role, $loginRoles)) {
             $message = new PsrMessage(
-                'Role "{role]" is not allowed to log in via api.', // @translate
+                'Role "{role}" is not allowed to log in via api.', // @translate
                 ['role' => $role]
             );
             return $this->jSend(JSend::FAIL, [

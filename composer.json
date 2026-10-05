@@ -17,7 +17,7 @@
         }
     ],
     "support": {
-        "issues": "https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/issues",
+        "issues": "https://gitlab.com/Daniel-KM/Omeka-S-module-Guest/-/work_items",
         "forum": "https://forum.omeka.org/"
     },
     "_require (not set until Omeka S merges PR #2412)": {
