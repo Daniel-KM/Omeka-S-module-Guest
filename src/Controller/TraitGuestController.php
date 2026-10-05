@@ -350,6 +350,13 @@ trait TraitGuestController
         if ($isText) {
             $subject = html_entity_decode(strip_tags($subject), ENT_QUOTES | ENT_HTML5, 'UTF-8');
             $body = html_entity_decode(strip_tags($body), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        } else {
+            // The body is html (ckeditor), but it may start with a text, so
+            // wrap it in a tag to send it as html in all cases.
+            if (!preg_match('~<[a-z][^>]*>~i', $body)) {
+                $body = nl2br($body);
+            }
+            $body = '<div>' . $body . '</div>';
         }
 
         unset($data['subject']);
