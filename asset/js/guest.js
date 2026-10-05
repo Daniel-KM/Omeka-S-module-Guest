@@ -55,7 +55,7 @@
          * Get the main message of jSend output, in particular for status fail.
          */
         const jSendMessage = function(data) {
-            if (typeof data !== 'object') {
+            if (!data || typeof data !== 'object') {
                 return null;
             }
             if (data.message) {
@@ -70,6 +70,24 @@
                 }
             }
             return null;
+        }
+
+        /**
+         * Check if the response is a jSend output, not a html page.
+         */
+        const isJSend = function(data) {
+            return data !== null && typeof data === 'object' && typeof data.status === 'string';
+        }
+
+        /**
+         * Get the escaped messages of a html page, separated by a new line.
+         */
+        const pageMessages = function(html) {
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const messages = [...doc.querySelectorAll('.messages li')]
+                .map((li) => li.textContent.trim())
+                .filter((text) => text.length);
+            return messages.length ? $('<div>').text(messages.join('\n')).html() : null;
         }
 
         const dialogMessage = function (message, nl2br = false, redirectUrl = null) {
@@ -145,6 +163,12 @@
                     beforeSend: beforeSpin(submitButton),
                 })
                 .done(function(data) {
+                    // The action is not an api endpoint, so submit it normally:
+                    // a new login has no side effect.
+                    if (!isJSend(data)) {
+                        HTMLFormElement.prototype.submit.call(form[0]);
+                        return;
+                    }
                     // Success may be a single step login or a second step login.
                     if (data && data.data && data.data.login === true) {
                         window.location.reload();
@@ -209,6 +233,17 @@
                     beforeSend: beforeSpin(submitButton),
                 })
                 .done(function(data) {
+                    // The action is not an api endpoint and the form is already
+                    // processed, so display the messages, then reload the page.
+                    if (!isJSend(data)) {
+                        const msg = pageMessages(data);
+                        if (msg) {
+                            dialogMessage(msg, true, window.location.href);
+                        } else {
+                            window.location.reload();
+                        }
+                        return;
+                    }
                     // Success may be a single step register without registration.
                     if (data && data.data && data.data.login === true) {
                         window.location.reload();
@@ -301,6 +336,10 @@
                             dialog = document.querySelector('dialog.dialog-login');
                         }
                         if (!dialog) {
+                            if (!isJSend(data)) {
+                                window.location.href = urlButton;
+                                return;
+                            }
                             let msg = jSendMessage(data);
                             dialogMessage(msg ? msg : 'Check input', true);
                             return;
@@ -344,6 +383,10 @@
                             dialog = document.querySelector('dialog.dialog-forgot-password');
                         }
                         if (!dialog) {
+                            if (!isJSend(data)) {
+                                window.location.href = urlButton;
+                                return;
+                            }
                             let msg = jSendMessage(data);
                             dialogMessage(msg ? msg : 'Check input', true);
                             return;
@@ -387,6 +430,10 @@
                             dialog = document.querySelector('dialog.dialog-register');
                         }
                         if (!dialog) {
+                            if (!isJSend(data)) {
+                                window.location.href = urlButton;
+                                return;
+                            }
                             let msg = jSendMessage(data);
                             dialogMessage(msg ? msg : 'Check input', true);
                             return;
