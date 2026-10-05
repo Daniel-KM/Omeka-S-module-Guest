@@ -7,49 +7,52 @@
          * @see ContactUs, Guest, Selection, TwoFactorAuth.
          */
 
-        // Spans that own their own visual (icons) must not be reused as spinner
-        // targets, otherwise the spinner overlaps the icon.
-        const hasOwnVisual = function (span) {
-            return span.length && /(?:^|\s)[\w-]+-icon(?:\s|$)/.test(span.attr('class') || '');
+        /**
+         * Get or create the spinner of a button, hidden by default.
+         *
+         * The spinner is prepended inside a button or a link, and inserted
+         * before an input, that cannot contain an element. It is created on
+         * load, so it takes its place and the button is not resized when busy.
+         */
+        const spinnerOf = function (element) {
+            const button = $(element);
+            const isInput = button.is('input');
+            let spinner = isInput ? button.prev('span.spinner') : button.children('span.spinner');
+            if (!spinner.length) {
+                spinner = $('<span class="spinner fas fa-sync" aria-hidden="true"></span>');
+                isInput ? spinner.insertBefore(button) : spinner.prependTo(button);
+            }
+            return spinner;
         };
 
+        /**
+         * Disable the button and display the spinner at the left of its label.
+         */
         const beforeSpin = function (element) {
-            var $el = $(element);
-            // Keep the element visible but disabled; append a sibling spinner.
-            if ($el.is('button, input')) {
-                $el.prop('disabled', true);
-            } else {
-                $el.attr('aria-disabled', 'true').addClass('is-disabled');
-            }
-            var span = $el.find('span').first();
-            if (span.length && !hasOwnVisual(span)) {
-                span.addClass('fas fa-sync fa-spin');
-                return;
-            }
-            span = $el.next('span.appended');
-            if (!span.length) {
-                span = $('<span class="appended"></span>').insertAfter($el);
-            }
-            span.addClass('fas fa-sync fa-spin');
+            spinnerOf(element).addClass('fa-spin');
+            const button = $(element);
+            button.is('button, input')
+                ? button.prop('disabled', true)
+                : button.attr('aria-disabled', 'true');
+            button
+                .attr('aria-busy', 'true')
+                .addClass('is-busy');
         };
 
         const afterSpin = function (element) {
-            var $el = $(element);
-            if ($el.is('button, input')) {
-                $el.prop('disabled', false);
-            } else {
-                $el.removeAttr('aria-disabled').removeClass('is-disabled');
-            }
-            var span = $el.find('span').first();
-            if (span.length && !hasOwnVisual(span) && span.hasClass('fa-spin')) {
-                span.removeClass('fas fa-sync fa-spin');
-                return;
-            }
-            span = $el.next('span.appended');
-            if (span.length) {
-                span.remove();
-            }
+            spinnerOf(element).removeClass('fa-spin');
+            const button = $(element);
+            button.is('button, input')
+                ? button.prop('disabled', false)
+                : button.removeAttr('aria-disabled');
+            button
+                .removeAttr('aria-busy')
+                .removeClass('is-busy');
         };
+
+        $('dialog #loginform [type=submit], dialog #user-form [type=submit], .button-login, .button-forgot-password, .button-register').each(function () {
+            spinnerOf(this);
+        });
 
         /**
          * Get the main message of jSend output, in particular for status fail.
