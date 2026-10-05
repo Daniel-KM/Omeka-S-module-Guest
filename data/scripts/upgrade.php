@@ -11,16 +11,18 @@ use Common\Stdlib\PsrMessage;
  * @var string $oldVersion
  *
  * @var \Omeka\Api\Manager $api
+ * @var \Omeka\View\Helper\Url $url
  * @var \Omeka\Settings\Settings $settings
  * @var \Doctrine\DBAL\Connection $connection
  * @var \Doctrine\ORM\EntityManager $entityManager
  * @var \Omeka\Mvc\Controller\Plugin\Messenger $messenger
  */
 $plugins = $services->get('ControllerPluginManager');
+$helpers = $services->get('ViewHelperManager');
+$url = $helpers->get('url');
 $api = $plugins->get('api');
 $settings = $services->get('Omeka\Settings');
 $translate = $plugins->get('translate');
-$urlPlugin = $plugins->get('url');
 $connection = $services->get('Omeka\Connection');
 $messenger = $plugins->get('messenger');
 $siteSettings = $services->get('Omeka\Settings\Site');
@@ -91,7 +93,7 @@ if (version_compare($oldVersion, '3.4.21', '<')) {
         $message = new PsrMessage(
             'This module integrates the features from module GuestApi, that is no longer needed. The config were merged (texts of messages) so you should check them in {link_url}main settings{link_end}. The module was disabled, but you should uninstall the module once params are checked.', // @translate
             [
-                'link_url' => sprintf('<a href="%s">', htmlspecialchars($urlPlugin->fromRoute('admin') . '/setting#guest')),
+                'link_url' => sprintf('<a href="%s">', htmlspecialchars($url('admin') . '/setting#guest')),
                 'link_end' => '</a>',
             ]
         );
