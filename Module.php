@@ -1010,6 +1010,18 @@ class Module extends AbstractModule
         $valueOptions = $process->getValueOptions();
         $valueOptions['guest_reset_agreement_terms'] = 'Guest: Reset terms agreement for all guests'; // @translate
         $process->setValueOptions($valueOptions);
+
+        if (method_exists($form, 'addTaskSubjects')) {
+            $form->addTaskSubjects([
+                'guest_reset_agreement_terms' => [
+                    'name' => 'Guest: Terms agreement', // @translate
+                    'description' => 'Reset the terms of use agreement for all guest users.', // @translate
+                    'actions' => [
+                        'guest_reset_agreement_terms' => 'Reset', // @translate
+                    ],
+                ],
+            ]);
+        }
         $fieldset
             ->add([
                 'type' => \Laminas\Form\Fieldset::class,
