@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 11:54+0000\n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: br <LL@li.org>\n"
@@ -493,7 +493,7 @@ msgstr ""
 "En ur modul-mañ e kaver perzhioù modul GuestApi, ha n'eus ket ezhomm anezhañ "
 "ken. Bodet eo bet ar c'hemennadurioù (testenn ar c'hemennadoù), neuze e "
 "rankit o gwiriañ e {link_url}arventennoù pennañ{link_end}. Diweredekaet eo "
-"bet ar modul, met rankout a rafit e zizstaliañ ur wech gwiriet ar parametroù."
+"bet ar modul, met rankout a rafit e zistaliañ ur wech gwiriet ar parametroù."
 
 #: data/scripts/upgrade.php:143
 msgid ""
@@ -832,7 +832,7 @@ msgstr "Postel kaset evit kadarnaat an enskrivadur"
 #: src/Form/SiteSettingsFieldset.php:273 src/Form/SettingsFieldset.php:302
 msgid ""
 "The text of the email to confirm the registration and to send the token."
-msgstr "Testenn ar postel evit kadarnaat an enskrivadur ha kas an toкен."
+msgstr "Testenn ar postel evit kadarnaat an enskrivadur ha kas an token."
 
 #: src/Form/SiteSettingsFieldset.php:277 src/Form/SettingsFieldset.php:306
 msgid ""
