@@ -12,6 +12,8 @@ require dirname(__DIR__, 3) . '/modules/Common/tests/Bootstrap.php';
     [
         'Common',
         'Guest',
+        // Optional: a second factor prevents the login via the api.
+        '?TwoFactorAuth',
     ],
     'GuestTest',
     __DIR__ . '/GuestTest'

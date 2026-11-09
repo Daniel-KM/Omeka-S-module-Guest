@@ -104,6 +104,44 @@ class LoginApiTest extends GuestControllerTestCase
     }
 
     /**
+     * The deprecated api checks the password itself and returns a key.
+     *
+     * The route /api/guest/login manages the second factor, but sends an email,
+     * so it is not tested here.
+     */
+    public function testLoginWithSecondFactorIsRefused(): void
+    {
+        $services = $this->getApplication()->getServiceManager();
+        if (!$services->get('ControllerPluginManager')->has('twoFactorLogin')) {
+            $this->markTestSkipped('Requires the module TwoFactorAuth.');
+        }
+        $user = $services->get('Omeka\EntityManager')->getRepository(\Omeka\Entity\User::class)
+            ->findOneBy(['email' => 'test@test.fr']);
+        $this->assertNotNull($user);
+        $userSettings = $services->get('Omeka\Settings\User');
+        $userSettings->set('twofactorauth_active', true, $user->getId());
+        try {
+            $this->reset();
+            $this->getApplication()->getServiceManager()->get('Omeka\AuthenticationService')->clearIdentity();
+            $this->url('/api/login', 'POST');
+            $this->getRequest()
+                ->setContent(json_encode([
+                    'email' => 'test@test.fr',
+                    'password' => 'test',
+                ]))
+                ->getHeaders()->addHeaderLine('Content-Type', 'application/json');
+            $this->getApplication()->run();
+            $response = json_decode($this->getResponse()->getContent(), true);
+            $this->assertSame('error', $response['status'] ?? null);
+            $this->assertStringContainsString('two-factor', (string) ($response['message'] ?? ''));
+            $this->assertArrayNotHasKey('session_token', $response['data'] ?? []);
+        } finally {
+            $this->getApplication()->getServiceManager()->get('Omeka\Settings\User')
+                ->set('twofactorauth_active', false, $user->getId());
+        }
+    }
+
+    /**
      * Test login with wrong password fails.
      */
     public function testLoginWithWrongPasswordFails(): void
