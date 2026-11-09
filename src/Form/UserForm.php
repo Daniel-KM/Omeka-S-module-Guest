@@ -196,4 +196,14 @@ class UserForm extends \Omeka\Form\UserForm
         $filterEvent = new Event('form.add_input_filters', $this, ['inputFilter' => $inputFilter]);
         $this->getEventManager()->triggerEvent($filterEvent);
     }
+
+    /**
+     * Get the user settings, without database access when there is no user.
+     */
+    public function getUserSettings()
+    {
+        return $this->getOption('user_id')
+            ? $this->userSettings
+            : new \Guest\Settings\NoUserSettings();
+    }
 }
