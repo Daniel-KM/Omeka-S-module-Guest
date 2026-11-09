@@ -26,6 +26,21 @@ class ApiControllerFactory implements FactoryInterface
         $adapter = new PasswordAdapter($userRepository);
         $authServiceSession = new AuthenticationService($storage, $adapter);
 
+        // The api returns a key without second factor, so the users that have
+        // one, or that must set one, cannot log in via the api.
+        $requireSecondFactor = function (\Omeka\Entity\User $user) use ($services): bool {
+            $plugins = $services->get('ControllerPluginManager');
+            if ($plugins->has('twoFactorLogin') && $plugins->get('twoFactorLogin')->requireSecondFactor($user)) {
+                return true;
+            }
+            $registryName = 'TwoFactorTotp\Service\SecondFactorRegistry';
+            if ($services->has($registryName)) {
+                $registry = $services->get($registryName);
+                return $registry->hasAnyEnrolled($user) || $registry->mustEnroll($user);
+            }
+            return false;
+        };
+
         return new ApiController(
             $services->get('Omeka\Acl'),
             $services->get('Omeka\ApiManager'),
@@ -36,7 +51,8 @@ class ApiControllerFactory implements FactoryInterface
             $services->get('Omeka\Paginator'),
             $adapters->get('sites'),
             $services->get('MvcTranslator'),
-            $adapters->get('users')
+            $adapters->get('users'),
+            $requireSecondFactor
         );
     }
 }

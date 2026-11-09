@@ -75,6 +75,11 @@ class ApiController extends \Omeka\Controller\ApiController
     protected $userAdapter;
 
     /**
+     * @var callable|null
+     */
+    protected $requireSecondFactor;
+
+    /**
      * @var array
      */
     protected $config;
@@ -89,7 +94,8 @@ class ApiController extends \Omeka\Controller\ApiController
         Paginator $paginator,
         SiteAdapter $siteAdapter,
         TranslatorInterface $translator,
-        UserAdapter $userAdapter
+        UserAdapter $userAdapter,
+        ?callable $requireSecondFactor = null
     ) {
         $this->acl = $acl;
         $this->api = $api;
@@ -101,6 +107,7 @@ class ApiController extends \Omeka\Controller\ApiController
         $this->siteAdapter = $siteAdapter;
         $this->translator = $translator;
         $this->userAdapter = $userAdapter;
+        $this->requireSecondFactor = $requireSecondFactor;
     }
 
     /**
@@ -303,6 +310,12 @@ class ApiController extends \Omeka\Controller\ApiController
             );
             return $this->jSend(JSend::ERROR, null,
                 $message->setTranslator($this->translator())
+            );
+        }
+
+        if ($this->requireSecondFactor && ($this->requireSecondFactor)($user)) {
+            return $this->jSend(JSend::ERROR, null,
+                $this->translate('This user requires a two-factor authentication, so the login via the api is not possible.') // @translate
             );
         }
 
