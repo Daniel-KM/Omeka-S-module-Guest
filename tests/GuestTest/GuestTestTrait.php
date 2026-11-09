@@ -88,6 +88,12 @@ trait GuestTestTrait
      */
     protected function loginAdmin(): void
     {
+        // After a dispatch to the api, the authentication adapter is the api
+        // key one, so write the identity directly when possible.
+        if (method_exists($this, 'loginAs')) {
+            $this->loginAs('admin@example.com');
+            return;
+        }
         $auth = $this->getServiceLocator()->get('Omeka\AuthenticationService');
         $adapter = $auth->getAdapter();
         $adapter->setIdentity('admin@example.com');
