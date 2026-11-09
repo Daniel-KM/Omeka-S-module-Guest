@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-14 11:54+0000\n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,7 +58,7 @@ msgstr ""
 #: src/Controller/GuestApiController.php:147
 #: src/Controller/GuestApiController.php:388
 #: src/Controller/GuestApiController.php:652
-#: src/Controller/TraitGuestController.php:517
+#: src/Controller/TraitGuestController.php:521
 msgid "Email is required."
 msgstr ""
 
@@ -68,7 +68,7 @@ msgstr ""
 #: src/Controller/GuestApiController.php:394
 #: src/Controller/GuestApiController.php:658
 #: src/Controller/GuestApiController.php:670
-#: src/Controller/TraitGuestController.php:524
+#: src/Controller/TraitGuestController.php:528
 msgid "Invalid email."
 msgstr ""
 
@@ -92,7 +92,7 @@ msgstr ""
 
 #: src/Controller/ApiController.php:338 src/Controller/ApiController.php:542
 #: src/Controller/GuestApiController.php:446
-#: src/Controller/TraitGuestController.php:556
+#: src/Controller/TraitGuestController.php:560
 msgid "Check your email to confirm your registration."
 msgstr ""
 
@@ -124,20 +124,20 @@ msgstr ""
 #: src/Controller/ApiController.php:525 src/Controller/ApiController.php:536
 #: src/Controller/GuestApiController.php:429
 #: src/Controller/GuestApiController.php:440
-#: src/Controller/TraitGuestController.php:539
-#: src/Controller/TraitGuestController.php:550
+#: src/Controller/TraitGuestController.php:543
+#: src/Controller/TraitGuestController.php:554
 msgid "Already registered."
 msgstr ""
 
 #: src/Controller/ApiController.php:584
 #: src/Controller/GuestApiController.php:488
-#: src/Controller/TraitGuestController.php:600
+#: src/Controller/TraitGuestController.php:604
 msgid "Unknown error before creation of user."
 msgstr ""
 
 #: src/Controller/ApiController.php:618
 #: src/Controller/GuestApiController.php:521
-#: src/Controller/TraitGuestController.php:627
+#: src/Controller/TraitGuestController.php:631
 msgid "Unknown error during creation of user."
 msgstr ""
 
@@ -275,7 +275,7 @@ msgid "Invalid token stop"
 msgstr ""
 
 #: src/Controller/Site/AnonymousController.php:525
-#: src/Controller/TraitGuestController.php:732
+#: src/Controller/TraitGuestController.php:736
 msgid "[Omeka Guest] New registration"
 msgstr ""
 
@@ -1166,32 +1166,32 @@ msgid ""
 "\"guest\" is used instead."
 msgstr ""
 
-#: src/Controller/TraitGuestController.php:252
+#: src/Controller/TraitGuestController.php:256
 msgid "Missing site."
 msgstr ""
 
-#: src/Controller/TraitGuestController.php:295
+#: src/Controller/TraitGuestController.php:299
 msgid ""
 "It is currently not possible to send a token for a private site. Set option "
 "to skip email validation."
 msgstr ""
 
-#: src/Controller/TraitGuestController.php:341
+#: src/Controller/TraitGuestController.php:345
 msgid "[No subject]"
 msgstr ""
 
-#: src/Controller/TraitGuestController.php:342
+#: src/Controller/TraitGuestController.php:346
 msgid "[No message]"
 msgstr ""
 
-#: src/Controller/TraitGuestController.php:615
+#: src/Controller/TraitGuestController.php:619
 #: src/Controller/GuestApiController.php:509
 #: src/Controller/ApiController.php:606
 #: src/Controller/Site/AnonymousController.php:347
 msgid "An error occurred after creation of the guest user: {exception}"
 msgstr ""
 
-#: src/Controller/TraitGuestController.php:725
+#: src/Controller/TraitGuestController.php:729
 msgid "A new user is registering: {user_email} ({url})."
 msgstr ""
 
