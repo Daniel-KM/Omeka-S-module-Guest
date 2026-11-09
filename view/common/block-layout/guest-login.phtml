@@ -36,7 +36,7 @@ if (!empty($formToken)) {
         <?= $this->form($form) ?>
     </div>
     <p class="forgot-password">
-        <?= $hyperlink($translate('Forgot password?'), $basePath() . '/s/' . $site->slug() . '/guest/forgot-password') ?>
+        <?= $hyperlink($translate('Forgot password?'), $this->url('site/guest/anonymous', ['site-slug' => $site->slug(), 'action' => 'forgot-password'])) ?>
     </p>
     <?= isset($formToken) ? $this->partial('common/dialog/2fa-token', ['site' => $site, 'form' => $formToken]) : '' ?>
     <?php endif; ?>

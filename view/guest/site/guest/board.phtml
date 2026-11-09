@@ -40,4 +40,4 @@ $this->htmlElement('body')->appendAttribute('class', 'guest account');
 
 <h3><?= $escape($user->getName()) ?></h3>
 
-<a class="button" href="<?= $basePath() . '/s/' . $site->slug() . '/guest/logout' ?>"><?= $translate('Log out') ?></a>
+<a class="button" href="<?= $this->url('site/guest/guest', ['site-slug' => $site->slug(), 'action' => 'logout']) ?>"><?= $translate('Log out') ?></a>

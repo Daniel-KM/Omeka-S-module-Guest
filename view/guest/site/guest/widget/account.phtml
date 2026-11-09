@@ -22,7 +22,7 @@ $site = $plugins->get('currentSite')();
         <?= $hyperlink($translate('Update email'), $href) ?>
     </li>
     <li>
-        <?php $href = $basePath() . '/s/' . $site->slug() . '/guest/logout'; ?>
+        <?php $href = $this->url('site/guest/guest', ['site-slug' => $site->slug(), 'action' => 'logout']); ?>
         <?= $hyperlink($translate('Logout'), $href) ?>
     </li>
 </ul>

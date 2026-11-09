@@ -26,7 +26,7 @@ $label ??= $translate('Log in');
 $loginElement ??= 'link';
 
 // Do not redirect to admin login page, so force /s/xxx/ even when CleanUrl is enabled.
-$urlLogin = $site ? $basePath() . '/s/' . $site->slug() . '/guest/login' : $url('forgot-password');
+$urlLogin = $site ? $this->url('site/guest/anonymous', ['site-slug' => $site->slug(), 'action' => 'login']) : $url('forgot-password');
 ?>
 
 <div class="login-container">

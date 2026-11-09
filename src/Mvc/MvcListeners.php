@@ -155,8 +155,14 @@ class MvcListeners extends AbstractListenerAggregate
             return;
         }
 
-        $baseUrl = $request->getBaseUrl() ?? '';
-        $acceptUri = $baseUrl . '/s/' . $siteSlug . '/guest/accept-terms';
+        // Build the url with the route, and not with a hard coded "/s/",
+        // because the module CleanUrl allows to rename this prefix or to skip
+        // it for the main site.
+        $acceptUri = $event->getApplication()->getServiceManager()->get('Router')
+            ->assemble(
+                ['site-slug' => $siteSlug, 'action' => 'accept-terms'],
+                ['name' => 'site/guest/guest']
+            );
 
         /** @var \Laminas\Http\Response $response */
         $response = $event->getResponse();

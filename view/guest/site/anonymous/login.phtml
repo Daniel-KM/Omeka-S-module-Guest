@@ -73,7 +73,7 @@ $pageLabel = $siteSetting('guest_login_text') ?: ($setting('guest_login_text') ?
     <?php if ($form): ?>
     <?= $this->form($form) ?>
     <p class="forgot-password">
-        <?= $hyperlink($translate('Forgot password?'), $basePath() . '/s/' . $site->slug() . '/guest/forgot-password') ?>
+        <?= $hyperlink($translate('Forgot password?'), $this->url('site/guest/anonymous', ['site-slug' => $site->slug(), 'action' => 'forgot-password'])) ?>
     </p>
     <?= isset($formToken) ? $this->partial('common/dialog/2fa-token', ['site' => $site, 'form' => $formToken]) : '' ?>
     <?php endif; ?>
