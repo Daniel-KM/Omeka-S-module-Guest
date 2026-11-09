@@ -204,8 +204,7 @@ class Register extends AbstractBlockLayout implements TemplateableBlockLayoutInt
         // in public guest form.
         // Most of admin elements are now removed directly since the form is
         // overridden. Nevertheless, some modules add elements.
-        // For user profile: append options "exclude_public_show" and "exclude_public_edit"
-        // to elements.
+        // For user profile: set the options "show" and "edit" of elements.
         $elements = [
             'filesideload_user_dir' => 'user-settings',
             'locale' => 'user-settings',
