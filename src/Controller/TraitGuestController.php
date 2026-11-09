@@ -175,6 +175,11 @@ trait TraitGuestController
         $elements = [
             'filesideload_user_dir' => 'user-settings',
             'locale' => 'user-settings',
+            // Module Mapping since version 2.3.0.
+            'mapping_basemap_provider' => 'user-settings',
+            'mapping_min_zoom' => 'user-settings',
+            'mapping_max_zoom' => 'user-settings',
+            'mapping_default_bounds' => 'user-settings',
         ];
         if ($isExternalUser) {
             $elements['o:email'] = 'user-information';
