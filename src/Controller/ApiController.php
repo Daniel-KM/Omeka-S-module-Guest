@@ -365,7 +365,8 @@ class ApiController extends \Omeka\Controller\ApiController
         $eventManager->trigger('user.login', $user);
 
         // Redirect if needed (without session token: it won't be readable).
-        $redirect = $this->params()->fromQuery('redirect');
+        $redirect = $this->params()->fromQuery('redirect_url')
+            ?: $this->params()->fromQuery('redirect');
         if ($redirect) {
             return $this->redirect()->toUrl($redirect);
         }

@@ -605,7 +605,8 @@ class AnonymousController extends AbstractGuestController
         $this->messenger()->addSuccess('Check your email for instructions on how to reset your password'); // @translate
 
         // Bypass settings.
-        $redirectUrl = $this->params()->fromQuery('redirect');
+        $redirectUrl = $this->params()->fromQuery('redirect_url')
+            ?: $this->params()->fromQuery('redirect');
         if ($redirectUrl) {
             return $this->redirect()->toUrl($redirectUrl);
         }
