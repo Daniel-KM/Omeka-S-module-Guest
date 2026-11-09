@@ -490,17 +490,14 @@ trait TraitGuestController
         $siteSlug = $siteSlug
             ?: $this->params('site-slug')
             ?: ($this->currentSite() ? $this->currentSite()->slug() : '');
-        $helpers = $this->viewHelpers();
-        $basePath = $helpers->get('basePath')();
-        $path = $basePath . '/s/' . $siteSlug
-            . '/guest/' . $action;
-        if ($query) {
-            $path .= '?' . http_build_query($query);
-        }
-        if ($canonical) {
-            $path = $helpers->get('serverUrl')() . $path;
-        }
-        return $path;
+        // Build the url with the route, and not with a hard coded "/s/",
+        // because the module CleanUrl allows to rename this prefix or to skip
+        // it for the main site: a hard coded prefix is then not routable.
+        return $this->viewHelpers()->get('url')(
+            'site/guest/' . $routeType,
+            ['site-slug' => $siteSlug, 'action' => $action],
+            ['query' => $query, 'force_canonical' => $canonical]
+        );
     }
 
     /**
