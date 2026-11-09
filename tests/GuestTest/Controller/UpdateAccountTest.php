@@ -27,9 +27,7 @@ class UpdateAccountTest extends GuestControllerTestCase
     {
         $this->logout();
 
-        // Omeka throws PermissionDeniedException for unauthenticated users.
-        $this->expectException(\Omeka\Mvc\Exception\PermissionDeniedException::class);
-        $this->dispatch('/s/test/guest/update-account');
+        $this->assertDispatchIsDenied('/s/test/guest/update-account');
     }
 
     /**
@@ -229,9 +227,7 @@ class UpdateAccountTest extends GuestControllerTestCase
     {
         $this->logout();
 
-        // Omeka throws PermissionDeniedException for unauthenticated users.
-        $this->expectException(\Omeka\Mvc\Exception\PermissionDeniedException::class);
-        $this->dispatch('/s/test/guest/update-email');
+        $this->assertDispatchIsDenied('/s/test/guest/update-email');
     }
 
     /**
@@ -343,8 +339,6 @@ class UpdateAccountTest extends GuestControllerTestCase
     {
         $this->logout();
 
-        // Omeka throws PermissionDeniedException for unauthenticated users.
-        $this->expectException(\Omeka\Mvc\Exception\PermissionDeniedException::class);
-        $this->dispatch('/s/test/guest/accept-terms');
+        $this->assertDispatchIsDenied('/s/test/guest/accept-terms');
     }
 }
