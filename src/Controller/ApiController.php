@@ -367,7 +367,7 @@ class ApiController extends \Omeka\Controller\ApiController
         // Redirect if needed (without session token: it won't be readable).
         $redirect = $this->params()->fromQuery('redirect_url')
             ?: $this->params()->fromQuery('redirect');
-        if ($redirect) {
+        if ($redirect && $this->isLocalUrl($redirect)) {
             return $this->redirect()->toUrl($redirect);
         }
 

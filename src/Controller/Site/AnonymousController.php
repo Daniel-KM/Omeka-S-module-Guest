@@ -607,7 +607,7 @@ class AnonymousController extends AbstractGuestController
         // Bypass settings.
         $redirectUrl = $this->params()->fromQuery('redirect_url')
             ?: $this->params()->fromQuery('redirect');
-        if ($redirectUrl) {
+        if ($redirectUrl && $this->isLocalUrl($redirectUrl)) {
             return $this->redirect()->toUrl($redirectUrl);
         }
 

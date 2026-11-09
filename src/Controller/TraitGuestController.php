@@ -447,23 +447,17 @@ trait TraitGuestController
             return false;
         }
 
-        // Allow relative URLs starting with /
-        if (strpos($url, '/') === 0 && strpos($url, '//') !== 0) {
-            return true;
+        // A local path, but not a protocol relative url ("//host" or "/\host").
+        if ($url[0] === '/') {
+            return !isset($url[1]) || ($url[1] !== '/' && $url[1] !== '\\');
         }
 
-        // Check if URL is on the same host.
+        // An absolute url on the same host.
         $parsedUrl = parse_url($url);
-        if (!isset($parsedUrl['host'])) {
-            // Relative URL without leading slash - allow it.
-            return true;
-        }
-
-        // Compare with current host.
-        $request = $this->getRequest();
-        $currentHost = $request->getUri()->getHost();
-
-        return $parsedUrl['host'] === $currentHost;
+        $uri = $this->getRequest()->getUri();
+        return in_array(strtolower($parsedUrl['scheme'] ?? ''), ['http', 'https'], true)
+            && isset($parsedUrl['host'])
+            && strtolower($parsedUrl['host']) === strtolower((string) $uri->getHost());
     }
 
     /**
