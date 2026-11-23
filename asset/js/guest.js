@@ -1,7 +1,7 @@
 'use strict';
 
 (function ($) {
-    $(document).ready(function() {
+    $(function() {
 
         /**
          * @see ContactUs, Guest, Selection, TwoFactorAuth.
