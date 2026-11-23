@@ -35,6 +35,7 @@ if ($formRegister) $formRegister->prepare();
 
 if ($formToken) {
     $headLink
+        ->appendStylesheet($assetUrl('css/common-dialog.css', 'Common'))
         ->appendStylesheet($assetUrl('css/two-factor-auth.css', 'TwoFactorAuth'));
     $headScript
         ->appendFile($assetUrl('js/two-factor-auth.js', 'TwoFactorAuth'), 'text/javascript', ['defer' => 'defer']);
