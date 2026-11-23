@@ -645,7 +645,8 @@ class Module extends AbstractModule
                         $url = $services->get('ViewHelperManager')->get('url');
                         $termsUrl = $url('site/page', ['site-slug' => $siteSlug, 'page-slug' => $termsPage]);
                         if (preg_match('/\{link\}(.+?)\{\/link\}/s', $label, $matches)) {
-                            $link = sprintf('<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', htmlspecialchars($termsUrl), htmlspecialchars($matches[1]));
+                            // The text is html (wysiwyg), so keep its entities.
+                            $link = sprintf('<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', htmlspecialchars($termsUrl), htmlspecialchars($matches[1], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false));
                             $label = str_replace($matches[0], $link, $label);
                         } else {
                             $label = sprintf('%s <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', rtrim($label, '.'), htmlspecialchars($termsUrl), htmlspecialchars($termsPage));
