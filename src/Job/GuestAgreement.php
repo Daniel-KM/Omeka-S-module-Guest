@@ -34,10 +34,9 @@ class GuestAgreement extends AbstractJob
                 );
                 break;
             default:
-                $logger->warn(
+                throw new \Common\Job\Exception\RuntimeException(
                     'No process can be done without settings.' // @translate
                 );
-                break;
         }
     }
 
